@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class Login extends React.Component {
   render() {
     const { isDisable } = this.state;
     return (
-      <div>
+      <div className="login-container">
         <input
           type="text"
           name="name"
