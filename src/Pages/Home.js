@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, number } from 'prop-types';
 import Header from './components/Header';
 import SelectSettings from './components/SelectSettings';
 
@@ -36,12 +36,14 @@ class Home extends React.Component {
 Home.propTypes = {
   email: string,
   name: string,
+  score: number,
 }.isRequired;
 
 const mapStatetoProps = (state) => ({
   //verificar contrução das actions e reducer antes de usar
   email: state.user.email,
-  name: state.user.email,
+  name: state.user.name,
+  score: state.user.score,
 });
 
 export default connect(mapStatetoProps)(Home);
