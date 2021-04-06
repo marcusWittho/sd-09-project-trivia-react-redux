@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { asyncToken } from '../actions';
@@ -68,6 +69,10 @@ class Home extends React.Component {
     );
   }
 }
+
+Home.propTypes = {
+  saveToken: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (dispatch) => ({
   saveToken: () => dispatch(asyncToken()),

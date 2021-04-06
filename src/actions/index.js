@@ -1,4 +1,4 @@
-import { getToken } from "../serviceAPI";
+import { getToken } from '../serviceAPI';
 
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
