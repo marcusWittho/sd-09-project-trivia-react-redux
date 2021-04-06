@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
+import md5 from 'crypto-js/md5';
 import fetchAPIToken from '../../services/apiToken';
+import actionPlayerId from '../../redux/actions/actionPlayerId';
 import './Login.css';
 
 class Login extends React.Component {
@@ -33,8 +37,13 @@ class Login extends React.Component {
   }
 
   async handleClick() {
+    const { actionPlayerId: sendDataPlayerId } = this.props;
+    const { email, name } = this.state;
     const response = await fetchAPIToken();
     localStorage.setItem('token', response.token);
+    const hash = md5(email).toString();
+    const gravatarEmail = `https://www.gravatar.com/avatar/${hash}`;
+    sendDataPlayerId(name, gravatarEmail);
   }
 
   handleChange({ target }) {
@@ -81,4 +90,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = {
+  actionPlayerId,
+};
+
+Login.propTypes = {
+  actionPlayerId: func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
