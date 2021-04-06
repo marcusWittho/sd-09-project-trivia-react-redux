@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './trivia.png';
 import './App.css';
+import Login from './pages/Login';
 
 export default class App extends React.Component {
   render() {
@@ -12,6 +13,8 @@ export default class App extends React.Component {
             SUA VEZ
           </p>
         </header>
+
+        <Login />
       </div>
     );
   }
