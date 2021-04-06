@@ -1,4 +1,4 @@
-import GET_TOKEN from '../actions';
+import { GET_TOKEN } from '../actions';
 
 const INITIAL_STATE = {
   token: '',
