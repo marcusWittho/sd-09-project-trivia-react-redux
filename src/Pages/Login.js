@@ -10,7 +10,7 @@ class Login extends Component {
       name: '',
     };
     this.handleChange = this.handleChange.bind(this);
-    this.validateMail = this.validateMail.bind(this);
+    this.validate = this.validate.bind(this);
 }
 
   handleChange({ target }) {
@@ -20,9 +20,21 @@ class Login extends Component {
     });
   }
 
-  validateMail(email) {
+  checkMail(email) {
     const emailRegex = /^([\w.-]+)@([\w-]+)((.(\w){2,3})+)$/;
     return emailRegex.test(email);
+  }
+
+  checkName(name){
+    const min = 3;
+    if (name.length >= min) {
+      return true;
+    }
+  }
+
+  validate() {
+    const { name, email } = this.state;
+    return this.checkName(name) && this.checkMail(email);
   }
 
   clickHandler() {
@@ -46,20 +58,20 @@ class Login extends Component {
           onChange={ this.handleChange }
         />
         <input
-        placeholder="Insert your E-mail"
-        name="email"
-        type="email"
-        value={ email }
-        data-testid="input-gravatar-email"
-        onChange={ this.handleChange }
+          placeholder="Insert your E-mail"
+          name="email"
+          type="email"
+          value={ email }
+          data-testid="input-gravatar-email"
+          onChange={ this.handleChange }
         />
         <button
-        className="btn"
-        type="button"
-        onClick={ this.clickHandler }
-        disabled={ !this.validateMail() }
+          data-testid="btn-play"
+          type="button"
+          onClick={ this.clickHandler }
+          disabled={ !this.validateMail() }
         >
-          Entrar
+          Jogar
         </button>
     </div>
   )}
