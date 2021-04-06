@@ -1,0 +1,69 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.checkStatusButton = this.checkStatusButton.bind(this);
+
+    this.state = {
+      isDisable: true,
+      name: '',
+      email: '',
+    };
+  }
+
+  checkStatusButton() {
+    const { name, email } = this.state;
+    const minCharacters = 2;
+    if (name.length > minCharacters && email.length > minCharacters) {
+      this.setState({
+        isDisable: false,
+      });
+    } else {
+      this.setState({
+        isDisable: true,
+      });
+    }
+  }
+
+  handleChange({ target }) {
+    const { value, name } = target;
+    this.setState({
+      [name]: value,
+    });
+    this.checkStatusButton();
+  }
+
+  render() {
+    const { isDisable } = this.state;
+    return (
+      <div>
+        <input
+          type="text"
+          name="name"
+          placeholder="Nome"
+          data-testid="input-player-name"
+          onChange={ this.handleChange }
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          data-testid="input-player-email"
+          onChange={ this.handleChange }
+        />
+        <Link to="/game">
+          <button type="button" data-testid="btn-play" disabled={ isDisable }>
+            Jogar
+          </button>
+        </Link>
+      </div>
+    );
+  }
+}
+
+export default Login;
