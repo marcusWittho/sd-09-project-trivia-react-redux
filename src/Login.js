@@ -6,9 +6,11 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      login: false,
+      // login: false,
+      button: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.validateFields = this.validateFields.bind(this);
   }
 
   handleChange({ target }) {
@@ -16,10 +18,20 @@ class Login extends React.Component {
     this.setState({
       [name]: value,
     });
+    this.validateFields();
+  }
+
+  validateFields() {
+    const { name, email } = this.state;
+    if (name.length && email.length > 0) {
+      this.setState({
+        button: false,
+      });
+    }
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, button } = this.state;
     return (
       <form>
         <label htmlFor="inputName">
@@ -46,6 +58,7 @@ class Login extends React.Component {
         </label>
         <button
           onClick=""
+          disabled={ button }
           data-testid="btn-play"
           type="button"
         >
