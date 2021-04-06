@@ -33,7 +33,7 @@ Feedback.propTypes = {
 };
 
 const stateToProps = (state) => ({
-  gravatar: state.trivia.gravar,
+  gravatar: state.trivia.gravatar,
 });
 
 export default connect(stateToProps)(Feedback);
