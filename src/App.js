@@ -8,7 +8,7 @@ export default function App() {
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
         <p>
-          pro TOP Grupo 10
+          pro TOP Grupo 10 - test
         </p>
       </header>
     </div>
