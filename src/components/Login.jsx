@@ -1,4 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -10,12 +14,29 @@ class Login extends React.Component {
       playButton: false,
     };
 
+    this.startGame = this.startGame.bind(this);
+    this.validateFields = this.validateFields.bind(this);
+    this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
     this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidUpdate() {
+    this.saveToLocalStorage();
   }
 
   onChange({ target }) {
     const { id, value } = target;
     this.setState({ [id]: value }, () => this.validateFields());
+  }
+
+  saveToLocalStorage() {
+    const { token } = this.props;
+    localStorage.setItem('token', token.token);
+  }
+
+  async startGame() {
+    const { setToken } = this.props;
+    await setToken();
   }
 
   validateFields() {
@@ -47,16 +68,32 @@ class Login extends React.Component {
             onChange={ this.onChange }
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ !playButton }
-        >
-          Play!
-        </button>
+        <Link to="/play">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ !playButton }
+            onClick={ this.startGame }
+          >
+            Play!
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired,
+  token: PropTypes.shape().isRequired,
+};
+
+const mapStatetoProps = (state) => ({
+  token: state.triviaReducer.token,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setToken: () => dispatch(fetchToken()),
+});
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Login);
