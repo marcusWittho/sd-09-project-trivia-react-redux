@@ -14,10 +14,11 @@ export default class Login extends Component {
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-    if (e.target.value.length > 0) {
+    const { name, email } = this.state;
+    if (name.length > 0 && email.length > 0) {
       this.setState({ status: false });
     }
-    if (e.target.value.length === 0) {
+    if (name.length === 0 && email.length === 0) {
       this.setState({ status: true });
     }
   }
