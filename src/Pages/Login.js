@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { setUser } from '../Actions';
+import SettingsButton from '../Components/SettingsButton';
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -40,6 +41,7 @@ class Login extends React.Component {
     const { name, email } = this.state;
     return (
       <div>
+        <SettingsButton />
         <h2>
           Trivia
         </h2>
