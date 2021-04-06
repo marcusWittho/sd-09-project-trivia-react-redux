@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { asyncToken } from '../actions';
 import logo from '../trivia.png';
 
 class Home extends React.Component {
@@ -25,6 +28,7 @@ class Home extends React.Component {
 
   render() {
     const { username, email } = this.state;
+    const { saveToken } = this.props;
     return (
       <div>
         <form>
@@ -49,17 +53,24 @@ class Home extends React.Component {
               value={ email }
             />
           </label>
-          <button
-            type="submit"
-            data-testid="btn-play"
-            disabled={ this.disableButton(username, email) }
-          >
-            Jogar
-          </button>
+          <Link to="/play">
+            <button
+              type="submit"
+              data-testid="btn-play"
+              disabled={ this.disableButton(username, email) }
+              onClick={ () => saveToken() }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
       </div>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = (dispatch) => ({
+  saveToken: () => dispatch(asyncToken()),
+});
+
+export default connect(null, mapStateToProps)(Home);
