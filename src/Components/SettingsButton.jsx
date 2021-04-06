@@ -1,16 +1,19 @@
-import { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-export default class SettingsButton extends Component {
+class SettingsButton extends Component {
   render() {
     return (
-      <button
-        data-testid = "btn-settings"
-        type="button"
-        onClick={ <Redirect to="/settings" /> }
-      >
-        Settings
-      </button>
-    )
+      <Link to="/settings">
+        <button
+          data-testid="btn-settings"
+          type="button"
+        >
+          Settings
+        </button>
+      </Link>
+    );
   }
 }
+
+export default SettingsButton;

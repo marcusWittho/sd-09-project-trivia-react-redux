@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
+import SettingsButton from '../Components/SettingsButton';
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -29,6 +30,7 @@ class Login extends React.Component {
     const { name, email } = this.state;
     return (
       <div>
+        <SettingsButton />
         <h2>
           Trivia
         </h2>
