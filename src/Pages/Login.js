@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { setUser } from '../Actions';
+import { setToken } from '../Actions/setLogin';
 import SettingsButton from '../Components/SettingsButton';
 
 class Login extends Component {
@@ -32,9 +33,10 @@ class Login extends Component {
   }
 
   handleClick() {
-    const { saveUser } = this.props;
+    const { saveUser, setLogin } = this.props;
     const { email, name } = this.state;
     saveUser(email, name);
+    setLogin();
   }
 
   render() {
@@ -76,10 +78,12 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveUser: (email, name) => dispatch(setUser(email, name)),
+  setLogin: () => dispatch(setToken()),
 });
 
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
+  setLogin: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
