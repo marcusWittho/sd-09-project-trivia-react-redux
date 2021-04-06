@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getTokenThunk } from '../actions';
+import { Link } from 'react-router-dom';
+
 
 class Login extends Component {
   constructor(props) {
@@ -26,6 +29,7 @@ class Login extends Component {
     const { getToken } = this.props;
 
     return (
+     <div> 
       <form action="">
         <label htmlFor="input-player-name">
           Nome:
@@ -58,6 +62,11 @@ class Login extends Component {
           Jogar
         </button>
       </form>
+       <Link to="/settings">
+          <button data-testid="btn-settings" type="button">Configurações</button>
+        </Link>
+     </div>
+
     );
   }
 }
