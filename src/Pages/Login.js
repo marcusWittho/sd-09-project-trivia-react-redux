@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { setToken } from '../Actions/setLogin';
 
 class Login extends React.Component {
   constructor(props) {
@@ -25,6 +28,11 @@ class Login extends React.Component {
     return validateName && validateEmail;
   }
 
+  handleClick() {
+    const { setLogin } = this.props;
+    setLogin();
+  }
+
   render() {
     const { name, email } = this.state;
     return (
@@ -46,16 +54,23 @@ class Login extends React.Component {
           data-testid="input-gravatar-email"
           onChange={ this.handleChange }
         />
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ !this.validateLogin() }
-        >
-          Play
-        </button>
+        <Link to="/trivia">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ !this.validateLogin() }
+            onClick={ this.handleClick }
+          >
+            Play
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setLogin: () => dispatch(setToken()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
