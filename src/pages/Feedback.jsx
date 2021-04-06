@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -8,11 +10,6 @@ class Feedback extends React.Component {
     this.getRanking = this.getRanking.bind(this);
   }
 
-  getRanking() {
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
-    return ranking;
-  }
-
   getScore() {
     const state = JSON.parse(localStorage.getItem('state'));
     return state;
@@ -20,10 +17,10 @@ class Feedback extends React.Component {
 
   render() {
     const { player } = this.getScore();
-    const ranking = this.getRanking();
+    const { gravatar } = this.props;
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ ranking[0].picture } alt="" />
+        <img data-testid="header-profile-picture" src={ gravatar } alt="" />
         <h1 data-testid="header-player-name">{player.name}</h1>
         <h2 data-test-id="header-score">{player.score}</h2>
       </header>
@@ -31,4 +28,12 @@ class Feedback extends React.Component {
   }
 }
 
-export default Feedback;
+Feedback.propTypes = {
+  gravatar: PropTypes.string.isRequired,
+};
+
+const stateToProps = (state) => ({
+  gravatar: state.trivia.gravar,
+});
+
+export default connect(stateToProps)(Feedback);
