@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getTokenThunk } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class Login extends Component {
 
   render() {
     const { name, email } = this.state;
+    const { getToken } = this.props;
 
     return (
       <form action="">
@@ -45,7 +49,12 @@ class Login extends Component {
             id="input-gravatar-email"
           />
         </label>
-        <button data-testid="btn-play" type="button" disabled={ !name || !email }>
+        <button
+          onClick={ () => getToken() }
+          data-testid="btn-play"
+          type="button"
+          disabled={ !name || !email }
+        >
           Jogar
         </button>
       </form>
@@ -53,4 +62,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getToken: () => dispatch(getTokenThunk()),
+});
+
+Login.propTypes = {
+  getToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
