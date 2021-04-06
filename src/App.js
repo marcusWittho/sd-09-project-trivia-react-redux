@@ -9,5 +9,5 @@ export default function App() {
       <Route exact path="/" component={ Home } />
       <Route path="/settings" component={ Config } />
     </Switch>
-  )
+  );
 }
