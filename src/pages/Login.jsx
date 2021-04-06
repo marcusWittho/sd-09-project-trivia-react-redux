@@ -62,6 +62,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ isDisabled }
+          onClick={ () => console.log('clicou!') }
         >
           Jogar
         </button>
