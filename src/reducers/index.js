@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+import token from './gameToken';
 
 const reducers = combineReducers({
-  hello: 'hello',
+  token,
 });
 
 export default reducers;

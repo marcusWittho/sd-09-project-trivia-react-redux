@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchNewGameToken } from '../actions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(state) {
     super(state);
     this.state = {
@@ -29,6 +33,7 @@ export default class Login extends Component {
 
   render() {
     const { name, email, status } = this.state;
+    const { dispatchNewGame } = this.props;
     return (
 
       <div>
@@ -37,6 +42,7 @@ export default class Login extends Component {
           type="text"
           data-testid="input-player-name"
           name="name"
+          placeholder="Place your name here"
           value={ name }
           onChange={ this.handleChange }
         />
@@ -44,12 +50,36 @@ export default class Login extends Component {
           type="email"
           data-testid="input-gravatar-email"
           name="email"
+          placeholder="Place your email here"
           value={ email }
           onChange={ this.handleChange }
         />
 
-        <button type="button" data-testid="btn-play" disabled={ status }>Jogar</button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ status }
+            onClick={ dispatchNewGame }
+          >
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  dispatchNewGame: PropTypes.func,
+};
+
+Login.defaultProps = {
+  dispatchNewGame: PropTypes.func,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchNewGame: () => dispatch(fetchNewGameToken()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
