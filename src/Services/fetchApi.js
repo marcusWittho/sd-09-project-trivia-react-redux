@@ -9,4 +9,3 @@ export const requestToken = async () => {
 };
 
 export default requestToken;
-

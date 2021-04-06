@@ -5,7 +5,6 @@ import Login from './Pages/Login';
 import Home from './Pages/Home';
 import Trivia from './Pages/Trivia';
 
-
 class App extends Component {
   render() {
     return (
