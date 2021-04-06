@@ -47,7 +47,7 @@ export default class Login extends Component {
           onChange={ this.handleChange }
         />
 
-        <button type="button" disabled={ status }>Jogar</button>
+        <button type="button" data-testid="btn-play" disabled={ status }>Jogar</button>
       </div>
     );
   }
