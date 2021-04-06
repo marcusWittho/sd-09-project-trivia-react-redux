@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import fetchAPIToken from '../../services/apiToken';
 import './Login.css';
 
 class Login extends React.Component {
@@ -7,6 +8,7 @@ class Login extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.checkStatusButton = this.checkStatusButton.bind(this);
 
     this.state = {
@@ -28,6 +30,11 @@ class Login extends React.Component {
         isDisable: true,
       });
     }
+  }
+
+  async handleClick() {
+    const response = await fetchAPIToken();
+    localStorage.setItem('token', response.token);
   }
 
   handleChange({ target }) {
@@ -53,11 +60,16 @@ class Login extends React.Component {
           type="email"
           name="email"
           placeholder="Email"
-          data-testid="input-player-email"
+          data-testid="input-gravatar-email"
           onChange={ this.handleChange }
         />
         <Link to="/game">
-          <button type="button" data-testid="btn-play" disabled={ isDisable }>
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ isDisable }
+            onClick={ this.handleClick }
+          >
             Jogar
           </button>
         </Link>
