@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { setUser } from '../Actions';
 import SettingsButton from '../Components/SettingsButton';
 
 class Login extends Component {
@@ -11,6 +15,7 @@ class Login extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -24,6 +29,12 @@ class Login extends Component {
     const validateName = name.length > 1;
     const validateEmail = email.length > 1;
     return validateName && validateEmail;
+  }
+
+  handleClick() {
+    const { saveUser } = this.props;
+    const { email, name } = this.state;
+    saveUser(email, name);
   }
 
   render() {
@@ -48,16 +59,27 @@ class Login extends Component {
           data-testid="input-gravatar-email"
           onChange={ this.handleChange }
         />
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ !this.validateLogin() }
-        >
-          Play
-        </button>
+        <Link to="/trivia">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ !this.validateLogin() }
+            onClick={ this.handleClick }
+          >
+            Play
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  saveUser: (email, name) => dispatch(setUser(email, name)),
+});
+
+Login.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
