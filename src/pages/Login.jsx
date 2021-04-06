@@ -22,12 +22,16 @@ class Login extends Component {
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
-    });
-    if (name === 'email') {
-      const validEmail = new RegExp(/[a-z0-9]+@[a-z]+.[a-z]{2,}$/g);
-      if (validEmail.test(value)) this.setState({ buttonDisable: false });
-      else this.setState({ buttonDisable: true });
-    }
+    }, () => this.validInput());
+  }
+
+  validInput() {
+    const { name, email } = this.state;
+    const validEmail = new RegExp(/[a-z0-9]+@[a-z]+.[a-z]{2,}$/g);
+    const validName = new RegExp(/[A-Za-z0-9]{6,}$/);
+    if (validEmail.test(email) && validName.test(name)) {
+      this.setState({ buttonDisable: false });
+    } else this.setState({ buttonDisable: true });
   }
 
   handleClick() {
