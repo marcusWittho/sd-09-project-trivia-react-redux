@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import setEmail from './setEmail';
+import setUser from './setEmail';
 
 const reducer = combineReducers({
-  setEmail,
+  setUser,
 });
 
 export default reducer;
