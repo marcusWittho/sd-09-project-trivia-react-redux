@@ -468,7 +468,7 @@ Recomendamos que o Redux e o Router sejam configurados nesse requisito, para que
   * O _token_ deve ser armazenado na aplicação e enviado em todas as requisições seguintes.
   * Salve no `LocalStorage` o _token_ recebido utilizando a chave `token`
 
-  **O que será avaliado**
+  **O que será avaliado*
 
   * Inicia jogo salvando um token de jogador
 
