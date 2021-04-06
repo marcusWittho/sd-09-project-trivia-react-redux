@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import fetchToken from '../services/tokenGenerator';
 
 class Login extends React.Component {
   constructor(props) {
@@ -7,10 +9,12 @@ class Login extends React.Component {
       isDisabled: true,
       email: '',
       name: '',
+      redirect: false,
     };
     this.formGenerator = this.formGenerator.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputsValidator = this.inputsValidator.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -18,6 +22,14 @@ class Login extends React.Component {
     this.setState({
       [name]: value,
     }, () => this.inputsValidator());
+  }
+
+  async handleClick() {
+    const getToken = await fetchToken();
+    localStorage.setItem('token', getToken.token);
+    this.setState({
+      redirect: true,
+    });
   }
 
   inputsValidator() {
@@ -35,7 +47,7 @@ class Login extends React.Component {
   }
 
   formGenerator() {
-    const { isDisabled } = this.state;
+    const { isDisabled, email, name } = this.state;
     return (
       <div>
         <label htmlFor="input-player-name">
@@ -45,6 +57,7 @@ class Login extends React.Component {
             name="name"
             data-testid="input-player-name"
             id="input-player-name"
+            value={ name }
             onChange={ this.handleChange }
           />
         </label>
@@ -55,6 +68,7 @@ class Login extends React.Component {
             name="email"
             data-testid="input-gravatar-email"
             id="input-gravatar-email"
+            value={ email }
             onChange={ this.handleChange }
           />
         </label>
@@ -62,7 +76,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ isDisabled }
-          onClick={ () => console.log('clicou!') }
+          onClick={ this.handleClick }
         >
           Jogar
         </button>
@@ -71,6 +85,8 @@ class Login extends React.Component {
   }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) return <Redirect to="/play" />;
     return (
       <div>
         { this.formGenerator() }

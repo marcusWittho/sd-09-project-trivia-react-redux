@@ -1,0 +1,3 @@
+export const FETCHING_TOKEN = 'FETCHING_TOKEN';
+export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
+export const TOKEN_FAILURE = 'TOKEN_FAILURE';
