@@ -3,13 +3,13 @@ import { playerLogin } from './playerActions';
 import { triviaRequest } from './gameActions';
 
 export {
-    playerLogin,
-    triviaRequest,
-}
+  playerLogin,
+  triviaRequest,
+};
 
-  export const thunk = () => (
-    async (dispatch) => {
-      const result = await requestToken();
-      return dispatch(result);
-    }
-  );
+export const thunk = () => (
+  async (dispatch) => {
+    const result = await requestToken();
+    return dispatch(result);
+  }
+);
