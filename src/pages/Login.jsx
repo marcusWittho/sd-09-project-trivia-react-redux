@@ -6,9 +6,9 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      disabled: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.verifyTextInputs = this.verifyTextInputs.bind(this);
   }
 
   handleChange(event) {
@@ -17,11 +17,15 @@ class Login extends React.Component {
   }
 
   verifyTextInputs() {
-
+    const { name, email } = this.state;
+    if (name.length > 0 && email.length > 0) {
+      return false;
+    }
+    return true;
   }
 
   render() {
-    const { name, email, disabled } = this.state;
+    const { name, email } = this.state;
     return (
       <div>
         <h1>Login</h1>
@@ -58,7 +62,7 @@ class Login extends React.Component {
         <button
           type="button"
           data-testid="btn-play"
-          disabled={ disabled }
+          disabled={ this.verifyTextInputs() }
         >
           Jogar
         </button>
