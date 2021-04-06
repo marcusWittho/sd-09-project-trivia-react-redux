@@ -14,7 +14,8 @@ class Login extends Component {
 
   HandleValidation() {
     const { name, email } = this.state;
-    return !(name && email);
+    const testValidation = /[a-z|0-9|._]*@[a-z|0-9]*[.][a-z]/;
+    return !(email.match(testValidation) && name.length > 0);
   }
 
   HandleChange({ target: { name, value } }) {
