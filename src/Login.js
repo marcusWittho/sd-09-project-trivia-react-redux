@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import userRegister from './redux/actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -11,6 +14,7 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateFields = this.validateFields.bind(this);
+    this.login = this.login.bind(this);
   }
 
   handleChange({ target }) {
@@ -28,6 +32,12 @@ class Login extends React.Component {
         button: false,
       });
     }
+  }
+
+  login() {
+    const { name, email } = this.state;
+    const { sendUser } = this.props;
+    sendUser(name, email);
   }
 
   render() {
@@ -57,7 +67,7 @@ class Login extends React.Component {
           />
         </label>
         <button
-          onClick=""
+          onClick={ this.login }
           disabled={ button }
           data-testid="btn-play"
           type="button"
@@ -68,4 +78,12 @@ class Login extends React.Component {
     );
   }
 }
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  sendUser: (user, email) => dispatch(userRegister(user, email)),
+});
+
+Login.propTypes = {
+  sendUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
