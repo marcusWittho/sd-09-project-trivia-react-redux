@@ -3,8 +3,7 @@ import logo from './trivia.png';
 import './App.css';
 
 export default class App extends React.Component {
-  render () {
-
+  render() {
     return (
       <div className="App">
         <header className="App-header">
