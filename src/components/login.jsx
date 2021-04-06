@@ -1,4 +1,5 @@
 import React from 'react';
+import getToken from '../services/gravatarApi';
 
 class Login extends React.Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class Login extends React.Component {
           type="submit"
           data-testid="btn-play"
           disabled={ isDisabled }
+          onClick={ () => getToken() }
         >
           Jogar
         </button>
