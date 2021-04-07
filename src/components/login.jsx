@@ -53,7 +53,7 @@ class Login extends React.Component {
     return (
       redirect
         ? (
-          <Redirect to="/feedback" />
+          <Redirect to="/gaming" />
         ) : (
           <form>
             <label htmlFor="email">

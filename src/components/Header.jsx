@@ -7,7 +7,11 @@ export default class Header extends React.Component {
     const { picture, name, score } = userData;
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ picture } alt="Profile-Avatar" />
+        <img
+          data-testid="header-profile-picture"
+          src={ picture }
+          alt="Profile-Avatar"
+        />
         <p data-testid="header-player-name">{ name }</p>
         <p data-testid="header-score">{ score }</p>
       </header>
