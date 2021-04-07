@@ -1,25 +1,70 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Question from '../components/Question';
-import { fetchQuestions } from '../redux/actions';
 
 class GamePage extends React.Component {
-  componentDidMount() {
-    const { getQuestions } = this.props;
-    getQuestions();
+  constructor(props) {
+    super(props);
+    this.state = { questionNumber: 0 };
+
+    this.createAnswers = this.createAnswers.bind(this);
+  }
+
+  createAnswers() {
+    const { questionNumber } = this.state;
+    const { questions } = this.props;
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers,
+    } = questions[questionNumber];
+
+    const arrayOfElements = incorrectAnswers.map((answer, index) => (
+      <button
+        type="button"
+        key={ answer }
+        data-testid={ `wrong-answer-${index}` }
+        onClick={ this.handleClick }
+      >
+        {answer}
+      </button>
+    ));
+    arrayOfElements.push(
+      <button
+        type="button"
+        key={ correctAnswer }
+        data-testid="correct-answer"
+        onClick={ this.handleClick }
+      >
+        {correctAnswer}
+      </button>,
+    );
+    arrayOfElements.sort();
+    return arrayOfElements;
   }
 
   render() {
+    const { questionNumber } = this.state;
     const { questions, isFetching } = this.props;
+    // return '';
     if (isFetching) {
       return <div>Loading</div>;
     }
-    if (questions.length === 0) {
-      return (<div>empty question list</div>);
-    }
+    console.log(questions);
     return (
-      <Question questionObj={ questions[0] } />
+      <div>
+        <h2 data-testid="question-category">
+          Category:
+          {questions[questionNumber].category}
+        </h2>
+        <h3 data-testid="question-text">
+          Question:
+          {questions[questionNumber].question}
+        </h3>
+        <p>
+          answer:
+          {this.createAnswers()}
+        </p>
+      </div>
     );
   }
 }
@@ -29,14 +74,9 @@ const mapStateToProps = (state) => ({
   isFetching: state.gameReducer.isFetching,
 });
 
-const mapDispatchToPropos = (dispatch) => ({
-  getQuestions: () => dispatch(fetchQuestions()),
-});
-
 GamePage.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.string),
   isFetching: PropTypes.bool,
-  getQuestions: PropTypes.func,
 }.isRequired;
 
-export default connect(mapStateToProps, mapDispatchToPropos)(GamePage);
+export default connect(mapStateToProps)(GamePage);
