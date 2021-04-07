@@ -35,7 +35,6 @@ class LoginForm extends Component {
             id="name-input"
             name="name"
             value={ name }
-            minLength="2"
             data-testid="input-player-name"
             onChange={ this.handleChange }
           />
