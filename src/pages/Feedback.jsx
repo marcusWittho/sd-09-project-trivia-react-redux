@@ -34,11 +34,13 @@ class Feedback extends React.Component {
       <main>
         <header>
           <img data-testid="header-profile-picture" src={ gravatar } alt="" />
-          <h1 data-testid="header-player-name">{player.name}</h1>
-          <h2 data-test-id="header-score">{player.score}</h2>
+          <span data-testid="header-player-name">{player.name}</span>
+          <span data-test-id="header-score">{player.score}</span>
         </header>
         <section>
           <h3 data-testid="feedback-test">{this.getFeedback(player.score)}</h3>
+          <h2 data-testid="feedback-total-score">{player.score}</h2>
+          <h3 data-testid="feedback-total-question">{player.assertions}</h3>
         </section>
       </main>
     );
