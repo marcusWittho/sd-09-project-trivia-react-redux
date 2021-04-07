@@ -17,9 +17,7 @@ class Header extends React.Component {
   async getGravatarInfo() {
     const { email } = this.props;
     const hash = await CryptoJS.MD5(email).toString();
-    console.log(hash);
     const avatar = await getGravatar(hash);
-    // console.log(avatar);
     this.setState({ avatar });
   }
 
@@ -28,7 +26,7 @@ class Header extends React.Component {
     const { avatar } = this.state;
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ avatar } alt="avatar" />
+        <img data-testid="header-profile-picture" src={ avatar } alt={ `${name}-avatar` }  />
         <h3 data-testid="header-player-name">{ name }</h3>
         <h3>
           Placar:
