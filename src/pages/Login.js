@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import loginAction from '../actions/loginAction';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -22,9 +25,9 @@ export default class Login extends Component {
 
   validateInputs() {
     const { playerNameField, playerEmailField } = this.state;
-    const regex = /^[a-z0-9.]+@[a-z0-9]+.com$/i.test(playerEmailField);
+    const regex = /^[a-z0-9.]+@[a-z0-9]+.com$/i;
     const name = playerNameField;
-    if (regex && name !== '') {
+    if (regex.test(playerEmailField) && name !== '') {
       this.setState({
         button: false,
       });
@@ -37,6 +40,8 @@ export default class Login extends Component {
 
   render() {
     const { playerEmailField, playerNameField, button } = this.state;
+    const { loginDispatch } = this.props;
+
     return (
       <section>
         <label htmlFor="name">
@@ -63,6 +68,7 @@ export default class Login extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ button }
+          onClick={ () => loginDispatch(playerNameField, playerEmailField) }
         >
           Jogar
         </button>
@@ -70,3 +76,13 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  login: PropTypes.func,
+}.isRequired;
+
+const mapDispatchToProps = (dispatch) => ({
+  loginDispatch: (name, email) => dispatch(loginAction(name, email)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
