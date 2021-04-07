@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -24,6 +24,7 @@ class Login extends Component {
       userEmail: '',
       userName: '',
       isNotValidated: true,
+      redirect: false,
     };
   }
 
@@ -60,6 +61,10 @@ class Login extends Component {
     } catch (error) {
       console.error(error);
     }
+
+    this.setState({
+      redirect: true,
+    });
   }
 
   renderHeader() {
@@ -112,22 +117,25 @@ class Login extends Component {
   renderButtonPlay(isNotValidated) {
     return (
       <div>
-        <Link to="/screen-game">
-          <button
-            disabled={ isNotValidated }
-            data-testid="btn-play"
-            type="button"
-            onClick={ this.toPlay }
-          >
-            Play
-          </button>
-        </Link>
+        <button
+          disabled={ isNotValidated }
+          data-testid="btn-play"
+          type="button"
+          onClick={ this.toPlay }
+        >
+          Play
+        </button>
         <SettingsButton />
       </div>
     );
   }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect to="/screen-game" />;
+    }
+
     return (
       <>
         { this.renderHeader() }
