@@ -11,7 +11,7 @@ class Login extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.validate = this.validate.bind(this);
-}
+  }
 
   handleChange({ target }) {
     const { name, value } = target;
@@ -25,7 +25,7 @@ class Login extends Component {
     return emailRegex.test(email);
   }
 
-  checkName(name){
+  checkName(name) {
     const min = 3;
     if (name.length >= min) {
       return true;
@@ -43,7 +43,6 @@ class Login extends Component {
     actionAserCriada(email, name);
     if (this.validate()) history.push('/home');
   }
-
 
   render() {
     const { email, name } = this.state;
@@ -73,8 +72,9 @@ class Login extends Component {
         >
           Jogar
         </button>
-    </div>
-  )}
+      </div>
+    );
+  }
 }
 
 Login.propTypes = {

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Trivia from './pages/Home';
+import Login from './Pages/Login';
+import Home from './Pages/Home';
+import Trivia from './Pages/Trivia';
 
-class App extends Component{
+class App extends Component {
   render() {
     return (
       <Switch>

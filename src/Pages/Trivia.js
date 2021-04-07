@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { string, number } from 'prop-types';
-import Header from '../components/Header';
-import TriviaCards from './components/ExpenseForms';
+import Header from '../Components/Header';
+import TriviaCards from '../Components/TriviaCards';
 
 class Trivia extends Component {
   render() {
     const { email, total, score } = this.props;
     return (
       <div>
-        <Header email={ email } total={ total } score={ score }/>
+        <Header email={ email } total={ total } score={ score } />
         <TriviaCards />
       </div>
     );

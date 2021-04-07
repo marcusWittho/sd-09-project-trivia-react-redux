@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { string, number } from 'prop-types';
-import Header from './components/Header';
-import SelectSettings from './components/SelectSettings';
+import Header from '../Components/Header';
+import SelectSettings from '../Components/SelectSettings';
 
 class Home extends React.Component {
   constructor(props) {
@@ -12,7 +12,8 @@ class Home extends React.Component {
 
   clickHandler() {
     // criar restante da função e logicas de fetch
-   return history.push('/trivia');
+    // return history.push('/trivia');  --- return inicial feito pelo Rodrigo
+    return window.location('/trivia');
   }
 
   render() {
@@ -40,7 +41,7 @@ Home.propTypes = {
 }.isRequired;
 
 const mapStatetoProps = (state) => ({
-  //verificar contrução das actions e reducer antes de usar
+  // verificar contrução das actions e reducer antes de usar
   email: state.user.email,
   name: state.user.name,
   score: state.user.score,
