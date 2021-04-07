@@ -19,17 +19,6 @@ class loginScreen extends React.Component {
     this.handleValidateEmail = this.handleValidateEmail.bind(this);
   }
 
-  getLocalStorage() {
-    console.log(localStorage.getItem('token'));
-  }
-
-  setLocalStorage() {
-    const { actionsReducer: token } = this.props;
-    console.log(token);
-    // localStorage.setItem(token);
-    // this.getLocalStorage();
-  }
-
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
@@ -45,7 +34,6 @@ class loginScreen extends React.Component {
     });
     await propGetToken();
     await propSetNameAndEmail(name, email);
-    this.setLocalStorage();
   }
 
   handleValidateEmail() {

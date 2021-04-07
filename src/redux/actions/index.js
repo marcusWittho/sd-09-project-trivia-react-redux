@@ -11,6 +11,7 @@ const setTokenCode = (token) => ({
 
 export const getToken = () => async (dispatch) => {
   const data = await opentdbApi();
+  localStorage.setItem('token', data);
   dispatch(setTokenCode(data));
 };
 
