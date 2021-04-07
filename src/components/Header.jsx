@@ -16,20 +16,18 @@ getGravatar(email) {
     return emailHash;
   }
 
-  render() {
-    const email = localStorage.getItem('gravatarEmail');
-    const playerName = localStorage.getItem('name');
-    const score = localStorage.getItem('score');
+ render() {
+    const { userName, userEmail } = this.props;
     return (
-      <>
+      <header>
         <img
           data-testid="header-profile-picture"
-          src={ this.getGravatar(email) }
+          src={ this.getGravatar(userEmail) }
           alt="Imagem do Jogador"
         />
-        <h3 data-testid="header-player-name">{ playerName }</h3>
-        <p data-testid="header-score">{ score }</p>
-      </>
+        <h3 data-testid="header-player-name">{ userName }</h3>
+        <p data-testid="header-score">0</p>
+      </header>
     );
   }
 }
