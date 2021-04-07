@@ -10,12 +10,24 @@ class GameQuestions extends Component {
     this.state = {
       questionNumber: 0,
       answerClicked: false,
+      time: 30,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleTime = this.handleTime.bind(this);
+    this.handleNext = this.handleNext.bind(this);
+    this.stopInterval = this.stopInterval.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleTime();
+  }
+
+  componentDidUpdate() {
+    this.stopInterval();
   }
 
   setAnswer(incorrects, correct) {
-    const { answerClicked } = this.state;
+    const { answerClicked, time } = this.state;
     const incorrectsElements = incorrects.map(
       (incorrect, index) => (
         <button
@@ -25,6 +37,7 @@ class GameQuestions extends Component {
           name="incorrectAnswer"
           className={ answerClicked ? 'incorrect' : null }
           onClick={ this.handleClick }
+          disabled={ time < 1 }
         >
           {incorrect}
         </button>
@@ -38,25 +51,53 @@ class GameQuestions extends Component {
         name="correctAnswer"
         className={ answerClicked ? 'correct' : null }
         onClick={ this.handleClick }
+        disabled={ time < 1 }
       >
         {correct}
       </button>
     );
-    const position = Math.round(Math.random() * incorrects.length);
-    incorrectsElements.splice(position, 0, correctElement);
+    incorrectsElements.splice(2, 0, correctElement);
     return incorrectsElements;
+  }
+
+  stopInterval(answered) {
+    const { time } = this.state;
+    if (time < 1 || answered) {
+      clearInterval(this.time);
+    }
   }
 
   handleClick() {
     this.setState({
       answerClicked: true,
     });
+    this.stopInterval(true);
+  }
+
+  handleTime() {
+    const magicNumber = 990;
+    this.time = setInterval(() => {
+      this.setState((prev) => ({
+        time: prev.time - 1,
+      }));
+    }, magicNumber);
+  }
+
+  handleNext() {
+    const { questionNumber } = this.state;
+    const magicNumber = 5;
+    if (questionNumber < magicNumber) {
+      this.setState({
+        questionNumber: questionNumber + 1,
+        time: 30,
+        answerClicked: false,
+      }, () => this.handleTime());
+    }
   }
 
   render() {
     const { fetchQuestions, token, loading, questions } = this.props;
-    const { questionNumber } = this.state;
-    console.log(questions);
+    const { questionNumber, time, answerClicked } = this.state;
     if (loading) {
       fetchQuestions(token);
       return <h3>Loading</h3>;
@@ -64,6 +105,10 @@ class GameQuestions extends Component {
     return (
       <div>
         <h2>Pergunta</h2>
+        <h3>
+          Tempo:
+          { time }
+        </h3>
         <p data-testid="question-category">
           Categoria:
           {questions && questions[questionNumber].category}
@@ -79,6 +124,15 @@ class GameQuestions extends Component {
             questions[questionNumber].correct_answer,
           )}
         </div>
+        { answerClicked && (
+          <button
+            type="button"
+            onClick={ this.handleNext }
+            data-testid="btn-next"
+          >
+            Proxima
+          </button>
+        )}
       </div>
     );
   }
