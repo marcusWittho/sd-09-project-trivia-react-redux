@@ -28,7 +28,7 @@ class Header extends React.Component {
     return (
       <div>
         <img
-          data-tesetid="header-profile-picture"
+          data-testid="header-profile-picture"
           src={ `https://www.gravatar.com/avatar/${gravatarUrl}` }
           alt="gravatar"
         />
