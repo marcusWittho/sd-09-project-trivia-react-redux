@@ -11,15 +11,19 @@ class GameQuestions extends Component {
       questionNumber: 0,
       answerClicked: false,
       time: 30,
+      userPoints: 0,
+      assertions: 0,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleTime = this.handleTime.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.stopInterval = this.stopInterval.bind(this);
+    this.createStore = this.createStore.bind(this);
   }
 
   componentDidMount() {
     this.handleTime();
+    this.createStore();
   }
 
   componentDidUpdate() {
@@ -67,7 +71,48 @@ class GameQuestions extends Component {
     }
   }
 
-  handleClick() {
+  createStore() {
+    const { name, gravatarEmail } = this.props;
+    const { userPoints, assertions } = this.state;
+    const state = {
+      player: {
+        name,
+        assertions,
+        score: userPoints,
+        gravatarEmail,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  handleClick({ target }) {
+    const { questions } = this.props;
+    const { questionNumber, time, userPoints } = this.state;
+    let difficulty;
+    const hard = 3;
+    let points = userPoints;
+    const accert = 10;
+    console.log(questions[questionNumber].difficulty);
+    switch (questions[questionNumber].difficulty) {
+    case 'hard':
+      difficulty = hard;
+      break;
+    case 'medium':
+      difficulty = 2;
+      break;
+    case 'easy':
+      difficulty = 1;
+      break;
+    default:
+      difficulty = 0;
+    }
+    if (target.name === 'correctAnswer') {
+      points += accert + (time * difficulty);
+      this.setState((previous) => ({
+        assertions: previous.assertions + 1,
+        userPoints: points,
+      }), () => this.createStore());
+    }
     this.setState({
       answerClicked: true,
     });
@@ -102,6 +147,7 @@ class GameQuestions extends Component {
       fetchQuestions(token);
       return <h3>Loading</h3>;
     }
+    this.createStore();
     return (
       <div>
         <h2>Pergunta</h2>
@@ -146,6 +192,8 @@ const mapStateToProps = (state) => ({
   token: state.token.obj.token,
   loading: state.questions.loading,
   questions: state.questions.questions,
+  name: state.setUser.name,
+  gravatarEmail: state.setUser.email,
 });
 
 GameQuestions.propTypes = {
