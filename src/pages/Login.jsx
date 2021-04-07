@@ -1,10 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import actionLogin from '../actions/action';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.reqApi = this.reqApi.bind(this);
 
     this.state = {
       userName: '',
@@ -18,6 +23,14 @@ class Login extends React.Component {
       ...state,
       [target.name]: target.value,
     });
+  }
+
+  async reqApi() {
+    const { sendToken } = this.props;
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const dataToken = await response.json();
+    sendToken(dataToken.token);
+    localStorage.setItem('token', JSON.stringify(dataToken.token));
   }
 
   render() {
@@ -46,17 +59,28 @@ class Login extends React.Component {
               onChange={ (e) => handleChange(e) }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ !(userName && userEmail) }
-          >
-            Jogar
-          </button>
+          <Link to="/game">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ !(userName && userEmail) }
+              onClick={ () => this.reqApi() }
+            >
+              Jogar
+            </button>
+          </Link>
         </section>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  sendToken: (e) => dispatch(actionLogin(e)),
+});
+
+Login.propTypes = {
+  sendToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
