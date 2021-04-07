@@ -5,24 +5,55 @@ import { setQuestions } from '../Actions/setQuestions';
 class GameQuestions extends Component {
   constructor(props) {
     super(props);
-    this.teste = this.teste.bind(this);
+    this.state = {
+      questionNumber: 0,
+    };
   }
 
-  componentDidMount() {
-    this.teste();
-  }
-
-  teste() {
-    const { fetchQuestions, token } = this.props;
-    console.log(token);
-    fetchQuestions(token);
+  setAnswer(incorrects, correct) {
+    const incorrectsElements = incorrects.map(
+      (incorrect, index) => (
+        <button
+          type="button"
+          key={ incorrect }
+          data-testid={ `wrong-answer-${index}` }
+        >
+          {incorrect}
+        </button>
+      ),
+    );
+    const correctElement = (
+      <button
+        type="button"
+        data-testid="correct-answer"
+        key={ correct }
+      >
+        {correct}
+      </button>
+    );
+    const position = Math.round(Math.random() * incorrects.length);
+    incorrectsElements.splice(position, 0, correctElement);
+    return incorrectsElements;
   }
 
   render() {
-    console.log(this.props.token);
+    const { fetchQuestions, token, loading, questions } = this.props;
+    const { questionNumber } = this.state;
+    if (loading) {
+      fetchQuestions(token);
+      return <h3>Loading</h3>;
+    }
+    const question = questions[questionNumber];
+    console.log(questions);
     return (
       <div>
-        teste
+        <h2>Pergunta</h2>
+        <p data-testid="question-category">
+          Categoria:
+          {question.category}
+        </p>
+        <p data-testid="question-text">{question.question}</p>
+        <div>{this.setAnswer(question.incorrect_answers, question.correct_answer)}</div>
       </div>
     );
   }
@@ -33,7 +64,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  token: state,
+  token: state.token.obj.token,
+  loading: state.questions.loading,
+  questions: state.questions.questions,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
