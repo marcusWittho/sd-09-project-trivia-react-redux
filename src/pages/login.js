@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { getToken } from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -23,6 +25,13 @@ class Login extends React.Component {
     this.setState({
       submitButtonEnabled: regexCheck.test(email) && name.length > 0,
     });
+  }
+
+  async handleClick() {
+    const token = await getToken();
+    localStorage.setItem('token', token);
+    const { history: { push } } = this.props;
+    push('/game');
   }
 
   render() {
@@ -57,7 +66,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ !submitButtonEnabled }
-          onClick={ () => ({}) }
+          onClick={ this.handleClick.bind(this) }
         >
           Começar a Jogar
         </button>
@@ -65,5 +74,11 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Login;
