@@ -7,7 +7,6 @@ class Feedback extends React.Component {
     super(props);
 
     this.getScore = this.getScore.bind(this);
-    this.getRanking = this.getRanking.bind(this);
   }
 
   getScore() {
