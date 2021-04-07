@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { string } from 'prop-types';
 import { connect } from 'react-redux';
+import SettingsButton from './SettingsButton';
 
 class Header extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class Header extends Component {
         />
         <h3 data-testid="header-player-name">{ userName }</h3>
         <p data-testid="header-score">0</p>
+        <SettingsButton />
       </header>
     );
   }
