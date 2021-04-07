@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { setQuestions } from '../Actions/setQuestions';
 
 class GameQuestions extends Component {
@@ -45,14 +46,22 @@ class GameQuestions extends Component {
     }
     return (
       <div>
-        {console.log(questions)}
         <h2>Pergunta</h2>
         <p data-testid="question-category">
           Categoria:
-          {questions[questionNumber].category}
+          {questions && questions[questionNumber].category}
         </p>
-        <p data-testid="question-text">{questions[questionNumber].question}</p>
-        <div>{this.setAnswer(questions[questionNumber].incorrect_answers, questions[questionNumber].correct_answer)}</div>
+        <p
+          data-testid="question-text"
+        >
+          {questions && questions[questionNumber].question}
+        </p>
+        <div>
+          {questions && this.setAnswer(
+            questions[questionNumber].incorrect_answers,
+            questions[questionNumber].correct_answer,
+          )}
+        </div>
       </div>
     );
   }
@@ -67,5 +76,12 @@ const mapStateToProps = (state) => ({
   loading: state.questions.loading,
   questions: state.questions.questions,
 });
+
+GameQuestions.propTypes = {
+  fetchQuestions: PropTypes.func,
+  token: PropTypes.string,
+  loading: PropTypes.bool,
+  questions: PropTypes.arrayOf({}),
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
