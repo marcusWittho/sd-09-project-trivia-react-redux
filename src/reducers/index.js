@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { TYPE_LOGIN, USER_INFO } from '../actions/action';
+import { TYPE_LOGIN, USER_INFO, QUESTION_ADD } from '../actions/action';
 
 const INITIAL_STATE = {
   player: {
@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     gravatarEmail: '',
   },
   token: '',
+  questions: [],
 };
 
 function loginReducer(state = INITIAL_STATE, action) {
@@ -35,9 +36,21 @@ function userInfoReducer(state = INITIAL_STATE.player, action) {
   }
 }
 
+function addQuestions(state = INITIAL_STATE.questions, action) {
+  switch (action.type) {
+  case QUESTION_ADD:
+    return ({
+      ...state,
+      question: action.value,
+    });
+  default: return state;
+  }
+}
+
 const rootReducer = combineReducers({
   loginReducer,
   userInfoReducer,
+  addQuestions,
 });
 
 export default rootReducer;
