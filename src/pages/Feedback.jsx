@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Feedback extends Component {
   render() {
@@ -43,6 +44,11 @@ class Feedback extends Component {
             >
               {`Acertos: ${player.assertions}`}
             </p>
+          </section>
+          <section>
+            <Link to="/">
+              <button data-testid="btn-play-again" type="button">Jogar novamente</button>
+            </Link>
           </section>
         </main>
       </div>
