@@ -7,6 +7,7 @@ class Feedback extends React.Component {
     super(props);
 
     this.getScore = this.getScore.bind(this);
+    this.getFeedback = this.getFeedback.bind(this);
   }
 
   getScore() {
@@ -14,15 +15,32 @@ class Feedback extends React.Component {
     return state;
   }
 
+  getFeedback(score) {
+    const medianScore = 3;
+    switch (score) {
+    case score < medianScore:
+      return 'Podia ser melhor...';
+    case score >= medianScore:
+      return 'Mandou bem!';
+    default:
+      return 'Mandou bem!';
+    }
+  }
+
   render() {
     const { player } = this.getScore();
     const { gravatar } = this.props;
     return (
-      <header>
-        <img data-testid="header-profile-picture" src={ gravatar } alt="" />
-        <h1 data-testid="header-player-name">{player.name}</h1>
-        <h2 data-test-id="header-score">{player.score}</h2>
-      </header>
+      <main>
+        <header>
+          <img data-testid="header-profile-picture" src={ gravatar } alt="" />
+          <h1 data-testid="header-player-name">{player.name}</h1>
+          <h2 data-test-id="header-score">{player.score}</h2>
+        </header>
+        <section>
+          <h3 data-testid="feedback-test">{this.getFeedback(player.score)}</h3>
+        </section>
+      </main>
     );
   }
 }
