@@ -1,10 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { loginAction, userInfoAction } from '../actions/action';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.reqApi = this.reqApi.bind(this);
 
     this.state = {
       userName: '',
@@ -18,6 +23,16 @@ class Login extends React.Component {
       ...state,
       [target.name]: target.value,
     });
+  }
+
+  async reqApi() {
+    const { sendToken, sendUserInfo } = this.props;
+    const { userName, userEmail } = this.state;
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const dataToken = await response.json();
+    localStorage.setItem('token', JSON.stringify(dataToken.token));
+    sendToken(dataToken.token);
+    sendUserInfo(userName, userEmail);
   }
 
   render() {
@@ -46,17 +61,38 @@ class Login extends React.Component {
               onChange={ (e) => handleChange(e) }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ !(userName && userEmail) }
-          >
-            Jogar
-          </button>
+          <Link to="/game">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ !(userName && userEmail) }
+              onClick={ () => this.reqApi() }
+            >
+              Jogar
+            </button>
+          </Link>
+          <Link to="/settings">
+            <button
+              data-testid="btn-settings"
+              type="button"
+            >
+              Configurações
+            </button>
+          </Link>
         </section>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  sendToken: (e) => dispatch(loginAction(e)),
+  sendUserInfo: (name, email) => dispatch(userInfoAction(name, email)),
+});
+
+Login.propTypes = {
+  sendToken: PropTypes.func.isRequired,
+  sendUserInfo: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
