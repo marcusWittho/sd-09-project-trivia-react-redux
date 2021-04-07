@@ -1,10 +1,9 @@
 main {
-  margin: auto 10px;
-  display: flex;
   align-items: center;
-  justify-content: center;
+  display: flex;
   flex-wrap: wrap-reverse;
-  
+  justify-content: center;
+  margin: auto 10px;
 }
 
 .App {
@@ -16,8 +15,8 @@ main {
   font-size: 40px;
 }
 .login-img {
-  width: 300px;
   height: 300px;
+  width: 300px;
 }
 
 .login-form label {
