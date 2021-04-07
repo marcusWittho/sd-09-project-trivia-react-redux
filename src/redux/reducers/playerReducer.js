@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   player: {
     name: '',
     assertions: '',
-    score: '',
+    score: 0,
     gravatarEmail: '',
     validLogin: false,
   },

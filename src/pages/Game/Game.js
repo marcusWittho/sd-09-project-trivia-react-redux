@@ -16,7 +16,7 @@ class Game extends React.Component {
   }
 
   setInLocalStorage(playerData) {
-    localStorage.setItem('player', JSON.stringify(playerData));
+    localStorage.setItem('state', JSON.stringify({ player: playerData }));
   }
 
   render() {
@@ -34,7 +34,7 @@ class Game extends React.Component {
             data-testid="header-profile-picture"
           />
           <p data-testid="header-player-name">{ player.name }</p>
-          <p data-testid="header-score">Score: 0</p>
+          <p data-testid="header-score">{`Score: ${player.score}`}</p>
         </header>
         <main className="main-container">
           <div className="answers">

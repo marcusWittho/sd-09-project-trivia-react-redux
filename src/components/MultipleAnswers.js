@@ -14,7 +14,7 @@ class MultipleAnswers extends React.Component {
     this.counterTimer = this.counterTimer.bind(this);
 
     this.handleClcik = this.handleClcik.bind(this);
-    this.setInLocalStorage = this.setInLocalStorage.bind(this);
+    this.setScoreInGloblaState = this.setScoreInGloblaState.bind(this);
     this.state = {
       optionAnswers: [],
       correctClass: '',
@@ -28,8 +28,15 @@ class MultipleAnswers extends React.Component {
     this.counterTimer();
   }
 
-  setInLocalStorage(points) {
-    const { addScore } = this.props;
+  setScoreInGloblaState() {
+    const { question, time, addScore } = this.props;
+    const hardPoints = 3;
+    const constant = 10;
+    let difficultyNumber;
+    if (question.difficulty === 'hard') difficultyNumber = hardPoints;
+    if (question.difficulty === 'medium') difficultyNumber = 2;
+    if (question.difficulty === 'easy') difficultyNumber = 1;
+    const points = (constant + (time * difficultyNumber));
     addScore(points);
   }
 
@@ -42,18 +49,9 @@ class MultipleAnswers extends React.Component {
   }
 
   handleClcik({ target }) {
-    const { question } = this.props;
     const { id } = target;
-    const hardPoints = 3;
-    const time = 17;
-    let difficultyNumber;
-    if (question.difficulty === 'hard') difficultyNumber = hardPoints;
-    if (question.difficulty === 'medium') difficultyNumber = 2;
-    if (question.difficulty === 'easy') difficultyNumber = 1;
     if (id === correctAnswer) {
-      const constant = 10;
-      const points = constant + (time * difficultyNumber);
-      this.setInLocalStorage(points);
+      this.setScoreInGloblaState();
     }
     this.setState({
       correctClass: 'correct-answer',
@@ -122,6 +120,7 @@ class MultipleAnswers extends React.Component {
 
 const mapStateToProps = (state) => ({
   time: state.questionsReducer.timer,
+  player: state.playerReducer.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
