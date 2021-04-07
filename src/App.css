@@ -55,3 +55,26 @@
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.header-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.img-gravatar {
+  margin: 20px;
+}
+
+.ask-container {
+  margin: 40px 70px;
+}
+
+.btn-answer {
+  margin: 10px 20px 10px 0;
+  padding: 5px 10px;
+}
+
+.image-trivia {
+  width: 50%;
+}
