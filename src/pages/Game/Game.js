@@ -34,7 +34,7 @@ class Game extends React.Component {
             data-testid="header-profile-picture"
           />
           <p data-testid="header-player-name">{ player.name }</p>
-          <p data-testid="header-score">0</p>
+          <p data-testid="header-score">Score: 0</p>
         </header>
         <main className="main-container">
           <div className="answers">
