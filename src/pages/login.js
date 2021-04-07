@@ -15,7 +15,6 @@ class Login extends React.Component {
     this.setState({ [name]: value }, () => {
       this.validateFields.bind(this).call();
     });
-    // this.validateFields.bind(this).call();
   }
 
   validateFields() {
