@@ -4,7 +4,7 @@ class FeedbackPage extends React.Component {
   render() {
     return (
       <FeedbackHeader />
-    )
+    );
   }
 }
 
