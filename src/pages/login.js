@@ -18,20 +18,12 @@ class Login extends React.Component {
     // this.validateFields.bind(this).call();
   }
 
-  validateName(name) {
-
-  }
-
   validateFields() {
     const { name, email } = this.state;
     const regexCheck = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
     this.setState({
       submitButtonEnabled: regexCheck.test(email) && name.length > 0,
     });
-  }
-
-  validateEmail(email) {
-    return /[a-z0-9.-]*@[a-z]*.[a-z]*/.match(email);
   }
 
   render() {
