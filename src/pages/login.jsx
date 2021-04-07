@@ -25,7 +25,7 @@ class Login extends Component {
 
   validateInputs() {
     const { playerNameField, playerEmailField } = this.state;
-    const regex = /^[a-z0-9.]+@[a-z0-9]+.com$/i
+    const regex = /^[a-z0-9.]+@[a-z0-9]+.com$/i;
     const name = playerNameField;
     if (regex.test(playerEmailField) && name !== '') {
       this.setState({
