@@ -61,14 +61,16 @@ class Login extends Component {
               data-testid="input-player-name"
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            onClick={ this.handleClick }
-            disabled={ !((patternEmail.test(email)) && (nickname.length > 0)) }
-          >
-            Jogar
-          </button>
+          <Link to="/home">
+            <button
+              type="button"
+              data-testid="btn-play"
+              onClick={ this.handleClick }
+              disabled={ !((patternEmail.test(email)) && (nickname.length > 0)) }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
         <Link to="/settings">
           <button
