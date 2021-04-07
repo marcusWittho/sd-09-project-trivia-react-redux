@@ -1,5 +1,7 @@
 import React from 'react';
-import { string, shape, arrayOf } from 'prop-types';
+import { string, shape, arrayOf, func, number } from 'prop-types';
+import { connect } from 'react-redux';
+import actionDecreaseTime from '../redux/actions/actionDecreaseTime';
 
 const correctAnswer = 'correct-answer';
 class BooleanAnswers extends React.Component {
@@ -8,10 +10,25 @@ class BooleanAnswers extends React.Component {
 
     this.selectDataTest = this.selectDataTest.bind(this);
     this.handleClcik = this.handleClcik.bind(this);
+    this.counterTimer = this.counterTimer.bind(this);
+
     this.state = {
       correctClass: '',
       wrongClass: '',
+      disableButtons: false,
     };
+  }
+
+  componentDidMount() {
+    this.counterTimer();
+  }
+
+  counterTimer() {
+    const mileseconds = 1000;
+    setInterval(() => {
+      const { time, decreaseTime } = this.props;
+      return (time > 0) ? decreaseTime() : this.setState({ disableButtons: true });
+    }, mileseconds);
   }
 
   handleClcik() {
@@ -30,13 +47,14 @@ class BooleanAnswers extends React.Component {
   }
 
   render() {
-    const { question } = this.props;
-    const { correctClass, wrongClass } = this.state;
+    const { question, time } = this.props;
+    const { correctClass, wrongClass, disableButtons } = this.state;
     const answers = ['True', 'False'];
     const index = 0;
     return (
       <div>
         <div className="question-container">
+          <p>{ `Tempo: ${time}` }</p>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>
@@ -52,6 +70,7 @@ class BooleanAnswers extends React.Component {
               key={ option }
               data-testid={ dataTestId }
               onClick={ this.handleClcik }
+              disabled={ disableButtons }
             >
               { option }
             </button>);
@@ -61,11 +80,21 @@ class BooleanAnswers extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  time: state.questionsReducer.timer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  decreaseTime: () => dispatch(actionDecreaseTime()),
+});
+
 BooleanAnswers.propTypes = {
   question: shape({
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   }).isRequired,
+  time: number.isRequired,
+  decreaseTime: func.isRequired,
 };
 
-export default BooleanAnswers;
+export default connect(mapStateToProps, mapDispatchToProps)(BooleanAnswers);
