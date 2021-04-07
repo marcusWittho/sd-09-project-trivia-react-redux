@@ -33,4 +33,14 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  userName: state.loginReducer.userName,
+  userEmail: state.loginReducer.userEmail,
+});
+
+Header.propTypes = {
+  userName: string.isRequired,
+  userEmail: string.isRequired,
+};
+
+export default connect(mapStateToProps)(Header);
