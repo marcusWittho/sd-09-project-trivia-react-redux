@@ -7,7 +7,15 @@ import SelectSettings from '../Components/SelectSettings';
 class Home extends Component {
   constructor() {
     super();
+
+    this.state = {
+      btnSettings: false,
+    };
+
     this.clickHandler = this.clickHandler.bind(this);
+    this.createButton = this.createButton.bind(this);
+    this.renderSettings = this.renderSettings.bind(this);
+    this.changeState = this.changeState.bind(this);
   }
 
   clickHandler() {
@@ -16,7 +24,42 @@ class Home extends Component {
     return window.location('/trivia');
   }
 
+  changeState() {
+    this.setState({
+      btnSettings: true,
+    });
+  }
+
+  createButton() {
+    return (
+      <button
+        className="btn"
+        type="button"
+        data-testid="btn-settings"
+        onClick={ this.changeState }
+      >
+        Setup
+      </button>
+    );
+  }
+
+  renderSettings() {
+    return (
+      <div>
+        <button
+          className="btn"
+          type="button"
+          data-testid="btn-settings"
+        >
+          Start with Setup
+        </button>
+        <SelectSettings />
+      </div>
+    );
+  }
+
   render() {
+    const { btnSettings } = this.state;
     return (
       <div>
         <Header />
@@ -27,7 +70,7 @@ class Home extends Component {
         >
           Start!
         </button>
-        <SelectSettings />
+        { btnSettings ? this.createButton() : this.renderSettings() }
       </div>
     );
   }

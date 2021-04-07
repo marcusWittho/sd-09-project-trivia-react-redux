@@ -6,7 +6,7 @@ class SelectSettings extends Component {
   render() {
     return (
       <div>
-        teste
+        <h2 data-testid="settings-tittle">Settings</h2>
       </div>
     );
   }
