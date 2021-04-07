@@ -15,6 +15,21 @@
   border: 1px solid green;
 }
 
+.header-player {
+  background-color: #282c34;
+  display: flex;
+}
+
+.header-title {
+  color: white;
+  padding: 7px;
+}
+
+.gravatar {
+  max-height: 3vw;
+  padding: 2px;
+}
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .App-logo {
