@@ -1,0 +1,52 @@
+.login {
+  margin: auto;
+  min-height: 100vh;
+  width: 100%;
+}
+.fieldset-login {
+  align-items: center;
+  border: 3px solid rgb(121, 72, 201);
+  box-shadow: 0 0 20px rgb(49, 0, 128);
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  width: 100%;
+}
+div.form-login {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.label-login {
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: rgb(128, 197, 143);
+  border: none;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  margin-top: 5px;
+  padding: 10px;
+}
+
+button:hover {
+  background-color: rgb(101, 155, 113);
+}
+
+button:disabled {
+  background-color: rgb(194, 194, 194);
+  color: white;
+  cursor: not-allowed;
+}
+
+.button {
+  margin: 10px;
+}
+
+h4 {
+  color: white;
+}
