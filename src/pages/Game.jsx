@@ -24,7 +24,9 @@ class Game extends React.Component {
     const questionsResponse = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
       .then((response) => response.json())
       .then((result) => Promise.resolve(result));
+    console.log(questionsResponse);
     questions(questionsResponse.results);
+
     this.setState({
       APIquestions: questionsResponse.results,
     });
@@ -37,7 +39,7 @@ class Game extends React.Component {
         <Header />
         { APIquestions.length !== 0
           ? <QuestionCard renderQuestion={ APIquestions[currentQuestion] } />
-          : <h1>Deu ruim</h1> }
+          : <h1>Carregando...</h1> }
       </section>
     );
   }
