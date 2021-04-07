@@ -1,10 +1,15 @@
-/*
 import md5 from 'crypto-js/md5';
-const email = localStorage.getItem(JSON.parse('player'));
-const hashEmail = md5(email.gravatarEmail);
+
+const objeto = { gravatarEmail: 'teste@test.com' };
+localStorage.setItem('player', JSON.stringify(objeto));
+const player = JSON.parse(localStorage.getItem('player'));
+const email = player.gravatarEmail;
+const hashEmail = md5(email).toString();
+console.log(email);
+console.log(hashEmail);
 
 export default () => (
-  fetch(`https://br.gravatar.com/site/implement/hash/${hashEmail}`)
+  fetch(`https://www.gravatar.com/avatar/${hashEmail}`)
     .then((response) => (
       response.json()
         .then((data) => (
@@ -15,4 +20,3 @@ export default () => (
         ))
     ))
 );
-*/

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 
 export default class Header extends React.Component {
   render() {
-    const { image, name, score } = this.props;
+    const userData = JSON.parse(localStorage.getItem('ranking'));
+    const { picture, name, score } = userData;
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ image } alt="Profile-Avatar" />
+        <img data-testid="header-profile-picture" src={ picture } alt="Profile-Avatar" />
         <p data-testid="header-player-name">{ name }</p>
         <p data-testid="header-score">{ score }</p>
       </header>
