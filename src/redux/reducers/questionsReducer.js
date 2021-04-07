@@ -1,7 +1,11 @@
-import { ADD_NEW_QUESTIONS, QUESTION_REQUEST } from '../actions/actionTypes';
+import {
+  ADD_NEW_QUESTIONS,
+  DECREASE_TIME, QUESTION_REQUEST,
+} from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   isFetching: false,
+  timer: 30,
 };
 
 const questionsReducer = (state = INITIAL_STATE, action) => {
@@ -16,6 +20,11 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
       ...state,
       isFetching: false,
       questions: [...action.questions],
+    };
+  case DECREASE_TIME:
+    return {
+      ...state,
+      timer: state.timer - 1,
     };
   default:
     return state;

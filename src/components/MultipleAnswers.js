@@ -1,5 +1,7 @@
 import React from 'react';
-import { string, shape, arrayOf } from 'prop-types';
+import { string, shape, arrayOf, number, func } from 'prop-types';
+import { connect } from 'react-redux';
+import actionDecreaseTime from '../redux/actions/actionDecreaseTime';
 
 const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
@@ -8,16 +10,28 @@ class MultipleAnswers extends React.Component {
 
     this.randomAnswer = this.randomAnswer.bind(this);
     this.selectDataTest = this.selectDataTest.bind(this);
+    this.counterTimer = this.counterTimer.bind(this);
+
     this.handleClcik = this.handleClcik.bind(this);
     this.state = {
       optionAnswers: [],
       correctClass: '',
       wrongClass: '',
+      disableButtons: false,
     };
   }
 
   componentDidMount() {
     this.randomAnswer();
+    this.counterTimer();
+  }
+
+  counterTimer() {
+    const mileseconds = 1000;
+    setInterval(() => {
+      const { time, decreaseTime } = this.props;
+      return (time > 0) ? decreaseTime() : this.setState({ disableButtons: true });
+    }, mileseconds);
   }
 
   handleClcik() {
@@ -53,12 +67,13 @@ class MultipleAnswers extends React.Component {
   }
 
   render() {
-    const { optionAnswers, correctClass, wrongClass } = this.state;
-    const { question } = this.props;
+    const { optionAnswers, correctClass, wrongClass, disableButtons } = this.state;
+    const { question, time } = this.props;
     let index = 0;
     return (
       <div>
         <div className="question-container">
+          <p>{ `Tempo: ${time}` }</p>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>
@@ -74,6 +89,7 @@ class MultipleAnswers extends React.Component {
               type="button"
               key={ option }
               data-testid={ dataTestId }
+              disabled={ disableButtons }
               onClick={ this.handleClcik }
             >
               { option }
@@ -84,11 +100,21 @@ class MultipleAnswers extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  time: state.questionsReducer.timer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  decreaseTime: () => dispatch(actionDecreaseTime()),
+});
+
 MultipleAnswers.propTypes = {
   question: shape({
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   }).isRequired,
+  time: number.isRequired,
+  decreaseTime: func.isRequired,
 };
 
-export default MultipleAnswers;
+export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);
