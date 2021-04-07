@@ -1,8 +1,9 @@
-import { GET_QUESTIONS, REQUEST_QUESTIONS } from '../actions';
+import { GET_QUESTIONS, REQUEST_QUESTIONS, TIME_OVER, TIME_STARTER } from '../actions';
 
 const initialState = {
   isFetching: true,
   questions: [],
+  timeOver: false,
 };
 
 function gameReducer(state = initialState, action) {
@@ -11,6 +12,10 @@ function gameReducer(state = initialState, action) {
     return { ...state, isFetching: true };
   case GET_QUESTIONS:
     return { ...state, questions: action.questions, isFetching: false };
+  case TIME_OVER:
+    return { ...state, timeOver: true };
+  case TIME_STARTER:
+    return { ...state, timeOver: false };
   default:
     return state;
   }

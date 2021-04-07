@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class GamePage extends React.Component {
 
   createAnswers() {
     const { questionNumber } = this.state;
-    const { questions } = this.props;
+    const { questions, timeOver } = this.props;
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
@@ -41,6 +42,7 @@ class GamePage extends React.Component {
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
         onClick={ this.handleClick }
+        disabled={ timeOver }
       >
         {answer}
       </button>
@@ -52,6 +54,7 @@ class GamePage extends React.Component {
         key={ correctAnswer }
         data-testid="correct-answer"
         onClick={ this.handleClick }
+        disabled={ timeOver }
       >
         {correctAnswer}
       </button>,
@@ -69,6 +72,7 @@ class GamePage extends React.Component {
     return (
       <div>
         <Header />
+        <Timer />
         <h2 data-testid="question-category">
           Category:
           {questions[questionNumber].category}
@@ -89,6 +93,7 @@ class GamePage extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.gameReducer.questions,
   isFetching: state.gameReducer.isFetching,
+  timeOver: state.gameReducer.timeOver,
 });
 
 GamePage.propTypes = {
