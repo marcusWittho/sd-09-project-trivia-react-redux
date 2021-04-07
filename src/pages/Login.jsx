@@ -35,11 +35,22 @@ class Login extends Component {
   }
 
   handleClick() {
-    const { email } = this.state;
+    const { email, name } = this.state;
     const { getGravatar, fetchToken } = this.props;
-    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
-    getGravatar(gravatar);
+    const hashEmail = md5(email).toString();
+    getGravatar(hashEmail, name);
+    this.savePlayerLocalStorage(hashEmail, name);
     fetchToken();
+  }
+
+  savePlayerLocalStorage(hashEmail, name) {
+    const player = {
+      name,
+      assertions: '',
+      score: 0,
+      gravatarEmail: hashEmail,
+    };
+    return localStorage.setItem('player', JSON.stringify(player));
   }
 
   render() {
@@ -79,7 +90,7 @@ class Login extends Component {
 }
 
 const mapDispatchToPropos = (dispatch) => ({
-  getGravatar: (hash) => dispatch(gravatarHash(hash)),
+  getGravatar: (hashEmail, name) => dispatch(gravatarHash(hashEmail, name)),
   fetchToken: () => dispatch(fetchThunkToken()),
 });
 

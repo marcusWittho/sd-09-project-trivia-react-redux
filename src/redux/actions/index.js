@@ -1,10 +1,11 @@
-export const GRAVATAR = 'GRAVATAR';
+export const GET_GRAVATAR = 'GET_GRAVATAR';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 
-export const gravatarHash = (gravatar) => ({
-  type: GRAVATAR,
-  gravatar,
+export const gravatarHash = (hashEmail, name) => ({
+  type: GET_GRAVATAR,
+  hashEmail,
+  name,
 });
 
 function requestQuestions() {
