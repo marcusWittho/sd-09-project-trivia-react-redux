@@ -49,15 +49,15 @@ class Login extends React.Component {
       <>
         <input
           name="email"
-          data-testid="input-gravatar-email"
-          onChange={ this.handleChange }
-          value={ email }
-        />
-        <input
-          name="name"
           data-testid="input-player-name"
           onChange={ this.handleChange }
           value={ name }
+        />
+        <input
+          name="name"
+          data-testid="input-gravatar-email"
+          onChange={ this.handleChange }
+          value={ email }
         />
         <button
           type="button"
