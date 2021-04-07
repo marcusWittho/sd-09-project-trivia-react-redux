@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
-import { gravatarHash } from '../redux/actions';
+import { gravatarHash, fetchThunkToken } from '../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -36,16 +36,10 @@ class Login extends Component {
 
   handleClick() {
     const { email } = this.state;
-    const { getGravatar } = this.props;
+    const { getGravatar, fetchToken } = this.props;
     const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     getGravatar(gravatar);
-    this.requestToken();
-  }
-
-  async requestToken() {
-    const fetchToken = await fetch('https://opentdb.com/api_token.php?command=request');
-    const tokenObj = await fetchToken.json();
-    localStorage.setItem('token', tokenObj.token);
+    fetchToken();
   }
 
   render() {
@@ -78,6 +72,7 @@ class Login extends Component {
             Jogar
           </button>
         </Link>
+        <Link to="/settings" data-testid="btn-settings">Configurações</Link>
       </div>
     );
   }
@@ -85,10 +80,12 @@ class Login extends Component {
 
 const mapDispatchToPropos = (dispatch) => ({
   getGravatar: (hash) => dispatch(gravatarHash(hash)),
+  fetchToken: () => dispatch(fetchThunkToken()),
 });
 
 Login.propTypes = {
   getGravatar: PropTypes.func,
+  fetchToken: PropTypes.func,
 }.isRequered;
 
 export default connect(null, mapDispatchToPropos)(Login);
