@@ -9,7 +9,7 @@ class Home extends Component {
     super();
 
     this.state = {
-      btnSettings: false,
+      btnSettings: true,
     };
 
     this.clickHandler = this.clickHandler.bind(this);
@@ -26,7 +26,7 @@ class Home extends Component {
 
   changeState() {
     this.setState({
-      btnSettings: true,
+      btnSettings: false,
     });
   }
 
