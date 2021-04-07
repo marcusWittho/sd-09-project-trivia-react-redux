@@ -4,6 +4,14 @@ import { connect } from 'react-redux';
 import { asyncAsks } from '../actions';
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      answerIndex: 0,
+    };
+    this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
   componentDidMount() {
     const { getAsks, token } = this.props;
     getAsks(token);
@@ -18,59 +26,55 @@ class Game extends React.Component {
   }
 
   shuffleAnswers(array) {
-    let m = array.length;
-    let t;
-    let i;
-    while (m) {
-      i = Math.floor(Math.random() * (m -= 1));
-      t = array[m];
-      array[m] = array[i];
-      array[i] = t;
-    }
-    return array;
+    const HALF = 0.5;
+    array.sort(() => HALF - Math.random());
   }
 
-  elementAskAndAnswer(objAsk) {
-    const { category, question } = objAsk;
-    const answersFormated = this.formatAnswers(objAsk);
-    const arrayShuffle = this.shuffleAnswers(answersFormated);
+  nextQuestion() {
+    const { answerIndex } = this.state;
+    this.setState({ answerIndex: answerIndex + 1 });
+  }
+
+  elementAnswer(answer, testid, index) {
     return (
-      <div className="ask-container">
-        <p data-testid="question-category">{ category }</p>
-        <p data-testid="question-text">{ question }</p>
-        { arrayShuffle.map((answer) => {
-          if (answer.correct) {
-            return (
-              <button
-                className="btn-answer"
-                type="button"
-                key={ answer.value }
-                data-testid="correct-answer"
-              >
-                { answer.value }
-              </button>
-            );
-          }
-          return (
-            <button
-              className="btn-answer"
-              type="button"
-              key={ answer.value }
-              data-testid={ `wrong-answer-${answer.index}` }
-            >
-              { answer.value }
-            </button>
-          );
-        }) }
-      </div>
+      <button
+        key={ index }
+        type="button"
+        data-testid={ testid }
+        onClick={ this.nextQuestion }
+      >
+        { answer }
+      </button>
     );
   }
 
   render() {
+    const { answerIndex } = this.state;
     const { asks } = this.props;
+    if (!asks.length) return <p>Carregando...</p>;
+    const { category,
+      question,
+      correct_answer: correctAnswer,
+      incorrect_answers: wrongAnswers } = asks[answerIndex];
+    const allAnswers = [correctAnswer, ...wrongAnswers];
+    const array = [];
+    allAnswers.map(
+      (answer, index) => (answer === correctAnswer
+        ? array.push(this.elementAnswer(answer, 'correct-answer', index))
+        : array.push(this.elementAnswer(answer, `wrong-answer-${index - 1}`, index))),
+    );
     return (
-      <div>
-        { asks.map((objAsk) => this.elementAskAndAnswer(objAsk)) }
+      <div className="ask-container">
+        <p data-testid="question-category">{ category }</p>
+        <p data-testid="question-text">{ question }</p>
+        <p>
+          { this.shuffleAnswers(array) }
+          { array.map(((element, index) => (
+            <div key={ index }>
+              { element }
+            </div>
+          )))}
+        </p>
       </div>
     );
   }
