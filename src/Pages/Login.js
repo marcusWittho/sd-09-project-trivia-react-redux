@@ -1,7 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import * as api from '../services/fetchApi';
+import clickPlay from '../redux/actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,8 +36,13 @@ class Login extends React.Component {
   }
 
   handleClick() {
+    const { username, email } = this.state;
+    const { clickPlay } = this.props;
+
     api.fetchToken().then(({ token }) => localStorage
       .setItem('token', JSON.stringify(token)));
+
+      clickPlay({ username, email });
     this.setState({ loggedIn: true });
   }
 
@@ -86,4 +94,11 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  clickPlay: (credentials) => dispatch(clickPlay(credentials)) });
+
+Login.propTypes = {
+  clickPlay: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
