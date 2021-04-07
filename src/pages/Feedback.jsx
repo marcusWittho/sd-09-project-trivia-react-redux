@@ -12,14 +12,14 @@ class Feedback extends Component {
     return (
       <div>
         <header>
-          <span data-testid="header-profile-picture">
-            <img src={ `https://www.gravatar.com/avatar/${cryptoEmail}` } alt="profile" />
+          <span>
+            <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${cryptoEmail}` } alt="profile" />
           </span>
-          <span data-testid="header-player-name">
-            <h1>{ player.name }</h1>
+          <span>
+            <h1 data-testid="header-player-name">{ player.name }</h1>
           </span>
-          <span data-testid="header-score">
-            <p>{ player.score }</p>
+          <span>
+            <p data-testid="header-score">{ player.score }</p>
           </span>
         </header>
       </div>
