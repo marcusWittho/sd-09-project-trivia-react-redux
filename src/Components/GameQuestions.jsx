@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setQuestions } from '../Actions/setQuestions';
+import '../Styles/GameQuestionsStyle.css';
 
 class GameQuestions extends Component {
   constructor(props) {
@@ -18,6 +19,8 @@ class GameQuestions extends Component {
           type="button"
           key={ incorrect }
           data-testid={ `wrong-answer-${index}` }
+          name="incorrectAnswer"
+          onClick={ this.handleClick }
         >
           {incorrect}
         </button>
@@ -28,6 +31,8 @@ class GameQuestions extends Component {
         type="button"
         data-testid="correct-answer"
         key={ correct }
+        name="correctAnswer"
+        onClick={ this.handleClick }
       >
         {correct}
       </button>
@@ -35,6 +40,14 @@ class GameQuestions extends Component {
     const position = Math.round(Math.random() * incorrects.length);
     incorrectsElements.splice(position, 0, correctElement);
     return incorrectsElements;
+  }
+
+  handleClick({ target }) {
+    if (target.name === 'correctAnswer') {
+      target.className = 'correct';
+    } else {
+      target.className = 'incorrect';
+    }
   }
 
   render() {
