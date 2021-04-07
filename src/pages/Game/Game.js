@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { string, shape, arrayOf, bool, number } from 'prop-types';
 import { Redirect } from 'react-router';
-// import actionAddQuestions from '../../redux/actions/actionAddQuestion';
+import actionAddQuestions from '../../redux/actions/actionAddQuestion';
+import actionDecreaseTime from '../../redux/actions/actionDecreaseTime';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import MultipleAnswers from '../../components/MultipleAnswers';
 import BooleanAnswers from '../../components/BooleanAnswers';
@@ -20,6 +21,11 @@ class Game extends React.Component {
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
+  componentDidMount() {
+    console.log('did mount');
+    this.counterTimer();
+  }
+
   // Fazer a verificação, se a questão foi marcada então passe para a próxima
   handleNextQuestion() {
     const { ResetCounter, DisableButton, StateShowButton } = this.props;
@@ -31,8 +37,21 @@ class Game extends React.Component {
     }));
   }
 
+  counterTimer() {
+    const mileseconds = 1000;
+    setInterval(() => {
+      const { time, decreaseTime, stateDisableButton, stateShowButton } = this.props;
+      if (time !== 0) {
+        decreaseTime();
+      } else {
+        stateDisableButton(true);
+        stateShowButton(true);
+      }
+    }, mileseconds);
+  }
+
   render() {
-    const { player, questions, isFetching, showButton } = this.props;
+    const { player, questions, isFetching, showButton, time } = this.props;
     const { validLogin } = player;
     const { counter } = this.state;
     if (!validLogin) return <Redirect exact to="/" />;
@@ -50,13 +69,12 @@ class Game extends React.Component {
         </header>
         <main className="main-container">
           <div className="answers">
-            { (questions) && questions.map((question, index) => {
-              if (counter === index) {
-                return (question.type === 'multiple')
-                  ? <MultipleAnswers question={ question } />
-                  : <BooleanAnswers question={ question } />;
-              }
-            }) }
+            <p>{ `Tempo: ${time}` }</p>
+            { (questions) && questions.map((question) => (
+              (question.type === 'multiple')
+                ? <MultipleAnswers question={ question } />
+                : <BooleanAnswers question={ question } />
+            ))[counter] }
             {(showButton) && (
               <button
                 type="button"
@@ -79,12 +97,16 @@ const mapStateToProps = ({ playerReducer, questionsReducer }) => ({
   questions: questionsReducer.questions,
   isFetching: questionsReducer.isFetching,
   showButton: questionsReducer.showButtonNextQuestion,
+  time: questionsReducer.timer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   ResetCounter: () => dispatch(actionResetCounter()),
   DisableButton: (value) => dispatch(actionDisableButton(value)),
   StateShowButton: (value) => dispatch(ShowButton(value)),
+  decreaseTime: () => dispatch(actionDecreaseTime()),
+  stateDisableButton: (value) => dispatch(actionDisableButton(value)),
+  stateShowButton: (value) => dispatch(ShowButton(value)),
 });
 
 Game.propTypes = {
@@ -95,6 +117,7 @@ Game.propTypes = {
     score: string,
   }).isRequired,
   questions: arrayOf(shape()).isRequired,
+  time: number.isRequired,
   isFetching: bool.isRequired,
   showButton: bool.isRequired,
   ResetCounter: number.isRequired,

@@ -13,7 +13,6 @@ class MultipleAnswers extends React.Component {
 
     this.randomAnswer = this.randomAnswer.bind(this);
     this.selectDataTest = this.selectDataTest.bind(this);
-    this.counterTimer = this.counterTimer.bind(this);
 
     this.handleClcik = this.handleClcik.bind(this);
     this.state = {
@@ -25,23 +24,7 @@ class MultipleAnswers extends React.Component {
   }
 
   componentDidMount() {
-    const { resetFunctions } = this.props;
-    resetFunctions();
     this.randomAnswer();
-    this.counterTimer();
-  }
-
-  counterTimer() {
-    const mileseconds = 1000;
-    setInterval(() => {
-      const { time, decreaseTime, stateDisableButton, stateShowButton } = this.props;
-      if (time > 0) {
-        decreaseTime();
-      } else {
-        stateDisableButton(true);
-        stateShowButton(true);
-      }
-    }, mileseconds);
   }
 
   handleClcik() {
@@ -63,17 +46,11 @@ class MultipleAnswers extends React.Component {
     const { question } = this.props;
     const optionAnswers = question.incorrect_answers;
     const maxNumber = 4;
-    if (optionAnswers.length < maxNumber) {
-      optionAnswers
-        .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
-      this.setState({
-        optionAnswers,
-      });
-    } else {
-      this.setState({
-        optionAnswers,
-      });
-    }
+    optionAnswers
+      .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
+    this.setState({
+      optionAnswers,
+    });
   }
 
   render() {
@@ -83,7 +60,6 @@ class MultipleAnswers extends React.Component {
     return (
       <div>
         <div className="question-container">
-          <p>{ `Tempo: ${time}` }</p>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>

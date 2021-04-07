@@ -13,32 +13,12 @@ class BooleanAnswers extends React.Component {
 
     this.selectDataTest = this.selectDataTest.bind(this);
     this.handleClcik = this.handleClcik.bind(this);
-    this.counterTimer = this.counterTimer.bind(this);
 
     this.state = {
       correctClass: '',
       wrongClass: '',
       // disableButtons: false,
     };
-  }
-
-  componentDidMount() {
-    const { resetFunctions } = this.props;
-    resetFunctions();
-    this.counterTimer();
-  }
-
-  counterTimer() {
-    const mileseconds = 1000;
-    setInterval(() => {
-      const { time, decreaseTime, stateDisableButton, stateShowButton } = this.props;
-      if (time !== 0) {
-        decreaseTime();
-      } else {
-        stateDisableButton(true);
-        stateShowButton(true);
-      }
-    }, mileseconds);
   }
 
   handleClcik() {
@@ -64,7 +44,6 @@ class BooleanAnswers extends React.Component {
     return (
       <div>
         <div className="question-container">
-          <p>{ `Tempo: ${time}` }</p>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>
