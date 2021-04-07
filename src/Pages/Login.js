@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,6 +33,14 @@ class Login extends React.Component {
     const isDisabled = !this.validateFields(username, email);
     return (
       <div>
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Menu
+          </button>
+        </Link>
         <label htmlFor="input-player-name">
           Nome:
           <input
