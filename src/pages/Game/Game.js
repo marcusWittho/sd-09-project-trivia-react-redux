@@ -50,11 +50,13 @@ class Game extends React.Component {
         </header>
         <main className="main-container">
           <div className="answers">
-            { (questions) && questions.map((question) => (
-              (question.type === 'multiple')
-                ? <MultipleAnswers question={ question } />
-                : <BooleanAnswers question={ question } />
-            ))[counter] }
+            { (questions) && questions.map((question, index) => {
+              if (counter === index) {
+                return (question.type === 'multiple')
+                  ? <MultipleAnswers question={ question } />
+                  : <BooleanAnswers question={ question } />;
+              }
+            }) }
             {(showButton) && (
               <button
                 type="button"
