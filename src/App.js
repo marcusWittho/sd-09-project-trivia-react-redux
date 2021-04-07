@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Login from './Components/Login';
+import Login from './components/Login';
 
 export default function App() {
   return (
