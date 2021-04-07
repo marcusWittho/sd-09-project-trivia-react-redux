@@ -1,4 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { asyncToken, loginAction } from '../actions';
 import logo from '../trivia.png';
 
 class Home extends React.Component {
@@ -7,8 +11,10 @@ class Home extends React.Component {
     this.state = {
       username: '',
       email: '',
+      score: 0,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.disableButton = this.disableButton.bind(this);
   }
 
@@ -17,6 +23,13 @@ class Home extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  handleClick() {
+    const { username, email, score } = this.state;
+    const { loginActionFunc, saveToken } = this.props;
+    saveToken();
+    loginActionFunc(username, email, score);
   }
 
   disableButton(username, email) {
@@ -49,17 +62,39 @@ class Home extends React.Component {
               value={ email }
             />
           </label>
-          <button
-            type="submit"
-            data-testid="btn-play"
-            disabled={ this.disableButton(username, email) }
-          >
-            Jogar
-          </button>
+          <Link to="/play">
+            <button
+              type="submit"
+              data-testid="btn-play"
+              disabled={ this.disableButton(username, email) }
+              onClick={ () => this.handleClick() }
+            >
+              Jogar
+            </button>
+          </Link>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
         </form>
       </div>
     );
   }
 }
 
-export default Home;
+Home.propTypes = {
+  saveToken: PropTypes.func.isRequired,
+  loginActionFunc: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  saveToken: () => dispatch(asyncToken()),
+  loginActionFunc:
+    (username, email, score) => dispatch(loginAction(username, email, score)),
+});
+
+export default connect(null, mapDispatchToProps)(Home);
