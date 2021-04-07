@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import QuestionCard from './QuestionCard.css';
+import './QuestionCard.css';
 
 class QuestionCard extends React.Component {
   constructor(props) {
@@ -9,21 +9,21 @@ class QuestionCard extends React.Component {
     this.isCorrect = this.isCorrect.bind(this);
 
     this.state = {
-      answers: [],
+      // answers: [],
       applyStyle: false,
     };
   }
 
-  isCorrect({target}) {
+  isCorrect() {
+    // if(isCorrect) {
 
-    if(isCorrect) {
-
-    }
-
+    // }
+    this.setState({ applyStyle: true });
   }
 
   render() {
     const { renderQuestion } = this.props;
+    const { applyStyle } = this.state;
     return (
       <div>
         <h3 data-testid="question-category">
@@ -34,20 +34,21 @@ class QuestionCard extends React.Component {
         </p>
         { renderQuestion.incorrect_answers.map((option, index) => (
           <button
-            className={ applyStyle ? wrongAnswerStyle : null }
+            className={ applyStyle ? 'wrongAnswerStyle' : null }
             key={ index }
             data-testid={ `wrong-answer-${index}` }
             type="button"
-            onClick={ (e) =>  this.isCorrect(e) }
+            onClick={ () => this.isCorrect() }
           >
             { option }
           </button>
         )) }
         <button
-          className={ applyStyle ? correctAnswerStyle : null }
+          className={ applyStyle ? 'correctAnswerStyle' : null }
           type="button"
           isCorrect="true"
           data-testid="correct-answer"
+          onClick={ () => this.isCorrect() }
         >
           { renderQuestion.correct_answer }
         </button>
@@ -55,8 +56,6 @@ class QuestionCard extends React.Component {
     );
   }
 }
-
-
 
 QuestionCard.propTypes = {
   renderQuestion: PropTypes.shape({
