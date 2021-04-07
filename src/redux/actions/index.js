@@ -1,5 +1,6 @@
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const SET_GRAVATAR_IMAGE = 'SET_GRAVATAR_IMAGE';
+export const SET_PLAYER_NAME = 'SET_PLAYER_NAME';
 
 export const requestToken = (token) => ({
   type: REQUEST_TOKEN,
@@ -9,6 +10,11 @@ export const requestToken = (token) => ({
 export const setGravatarImage = (emailHash) => ({
   type: SET_GRAVATAR_IMAGE,
   avatar: `https://www.gravatar.com/avatar/${emailHash}`,
+});
+
+export const setPlayerName = (name) => ({
+  type: SET_PLAYER_NAME,
+  name,
 });
 
 export const fetchToken = () => (

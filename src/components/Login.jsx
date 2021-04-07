@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { MD5 } from 'crypto-js';
 import logo from '../trivia.png';
-import { fetchToken, setGravatarImage } from '../redux/actions';
+import { fetchToken, setGravatarImage, setPlayerName } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,12 +33,13 @@ class Login extends React.Component {
     localStorage.setItem('player', JSON.stringify(player));
   }
 
-  async startGame() {
-    const { setToken, dispatchSetGravatarImage } = this.props;
-    const { email } = this.state;
+  startGame() {
+    const { setToken, dispatchSetGravatarImage, dispatchSetPlayerName } = this.props;
+    const { email, name } = this.state;
     const emailHash = MD5(email).toString();
-    await setToken();
-    await dispatchSetGravatarImage(emailHash);
+    setToken();
+    dispatchSetGravatarImage(emailHash);
+    dispatchSetPlayerName(name);
     this.saveToLocalStorage();
   }
 
@@ -47,7 +48,6 @@ class Login extends React.Component {
     const regex = /^[\w.]+@[a-z]+\.\w{2,3}$/g;
     const playButton = name.length > 0 && regex.test(email);
     this.setState({ playButton });
-    localStorage.setItem('player', player);
   }
 
   render() {
@@ -104,13 +104,14 @@ Login.propTypes = {
   token: PropTypes.shape(),
 }.isRequired;
 
-const mapStatetoProps = (state) => ({
+const mapStateToProps = (state) => ({
   token: state.triviaReducer.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: () => dispatch(fetchToken()),
   dispatchSetGravatarImage: (emailHash) => dispatch(setGravatarImage(emailHash)),
+  dispatchSetPlayerName: (name) => dispatch(setPlayerName(name)),
 });
 
-export default connect(mapStatetoProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

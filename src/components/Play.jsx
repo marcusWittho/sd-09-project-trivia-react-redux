@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header-Player';
+import Header from './PlayHeader';
 
 class Play extends React.Component {
   render() {
