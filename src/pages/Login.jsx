@@ -1,4 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import fetchToken from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -12,6 +16,7 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
@@ -30,6 +35,11 @@ class Login extends React.Component {
         });
       }
     });
+  }
+
+  handleClick() {
+    const { getToken } = this.props;
+    getToken();
   }
 
   render() {
@@ -63,17 +73,28 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <button
-            data-testid="btn-play"
-            type="button"
-            disabled={ disabledButton }
-          >
-            Jogar
-          </button>
+          <Link to="/trivia">
+            <button
+              data-testid="btn-play"
+              type="button"
+              disabled={ disabledButton }
+              onClick={ this.handleClick }
+            >
+              Jogar
+            </button>
+          </Link>
         </main>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = {
+  getToken: fetchToken,
+};
+
+Login.propTypes = {
+  getToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
