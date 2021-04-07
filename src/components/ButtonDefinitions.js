@@ -18,7 +18,7 @@ class button extends React.Component {
 
   render() {
     const { redirect } = this.state;
-    if (redirect === true) return <Redirect to="endereço" />;
+    if (redirect) return <Redirect to="/settings" />;
     return (
       <button
         data-testid="btn-settings"

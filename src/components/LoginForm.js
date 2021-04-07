@@ -1,5 +1,5 @@
 import React from 'react';
-import StartGameButton from './StartGameButton';
+import { StartGameButton, ButtonDefinitions } from './index';
 
 class LoginForm extends React.Component {
   constructor() {
@@ -48,6 +48,7 @@ class LoginForm extends React.Component {
           />
         </label>
         <StartGameButton buttonStatus={ buttonStatus } />
+        <ButtonDefinitions />
       </form>
     );
   }
