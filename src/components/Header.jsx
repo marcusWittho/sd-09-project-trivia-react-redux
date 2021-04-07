@@ -10,10 +10,9 @@ class Header extends Component {
     this.getGravatar = this.getGravatar.bind(this);
   }
 
-  getGravatar(email) {
+getGravatar(email) {
     const hash = md5(email).toString();
     const emailHash = `https://www.gravatar.com/avatar/${hash}`;
-    localStorage.setItem('picture', emailHash);
     return emailHash;
   }
 
