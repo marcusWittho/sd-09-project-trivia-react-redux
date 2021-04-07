@@ -24,3 +24,12 @@ main {
   display: block;
   margin-top: 10px;
 }
+
+/* askings */
+.answerOk {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.answerFail {
+  border: 3px solid rgb(255, 0, 0);
+}
