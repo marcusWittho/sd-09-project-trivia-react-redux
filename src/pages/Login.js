@@ -14,10 +14,12 @@ class Login extends React.Component {
       email: '',
       login: false,
       button: true,
+      settings: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateFields = this.validateFields.bind(this);
     this.login = this.login.bind(this);
+    this.redirectToSettings = this.redirectToSettings.bind(this);
   }
 
   handleChange({ target }) {
@@ -39,55 +41,68 @@ class Login extends React.Component {
 
   login() {
     const { name, email } = this.state;
-    const { sendUser, fetchUserToken } = this.props;
+    const { sendUser, fetchUserToken, token } = this.props;
     sendUser(name, email);
     fetchUserToken();
     this.setState({
       login: true,
     });
+    window.localStorage.setItem('token', token);
+  }
+
+  redirectToSettings() {
+    this.setState({
+      settings: true,
+    });
   }
 
   render() {
-    const { name, email, login, button } = this.state;
+    const { name, email, login, button, settings } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={ logo } className="App-logo" alt="logo" />
-          <form>
-            <label htmlFor="inputName">
-              Nome
-              <input
-                type="text"
-                data-testid="input-player-name"
-                id="inputName"
-                onChange={ this.handleChange }
-                value={ name }
-                name="name"
-              />
-            </label>
-            <label htmlFor="inputEmail">
-              Email
-              <input
-                type="email"
-                data-testid="input-gravatar-email"
-                id="inputEmail"
-                onChange={ this.handleChange }
-                value={ email }
-                name="email"
-              />
-            </label>
-            <button
-              onClick={ () => this.login() }
-              disabled={ button }
-              data-testid="btn-play"
-              type="button"
-            >
-              Jogar
-            </button>
-            { login ? <Redirect to="/settings" /> : '' }
-          </form>
-        </header>
-      </div>
+      <header className="App-header">
+        <img src={ logo } className="App-logo" alt="logo" />
+        <form>
+          <label htmlFor="inputName">
+            Nome
+            <input
+              type="text"
+              data-testid="input-player-name"
+              id="inputName"
+              onChange={ this.handleChange }
+              value={ name }
+              name="name"
+            />
+          </label>
+          <label htmlFor="inputEmail">
+            Email
+            <input
+              type="email"
+              data-testid="input-gravatar-email"
+              id="inputEmail"
+              onChange={ this.handleChange }
+              value={ email }
+              name="email"
+            />
+          </label>
+          <button
+            onClick={ () => this.login() }
+            disabled={ button }
+            data-testid="btn-play"
+            type="button"
+          >
+            Jogar
+          </button>
+          <button
+            onClick={ this.redirectToSettings }
+            data-testid="btn-settings"
+            type="button"
+          >
+            Configurações
+          </button>
+          { login ? <Redirect to="/game" /> : '' }
+          { settings ? <Redirect to="/settings" /> : '' }
+        </form>
+      </header>
     );
   }
 }
@@ -104,6 +119,7 @@ const mapDispatchToProps = (dispatch) => ({
 Login.propTypes = {
   sendUser: PropTypes.func.isRequired,
   fetchUserToken: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
