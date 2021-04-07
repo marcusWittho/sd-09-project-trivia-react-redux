@@ -27,7 +27,7 @@ class ScreenGame extends React.Component {
       const array = [...incorrectAnswer, correctAnswer];
 
       const newArray = array
-        .map((a) => ({ sort: Math.random(), value: a }))
+        .map((question) => ({ sort: Math.random(), value: question }))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value);
       this.updateState(correctAnswer, newArray);
