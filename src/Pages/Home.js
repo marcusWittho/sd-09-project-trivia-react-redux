@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { string, number } from 'prop-types';
+// import { string, number } from 'prop-types';
 import Header from '../Components/Header';
 import SelectSettings from '../Components/SelectSettings';
 
-class Home extends React.Component {
-  constructor(props) {
-    super(props);
+class Home extends Component {
+  constructor() {
+    super();
     this.clickHandler = this.clickHandler.bind(this);
   }
 
@@ -17,10 +17,9 @@ class Home extends React.Component {
   }
 
   render() {
-    const { email, name, score } = this.props;
     return (
       <div>
-        <Header email={ email } name={ name } score={ score } />
+        <Header />
         <button
           className="btn"
           type="button"
@@ -34,17 +33,17 @@ class Home extends React.Component {
   }
 }
 
-Home.propTypes = {
-  email: string,
-  name: string,
-  score: number,
-}.isRequired;
+// Home.propTypes = {
+//   email: string,
+//   name: string,
+//   score: number,
+// }.isRequired;
 
 const mapStatetoProps = (state) => ({
   // verificar contrução das actions e reducer antes de usar
-  email: state.user.email,
-  name: state.user.name,
-  score: state.user.score,
+  email: state.player.email,
+  name: state.player.name,
+  // score: state.player.score,
 });
 
 export default connect(mapStatetoProps)(Home);

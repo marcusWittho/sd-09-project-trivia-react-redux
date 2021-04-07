@@ -64,7 +64,7 @@ class Login extends Component {
           placeholder="Informe seu email"
           autoComplete="off"
         />
-        <Link to="/trivia">
+        <Link to="/home">
           <button
             data-testid="btn-play"
             type="button"

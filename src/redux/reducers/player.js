@@ -1,8 +1,9 @@
-import { LOGIN } from '../actions/playerActions';
+import { LOGIN, SCORE } from '../actions/playerActions';
 
 const INITIAL_STATE = {
   email: '',
   name: '',
+  score: 0,
 };
 
 const player = (state = INITIAL_STATE, action) => {
@@ -11,6 +12,10 @@ const player = (state = INITIAL_STATE, action) => {
     return ({ ...state,
       email: action.email,
       name: action.name,
+    });
+  case SCORE:
+    return ({ ...state,
+      score: action.score,
     });
   default:
     return state;
