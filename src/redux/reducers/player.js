@@ -1,4 +1,4 @@
-import { LOGIN, SCORE } from '../actions/playerActions';
+import { LOGIN, SCORE } from '../actions/player';
 
 const INITIAL_STATE = {
   email: '',
