@@ -5,6 +5,7 @@ import md5 from 'crypto-js/md5';
 
 class UserData extends Component {
   render() {
+    const state = JSON.parse(localStorage.getItem('state')) || 0;
     const { email, name } = this.props;
     return (
       <div>
@@ -14,7 +15,7 @@ class UserData extends Component {
           alt=""
           data-testid="header-profile-picture"
         />
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{ state ? state.player.score : 0 }</p>
       </div>
     );
   }

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import UserData from '../Component/UserData';
 
 class Feedback extends Component {
   render() {
     return (
       <div>
-        <p data-testid="feedback-text">
+        <UserData />
+        <h2 data-testid="feedback-text">
           Feedback
-        </p>
+        </h2>
       </div>
     );
   }
