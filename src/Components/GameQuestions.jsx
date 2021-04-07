@@ -93,7 +93,7 @@ class GameQuestions extends Component {
     let difficulty;
     const hard = 3;
     let points = userPoints;
-    const accert = 10;
+    const assert = 10;
     switch (questions[questionNumber].difficulty) {
     case 'hard':
       difficulty = hard;
@@ -108,7 +108,7 @@ class GameQuestions extends Component {
       difficulty = 0;
     }
     if (target.name === 'correctAnswer') {
-      points += accert + (time * difficulty);
+      points += assert + (time * difficulty);
       this.setState((previous) => ({
         assertions: previous.assertions + 1,
         userPoints: points,
