@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
-import { getToken, setNameAndImail, getGravatar } from '../redux/actions';
+import { getToken, setNameAndImail } from '../redux/actions';
 
 class loginScreen extends React.Component {
   constructor(props) {
