@@ -6,6 +6,7 @@ import actionAddQuestions from '../../redux/actions/actionAddQuestion';
 import MultipleAnswers from '../../components/MultipleAnswers';
 import BooleanAnswers from '../../components/BooleanAnswers';
 import Loading from '../../components/Loading/Loading';
+import './Game.css';
 
 class Game extends React.Component {
   render() {

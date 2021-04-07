@@ -1,14 +1,18 @@
 import React from 'react';
 import { string, shape, arrayOf } from 'prop-types';
 
+const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
   constructor(props) {
     super(props);
 
     this.randomAnswer = this.randomAnswer.bind(this);
     this.selectDataTest = this.selectDataTest.bind(this);
+    this.handleClcik = this.handleClcik.bind(this);
     this.state = {
       optionAnswers: [],
+      correctClass: '',
+      wrongClass: '',
     };
   }
 
@@ -16,12 +20,19 @@ class MultipleAnswers extends React.Component {
     this.randomAnswer();
   }
 
+  handleClcik() {
+    this.setState({
+      correctClass: 'correct-answer',
+      wrongClass: 'wrong-answer',
+    });
+  }
+
   selectDataTest(option, index) {
     const { question } = this.props;
     if (question.correct_answer !== option) {
       return `wrong-answer-${index}`;
     }
-    return 'correct-answer';
+    return correctAnswer;
   }
 
   randomAnswer() {
@@ -42,7 +53,7 @@ class MultipleAnswers extends React.Component {
   }
 
   render() {
-    const { optionAnswers } = this.state;
+    const { optionAnswers, correctClass, wrongClass } = this.state;
     const { question } = this.props;
     let index = 0;
     return (
@@ -55,12 +66,15 @@ class MultipleAnswers extends React.Component {
         </div>
         {optionAnswers.map((option) => {
           const dataTestId = this.selectDataTest(option, index);
-          if (dataTestId !== 'correct-answer') index += 1;
+          if (dataTestId !== correctAnswer) index += 1;
           return (
             <button
+              id={ dataTestId }
+              className={ dataTestId === correctAnswer ? correctClass : wrongClass }
               type="button"
               key={ option }
               data-testid={ dataTestId }
+              onClick={ this.handleClcik }
             >
               { option }
             </button>);
