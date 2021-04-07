@@ -12,7 +12,7 @@ export default function App() {
         <p>
           SUA VEZ
           <Router>
-            <Route path="/" component={ Login } />
+            <Route exact path="/" component={ Login } />
           </Router>
         </p>
       </header>
