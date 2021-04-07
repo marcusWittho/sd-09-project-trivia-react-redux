@@ -109,3 +109,4 @@ ScreenGame.propTypes = {
   questions: PropTypes.shape().isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenGame);
+
