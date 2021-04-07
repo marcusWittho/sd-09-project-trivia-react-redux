@@ -1,14 +1,23 @@
-const URL = 'https://opentdb.com/api_token.php?command=request';
+const tokenURL = 'https://opentdb.com/api_token.php?command=request';
+const token = localStorage.getItem('token');
+const questionsURL = `https://opentdb.com/api.php?amount=5&token=${token}`;
 
-const tokenAPI = async () => {
+export const tokenAPI = async () => {
   try {
-    const response = await fetch(URL);
+    const response = await fetch(tokenURL);
     const token = await response.json();
-    // .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
     return token.token;
   } catch (error) {
     console.log(error);
   }
 };
 
-export default tokenAPI;
+export const questionsAPI = async () => {
+  try {
+    const response = await fetch(questionsURL);
+    const questions = await response.json();
+    return questions;
+  } catch (error) {
+    console.log(error);
+  }
+};
