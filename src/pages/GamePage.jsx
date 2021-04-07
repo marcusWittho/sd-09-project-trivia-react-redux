@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
 
@@ -85,6 +86,7 @@ class GamePage extends React.Component {
           answer:
           {this.createAnswers()}
         </p>
+        <Link to="/Feedback">FEEDBACK </Link>
       </div>
     );
   }
