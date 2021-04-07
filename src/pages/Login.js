@@ -58,29 +58,29 @@ class Login extends React.Component {
     const { doFormLogin } = this.props;
     return (
       <main>
-        <form>
-          <label htmlFor="input-name">
-            <input
-              data-testid="input-player-name"
-              id="input-name"
-              type="text"
-              value={ name }
-              placeholder="Nome"
-              name="name"
-              onChange={ (e) => { this.changeHandler(e); } }
-            />
-          </label>
-          <label htmlFor="input-email">
-            <input
-              data-testid="input-gravatar-email"
-              id="input-email"
-              type="email"
-              value={ email }
-              placeholder="Email"
-              name="email"
-              onChange={ (e) => { this.changeHandler(e); } }
-            />
-          </label>
+        <label htmlFor="input-name">
+          <input
+            data-testid="input-player-name"
+            id="input-name"
+            type="text"
+            value={ name }
+            placeholder="Nome"
+            name="name"
+            onChange={ (e) => { this.changeHandler(e); } }
+          />
+        </label>
+        <label htmlFor="input-email">
+          <input
+            data-testid="input-gravatar-email"
+            id="input-email"
+            type="email"
+            value={ email }
+            placeholder="Email"
+            name="email"
+            onChange={ (e) => { this.changeHandler(e); } }
+          />
+        </label>
+        <Link to="/trivia">
           <button
             type="button"
             data-testid="btn-play"
@@ -92,13 +92,13 @@ class Login extends React.Component {
           >
             Jogar
           </button>
-          <Link
-            to="/settings"
-            data-testid="btn-settings"
-          >
-            Configurações do jogo
-          </Link>
-        </form>
+        </Link>
+        <Link
+          to="/settings"
+          data-testid="btn-settings"
+        >
+          Configurações do jogo
+        </Link>
       </main>
     );
   }
