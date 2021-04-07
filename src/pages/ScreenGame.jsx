@@ -16,7 +16,10 @@ class ScreenGame extends React.Component {
   componentDidMount() {
     const { getQuestions } = this.props;
     const token = localStorage.getItem('token');
-    getQuestions(token);
+    if (token !== null) {
+      console.log(token);
+      getQuestions(token);
+    }
   }
 
   componentDidUpdate(props) {
