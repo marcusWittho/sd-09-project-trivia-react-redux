@@ -1,0 +1,8 @@
+.header {
+  align-items: center;
+  background-color: gray;
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  justify-content: space-around;
+}
