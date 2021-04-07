@@ -1,2 +1,4 @@
 export const SET_LOGIN = 'SET_LOGIN';
-export const bla = 'bla';
+export const INITIAL_REQUEST = 'NITIAL_REQUEST';
+export const SUCCESS_REQUEST = 'SUCCESS_REQUEST';
+export const ERROR_REQUEST = 'ERROR_REQUEST';
