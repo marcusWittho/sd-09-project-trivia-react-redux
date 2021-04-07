@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { doLogin } from '../actions/index';
 import { getToken } from '../services/api';
 
@@ -69,7 +70,6 @@ class Login extends React.Component {
               onChange={ (e) => { this.changeHandler(e); } }
             />
           </label>
-
           <label htmlFor="input-email">
             <input
               data-testid="input-gravatar-email"
@@ -81,7 +81,6 @@ class Login extends React.Component {
               onChange={ (e) => { this.changeHandler(e); } }
             />
           </label>
-
           <button
             type="button"
             data-testid="btn-play"
@@ -93,6 +92,12 @@ class Login extends React.Component {
           >
             Jogar
           </button>
+          <Link
+            to="/settings"
+            data-testid="btn-settings"
+          >
+            Configurações do jogo
+          </Link>
         </form>
       </main>
     );
