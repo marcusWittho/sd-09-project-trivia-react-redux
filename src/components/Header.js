@@ -1,0 +1,61 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+// import { getGravatar } from '../serviceAPI';
+import md5 from 'crypto-js/md5';
+
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getAvatar = this.getAvatar.bind(this);
+  }
+
+  getAvatar(email) {
+    const emailHash = md5(email).toString();
+    const requestHash = `https://www.gravatar.com/avatar/${emailHash}`;
+    return requestHash;
+  }
+
+  render() {
+    const { username, email, score } = this.props;
+
+    return (
+      <header className="header-container">
+        <div>
+          <img
+            className="img-gravatar"
+            src={ this.getAvatar(email) }
+            alt="userImage"
+            data-testid="header-profile-picture"
+          />
+        </div>
+        <div>
+          <p data-testid="header-player-name">
+            Username:
+            <span>{ username }</span>
+          </p>
+          <p data-testid="header-score">
+            Placar:
+            <span>{ score }</span>
+          </p>
+        </div>
+      </header>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  username: state.loginReducer.username,
+  email: state.loginReducer.email,
+  score: state.loginReducer.score,
+});
+
+Header.propTypes = {
+  username: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+};
+
+export default connect(mapStateToProps)(Header);
