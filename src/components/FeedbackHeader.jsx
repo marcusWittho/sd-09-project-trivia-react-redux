@@ -1,5 +1,6 @@
 import React from 'react';
 import { string, number } from 'prop-types';
+import { connect } from 'react-redux';
 
 class FeedbackHeader extends React.Component {
   render() {
@@ -20,4 +21,4 @@ FeedbackHeader.propTypes = {
   score: number,
 }.isRequired;
 
-export default FeedbackHeader;
+export default connect(mapStateToProps)(FeedbackHeader);
