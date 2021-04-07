@@ -10,6 +10,10 @@ class Login extends React.Component {
       email: '',
       submitButtonEnabled: false,
     };
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSettingsButton = this.handleSettingsButton.bind(this);
   }
 
   handleChange({ target }) {
@@ -34,6 +38,11 @@ class Login extends React.Component {
     push('/game');
   }
 
+  handleSettingsButton() {
+    const { history: { push } } = this.props;
+    push('/settings');
+  }
+
   render() {
     const { name, email, submitButtonEnabled } = this.state;
     return (
@@ -46,7 +55,7 @@ class Login extends React.Component {
             data-testid="input-player-name"
             id="name"
             value={ name }
-            onChange={ this.handleChange.bind(this) }
+            onChange={ this.handleChange }
           />
         </label>
         <br />
@@ -58,7 +67,7 @@ class Login extends React.Component {
             data-testid="input-gravatar-email"
             id="email"
             value={ email }
-            onChange={ this.handleChange.bind(this) }
+            onChange={ this.handleChange }
           />
         </label>
         <br />
@@ -66,9 +75,16 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ !submitButtonEnabled }
-          onClick={ this.handleClick.bind(this) }
+          onClick={ this.handleClick }
         >
           Começar a Jogar
+        </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleSettingsButton }
+        >
+          Configuração
         </button>
       </form>
     );
