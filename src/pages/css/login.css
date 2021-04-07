@@ -14,15 +14,20 @@
   width: 100%;
 }
 
-div.form-login {
+.form-login {
   left: 50%;
   position: absolute;
+  text-align: center;
   top: 50%;
   transform: translateY(-50%) translateX(-50%);
 }
 
 .label-login {
   margin-bottom: 10px;
+}
+
+.msg {
+  display: none;
 }
 
 button {

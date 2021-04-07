@@ -19,7 +19,7 @@ class Login extends React.Component {
   render() {
     return (
       <div className="form-login">
-        <h2>Login</h2>
+        <h2 className="title">Login</h2>
         <form className="fieldset-login">
           <label htmlFor="email-input" className="label-login">
             E-mail:
