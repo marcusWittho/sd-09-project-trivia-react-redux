@@ -16,7 +16,7 @@ class Header extends Component {
     return emailHash;
   }
 
- render() {
+  render() {
     const { userName, userEmail } = this.props;
     return (
       <header>
