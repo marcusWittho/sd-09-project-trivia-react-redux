@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getToken } from '../services/Api';
 
 export default class LoginForm extends Component {
   constructor() {
@@ -19,11 +20,10 @@ export default class LoginForm extends Component {
     this.setState({ [name]: value });
   }
 
-  handleClick() {
+  async handleClick() {
     const { history } = this.props;
     history.push('/game');
-    // Aqui deve entrar a requisição da API que retorna o token do jogador e o token deve ser salvo no localstorage
-    const token = 'chamadaDaApi()';
+    const token = await getToken();
     localStorage.setItem('token', token);
   }
 
