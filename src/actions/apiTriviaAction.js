@@ -16,7 +16,7 @@ export const LOADING_ACTION = 'LOADING_ACTION';
 export const loading = () => ({ type: LOADING_ACTION });
 
 export function getThunkToken() {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch(loading());
     return fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json()

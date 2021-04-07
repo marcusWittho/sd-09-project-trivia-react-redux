@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import './Game.css';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
 
     this.changeQuest = this.changeQuest.bind(this);
-    this.booleanQuest = this.booleanQuest.bind(this);
+    this.createQuest = this.createQuest.bind(this);
+    this.changeColor = this.changeColor.bind(this);
 
     this.state = {
       index: 0,
@@ -20,7 +22,15 @@ class Game extends React.Component {
     }));
   }
 
-  booleanQuest(index) {
+  changeColor() {
+    const buttonC = document.querySelector('.button-correct');
+    buttonC.style.border = '3px solid rgb(6, 240, 15)';
+
+    const buttonIC = document.querySelectorAll('.button-incorrect');
+    buttonIC.forEach((button) => { button.style.border = '3px solid rgb(255, 0, 0)'; });
+  }
+
+  createQuest(index) {
     const { questions } = this.props;
     let t = [...questions[index].incorrect_answers, questions[index].correct_answer];
     const random = 0.5;
@@ -33,7 +43,9 @@ class Game extends React.Component {
             return (
               <button
                 type="button"
+                className="button-correct"
                 key={ response }
+                onClick={ this.changeColor }
                 data-testid="correct-answer"
               >
                 {response}
@@ -42,7 +54,9 @@ class Game extends React.Component {
           return (
             <button
               type="button"
+              className="button-incorrect"
               key={ response }
+              onClick={ this.changeColor }
               data-testid={ `wrong-answer-${indexRep}` }
             >
               {response}
@@ -64,7 +78,7 @@ class Game extends React.Component {
       <div>
         <h1 data-testid="question-category">{questions[index].category}</h1>
         <p data-testid="question-text">{questions[index].question}</p>
-        { this.booleanQuest(index) }
+        { this.createQuest(index) }
         <button
           type="button"
           onClick={ this.changeQuest }
@@ -82,7 +96,7 @@ const mapStateToProps = (state) => ({
 });
 
 Game.propTypes = {
-  questions: PropTypes.objectOf(PropTypes.objectOf()).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
