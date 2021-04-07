@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
@@ -17,6 +17,17 @@ class loginScreen extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleValidateEmail = this.handleValidateEmail.bind(this);
+  }
+
+  setupButton() {
+    return (
+      <button
+        data-testid="btn-settings"
+        type="button"
+      >
+        <Link to="/settings"> Settings </Link>
+      </button>
+    );
   }
 
   handleChange({ target: { name, value } }) {
@@ -81,6 +92,7 @@ class loginScreen extends React.Component {
         >
           Jogar
         </button>
+        { this.setupButton() }
       </div>
     );
   }

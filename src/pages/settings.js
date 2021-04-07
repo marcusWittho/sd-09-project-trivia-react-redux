@@ -1,13 +1,13 @@
 import React from 'react';
 
-class settings extends React.Component {
+class Settings extends React.Component {
   render() {
     return (
-      <div>
-        <h2>Settings</h2>
+      <div className="App">
+        <h1 data-testid="settings-title">Settings</h1>
       </div>
     );
   }
 }
 
-export default settings;
+export default Settings;
