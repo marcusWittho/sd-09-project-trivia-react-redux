@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getTokenThunk } from '../actions';
+import getTokenThunk from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -54,7 +54,9 @@ class Login extends Component {
           </label>
           <Link to="/game">
             <button
-              onClick={ () => getToken() }
+              onClick={ () => {
+                getToken({ name, email });
+              } }
               data-testid="btn-play"
               type="button"
               disabled={ !name || !email }
@@ -73,7 +75,7 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getToken: () => dispatch(getTokenThunk()),
+  getToken: (userInfo) => dispatch(getTokenThunk(userInfo)),
 });
 
 Login.propTypes = {

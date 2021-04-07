@@ -11,8 +11,8 @@ const loginReducer = (state = INITIAL_STATE, action) => {
   case LOG_USER:
     return {
       ...state,
-      name: action.name,
-      email: action.email,
+      name: action.userInfo.name,
+      email: action.userInfo.email,
     };
   case SEND_TOKEN:
     return {
