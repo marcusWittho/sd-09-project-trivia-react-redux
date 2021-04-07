@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import loginAction from '../actions/loginAction';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -37,6 +39,8 @@ export default class Login extends Component {
 
   render() {
     const { playerEmailField, playerNameField, button } = this.state;
+    const { loginDispatch } = this.props;
+
     return (
       <section>
         <label htmlFor="name">
@@ -63,6 +67,7 @@ export default class Login extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ button }
+          onClick={ () => loginDispatch(playerNameField, playerEmailField) }
         >
           Jogar
         </button>
@@ -70,3 +75,10 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  loginDispatch: (name, email) => dispatch(loginAction(name, email)),
+});
+
+
+export default connect(null, mapDispatchToProps)(Login);
