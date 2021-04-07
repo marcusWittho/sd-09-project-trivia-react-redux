@@ -37,6 +37,14 @@ class Login extends Component {
     return (
 
       <div>
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configuração
+          </button>
+        </Link>
         <div>SUA VEZ</div>
         <input
           type="text"
