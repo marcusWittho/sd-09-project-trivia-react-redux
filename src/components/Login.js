@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { loginAction } from '../actions/loginAction';
-import addStorage from '../services/localstorageService';
-import requestTokenID from '../services/apiService';
+import { getThunkToken } from '../actions/apiTriviaAction';
 
 class Login extends React.Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.clickButton = this.clickButton.bind(this);
+
     this.state = {
       name: '',
       email: '',
@@ -40,10 +41,17 @@ class Login extends React.Component {
     setValue(name, value));
   }
 
-  async clickButton() {
-    const token = await requestTokenID();
+  clickButton() {
+    const { setQuestions } = this.props;
+    setQuestions();
+
     const { name } = this.state;
-    addStorage(name, token);
+
+    const player = {
+      name,
+    };
+
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   render() {
@@ -75,14 +83,16 @@ class Login extends React.Component {
             />
           </label>
         </div>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ buttonBool }
-          onClick={ () => this.clickButton() }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            onClick={ this.clickButton }
+            disabled={ buttonBool }
+          >
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
@@ -90,10 +100,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setValue: (name, value) => dispatch(loginAction(name, value)),
+  setQuestions: () => dispatch(getThunkToken()),
 });
 
 Login.propTypes = {
   setValue: PropTypes.func.isRequired,
+  setQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
