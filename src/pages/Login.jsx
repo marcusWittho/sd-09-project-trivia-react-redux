@@ -10,6 +10,7 @@ class Login extends Component {
 
     this.HandleValidation = this.HandleValidation.bind(this);
     this.HandleChange = this.HandleChange.bind(this);
+    this.saveLocal = this.saveLocal.bind(this);
   }
 
   HandleValidation() {
@@ -19,6 +20,10 @@ class Login extends Component {
 
   HandleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
+  }
+
+  saveLocal() {
+    localStorage.setItem('token', '123123');
   }
 
   render() {
@@ -62,9 +67,9 @@ class Login extends Component {
           className="btn btn-warning"
           type="button"
           disabled={ this.HandleValidation() }
+          onClick={ this.saveLocal }
         >
           entrar
-
         </button>
       </form>
     );
