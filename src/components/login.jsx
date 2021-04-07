@@ -1,6 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import getToken from '../services/gravatarApi';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import fetchPlayerToken from '../actions/index';
+import { getUserGravatar } from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,15 +20,19 @@ class Login extends React.Component {
 
   handleLogin() {
     const { name, email } = this.state;
-    const player = {
-      name,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: email,
+    const { getPlayerToken } = this.props;
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
     };
 
-    localStorage.setItem('player', JSON.stringify(player));
-    getToken();
+    localStorage.setItem('state', JSON.stringify(state));
+    getUserGravatar();
+    console.log(getPlayerToken());
     this.setState({ redirect: true });
   }
 
@@ -49,18 +56,28 @@ class Login extends React.Component {
           <Redirect to="/feedback" />
         ) : (
           <form>
-            <input
-              type="text"
-              name="email"
-              onChange={ this.handleChange }
-              data-testid="input-gravatar-email"
-            />
-            <input
-              type="text"
-              name="name"
-              onChange={ this.handleChange }
-              data-testid="input-player-name"
-            />
+            <label htmlFor="email">
+              Email:
+              <input
+                type="text"
+                name="email"
+                id="email"
+                onChange={ this.handleChange }
+                data-testid="input-gravatar-email"
+              />
+            </label>
+
+            <label htmlFor="name">
+              Nome:
+              <input
+                type="text"
+                name="name"
+                id="name"
+                onChange={ this.handleChange }
+                data-testid="input-player-name"
+              />
+            </label>
+
             <button
               type="button"
               data-testid="btn-play"
@@ -75,4 +92,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getPlayerToken: (token) => dispatch(fetchPlayerToken(token)),
+});
+
+Login.propTypes = {
+  getPlayerToken: PropTypes.string,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);
