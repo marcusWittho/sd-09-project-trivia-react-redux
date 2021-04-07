@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import getToken from '../services/gravatarApi';
 
 class Login extends React.Component {
@@ -6,27 +7,37 @@ class Login extends React.Component {
     super(props);
     this.state = {
       email: '',
-      nome: '',
+      name: '',
       isDisabled: true,
+      redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
 
   async handleLogin() {
-    const objeto = { gravatarEmail: 'teste@test.com' };
-    localStorage.setItem('player', JSON.stringify(objeto));
+    const { name, email } = this.state;
+
+    const player = { 
+      name, 
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
+
+    localStorage.setItem('player', JSON.stringify(player));
 
     console.log(getToken());
+    this.setState({ redirect:true });
 
     // getToken();
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value }, () => {
-      const { email, nome } = this.state;
+      const { email, name } = this.state;
       const validateEmail = /\w+@\w+(.com)/;
-      if (validateEmail.test(email) && nome) {
+      if (validateEmail.test(email) && name) {
         this.setState({ isDisabled: false });
       } else {
         this.setState({ isDisabled: true });
@@ -35,30 +46,32 @@ class Login extends React.Component {
   }
 
   render() {
-    const { isDisabled } = this.state;
+    const { isDisabled, redirect } = this.state;
     return (
-      <form>
-        <input
-          type="text"
-          name="email"
-          onChange={ this.handleChange }
-          data-testid="input-gravatar-email"
-        />
-        <input
-          type="text"
-          name="nome"
-          onChange={ this.handleChange }
-          data-testid="input-player-name"
-        />
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ isDisabled }
-          onClick={ this.handleLogin }
-        >
-          Jogar
-        </button>
-      </form>
+      redirect ? <Redirect to="/feedback" /> : (
+        <form>
+          <input
+            type="text"
+            name="email"
+            onChange={ this.handleChange }
+            data-testid="input-gravatar-email"
+          />
+          <input
+            type="text"
+            name="name"
+            onChange={ this.handleChange }
+            data-testid="input-player-name"
+          />
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ isDisabled }
+            onClick={ this.handleLogin }
+          >
+            Jogar
+          </button>
+        </form>
+      )
     );
   }
 }
