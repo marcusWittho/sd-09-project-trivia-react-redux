@@ -8,6 +8,21 @@ class GamePage extends React.Component {
     this.state = { questionNumber: 0 };
 
     this.createAnswers = this.createAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  changeAnswerColor() {
+    const answers = document.querySelectorAll('#answer');
+    answers.forEach((answer) => {
+      answer.style.border = '3px solid rgb(255, 0, 0)';
+      if (answer.attributes[2].value === 'correct-answer') {
+        answer.style.border = '3px solid rgb(6, 240, 15)';
+      }
+    });
+  }
+
+  handleClick() {
+    this.changeAnswerColor();
   }
 
   createAnswers() {
@@ -20,6 +35,7 @@ class GamePage extends React.Component {
 
     const arrayOfElements = incorrectAnswers.map((answer, index) => (
       <button
+        id="answer"
         type="button"
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
@@ -30,6 +46,7 @@ class GamePage extends React.Component {
     ));
     arrayOfElements.push(
       <button
+        id="answer"
         type="button"
         key={ correctAnswer }
         data-testid="correct-answer"
@@ -45,11 +62,9 @@ class GamePage extends React.Component {
   render() {
     const { questionNumber } = this.state;
     const { questions, isFetching } = this.props;
-    // return '';
     if (isFetching) {
       return <div>Loading</div>;
     }
-    console.log(questions);
     return (
       <div>
         <h2 data-testid="question-category">
