@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
-import { getToken, setNameAndImail } from '../redux/actions';
+import { getToken, setNameAndEmail } from '../redux/actions';
 
 class loginScreen extends React.Component {
   constructor(props) {
@@ -19,20 +19,33 @@ class loginScreen extends React.Component {
     this.handleValidateEmail = this.handleValidateEmail.bind(this);
   }
 
+  getLocalStorage() {
+    console.log(localStorage.getItem('token'));
+  }
+
+  setLocalStorage() {
+    const { actionsReducer: token } = this.props;
+    console.log(token);
+    // localStorage.setItem(token);
+    // this.getLocalStorage();
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
     });
   }
 
-  handleClick() {
-    const { propGetToken, propSetNameAndImail } = this.props;
+  async handleClick() {
+    const { propGetToken, propSetNameAndEmail } = this.props;
     const { name, email } = this.state;
+    console.log(propGetToken);
     this.setState({
       login: true,
     });
-    propGetToken();
-    propSetNameAndImail(name, email);
+    await propGetToken();
+    await propSetNameAndEmail(name, email);
+    this.setLocalStorage();
   }
 
   handleValidateEmail() {
@@ -91,9 +104,13 @@ loginScreen.propTypes = {
   propSetNameAndImail: PropTypes.func,
 }.isRequired;
 
-const mapDispatchToProps = (dispatch) => ({
-  propGetToken: () => dispatch(getToken()),
-  propSetNameAndImail: (name, mail) => dispatch(setNameAndImail(name, mail)),
+const mapStateToProps = ({ actionsReducer }) => ({
+  actionsReducer,
 });
 
-export default connect(null, mapDispatchToProps)(loginScreen);
+const mapDispatchToProps = (dispatch) => ({
+  propGetToken: () => dispatch(getToken()),
+  propSetNameAndEmail: (name, email) => dispatch(setNameAndEmail(name, email)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(loginScreen);

@@ -1,6 +1,6 @@
 import {
   SET_TOKEN,
-  SET_NAME_IMAIL } from '../actions';
+  SET_NAME_EMAIL } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -14,7 +14,7 @@ function actionsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case SET_TOKEN:
     return { ...state, token: action.token };
-  case SET_NAME_IMAIL:
+  case SET_NAME_EMAIL:
     return { ...state,
       name: action.name,
       email: action.email };
