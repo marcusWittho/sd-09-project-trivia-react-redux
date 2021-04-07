@@ -8,6 +8,7 @@ export default function App() {
     <div className="App">
       <Switch>
         <Route exact path="/"><Login /></Route>
+        <Route path="/dummy" />
       </Switch>
     </div>
   );
