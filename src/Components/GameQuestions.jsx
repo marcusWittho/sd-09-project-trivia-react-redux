@@ -43,17 +43,16 @@ class GameQuestions extends Component {
       fetchQuestions(token);
       return <h3>Loading</h3>;
     }
-    const question = questions[questionNumber];
-    console.log(questions);
     return (
       <div>
+        {console.log(questions)}
         <h2>Pergunta</h2>
         <p data-testid="question-category">
           Categoria:
-          {question.category}
+          {questions[questionNumber].category}
         </p>
-        <p data-testid="question-text">{question.question}</p>
-        <div>{this.setAnswer(question.incorrect_answers, question.correct_answer)}</div>
+        <p data-testid="question-text">{questions[questionNumber].question}</p>
+        <div>{this.setAnswer(questions[questionNumber].incorrect_answers, questions[questionNumber].correct_answer)}</div>
       </div>
     );
   }
