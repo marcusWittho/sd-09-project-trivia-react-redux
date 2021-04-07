@@ -1,8 +1,6 @@
 import { NEW_GAME } from '../actions';
 
-const INITIAL_STATE = {
-  token: '',
-};
+const INITIAL_STATE = '';
 
 const token = (state = INITIAL_STATE, action) => {
   switch (action.type) {
