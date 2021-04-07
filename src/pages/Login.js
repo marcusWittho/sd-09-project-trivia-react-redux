@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { doLogin } from '../actions/index';
+import { getToken } from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -16,17 +17,12 @@ class Login extends React.Component {
     this.changeHandler = this.changeHandler.bind(this);
     this.validateBtnLogin = this.validateBtnLogin.bind(this);
     this.enableButton = this.enableButton.bind(this);
+    this.getAndSaveToken = this.getAndSaveToken.bind(this);
   }
 
-  enableButton() {
-    const { name, email, invalidEmail, invalidName } = this.state;
-    if (name === '' && email === '') return true;
-    return (invalidEmail || invalidName);
-  }
-
-  changeHandler(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value }, () => { this.validateBtnLogin(); });
+  async getAndSaveToken() {
+    const token = await getToken();
+    localStorage.setItem('token', token);
   }
 
   validateBtnLogin() {
@@ -43,6 +39,17 @@ class Login extends React.Component {
     } else {
       this.setState({ invalidName: true });
     }
+  }
+
+  changeHandler(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value }, () => { this.validateBtnLogin(); });
+  }
+
+  enableButton() {
+    const { name, email, invalidEmail, invalidName } = this.state;
+    if (name === '' && email === '') return true;
+    return (invalidEmail || invalidName);
   }
 
   render() {
@@ -79,7 +86,10 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-play"
             disabled={ this.enableButton() }
-            onClick={ () => { doFormLogin({ name, email }); } }
+            onClick={ () => {
+              doFormLogin({ name, email });
+              this.getAndSaveToken();
+            } }
           >
             Jogar
           </button>
