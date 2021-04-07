@@ -4,6 +4,6 @@ const fetchTrivaToken = async () => {
   const response = await fetch(TRIVIA_API_URL);
   const json = await response.json();
   return json;
-}
+};
 
 export default fetchTrivaToken;
