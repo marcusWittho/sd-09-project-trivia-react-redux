@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { addLoginInfo, addToken } from '../actions';
 
 class LoginForm extends Component {
   constructor() {
@@ -6,9 +10,30 @@ class LoginForm extends Component {
     this.state = {
       name: '',
       email: '',
+      redirect: false,
     };
     this.statusCheck = this.statusCheck.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.fetchAndSaveToken = this.fetchAndSaveToken.bind(this);
+  }
+
+  async fetchAndSaveToken() {
+    const { addTokenDispatch } = this.props;
+    const responseApi = fetch('https://opentdb.com/api_token.php?command=request');
+    const token = await (await responseApi).json();
+    addTokenDispatch(token.token);
+    localStorage.setItem('token', token.token);
+  }
+
+  handleClick() {
+    const { addLoginInfoDispatch } = this.props;
+    const { name, email } = this.state;
+    addLoginInfoDispatch({ email, name });
+    this.fetchAndSaveToken();
+    this.setState({
+      redirect: true,
+    });
   }
 
   handleChange({ target }) {
@@ -26,7 +51,7 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { email, name } = this.state;
+    const { email, name, redirect } = this.state;
     return (
       <form>
         <label htmlFor="name-input">
@@ -54,12 +79,24 @@ class LoginForm extends Component {
           type="button"
           disabled={ this.statusCheck() }
           data-testid="btn-play"
+          onClick={ this.handleClick }
         >
           Jogar
         </button>
+        {redirect && <Redirect to="/game-page" />}
       </form>
     );
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = (dispatch) => ({
+  addLoginInfoDispatch: (info) => dispatch(addLoginInfo(info)),
+  addTokenDispatch: (token) => dispatch(addToken(token)),
+});
+
+LoginForm.propTypes = {
+  addLoginInfoDispatch: PropTypes.func.isRequired,
+  addTokenDispatch: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(LoginForm);
