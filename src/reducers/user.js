@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   email: '',
 };
 
-export default addUserInfoReducer = (state = INITIAL_STATE, action) => {
+const addUserInfoReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ADD_USER_INFO:
     return action.payload;
@@ -13,3 +13,5 @@ export default addUserInfoReducer = (state = INITIAL_STATE, action) => {
     return state;
   }
 };
+
+export default addUserInfoReducer;
