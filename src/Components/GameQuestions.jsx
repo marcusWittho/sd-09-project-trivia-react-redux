@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import { setQuestions } from '../Actions/setQuestions';
 import '../Styles/GameQuestionsStyle.css';
 
@@ -13,6 +14,7 @@ class GameQuestions extends Component {
       time: 30,
       userPoints: 0,
       assertions: 0,
+      redirect: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleTime = this.handleTime.bind(this);
@@ -92,7 +94,6 @@ class GameQuestions extends Component {
     const hard = 3;
     let points = userPoints;
     const accert = 10;
-    console.log(questions[questionNumber].difficulty);
     switch (questions[questionNumber].difficulty) {
     case 'hard':
       difficulty = hard;
@@ -129,8 +130,15 @@ class GameQuestions extends Component {
   }
 
   handleNext() {
+    const { questions } = this.props;
     const { questionNumber } = this.state;
     const magicNumber = 5;
+    if (questionNumber === questions.length - 1) {
+      this.setState({
+        redirect: true,
+      });
+      return;
+    }
     if (questionNumber < magicNumber) {
       this.setState({
         questionNumber: questionNumber + 1,
@@ -142,11 +150,12 @@ class GameQuestions extends Component {
 
   render() {
     const { fetchQuestions, token, loading, questions } = this.props;
-    const { questionNumber, time, answerClicked } = this.state;
+    const { questionNumber, time, answerClicked, redirect } = this.state;
     if (loading) {
       fetchQuestions(token);
       return <h3>Loading</h3>;
     }
+    if (redirect) return <Redirect to="/feedback" />;
     this.createStore();
     return (
       <div>
