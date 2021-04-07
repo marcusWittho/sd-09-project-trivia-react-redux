@@ -519,7 +519,7 @@ Recomendamos que o Redux e o Router sejam configurados nesse requisito, para que
     * As alternativas devem ser exibidas em ordem aleatória
     * Dica: utilize botões (`<button/>`) para as alternativas
   
-  **O que será avaliado**
+  **O que será avaliado*
 
   * A categoria da pergunta está presente
   * O texto da pergunta está presente
