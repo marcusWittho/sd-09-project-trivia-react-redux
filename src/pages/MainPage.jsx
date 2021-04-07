@@ -2,7 +2,7 @@ import React from 'react';
 
 class MainPage extends React.Component {
   render() {
-    return(
+    return (
       <div>MAINPAGE</div>
     );
   }
