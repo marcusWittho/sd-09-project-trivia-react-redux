@@ -10,6 +10,7 @@ class Login extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.clickButton = this.clickButton.bind(this);
 
     this.state = {
       name: '',
@@ -40,9 +41,21 @@ class Login extends React.Component {
     setValue(name, value));
   }
 
+  clickButton() {
+    const { setQuestions } = this.props;
+    setQuestions();
+
+    const { name } = this.state;
+
+    const player = {
+      name,
+    };
+
+    localStorage.setItem('state', JSON.stringify(player));
+  }
+
   render() {
     const { buttonBool, email, name } = this.state;
-    const { setQuestions } = this.props;
 
     return (
       <div>
@@ -74,7 +87,7 @@ class Login extends React.Component {
           <button
             type="button"
             data-testid="btn-play"
-            onClick={ setQuestions }
+            onClick={ this.clickButton }
             disabled={ buttonBool }
           >
             Jogar
