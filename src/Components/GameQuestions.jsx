@@ -73,12 +73,12 @@ class GameQuestions extends Component {
 
   createStore() {
     const { name, gravatarEmail } = this.props;
-    const { assertions, userPoints } = this.state;
+    const { userPoints, assertions } = this.state;
     const state = {
       player: {
         name,
         assertions,
-        userPoints,
+        score: userPoints,
         gravatarEmail,
       },
     };
@@ -86,10 +86,6 @@ class GameQuestions extends Component {
   }
 
   handleClick({ target }) {
-    this.setState({
-      answerClicked: true,
-    });
-    this.stopInterval(true);
     const { questions } = this.props;
     const { questionNumber, time, userPoints } = this.state;
     let difficulty;
@@ -117,6 +113,10 @@ class GameQuestions extends Component {
         userPoints: points,
       }), () => this.createStore());
     }
+    this.setState({
+      answerClicked: true,
+    });
+    this.stopInterval(true);
   }
 
   handleTime() {
@@ -147,6 +147,7 @@ class GameQuestions extends Component {
       fetchQuestions(token);
       return <h3>Loading</h3>;
     }
+    this.createStore();
     return (
       <div>
         <h2>Pergunta</h2>
