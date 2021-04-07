@@ -8,6 +8,7 @@ class Feedback extends Component {
     const { email } = this.props;
     const cryptoEmail = md5(email).toString();
     const { player } = JSON.parse(localStorage.getItem('state'));
+    const minimumScore = 3;
 
     return (
       <div>
@@ -22,6 +23,28 @@ class Feedback extends Component {
             <p data-testid="header-score">{ player.score }</p>
           </span>
         </header>
+        <main>
+          <section>
+            <p data-testid="feedback-text">
+              {
+                player.score > minimumScore ? 'Mandou bem!' : 'Podia ser melhor...'
+              }
+            </p>
+          </section>
+          <section>
+            <p
+              data-testid="feedback-total-score"
+            >
+              { `Pontuação: ${player.score}`}
+            </p>
+
+            <p
+              data-testid="feedback-total-question"
+            >
+              {`Acertos: ${player.assertions}`}
+            </p>
+          </section>
+        </main>
       </div>
     );
   }
