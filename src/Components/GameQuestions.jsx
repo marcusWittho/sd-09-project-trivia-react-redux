@@ -2,22 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setQuestions } from '../Actions/setQuestions';
+import '../Styles/GameQuestionsStyle.css';
 
 class GameQuestions extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questionNumber: 0,
+      answerClicked: false,
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   setAnswer(incorrects, correct) {
+    const { answerClicked } = this.state;
     const incorrectsElements = incorrects.map(
       (incorrect, index) => (
         <button
           type="button"
           key={ incorrect }
           data-testid={ `wrong-answer-${index}` }
+          name="incorrectAnswer"
+          className={ answerClicked ? 'incorrect' : null }
+          onClick={ this.handleClick }
         >
           {incorrect}
         </button>
@@ -28,6 +35,9 @@ class GameQuestions extends Component {
         type="button"
         data-testid="correct-answer"
         key={ correct }
+        name="correctAnswer"
+        className={ answerClicked ? 'correct' : null }
+        onClick={ this.handleClick }
       >
         {correct}
       </button>
@@ -37,9 +47,16 @@ class GameQuestions extends Component {
     return incorrectsElements;
   }
 
+  handleClick() {
+    this.setState({
+      answerClicked: true,
+    });
+  }
+
   render() {
     const { fetchQuestions, token, loading, questions } = this.props;
     const { questionNumber } = this.state;
+    console.log(questions);
     if (loading) {
       fetchQuestions(token);
       return <h3>Loading</h3>;
