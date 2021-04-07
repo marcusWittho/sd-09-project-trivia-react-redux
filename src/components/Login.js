@@ -2,13 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { loginAction } from '../actions/loginAction';
+import addStorage from '../services/localstorageService';
+import requestTokenID from '../services/apiService';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-
+    this.clickButton = this.clickButton.bind(this);
     this.state = {
       name: '',
       email: '',
@@ -36,6 +38,12 @@ class Login extends React.Component {
       [name]: value,
     }),
     setValue(name, value));
+  }
+
+  async clickButton() {
+    const token = await requestTokenID();
+    const { name } = this.state;
+    addStorage(name, token);
   }
 
   render() {
@@ -71,6 +79,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ buttonBool }
+          onClick={ () => this.clickButton() }
         >
           Jogar
         </button>
