@@ -3,11 +3,12 @@ import { getToken } from '../serviceAPI';
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 
-export const loginAction = (username, email) => ({
+export const loginAction = (username, email, score) => ({
   type: LOGIN,
   payload: {
     username,
     email,
+    score,
   },
 });
 

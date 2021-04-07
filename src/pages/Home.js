@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { asyncToken } from '../actions';
+import { asyncToken, loginAction } from '../actions';
 import logo from '../trivia.png';
 
 class Home extends React.Component {
@@ -11,8 +11,10 @@ class Home extends React.Component {
     this.state = {
       username: '',
       email: '',
+      score: 0,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.disableButton = this.disableButton.bind(this);
   }
 
@@ -23,13 +25,19 @@ class Home extends React.Component {
     });
   }
 
+  handleClick() {
+    const { username, email, score } = this.state;
+    const { loginActionFunc, saveToken } = this.props;
+    saveToken();
+    loginActionFunc(username, email, score);
+  }
+
   disableButton(username, email) {
     return username.length === 0 || email.length === 0;
   }
 
   render() {
     const { username, email } = this.state;
-    const { saveToken } = this.props;
     return (
       <div>
         <form>
@@ -59,7 +67,7 @@ class Home extends React.Component {
               type="submit"
               data-testid="btn-play"
               disabled={ this.disableButton(username, email) }
-              onClick={ () => saveToken() }
+              onClick={ () => this.handleClick() }
             >
               Jogar
             </button>
@@ -80,10 +88,13 @@ class Home extends React.Component {
 
 Home.propTypes = {
   saveToken: PropTypes.func.isRequired,
+  loginActionFunc: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
   saveToken: () => dispatch(asyncToken()),
+  loginActionFunc:
+    (username, email, score) => dispatch(loginAction(username, email, score)),
 });
 
-export default connect(null, mapStateToProps)(Home);
+export default connect(null, mapDispatchToProps)(Home);
