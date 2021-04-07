@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchNewGameToken } from '../actions';
+import { fetchNewGameToken, newPlayerInfo } from '../actions';
 
 class Login extends Component {
   constructor(state) {
@@ -13,7 +13,7 @@ class Login extends Component {
       status: true,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleStatus = this.handleStatus.bind(this);
+    this.startNewGame = this.startNewGame.bind(this);
   }
 
   handleChange(e) {
@@ -27,15 +27,17 @@ class Login extends Component {
     }
   }
 
-  handleStatus() {
-
+  startNewGame() {
+    const { name, email } = this.state;
+    const { dispatchNewGame, dispatchPlayer } = this.props;
+    dispatchPlayer(name, email);
+    dispatchNewGame();
   }
 
   render() {
     const { name, email, status } = this.state;
-    const { dispatchNewGame } = this.props;
-    return (
 
+    return (
       <div>
         <Link to="/settings">
           <button
@@ -68,7 +70,7 @@ class Login extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ status }
-            onClick={ dispatchNewGame }
+            onClick={ this.startNewGame }
           >
             Jogar
           </button>
@@ -80,14 +82,17 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatchNewGame: PropTypes.func,
+  dispatchPlayer: PropTypes.func,
 };
 
 Login.defaultProps = {
   dispatchNewGame: PropTypes.func,
+  dispatchPlayer: PropTypes.func,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchNewGame: () => dispatch(fetchNewGameToken()),
+  dispatchPlayer: (name, email) => dispatch(newPlayerInfo(name, email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

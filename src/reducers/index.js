@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
+import player from './player';
 import token from './gameToken';
 
 const reducers = combineReducers({
-  token,
+  player, token,
 });
 
 export default reducers;
