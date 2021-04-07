@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   email: '',
 };
 
-const loginReducer = (state = INITIAL_STATE, action) => {
+const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case LOGIN:
     return {
@@ -19,4 +19,4 @@ const loginReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default loginReducer;
+export default player;

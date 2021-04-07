@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import loginAction from '../actions/loginAction';
+import logo from '../trivia.png';
+import requestToken from '../services/tokenAPI';
 
 class Login extends Component {
   constructor(props) {
@@ -14,13 +17,18 @@ class Login extends Component {
       playerEmailField: '',
       button: true,
     };
+
+    this.saveToken = this.saveToken.bind(this);
   }
 
   inputsControl({ target }) {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    }, () => this.validateInputs());
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => this.validateInputs(),
+    );
   }
 
   validateInputs() {
@@ -38,41 +46,59 @@ class Login extends Component {
     }
   }
 
+  async saveToken() {
+    const token = await requestToken();
+
+    localStorage.setItem('token', token);
+  }
+
   render() {
     const { playerEmailField, playerNameField, button } = this.state;
     const { loginDispatch } = this.props;
 
     return (
-      <section>
-        <label htmlFor="name">
-          Nome
-          <input
-            type="text"
-            name="playerNameField"
-            value={ playerNameField }
-            onChange={ this.inputsControl }
-            data-testid="input-player-name"
-          />
-        </label>
-        <label htmlFor="email">
-          Email
-          <input
-            type="text"
-            name="playerEmailField"
-            value={ playerEmailField }
-            onChange={ this.inputsControl }
-            data-testid="input-gravatar-email"
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ button }
-          onClick={ () => loginDispatch(playerNameField, playerEmailField) }
-        >
-          Jogar
-        </button>
-      </section>
+      <div className="App">
+        <header className="App-header">
+          <img src={ logo } className="App-logo" alt="logo" />
+          <p>SUA VEZ</p>
+
+          <section>
+            <label htmlFor="name">
+              Nome
+              <input
+                type="text"
+                name="playerNameField"
+                value={ playerNameField }
+                onChange={ this.inputsControl }
+                data-testid="input-player-name"
+              />
+            </label>
+            <label htmlFor="email">
+              Email
+              <input
+                type="text"
+                name="playerEmailField"
+                value={ playerEmailField }
+                onChange={ this.inputsControl }
+                data-testid="input-gravatar-email"
+              />
+            </label>
+            <Link to="/jogo">
+              <button
+                type="button"
+                data-testid="btn-play"
+                disabled={ button }
+                onClick={ () => {
+                  loginDispatch(playerNameField, playerEmailField);
+                  this.saveToken();
+                } }
+              >
+                Jogar
+              </button>
+            </Link>
+          </section>
+        </header>
+      </div>
     );
   }
 }
