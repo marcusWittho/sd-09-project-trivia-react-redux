@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -23,22 +24,13 @@ class Login extends Component {
 
   render() {
     return (
-      <form
-        className="
-        bg-success
-        p-5 m-auto
-        d-flex
-        flex-column
-        align-items-center
-        justify-content-center"
-      >
+      <form>
         <h1>Login</h1>
         <label htmlFor="name">
           Nome
           <input
             id="name"
             name="name"
-            className="m-3 form-control"
             type="text"
             placeholder="Nome"
             data-testid="input-player-name"
@@ -50,7 +42,6 @@ class Login extends Component {
           <input
             id="email"
             name="email"
-            className="m-3 form-control"
             type="text"
             placeholder="Email"
             data-testid="input-gravatar-email"
@@ -59,12 +50,17 @@ class Login extends Component {
         </label>
         <button
           data-testid="btn-play"
-          className="btn btn-warning"
           type="button"
           disabled={ this.HandleValidation() }
         >
           entrar
 
+        </button>
+        <button
+          data-testid="btn-settings"
+          type="button"
+        >
+          <Link to="/settings">Configurações</Link>
         </button>
       </form>
     );
