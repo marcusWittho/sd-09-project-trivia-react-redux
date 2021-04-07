@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './trivia.png';
 import './App.css';
 import Login from './components/Login';
+import ScreenGame from './pages/ScreenGame';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         </p>
       </header>
       <Login />
+      <ScreenGame />
     </div>
   );
 }
