@@ -4,18 +4,14 @@ import { Link } from 'react-router-dom';
 class HomeButton extends React.Component {
   render() {
     return (
-      <button
-        type="button"
-        data-testid="btn-go-home"
-      >
-        <Link
-          to={ {
-            pathname: '/',
-          } }
+      <Link to="/">
+        <button
+          type="button"
+          data-testid="btn-go-home"
         >
           Home
-        </Link>
-      </button>
+        </button>
+      </Link>
     );
   }
 }
