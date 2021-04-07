@@ -1,29 +1,23 @@
-// import {
-//   FETCHING_TOKEN,
-//   TOKEN_SUCCESS,
-//   TOKEN_FAILURE,
-// } from './actionsTypes';
-// import fetchToken from '../services/tokenGenerator';
+import {
+  QUESTIONS_SUCCESS,
+  QUESTIONS_FAILURE,
+} from './actionsTypes';
+import fetchTrivia from '../services/triviaApi';
 
-// export const startFetchToken = () => ({
-//   type: FETCHING_TOKEN,
-// });
+export const successQuestions = (data) => ({
+  type: QUESTIONS_SUCCESS,
+  questions: data.results,
+});
 
-// const successToken = (token) => ({
-//   type: TOKEN_SUCCESS,
-//   token,
-// });
+export const failureQuestions = (error) => ({
+  type: QUESTIONS_FAILURE,
+  error,
+});
 
-// const failureToken = (error) => ({
-//   type: TOKEN_FAILURE,
-//   error,
-// });
-
-// export const tokenThunk = () => {
-//   return (dispatch) => {
-//     dispatch(startFetchToken());
-//     return fetchToken()
-//       .then((data) => dispatch(successToken(data)))
-//       .catch((error) => dispatch(failureToken(error)));
-//   };
-// };
+export function questionsThunk() {
+  return (dispatch) => (
+    fetchTrivia()
+      .then((data) => dispatch(successQuestions(data)))
+      .catch((error) => dispatch(failureQuestions(error)))
+  );
+}
