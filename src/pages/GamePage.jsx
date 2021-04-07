@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 
 class GamePage extends React.Component {
@@ -9,6 +10,7 @@ class GamePage extends React.Component {
     this.state = { questionNumber: 0 };
 
     this.createAnswers = this.createAnswers.bind(this);
+    this.handleNext = this.handleNext.bind(this);
   }
 
   createAnswers() {
@@ -43,14 +45,17 @@ class GamePage extends React.Component {
     return arrayOfElements;
   }
 
+  handleNext(index) {
+    const totalIndex = 4;
+    if (index === totalIndex) return <Redirect to="/feedback" />;
+    return this.setState({ questionNumber: index + 1 });
+  }
+
   render() {
     const { questionNumber } = this.state;
     const { questions, isFetching } = this.props;
-    // return '';
-    if (isFetching) {
-      return <div>Loading</div>;
-    }
-    console.log(questions);
+    if (isFetching) return <div>Loading</div>;
+
     return (
       <div>
         <Header />
@@ -66,6 +71,13 @@ class GamePage extends React.Component {
           answer:
           {this.createAnswers()}
         </p>
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ () => this.handleNext(questionNumber) }
+        >
+          Próximo
+        </button>
       </div>
     );
   }
