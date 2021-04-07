@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import fetchToken from '../services/tokenGenerator';
@@ -102,5 +103,9 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   fetchAndSaveQuestions: () => dispatch(questionsThunk()),
 });
+
+Login.propTypes = {
+  fetchAndSaveQuestions: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);

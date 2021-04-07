@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Play extends React.Component {
@@ -10,7 +11,7 @@ class Play extends React.Component {
     this.handleAnswers = this.handleAnswers.bind(this);
   }
 
-  // A função do Math.random foi retirada do site stackoverflow no link:
+  // A função do Math.random da linha 43 foi retirada do site stackoverflow no link:
   // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   handleAnswers() {
     const { questionIndex } = this.state;
@@ -45,20 +46,23 @@ class Play extends React.Component {
 
   render() {
     const { questions } = this.props;
+    const { questionIndex } = this.state;
     if (questions.length === 0) return <div>Loading...</div>;
     const randomizedAnswers = this.handleAnswers();
+    const currentQuestion = questions[questionIndex];
+    const { category, question } = currentQuestion;
     return (
       <main>
         <section>
           <p
             data-testid="question-category"
           >
-            categoria
+            { category }
           </p>
           <p
             data-testid="question-text"
           >
-            pergunta
+            { question }
           </p>
         </section>
         <section>
@@ -74,5 +78,9 @@ class Play extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.questions,
 });
+
+Play.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default connect(mapStateToProps)(Play);
