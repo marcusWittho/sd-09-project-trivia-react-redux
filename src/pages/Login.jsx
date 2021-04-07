@@ -16,6 +16,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.validateLogin = this.validateLogin.bind(this);
     this.requestUserToken = this.requestUserToken.bind(this);
+    this.savePlayerInfo = this.savePlayerInfo.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
@@ -38,6 +39,16 @@ class Login extends React.Component {
     const token = await REQUEST_TOKEN();
     localStorage.setItem('token', token);
     getUserToken(token);
+  }
+
+  savePlayerInfo({ name, email }) {
+    const playerInfo = {
+      name,
+      gravatarEmail: email,
+      assertions: 0,
+      score: 0,
+    };
+    localStorage.setItem('player', JSON.stringify(playerInfo));
   }
 
   render() {
@@ -69,7 +80,10 @@ class Login extends React.Component {
             data-testid="btn-play"
             disabled={ disabled }
             type="button"
-            onClick={ () => this.requestUserToken() }
+            onClick={ () => {
+              this.requestUserToken();
+              this.savePlayerInfo(this.state);
+            } }
           >
             JOGAR!
           </button>
