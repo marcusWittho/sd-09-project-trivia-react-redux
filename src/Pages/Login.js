@@ -37,12 +37,12 @@ class Login extends React.Component {
 
   handleClick() {
     const { username, email } = this.state;
-    const { clickPlay } = this.props;
+    const { dispatchClickPlay } = this.props;
 
     api.fetchToken().then(({ token }) => localStorage
       .setItem('token', JSON.stringify(token)));
 
-      clickPlay({ username, email });
+    dispatchClickPlay({ username, email });
     this.setState({ loggedIn: true });
   }
 
@@ -79,7 +79,7 @@ class Login extends React.Component {
             onChange={ this.handleInputChange }
           />
         </label>
-        {loggedIn ? <Redirect to="/dummy" />
+        {loggedIn ? <Redirect to="/info-games" />
           : (
             <button
               type="submit"
@@ -95,10 +95,10 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  clickPlay: (credentials) => dispatch(clickPlay(credentials)) });
+  dispatchClickPlay: (credentials) => dispatch(clickPlay(credentials)) });
 
 Login.propTypes = {
-  clickPlay: PropTypes.func.isRequired,
+  dispatchClickPlay: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

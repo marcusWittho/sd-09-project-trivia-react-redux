@@ -8,7 +8,8 @@ function userReducer(state = INITIAL_STATE, action) {
   case 'CLICK_PLAY':
     return {
       username: action.credentials.username,
-      email: action.credentials.email };
+      email: action.credentials.email,
+    };
   default:
     return state;
   }
