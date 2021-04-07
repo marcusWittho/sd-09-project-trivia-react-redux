@@ -9,6 +9,4 @@ const getToken = async () => {
   }
 };
 
-getToken();
-
 export default getToken;
