@@ -15,8 +15,8 @@ class ScreenGame extends React.Component {
 
   componentDidMount() {
     const { getQuestions } = this.props;
-    getQuestions('00f98abdead84f858aad0bf0c4b531c2eb3b6b8d1ce49249f25398e5f2d08b9b');
-    // Depois getQuestions irá receber o token do jogador
+    const token = localStorage.getItem('token');
+    getQuestions(token);
   }
 
   componentDidUpdate(props) {
