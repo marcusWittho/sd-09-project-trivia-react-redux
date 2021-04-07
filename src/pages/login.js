@@ -71,7 +71,7 @@ class loginScreen extends React.Component {
           data-testid="btn-play"
           type="button"
           onClick={ this.handleClick }
-          disabled={ !(this.handleValidateEmail() && email) }
+          disabled={ !(this.handleValidateEmail() && nome) }
         >
           Jogar
         </button>
