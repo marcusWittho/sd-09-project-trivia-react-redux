@@ -7,7 +7,7 @@ class SettingsButton extends React.Component {
       <div>
         <Link to="./settings">
           <button data-testid="btn-settings" type="button">
-            Settings
+            Configurações
           </button>
         </Link>
       </div>
