@@ -2,6 +2,7 @@ import React from 'react';
 import { string, shape, arrayOf, func, number } from 'prop-types';
 import { connect } from 'react-redux';
 import actionDecreaseTime from '../redux/actions/actionDecreaseTime';
+import actionAddScore from '../redux/actions/actionAddScore';
 
 const correctAnswer = 'correct-answer';
 class BooleanAnswers extends React.Component {
@@ -11,6 +12,7 @@ class BooleanAnswers extends React.Component {
     this.selectDataTest = this.selectDataTest.bind(this);
     this.handleClcik = this.handleClcik.bind(this);
     this.counterTimer = this.counterTimer.bind(this);
+    this.setScoreInGloblaState = this.setScoreInGloblaState.bind(this);
 
     this.state = {
       correctClass: '',
@@ -23,6 +25,18 @@ class BooleanAnswers extends React.Component {
     this.counterTimer();
   }
 
+  setScoreInGloblaState() {
+    const { question, time, addScore } = this.props;
+    const hardPoints = 3;
+    const constant = 10;
+    let difficultyNumber;
+    if (question.difficulty === 'hard') difficultyNumber = hardPoints;
+    if (question.difficulty === 'medium') difficultyNumber = 2;
+    if (question.difficulty === 'easy') difficultyNumber = 1;
+    const points = (constant + (time * difficultyNumber));
+    addScore(points);
+  }
+
   counterTimer() {
     const mileseconds = 1000;
     setInterval(() => {
@@ -31,7 +45,11 @@ class BooleanAnswers extends React.Component {
     }, mileseconds);
   }
 
-  handleClcik() {
+  handleClcik({ target }) {
+    const { id } = target;
+    if (id === correctAnswer) {
+      this.setScoreInGloblaState();
+    }
     this.setState({
       correctClass: 'correct-answer',
       wrongClass: 'wrong-answer',
@@ -86,6 +104,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   decreaseTime: () => dispatch(actionDecreaseTime()),
+  addScore: (points) => dispatch(actionAddScore(points)),
 });
 
 BooleanAnswers.propTypes = {
@@ -93,6 +112,7 @@ BooleanAnswers.propTypes = {
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   }).isRequired,
+  addScore: func.isRequired,
   time: number.isRequired,
   decreaseTime: func.isRequired,
 };

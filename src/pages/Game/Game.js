@@ -9,9 +9,20 @@ import Loading from '../../components/Loading/Loading';
 import './Game.css';
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.setInLocalStorage = this.setInLocalStorage.bind(this);
+  }
+
+  setInLocalStorage(playerData) {
+    localStorage.setItem('state', JSON.stringify({ player: playerData }));
+  }
+
   render() {
     const { player, questions, isFetching } = this.props;
     const { validLogin } = player;
+    this.setInLocalStorage(player);
     if (!validLogin) return <Redirect exact to="/" />;
     if (isFetching || !questions) return <Loading />;
     return (
@@ -23,7 +34,7 @@ class Game extends React.Component {
             data-testid="header-profile-picture"
           />
           <p data-testid="header-player-name">{ player.name }</p>
-          <p data-testid="header-score">Score: 0</p>
+          <p data-testid="header-score">{`Score: ${player.score}`}</p>
         </header>
         <main className="main-container">
           <div className="answers">

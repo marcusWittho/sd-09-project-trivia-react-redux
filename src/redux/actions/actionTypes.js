@@ -6,4 +6,6 @@ export const ADD_NEW_QUESTIONS = 'ADD_NEW_QUESTIONS';
 
 export const QUESTION_REQUEST = 'QUESTION_REQUEST';
 
+export const ADD_SCORE = 'ADD_SCORE';
+
 export const DECREASE_TIME = 'DECREASE_TIME';
