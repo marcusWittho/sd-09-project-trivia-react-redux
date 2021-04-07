@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserData from '../Component/UserData';
+import UserData from '../Components/UserData';
 import GameQuestions from '../Components/GameQuestions';
 
 class GameScreen extends Component {
