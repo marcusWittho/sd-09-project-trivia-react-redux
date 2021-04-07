@@ -39,7 +39,7 @@ class Questions extends React.Component {
     let indexQuestion = number;
     return (
       <div>
-        <h4 data-testeid="question-category">{ category }</h4>
+        <h4 data-testid="question-category">{ category }</h4>
         <p data-testid="question-text">{ question }</p>
         {alternatives.map((alternative, index) => {
           if (alternative === correctAnswer) {
