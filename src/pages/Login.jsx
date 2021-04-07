@@ -1,6 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import fetchToken from '../services/tokenGenerator';
+import { questionsThunk } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -25,8 +27,10 @@ class Login extends React.Component {
   }
 
   async handleClick() {
+    const { fetchAndSaveQuestions } = this.props;
     const getToken = await fetchToken();
     localStorage.setItem('token', getToken.token);
+    fetchAndSaveQuestions();
     this.setState({
       redirect: true,
     });
@@ -95,4 +99,8 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  fetchAndSaveQuestions: () => dispatch(questionsThunk()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
