@@ -4,10 +4,10 @@ function triviaTokenRequest() {
     .then((response) => response.token);
 }
 
-//export function questionsRequest() {
+// export function questionsRequest() {
 //  return fetch(`https://opentdb.com/api.php?amount=5&token=${seutokenaqui}`)
- //   .then((response) => response.json())
- //   .then((response) => response.results);
-//}
+//   .then((response) => response.json())
+//   .then((response) => response.results);
+// }
 
 export default triviaTokenRequest;

@@ -29,7 +29,7 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { fetchToken } = this.props;
+    // const { fetchToken } = this.props;
     const token = await triviaTokenRequest();
     console.log(token);
     fetchToken(token);
@@ -62,7 +62,12 @@ class Login extends React.Component {
         </label>
 
         <Link to="/game">
-          <button data-testid="btn-play" type="button" onClick={ this.handleClick } disabled={ buttonDisabled }>
+          <button
+            data-testid="btn-play"
+            type="button"
+            onClick={ this.handleClick }
+            disabled={ buttonDisabled }
+          >
             Jogar
           </button>
         </Link>
