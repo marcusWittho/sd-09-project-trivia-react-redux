@@ -11,12 +11,9 @@ export async function fetchQuestResponse(nrQuestions, token) {
 }
 
 // verificar "response_code":3, no fetch do token
-
+// não precisa de thunk pq vai ser guardado no header
 export async function fetchGravatar(userEmail) {
   const hashCode = md5(userEmail).toString();
   const endpoint = await `https://www.gravatar.com/avatar/${hashCode}`;
   return endpoint;
 }
-
-// parte da Ana
-export default requestToken;

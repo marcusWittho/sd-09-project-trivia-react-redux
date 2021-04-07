@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { playerLogin, requestApiToken } from '../redux/actions';
+import SelectSettings from '../Components/SelectSettings';
 
 class Login extends Component {
   constructor(props) {
@@ -78,6 +79,7 @@ class Login extends Component {
             Jogar
           </button>
         </Link>
+        <SelectSettings />
       </div>
     );
   }
