@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { func } from 'prop-types';
+import { func, shape } from 'prop-types';
 import { handleLogin as loginAction } from '../actions';
 
 class Login extends React.Component {
@@ -29,9 +29,10 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { handleLogin } = this.props;
+    const { handleLogin, history } = this.props;
     const { name, email } = this.state;
     handleLogin(name, email);
+    history.push('/feedback');
   }
 
   render() {
@@ -87,7 +88,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Login.propTypes = {
-  handleLogin: func.isRequired,
-};
+  handleLogin: func,
+  history: shape({ push: func }),
+}.isRequired;
 
 export default connect(null, mapDispatchToProps)(Login);
