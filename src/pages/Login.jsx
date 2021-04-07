@@ -10,6 +10,7 @@ class Login extends React.Component {
       email: '',
       name: '',
       redirect: false,
+      redirectToConfig: false,
     };
     this.formGenerator = this.formGenerator.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -80,12 +81,20 @@ class Login extends React.Component {
         >
           Jogar
         </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => this.setState({ redirectToConfig: true }) }
+        >
+          Configurações
+        </button>
       </div>
     );
   }
 
   render() {
-    const { redirect } = this.state;
+    const { redirect, redirectToConfig } = this.state;
+    if (redirectToConfig) return <Redirect to="/config" />;
     if (redirect) return <Redirect to="/play" />;
     return (
       <div>
