@@ -1,9 +1,9 @@
 import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Settings from './pages/Settings';
 import logo from './trivia.png';
 import './App.css';
-import Login from './pages/Login';
-import { BrowserRouter, Route } from 'react-router-dom';
-import Settings from './pages/Settings';
 
 export default function App() {
   return (
