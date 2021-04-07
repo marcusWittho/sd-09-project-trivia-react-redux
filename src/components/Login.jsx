@@ -1,96 +1,70 @@
 import React from 'react';
 import '../App.css';
-import loginPanel from './loginPanel.png';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = this.props;
+  constructor() {
+    super();
     this.state = {
-      buttonSubmit: true,
-      loginEmail: '',
-      loginName: '',
+      email: '',
+      name: '',
+      isDisabled: true,
+      validatedEmail: false,
+      validatedPassword: false,
     };
-
-    this.changeState = this.changeState.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.credentialValidation = this.credentialValidation.bind(this);
+    this.enableLoginBtn = this.enableLoginBtn.bind(this);
   }
 
-  changeState({ target: { id, value } }) {
-    const { loginEmail, loginName } = this.state;
+  handleChange({ target }) {
+    this.setState({
+      isDisabled: true,
+    });
+    this.credentialValidation(target);
+    this.setState({ [target.name]: target.value }, () => this.enableLoginBtn());
+  }
 
-    this.setState({ [id]: value });
-
-    if ((loginEmail.length === 0) || (loginName.length === 0)) {
-      this.setState({ buttonSubmit: true });
-    } else {
-      this.setState({ buttonSubmit: false });
+  credentialValidation(target) {
+    const validated = new RegExp(/^[\w.]+/g);
+    if (target.name === 'email') {
+      this.setState({ validatedEmail: validated.test(target.value) });
+    }
+    if (target.name === 'name') {
+      this.setState({ validatedPassword: validated.test(target.value) });
     }
   }
 
-  fields(changeState, buttonSubmit) {
-    return (
-      <>
-        <label htmlFor="loginEmail">
-          Email
-          <br />
-          <input
-            data-testid="input-gravatar-email"
-            type="text"
-            placeholder="example@mail.com"
-            id="loginEmail"
-            onChange={ changeState }
-            required
-          />
-        </label>
-        <label htmlFor="loginName">
-          Nome
-          <br />
-          <input
-            data-testid="input-player-name"
-            type="text"
-            placeholder="Jogador1"
-            id="loginName"
-            onChange={ changeState }
-            required
-          />
-        </label>
-        <br />
-        <input
-          data-testid="btn-play"
-          type="button"
-          value="Jogar"
-          className="login-button"
-          disabled={ buttonSubmit }
-        />
-      </>
-    );
+  enableLoginBtn() {
+    const { validatedEmail, validatedPassword } = this.state;
+    if (validatedEmail === true && validatedPassword === true) {
+      this.setState({ isDisabled: false });
+    }
   }
 
   render() {
-    const { buttonSubmit } = this.state;
+    const { email, name, isDisabled } = this.state;
     return (
-      <main>
-        <article>
-          <h1 className="title-main">Bem vindos ao jogo Trivia</h1>
-          <p>
-            Teste e aumente seus conhecimentos com milhares de perguntas,
-            <br />
-            perguntas no estilo clássico de 4 alternativas, verdadeiro/falso,
-            <br />
-            bandeiras, enigmas sobre pontos turísticos, e muito mais.
-          </p>
-          <p>
-            No game, o jogador pode testar os seus conhecimentos em diversas
-            <br />
-            categorias, como Literatura, Entretenimento, História e Ciências.
-          </p>
-          <h2>Coloque seu e-mail e nome para participar do jogo</h2>
-          <form className="login-form">
-            { this.fields(this.changeState, buttonSubmit) }
-          </form>
-        </article>
-        <img src={ loginPanel } alt="Painel de Login" className="login-img" />
-      </main>
+      <>
+        <input
+          name="email"
+          data-testid="input-gravatar-email"
+          onChange={ this.handleChange }
+          value={ email }
+        />
+        <input
+          name="name"
+          data-testid="input-player-name"
+          onChange={ this.handleChange }
+          value={ name }
+        />
+        <button
+          type="button"
+          data-testid="btn-play"
+          disabled={ isDisabled }
+        >
+          Jogar
+        </button>
+      </>
     );
   }
 }
