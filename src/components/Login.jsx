@@ -45,6 +45,7 @@ class Login extends React.Component {
     const regex = /^[\w.]+@[a-z]+\.\w{2,3}$/g;
     const playButton = player.length > 0 && regex.test(email);
     this.setState({ playButton });
+    localStorage.setItem('player', player);
   }
 
   render() {
