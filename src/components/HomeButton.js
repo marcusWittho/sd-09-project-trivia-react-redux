@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-class Ranking extends Component {
+class HomeButton extends Component {
   render() {
     return (
       <section>
@@ -20,4 +20,4 @@ class Ranking extends Component {
   }
 }
 
-export default Ranking;
+export default HomeButton;
