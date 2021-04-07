@@ -10,30 +10,43 @@ class Play extends React.Component {
     this.handleAnswers = this.handleAnswers.bind(this);
   }
 
-  componentDidMount() {
-    this.handleAnswers();
-  }
-
+  // A função do Math.random foi retirada do site stackoverflow no link:
+  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   handleAnswers() {
     const { questionIndex } = this.state;
     const { questions } = this.props;
-    console.log(questions);
-    console.log(questionIndex);
     const currentQuestion = questions[questionIndex];
-    console.log(currentQuestion);
-    // const fakeNumber = 0.5;
-    // const {
-    //   correct_answer: correctAnswer,
-    //   incorrect_answers: incorrectAnswers,
-    // } = currentQuestion;
-    // const answers = [correctAnswer, ...incorrectAnswers];
-    // console.log(answers);
-    // const randomizedAnswers = answers.sort(() => fakeNumber - Math.random());
-    // console.log(randomizedAnswers);
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers,
+    } = currentQuestion;
+    const correct = (
+      <button
+        type="button"
+        data-testid="correct-answer"
+      >
+        { correctAnswer }
+      </button>
+    );
+    const incorrect = incorrectAnswers.map((answer, index) => (
+      <button
+        key={ index }
+        type="button"
+        data-testid={ `wrong-answer-${index}` }
+      >
+        { answer }
+      </button>
+    ));
+    const fakeNumber = 0.5;
+    const answersButtons = [correct, ...incorrect];
+    const randomizedButtons = answersButtons.sort(() => fakeNumber - Math.random());
+    return randomizedButtons;
   }
 
   render() {
-    const { questions } = this.state;
+    const { questions } = this.props;
+    if (questions.length === 0) return <div>Loading...</div>;
+    const randomizedAnswers = this.handleAnswers();
     return (
       <main>
         <section>
@@ -49,7 +62,9 @@ class Play extends React.Component {
           </p>
         </section>
         <section>
-          OI!
+          {
+            randomizedAnswers.map((button) => button)
+          }
         </section>
       </main>
     );
