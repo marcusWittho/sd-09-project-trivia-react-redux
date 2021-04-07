@@ -15,6 +15,7 @@ import './Game.css';
 class Game extends React.Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
     this.state = {
       counter: 0,
     };
@@ -48,12 +49,24 @@ class Game extends React.Component {
         stateShowButton(true);
       }
     }, mileseconds);
+=======
+
+    this.setInLocalStorage = this.setInLocalStorage.bind(this);
+  }
+
+  setInLocalStorage(playerData) {
+    localStorage.setItem('state', JSON.stringify({ player: playerData }));
+>>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
   }
 
   render() {
     const { player, questions, isFetching, showButton, time } = this.props;
     const { validLogin } = player;
+<<<<<<< HEAD
     const { counter } = this.state;
+=======
+    this.setInLocalStorage(player);
+>>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
     if (!validLogin) return <Redirect exact to="/" />;
     if (isFetching || !questions) return <Loading />;
     return (
@@ -65,7 +78,7 @@ class Game extends React.Component {
             data-testid="header-profile-picture"
           />
           <p data-testid="header-player-name">{ player.name }</p>
-          <p data-testid="header-score">Score: 0</p>
+          <p data-testid="header-score">{`Score: ${player.score}`}</p>
         </header>
         <main className="main-container">
           <div className="answers">
