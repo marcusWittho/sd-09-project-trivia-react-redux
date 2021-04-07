@@ -5,7 +5,7 @@ class trivia extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header profile="teste" player="teste" score={ 7 } />
+        <Header />
         <h1>Trivia</h1>
       </div>
     );
