@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getQuestionsApiAction from '../redux/Actions/getRequestQuestionsApiAction';
+import Header from '../components/Header';
 
 class ScreenGame extends React.Component {
   constructor(props) {
@@ -58,6 +59,7 @@ class ScreenGame extends React.Component {
     const results = this.randomArray();
     return (
       <section>
+        <Header />
         {
           results && (
             results.map(({
