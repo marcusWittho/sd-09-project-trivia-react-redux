@@ -40,8 +40,8 @@ class Home extends React.Component {
     const { username, email } = this.state;
     return (
       <div>
+        <img src={ logo } alt="Trivia Logo" className="image-trivia" />
         <form>
-          <img src={ logo } alt="Trivia Logo" />
           <label htmlFor="player-name">
             Player Name:
             <input
