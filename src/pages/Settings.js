@@ -3,7 +3,9 @@ import React from 'react';
 class Settings extends React.Component {
   render() {
     return (
-      <p>Vai ter umas opções muito loucas aqui nessa página</p>
+      <h1 data-testid="settings-title">
+        Configurações
+      </h1>
     );
   }
 }
