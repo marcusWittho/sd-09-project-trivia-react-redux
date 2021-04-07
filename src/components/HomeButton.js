@@ -5,15 +5,15 @@ class Ranking extends Component {
   render() {
     return (
       <section>
-        <title data-testid="ranking-title">Ranking</title>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-go-home"
-          >
+        <button
+          type="button"
+          data-testid="btn-go-home"
+        >
+          <Link to="/">
             Home
-          </button>
-        </Link>
+          </Link>
+        </button>
+
       </section>
 
     );
