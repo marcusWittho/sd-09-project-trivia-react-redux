@@ -10,6 +10,7 @@ export default function App() {
       <Switch>
         <Route exact path="/"><Login /></Route>
         <Route path="/settings"><Settings /></Route>
+        <Route path="/dummy" />
       </Switch>
     </div>
   );

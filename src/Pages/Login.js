@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
+import * as api from '../services/fetchApi';
 
 class Login extends React.Component {
   constructor(props) {
@@ -7,9 +9,11 @@ class Login extends React.Component {
     this.state = {
       username: '',
       email: '',
+      loggedIn: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.validateFields = this.validateFields.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleInputChange({ target }) {
@@ -28,8 +32,14 @@ class Login extends React.Component {
     return (emailTest && usernameTest);
   }
 
+  handleClick() {
+    api.fetchToken().then(({ token }) => localStorage
+      .setItem('token', JSON.stringify(token)));
+    this.setState({ loggedIn: true });
+  }
+
   render() {
-    const { username, email } = this.state;
+    const { username, email, loggedIn } = this.state;
     const isDisabled = !this.validateFields(username, email);
     return (
       <div>
@@ -61,14 +71,16 @@ class Login extends React.Component {
             onChange={ this.handleInputChange }
           />
         </label>
-        <button
-          type="submit"
-          data-testid="btn-play"
-          onClick={ this.handleClick }
-          disabled={ isDisabled }
-        >
-          Jogar
-        </button>
+        {loggedIn ? <Redirect to="/dummy" />
+          : (
+            <button
+              type="submit"
+              data-testid="btn-play"
+              onClick={ this.handleClick }
+              disabled={ isDisabled }
+            >
+              Jogar
+            </button>)}
       </div>
     );
   }
