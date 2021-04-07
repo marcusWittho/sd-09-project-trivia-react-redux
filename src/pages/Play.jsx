@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Header from '../components/Header';
 
 class Play extends React.Component {
   constructor(props) {
@@ -53,6 +54,8 @@ class Play extends React.Component {
     const { category, question } = currentQuestion;
     return (
       <main>
+        <Header />
+
         <section>
           <p
             data-testid="question-category"

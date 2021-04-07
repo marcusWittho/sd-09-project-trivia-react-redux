@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import fetchToken from '../services/tokenGenerator';
-import { questionsThunk } from '../actions';
+import { loginEmail, loginName, questionsThunk } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -29,10 +29,13 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { fetchAndSaveQuestions } = this.props;
+    const { fetchAndSaveQuestions, saveEmail, saveName } = this.props;
+    const { email, name } = this.state;
     const getToken = await fetchToken();
     localStorage.setItem('token', getToken.token);
     fetchAndSaveQuestions();
+    saveEmail(email);
+    saveName(name);
     this.setState({
       redirect: true,
     });
@@ -111,10 +114,14 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAndSaveQuestions: () => dispatch(questionsThunk()),
+  saveEmail: (email) => dispatch(loginEmail(email)),
+  saveName: (name) => dispatch(loginName(name)),
 });
 
 Login.propTypes = {
   fetchAndSaveQuestions: PropTypes.func.isRequired,
+  saveEmail: PropTypes.func.isRequired,
+  saveName: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
