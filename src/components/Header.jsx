@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class Header extends Component {
   render() {
-    const player = JSON.parse(localStorage.getItem('player'));
+    const { player } = JSON.parse(localStorage.getItem('state'));
     return (
       <header>
         <div className="header">
