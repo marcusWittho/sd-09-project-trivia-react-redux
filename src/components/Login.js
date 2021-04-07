@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { loginAction } from '../actions/loginAction';
+import { getThunkToken } from '../actions/apiTriviaAction';
 
 class Login extends React.Component {
   constructor(props) {
@@ -40,6 +42,7 @@ class Login extends React.Component {
 
   render() {
     const { buttonBool, email, name } = this.state;
+    const { setQuestions } = this.props;
 
     return (
       <div>
@@ -67,13 +70,16 @@ class Login extends React.Component {
             />
           </label>
         </div>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ buttonBool }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            onClick={ setQuestions }
+            disabled={ buttonBool }
+          >
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
@@ -81,10 +87,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setValue: (name, value) => dispatch(loginAction(name, value)),
+  setQuestions: () => dispatch(getThunkToken()),
 });
 
 Login.propTypes = {
   setValue: PropTypes.func.isRequired,
+  setQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
