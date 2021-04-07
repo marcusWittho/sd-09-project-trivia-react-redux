@@ -10,8 +10,12 @@
     "react-dom": "^16.12.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
+    "react-scripts": "^3.4.1",
     "redux": "^4.0.5",
+<<<<<<< HEAD
+=======
+    "redux-devtools": "^3.7.0",
+>>>>>>> f2cd80e65a9d3494aa763a8566d71d54a91b7a89
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0"
   },
@@ -61,8 +65,8 @@
     "mochawesome-merge": "^4.0.3",
     "mochawesome-report-generator": "^5.1.0",
     "stylelint": "^13.8.0",
-    "stylelint-order": "^4.1.0",
-    "stylelint-config-standard": "20.0.0"
+    "stylelint-config-standard": "20.0.0",
+    "stylelint-order": "^4.1.0"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
