@@ -6,16 +6,36 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
+      submitButtonEnabled: false,
     };
   }
 
   handleChange({ target }) {
     const { name, value } = target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => {
+      this.validateFields.bind(this).call();
+    });
+    // this.validateFields.bind(this).call();
+  }
+
+  validateName(name) {
+
+  }
+
+  validateFields() {
+    const { name, email } = this.state;
+    const regexCheck = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
+    this.setState({
+      submitButtonEnabled: regexCheck.test(email) && name.length > 0,
+    });
+  }
+
+  validateEmail(email) {
+    return /[a-z0-9.-]*@[a-z]*.[a-z]*/.match(email);
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, submitButtonEnabled } = this.state;
     return (
       <form>
         <label htmlFor="name">
@@ -42,7 +62,13 @@ class Login extends React.Component {
           />
         </label>
         <br />
-        <button type="button">Começar a Jogar</button>
+        <button
+          type="button"
+          data-testid="btn-play"
+          disabled={ !submitButtonEnabled }
+        >
+          Começar a Jogar
+        </button>
       </form>
     );
   }
