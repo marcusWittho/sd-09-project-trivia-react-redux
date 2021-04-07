@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import fetchToken from '../service/Api';
 import { submitUser } from '../redux/actions';
 
@@ -82,6 +83,9 @@ class Login extends Component {
           </button>
         </form>
         { (loggedIn) && <Redirect to="/game" /> }
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">Configurações</button>
+        </Link>
       </div>
     );
   }
