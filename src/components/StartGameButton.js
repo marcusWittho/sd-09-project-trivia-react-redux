@@ -21,7 +21,7 @@ class StartGameButton extends React.Component {
   render() {
     const { buttonStatus } = this.props;
     const { shouldRedirect } = this.state;
-    if (shouldRedirect) return <Redirect to="PAGINA_DO_JOGO" />;
+    if (shouldRedirect) return <Redirect to="/QuestionPage" />;
     return (
       <button
         type="button"
@@ -36,7 +36,7 @@ class StartGameButton extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(login(token)),
+  setToken: (token) => dispatch(login(null, null, token)),
 });
 
 export default connect(null, mapDispatchToProps)(StartGameButton);

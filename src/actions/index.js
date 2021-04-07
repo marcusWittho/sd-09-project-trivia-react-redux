@@ -1,1 +1,1 @@
-export const login = (token) => ({ type: 'LOGIN', token });
+export const login = (name, email, token) => ({ type: 'LOGIN', name, email, token });
