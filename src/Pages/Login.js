@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { playerLogin } from '../redux/actions';
+import { playerLogin, requestApiToken } from '../redux/actions';
 import SelectSettings from '../Components/SelectSettings';
 
 class Login extends Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
       name: '',
       email: '',
       disableBtn: true,
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.play = this.play.bind(this);
   }
 
   handleChange(event) {
@@ -41,6 +40,11 @@ class Login extends Component {
         disableBtn: true,
       });
     }
+  }
+
+  async play() {
+    const { getToken } = this.props;
+    await getToken();
   }
 
   render() {
@@ -70,6 +74,7 @@ class Login extends Component {
             data-testid="btn-play"
             type="button"
             disabled={ disableBtn }
+            onClick={ this.play }
           >
             Jogar
           </button>
@@ -80,12 +85,18 @@ class Login extends Component {
   }
 }
 
+// const mapStatetoProps = (state) => ({
+//   token: state.game.token,
+// });
+
 const mapDispatchToProps = (dispatch) => ({
   dispatchNameEmail: (email, name) => dispatch(playerLogin(email, name)),
+  getToken: () => dispatch(requestApiToken()),
 });
 
 Login.propTypes = {
   dispatchNameEmail: PropTypes.func.isRequired,
+  getToken: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
