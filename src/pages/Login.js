@@ -26,7 +26,7 @@ class Login extends React.Component {
 
   changeHandler(e) {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => { this.validateBtnLogin(); });
   }
 
   validateBtnLogin() {
@@ -59,10 +59,7 @@ class Login extends React.Component {
               value={ name }
               placeholder="Nome"
               name="name"
-              onChange={ (e) => {
-                this.changeHandler(e);
-                this.validateBtnLogin();
-              } }
+              onChange={ (e) => { this.changeHandler(e); } }
             />
           </label>
 
@@ -74,10 +71,7 @@ class Login extends React.Component {
               value={ email }
               placeholder="Email"
               name="email"
-              onChange={ (e) => {
-                this.changeHandler(e);
-                this.validateBtnLogin();
-              } }
+              onChange={ (e) => { this.changeHandler(e); } }
             />
           </label>
 
