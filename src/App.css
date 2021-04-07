@@ -1,9 +1,43 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* LOGIN */
+.login-container {
+  margin: 16px 0;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 16px auto;
+  width: 40vh;
+}
+
+.login-container form label {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container form input, .login-container form button {
+  margin: 8px 0;
+  padding: 8px 16px;
+}
+
+.login-container form button {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* HEADER ANIMATION */
 .App {
   text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10vmin;
   pointer-events: none;
 }
 
@@ -30,11 +64,8 @@
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   justify-content: center;
-  min-height: 100vh;
-}
-
-.App-link {
-  color: #61dafb;
+  min-height: 10vh;
+  padding: 32px;
 }
 
 @keyframes shake {
