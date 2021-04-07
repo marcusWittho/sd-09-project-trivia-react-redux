@@ -28,11 +28,17 @@ class MultipleAnswers extends React.Component {
     const { question } = this.props;
     const optionAnswers = question.incorrect_answers;
     const maxNumber = 4;
-    optionAnswers
-      .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
-    this.setState({
-      optionAnswers,
-    });
+    if (optionAnswers.length < maxNumber) {
+      optionAnswers
+        .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
+      this.setState({
+        optionAnswers,
+      });
+    } else {
+      this.setState({
+        optionAnswers,
+      });
+    }
   }
 
   render() {

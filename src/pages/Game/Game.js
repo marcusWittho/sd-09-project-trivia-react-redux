@@ -1,58 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string, shape } from 'prop-types';
-import fecthAPITrivia from '../../services/apiTriva';
-// import MultipleAnswers from '../../components/MultipleAnswers';
-// import BooleanAnswers from '../../components/BooleanAnswers';
+import { string, shape, arrayOf, bool } from 'prop-types';
+import { Redirect } from 'react-router';
+import actionAddQuestions from '../../redux/actions/actionAddQuestion';
+import MultipleAnswers from '../../components/MultipleAnswers';
+import BooleanAnswers from '../../components/BooleanAnswers';
+import Loading from '../../components/Loading/Loading';
 
 class Game extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.fecthAPI = this.fecthAPI.bind(this);
-    this.randomAnswer = this.randomAnswer.bind(this);
-    this.selectDataTest = this.selectDataTest.bind(this);
-
-    this.state = {
-      questions: [],
-    };
-  }
-
-  componentDidMount() {
-    this.fecthAPI();
-  }
-
-  async fecthAPI() {
-    const token = localStorage.getItem('token');
-    const questions = await fecthAPITrivia(token);
-    this.setState({
-      questions: questions.results,
-    });
-  }
-
-  selectDataTest(option, index) {
-    const { questions } = this.state;
-    if (questions.length && questions[0].correct_answer !== option) {
-      return `wrong-answer-${index}`;
-    }
-    return 'correct-answer';
-  }
-
-  randomAnswer(questions) {
-    if (questions.length) {
-      const optionAnswers = questions[0].incorrect_answers;
-      const maxNumber = 4;
-      optionAnswers
-        .splice(Math.floor(Math.random() * maxNumber), 0, questions[0].correct_answer);
-      return optionAnswers;
-    }
-  }
-
   render() {
-    const { player } = this.props;
-    const { questions } = this.state;
-    const optionAnswers = this.randomAnswer(questions);
-    let index = 0;
+    const { player, questions, isFetching } = this.props;
+    const { validLogin } = player;
+    if (!validLogin) return <Redirect exact to="/" />;
+    if (isFetching || !questions) return <Loading />;
     return (
       <section className="game-container">
         <header>
@@ -66,24 +26,11 @@ class Game extends React.Component {
         </header>
         <main className="main-container">
           <div className="answers">
-            <div className="question-container">
-              <h3 className="question-category" data-testid="question-category">
-                { questions.length && questions[0].category }
-              </h3>
-              <p data-testid="question-text">{ questions.length && questions[0].question }</p>
-            </div>
-            { optionAnswers && optionAnswers.map((option) => {
-              const dataTestId = this.selectDataTest(option, index);
-              if (dataTestId !== 'correct-answer') index += 1;
-              return (
-                <button
-                  type="button"
-                  key={ option }
-                  data-testid={ dataTestId }
-                >
-                  { option }
-                </button>);
-            })}
+            { (questions) && questions.map((question) => (
+              (question.type === 'multiple')
+                ? <MultipleAnswers question={ question } />
+                : <BooleanAnswers question={ question } />
+            ))[0] }
           </div>
         </main>
       </section>
@@ -91,9 +38,15 @@ class Game extends React.Component {
   }
 }
 
-const mapStateToProps = ({ playerReducer }) => ({
+const mapStateToProps = ({ playerReducer, questionsReducer }) => ({
   player: playerReducer.player,
+  questions: questionsReducer.questions,
+  isFetching: questionsReducer.isFetching,
 });
+
+const mapDispatchToProps = {
+  actionAddQuestions,
+};
 
 Game.propTypes = {
   player: shape({
@@ -102,6 +55,8 @@ Game.propTypes = {
     assertions: string,
     score: string,
   }).isRequired,
+  questions: arrayOf(shape()).isRequired,
+  isFetching: bool.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
