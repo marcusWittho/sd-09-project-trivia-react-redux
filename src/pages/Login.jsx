@@ -50,7 +50,8 @@ class Login extends Component {
       score: 0,
       gravatarEmail: hashEmail,
     };
-    return localStorage.setItem('state', JSON.stringify(player));
+    const state = { player };
+    return localStorage.setItem('state', JSON.stringify(state));
   }
 
   render() {

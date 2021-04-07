@@ -26,7 +26,7 @@ class Timer extends Component {
         }));
       } else {
         finishTime();
-        // clearInterval(interval);
+        clearInterval(interval);
       }
     }, magicSecond);
   }
