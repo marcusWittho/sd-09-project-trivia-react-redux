@@ -44,30 +44,33 @@ class Login extends React.Component {
   render() {
     const { isDisabled, redirect } = this.state;
     return (
-      redirect ? <Redirect to="/feedback" /> : (
-        <form>
-          <input
-            type="text"
-            name="email"
-            onChange={ this.handleChange }
-            data-testid="input-gravatar-email"
-          />
-          <input
-            type="text"
-            name="name"
-            onChange={ this.handleChange }
-            data-testid="input-player-name"
-          />
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ isDisabled }
-            onClick={ this.handleLogin }
-          >
-            Jogar
-          </button>
-        </form>
-      )
+      redirect
+        ? (
+          <Redirect to="/feedback" />
+        ) : (
+          <form>
+            <input
+              type="text"
+              name="email"
+              onChange={ this.handleChange }
+              data-testid="input-gravatar-email"
+            />
+            <input
+              type="text"
+              name="name"
+              onChange={ this.handleChange }
+              data-testid="input-player-name"
+            />
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ isDisabled }
+              onClick={ this.handleLogin }
+            >
+              Jogar
+            </button>
+          </form>
+        )
     );
   }
 }
