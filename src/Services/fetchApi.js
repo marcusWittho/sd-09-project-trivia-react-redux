@@ -2,6 +2,7 @@
 import md5 from 'crypto-js/md5';
 
 // parte da Ana
+// não precisa de thunk porque vai ser guardado no local storage no req2
 export const requestToken = async () => {
   try {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
@@ -22,12 +23,9 @@ export async function fetchQuestResponse(nrQuestions, token) {
 }
 
 // verificar "response_code":3, no fetch do token
-
+// não precisa de thunk pq vai ser guardado no header
 export async function fetchGravatar(userEmail) {
   const hashCode = md5(userEmail).toString();
   const endpoint = await `https://www.gravatar.com/avatar/${hashCode}`;
   return endpoint;
 }
-
-// parte da Ana
-export default requestToken;

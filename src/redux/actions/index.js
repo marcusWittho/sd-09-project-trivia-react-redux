@@ -1,4 +1,4 @@
-import { requestToken } from '../../Services/fetchApi';
+import { fetchQuestResponse } from '../../Services/fetchApi';
 import { playerLogin } from './playerActions';
 import { triviaRequest } from './gameActions';
 
@@ -9,7 +9,7 @@ export {
 
 export const thunk = () => (
   async (dispatch) => {
-    const result = await requestToken();
+    const result = await fetchQuestResponse();
     return dispatch(result);
   }
 );

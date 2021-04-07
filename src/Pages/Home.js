@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import { string, number } from 'prop-types';
 import Header from '../Components/Header';
-import SelectSettings from '../Components/SelectSettings';
 
 class Home extends Component {
   constructor() {
@@ -27,7 +26,6 @@ class Home extends Component {
         >
           Start!
         </button>
-        <SelectSettings />
       </div>
     );
   }
