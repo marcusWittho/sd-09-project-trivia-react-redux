@@ -1,4 +1,4 @@
-import ADD_GRAVATAR from './actionTypes';
+import { ADD_GRAVATAR } from './actionTypes';
 
 const actionPlayerId = (name, gravatarEmail) => ({
   type: ADD_GRAVATAR,

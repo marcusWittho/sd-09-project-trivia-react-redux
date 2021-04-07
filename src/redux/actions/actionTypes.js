@@ -1,3 +1,7 @@
-const ADD_GRAVATAR = 'ADD_GRAVATAR';
+export const ADD_GRAVATAR = 'ADD_GRAVATAR';
 
-export default ADD_GRAVATAR;
+export const ACTIVE_LOGIN = 'ACTIVE_LOGIN';
+
+export const ADD_NEW_QUESTIONS = 'ADD_NEW_QUESTIONS';
+
+export const QUESTION_REQUEST = 'QUESTION_REQUEST';

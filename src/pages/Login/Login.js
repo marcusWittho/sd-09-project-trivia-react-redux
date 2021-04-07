@@ -5,6 +5,8 @@ import { func } from 'prop-types';
 import md5 from 'crypto-js/md5';
 import fetchAPIToken from '../../services/apiToken';
 import actionPlayerId from '../../redux/actions/actionPlayerId';
+import actionAddQuestions from '../../redux/actions/actionAddQuestion';
+import actionValidLogin from '../../redux/actions/actionValidLogin';
 import './Login.css';
 
 class Login extends React.Component {
@@ -37,13 +39,19 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { actionPlayerId: sendDataPlayerId } = this.props;
+    const {
+      actionPlayerId: sendDataPlayerId,
+      actionAddQuestions: requestQuestions,
+      actionValidLogin: sendValidLogin,
+    } = this.props;
+    sendValidLogin();
     const { email, name } = this.state;
     const response = await fetchAPIToken();
     localStorage.setItem('token', response.token);
     const hash = md5(email).toString();
     const gravatarEmail = `https://www.gravatar.com/avatar/${hash}`;
     sendDataPlayerId(name, gravatarEmail);
+    requestQuestions(response.token);
   }
 
   handleChange({ target }) {
@@ -92,10 +100,14 @@ class Login extends React.Component {
 
 const mapDispatchToProps = {
   actionPlayerId,
+  actionAddQuestions,
+  actionValidLogin,
 };
 
 Login.propTypes = {
   actionPlayerId: func.isRequired,
+  actionAddQuestions: func.isRequired,
+  actionValidLogin: func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
