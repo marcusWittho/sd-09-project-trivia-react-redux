@@ -1,22 +1,15 @@
 import md5 from 'crypto-js/md5';
 
-const objeto = { gravatarEmail: 'teste@test.com' };
-localStorage.setItem('player', JSON.stringify(objeto));
-const player = JSON.parse(localStorage.getItem('player'));
-const email = player.gravatarEmail;
-const hashEmail = md5(email).toString();
-console.log(email);
-console.log(hashEmail);
+export default () => {
+  const player = JSON.parse(localStorage.getItem('player'));
+  const hashGravatar = md5(player.gravatarEmail).toString();
 
-export default () => (
-  fetch(`https://www.gravatar.com/avatar/${hashEmail}`)
-    .then((response) => (
-      response.json()
-        .then((data) => (
-          data
-        ))
-        .catch((error) => (
-          error
-        ))
-    ))
-);
+  const gravatar = `https://www.gravatar.com/avatar/${hashGravatar}`;
+
+  const ranking = {
+    name: player.name,
+    score: player.score,
+    picture: gravatar,
+  };
+  localStorage.setItem('ranking', JSON.stringify(ranking));
+};
