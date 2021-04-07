@@ -1,91 +1,89 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { playerLogin } from '../redux/actions';
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
     this.state = {
-      email: '',
       name: '',
+      email: '',
+      disableBtn: true,
     };
+
     this.handleChange = this.handleChange.bind(this);
-    this.validate = this.validate.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
-  handleChange({ target }) {
-    const { name, value } = target;
+  handleChange(event) {
+    const { name, value } = event.target;
     this.setState({
       [name]: value,
+    }, () => {
+      this.handleLogin();
     });
   }
 
-  checkMail(email) {
-    const emailRegex = /^([\w.-]+)@([\w-]+)((.(\w){2,3})+)$/;
-    return emailRegex.test(email);
-  }
-
-  checkName(name) {
-    const min = 3;
-    if (name.length >= min) {
-      return true;
+  handleLogin() {
+    const { email, name } = this.state;
+    const { dispatchNameEmail } = this.props;
+    if (email.length > 0 && name.length > 0) {
+      this.setState({
+        disableBtn: false,
+      });
+      dispatchNameEmail(email, name);
+    } else {
+      this.setState({
+        disableBtn: true,
+      });
     }
   }
 
-  validate() {
-    const { name, email } = this.state;
-    return this.checkName(name) && this.checkMail(email);
-  }
-
-  clickHandler() {
-    const { history, actionAserCriada } = this.props;
-    const { email, name } = this.state;
-    actionAserCriada(email, name);
-    if (this.validate()) history.push('/home');
-  }
-
   render() {
-    const { email, name } = this.state;
+    const { email, name, disableBtn } = this.state;
     return (
       <div>
         <input
-          placeholder="Insert your name"
-          name="name"
-          type="text"
-          value={ name }
           data-testid="input-player-name"
+          type="text"
+          name="name"
+          value={ name }
           onChange={ this.handleChange }
+          placeholder="Informe seu nome"
+          autoComplete="off"
         />
         <input
-          placeholder="Insert your E-mail"
-          name="email"
-          type="email"
-          value={ email }
           data-testid="input-gravatar-email"
+          type="text"
+          name="email"
+          value={ email }
           onChange={ this.handleChange }
+          placeholder="Informe seu email"
+          autoComplete="off"
         />
-        <button
-          data-testid="btn-play"
-          type="button"
-          onClick={ this.clickHandler }
-          disabled={ !this.validateMail() }
-        >
-          Jogar
-        </button>
+        <Link to="/trivia">
+          <button
+            data-testid="btn-play"
+            type="button"
+            disabled={ disableBtn }
+          >
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-Login.propTypes = {
-  actionAserCriada: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
 const mapDispatchToProps = (dispatch) => ({
-  actionAserCriada: (email, name) => dispatch(actionAserCriada(email, name)),
+  dispatchNameEmail: (email, name) => dispatch(playerLogin(email, name)),
 });
+
+Login.propTypes = {
+  dispatchNameEmail: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
