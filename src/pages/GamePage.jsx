@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Header from '../components/Header';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class GamePage extends React.Component {
     console.log(questions);
     return (
       <div>
+        <Header />
         <h2 data-testid="question-category">
           Category:
           {questions[questionNumber].category}
