@@ -1,17 +1,17 @@
-import { GRAVATAR } from '../actions';
+import { GET_GRAVATAR } from '../actions';
 
 const INITIAL_STATE = {
   gravatar: '',
-  isLoading: false,
-  token: '',
+  name: '',
 };
 
 const trivia = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case GRAVATAR:
+  case GET_GRAVATAR:
     return {
       ...state,
-      gravatar: action.gravatar,
+      gravatar: action.hashEmail,
+      name: action.name,
     };
   default:
     return state;
