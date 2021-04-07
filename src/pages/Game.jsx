@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import Header from '../components/Header'
+import Header from '../components/Header';
 
 class Game extends Component {
-    render() {
-        return(
-            <section>
-                <Header />
-            </section>
-        );
-    }
+  render() {
+    return (
+      <section>
+        <Header />
+      </section>
+    );
+  }
 }
 
 export default Game;

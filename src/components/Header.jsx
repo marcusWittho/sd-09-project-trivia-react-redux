@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 class Header extends Component {
-    render() {
-        return (
-            <header>
-                <img src="" alt="gravatar" data-testid="header-profile-picture" />
+  render() {
+    return (
+      <header>
+        <img src="" alt="gravatar" data-testid="header-profile-picture" />
 
-            </header>
-        );
-    }
+      </header>
+    );
+  }
 }
 
 export default Header;
