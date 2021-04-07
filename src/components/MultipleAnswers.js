@@ -1,8 +1,9 @@
 import React from 'react';
-import { string, shape, arrayOf } from 'prop-types';
+import { string, shape, arrayOf, number, func } from 'prop-types';
 import { connect } from 'react-redux';
 import actionDecreaseTime from '../redux/actions/actionDecreaseTime';
 
+const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
   constructor(props) {
     super(props);
@@ -11,14 +12,18 @@ class MultipleAnswers extends React.Component {
     this.selectDataTest = this.selectDataTest.bind(this);
     this.counterTimer = this.counterTimer.bind(this);
 
+    this.handleClcik = this.handleClcik.bind(this);
     this.state = {
       optionAnswers: [],
+      correctClass: '',
+      wrongClass: '',
       disableButtons: false,
     };
   }
 
   componentDidMount() {
     this.randomAnswer();
+    this.counterTimer();
   }
 
   counterTimer() {
@@ -29,16 +34,22 @@ class MultipleAnswers extends React.Component {
     }, mileseconds);
   }
 
+  handleClcik() {
+    this.setState({
+      correctClass: 'correct-answer',
+      wrongClass: 'wrong-answer',
+    });
+  }
+
   selectDataTest(option, index) {
     const { question } = this.props;
     if (question.correct_answer !== option) {
       return `wrong-answer-${index}`;
     }
-    return 'correct-answer';
+    return correctAnswer;
   }
 
   randomAnswer() {
-    const { disableButtons } = this.state;
     const { question } = this.props;
     const optionAnswers = question.incorrect_answers;
     const maxNumber = 4;
@@ -53,11 +64,10 @@ class MultipleAnswers extends React.Component {
         optionAnswers,
       });
     }
-    setTimeout(() => this.counterTimer(), 1000);
   }
 
   render() {
-    const { optionAnswers, disableButtons } = this.state;
+    const { optionAnswers, correctClass, wrongClass, disableButtons } = this.state;
     const { question, time } = this.props;
     let index = 0;
     return (
@@ -71,13 +81,16 @@ class MultipleAnswers extends React.Component {
         </div>
         {optionAnswers.map((option) => {
           const dataTestId = this.selectDataTest(option, index);
-          if (dataTestId !== 'correct-answer') index += 1;
+          if (dataTestId !== correctAnswer) index += 1;
           return (
             <button
+              id={ dataTestId }
+              className={ dataTestId === correctAnswer ? correctClass : wrongClass }
               type="button"
               key={ option }
               data-testid={ dataTestId }
               disabled={ disableButtons }
+              onClick={ this.handleClcik }
             >
               { option }
             </button>);
@@ -92,7 +105,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  decreaseTime: () => dispatch(actionDecreaseTime())
+  decreaseTime: () => dispatch(actionDecreaseTime()),
 });
 
 MultipleAnswers.propTypes = {
@@ -100,6 +113,8 @@ MultipleAnswers.propTypes = {
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   }).isRequired,
+  time: number.isRequired,
+  decreaseTime: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);
