@@ -1,4 +1,4 @@
-import USER_REGISTER from '../actions/actionstype';
+import { USER_REGISTER } from '../actions/actionstype';
 
 const INITIAL_STATE = {
   user: '',
