@@ -10,7 +10,7 @@
 
 .login-container form {
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
   justify-content: center;
   margin: 16px auto;
   width: 40vh;
@@ -32,7 +32,6 @@
 }
 
 /* HEADER ANIMATION */
-
 .App {
   text-align: center;
 }
