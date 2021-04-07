@@ -1,13 +1,15 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import logo from '../trivia.png';
-// import '../App.css';
+import { getToken, setNameAndImail, getGravatar } from '../redux/actions';
 
 class loginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nome: '',
+      name: '',
       email: '',
       login: false,
     };
@@ -24,9 +26,13 @@ class loginScreen extends React.Component {
   }
 
   handleClick() {
+    const { propGetToken, propSetNameAndImail } = this.props;
+    const { name, email } = this.state;
     this.setState({
       login: true,
     });
+    propGetToken();
+    propSetNameAndImail(name, email);
   }
 
   handleValidateEmail() {
@@ -35,7 +41,7 @@ class loginScreen extends React.Component {
   }
 
   render() {
-    const { nome, email, login } = this.state;
+    const { name, email, login } = this.state;
     if (login) return <Redirect to="/trivia" />;
     return (
       <div className="App">
@@ -51,9 +57,9 @@ class loginScreen extends React.Component {
         <div>
           <input
             data-testid="input-player-name"
-            name="nome"
+            name="name"
             type="text"
-            value={ nome }
+            value={ name }
             placeholder="Nome:"
             onChange={ this.handleChange }
           />
@@ -71,7 +77,7 @@ class loginScreen extends React.Component {
           data-testid="btn-play"
           type="button"
           onClick={ this.handleClick }
-          disabled={ !(this.handleValidateEmail() && nome) }
+          disabled={ !(this.handleValidateEmail() && name) }
         >
           Jogar
         </button>
@@ -80,4 +86,14 @@ class loginScreen extends React.Component {
   }
 }
 
-export default loginScreen;
+loginScreen.propTypes = {
+  propGetToken: PropTypes.func,
+  propSetNameAndImail: PropTypes.func,
+}.isRequired;
+
+const mapDispatchToProps = (dispatch) => ({
+  propGetToken: () => dispatch(getToken()),
+  propSetNameAndImail: (name, mail) => dispatch(setNameAndImail(name, mail)),
+});
+
+export default connect(null, mapDispatchToProps)(loginScreen);
