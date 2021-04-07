@@ -8,20 +8,43 @@ class Feedback extends Component {
     const { email } = this.props;
     const cryptoEmail = md5(email).toString();
     const { player } = JSON.parse(localStorage.getItem('state'));
+    const minimumScore = 3;
 
     return (
       <div>
         <header>
-          <span data-testid="header-profile-picture">
-            <img src={ `https://www.gravatar.com/avatar/${cryptoEmail}` } alt="profile" />
+          <span>
+            <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${cryptoEmail}` } alt="profile" />
           </span>
-          <span data-testid="header-player-name">
-            <h1>{ player.name }</h1>
+          <span>
+            <h1 data-testid="header-player-name">{ player.name }</h1>
           </span>
-          <span data-testid="header-score">
-            <p>{ player.score }</p>
+          <span>
+            <p data-testid="header-score">{ player.score }</p>
           </span>
         </header>
+        <main>
+          <section>
+            <p data-testid="feedback-text">
+              {
+                player.score > minimumScore ? 'Mandou bem!' : 'Podia ser melhor...'
+              }
+            </p>
+          </section>
+          <section>
+            <p
+              data-testid="feedback-total-score"
+            >
+              { `Pontuação: ${player.score}`}
+            </p>
+
+            <p
+              data-testid="feedback-total-question"
+            >
+              {`Acertos: ${player.assertions}`}
+            </p>
+          </section>
+        </main>
       </div>
     );
   }
