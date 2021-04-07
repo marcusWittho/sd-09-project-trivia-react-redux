@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import Gameplay from '../components/Gameplay';
 
 class GamePage extends Component {
   render() {
     return (
-      <p>Tela de Jogo</p>
+      <Gameplay />
     );
   }
 }

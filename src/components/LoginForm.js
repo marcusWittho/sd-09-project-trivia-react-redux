@@ -3,6 +3,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addLoginInfo, addToken } from '../actions';
+import { fetchAndSaveToken } from '../services';
 
 class LoginForm extends Component {
   constructor() {
@@ -15,22 +16,15 @@ class LoginForm extends Component {
     this.statusCheck = this.statusCheck.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.fetchAndSaveToken = this.fetchAndSaveToken.bind(this);
   }
 
-  async fetchAndSaveToken() {
-    const { addTokenDispatch } = this.props;
-    const responseApi = fetch('https://opentdb.com/api_token.php?command=request');
-    const token = await (await responseApi).json();
-    addTokenDispatch(token.token);
-    localStorage.setItem('token', token.token);
-  }
-
-  handleClick() {
-    const { addLoginInfoDispatch } = this.props;
+  async handleClick() {
+    const { addLoginInfoDispatch, addTokenDispatch } = this.props;
     const { name, email } = this.state;
     addLoginInfoDispatch({ email, name });
-    this.fetchAndSaveToken();
+    const { token } = await fetchAndSaveToken(addTokenDispatch);
+    addTokenDispatch(token);
+    localStorage.setItem('token', token);
     this.setState({
       redirect: true,
     });
