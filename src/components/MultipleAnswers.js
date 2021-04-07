@@ -1,7 +1,10 @@
 import React from 'react';
-import { string, shape, arrayOf, number, func } from 'prop-types';
+import { string, shape, arrayOf, number, func, bool } from 'prop-types';
 import { connect } from 'react-redux';
 import actionDecreaseTime from '../redux/actions/actionDecreaseTime';
+import actionDisableButton from '../redux/actions/actionDisableButton';
+import ShowButton from '../redux/actions/actionShowButton';
+import actionResetFunction from '../redux/actions/actionResetFunction';
 
 const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
@@ -17,11 +20,13 @@ class MultipleAnswers extends React.Component {
       optionAnswers: [],
       correctClass: '',
       wrongClass: '',
-      disableButtons: false,
+      // disableButtons: false,
     };
   }
 
   componentDidMount() {
+    const { resetFunctions } = this.props;
+    resetFunctions();
     this.randomAnswer();
     this.counterTimer();
   }
@@ -29,8 +34,13 @@ class MultipleAnswers extends React.Component {
   counterTimer() {
     const mileseconds = 1000;
     setInterval(() => {
-      const { time, decreaseTime } = this.props;
-      return (time > 0) ? decreaseTime() : this.setState({ disableButtons: true });
+      const { time, decreaseTime, stateDisableButton, stateShowButton } = this.props;
+      if (time > 0) {
+        decreaseTime();
+      } else {
+        stateDisableButton(true);
+        stateShowButton(true);
+      }
     }, mileseconds);
   }
 
@@ -67,8 +77,8 @@ class MultipleAnswers extends React.Component {
   }
 
   render() {
-    const { optionAnswers, correctClass, wrongClass, disableButtons } = this.state;
-    const { question, time } = this.props;
+    const { optionAnswers, correctClass, wrongClass } = this.state;
+    const { question, time, disableButton } = this.props;
     let index = 0;
     return (
       <div>
@@ -89,7 +99,7 @@ class MultipleAnswers extends React.Component {
               type="button"
               key={ option }
               data-testid={ dataTestId }
-              disabled={ disableButtons }
+              disabled={ disableButton }
               onClick={ this.handleClcik }
             >
               { option }
@@ -102,10 +112,14 @@ class MultipleAnswers extends React.Component {
 
 const mapStateToProps = (state) => ({
   time: state.questionsReducer.timer,
+  disableButton: state.questionsReducer.disableButton,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   decreaseTime: () => dispatch(actionDecreaseTime()),
+  stateDisableButton: (value) => dispatch(actionDisableButton(value)),
+  stateShowButton: (value) => dispatch(ShowButton(value)),
+  resetFunctions: () => dispatch(actionResetFunction()),
 });
 
 MultipleAnswers.propTypes = {
@@ -115,6 +129,10 @@ MultipleAnswers.propTypes = {
   }).isRequired,
   time: number.isRequired,
   decreaseTime: func.isRequired,
+  resetFunctions: func.isRequired,
+  stateDisableButton: bool.isRequired,
+  stateShowButton: bool.isRequired,
+  disableButton: bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);
