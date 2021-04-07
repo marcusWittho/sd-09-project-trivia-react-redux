@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import setLoginAction from '../redux/Actions/setLoginAction';
 import getToken from '../services/apiRequests';
 import logo from '../trivia.png';
+import SettingsButton from '../components/SettingsButton';
 
 class Login extends Component {
   constructor(props) {
@@ -121,14 +122,7 @@ class Login extends Component {
             Play
           </button>
         </Link>
-        <Link to="/settings">
-          <button
-            data-testid="btn-settings"
-            type="button"
-          >
-            Configurações
-          </button>
-        </Link>
+        <SettingsButton />
       </div>
     );
   }
