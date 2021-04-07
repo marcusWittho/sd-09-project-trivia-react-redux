@@ -46,18 +46,20 @@ class Login extends React.Component {
   render() {
     const { email, name, isDisabled } = this.state;
     return (
-      <>
+      <div>
         <input
           name="email"
-          data-testid="input-player-name"
-          onChange={ this.handleChange }
-          value={ name }
-        />
-        <input
-          name="name"
+          type="text"
+          value={ email }
           data-testid="input-gravatar-email"
           onChange={ this.handleChange }
-          value={ email }
+        />
+        <input
+          type="text"
+          name="name"
+          value={ name }
+          data-testid="input-player-name"
+          onChange={ this.handleChange }
         />
         <button
           type="button"
@@ -66,7 +68,7 @@ class Login extends React.Component {
         >
           Jogar
         </button>
-      </>
+      </div>
     );
   }
 }
