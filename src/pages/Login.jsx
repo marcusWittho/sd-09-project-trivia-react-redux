@@ -1,60 +1,90 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { func } from 'prop-types';
+import { Link } from 'react-router-dom';
+import saveUserToken from '../actions';
+import { REQUEST_TOKEN } from '../services';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
+      name: String(),
+      email: String(),
+      disabled: true,
     };
-    this.handleName = this.handleName.bind(this);
-    this.handleEmail = this.handleEmail.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.validateLogin = this.validateLogin.bind(this);
+    this.requestUserToken = this.requestUserToken.bind(this);
   }
 
-  handleName(event) {
-    this.setState({ name: event.target.value });
+  handleChange({ target: { name, value } }) {
+    this.setState({
+      [name]: value,
+      disabled: true,
+    }, () => this.validateLogin(this.state));
   }
 
-  handleEmail(event) {
-    this.setState({ email: event.target.value });
+  validateLogin({ name, email }) {
+    if (email && name) {
+      this.setState({
+        disabled: false,
+      });
+    }
+  }
+
+  async requestUserToken() {
+    const { getUserToken } = this.props;
+    const token = await REQUEST_TOKEN();
+    localStorage.setItem('token', token);
+    getUserToken(token);
   }
 
   render() {
-    const { name, email } = this.state;
-    const enabled = email.length > 0
-    && name.length > 0;
+    const { email, name, disabled } = this.state;
     return (
-      <form onSubmit={ this.handleSubmit }>
-
-        <p>Nome:</p>
-        <input
-          type="text"
-          name="name"
-          data-testid="input-player-name"
-          onChange={ this.handleName }
-        />
-
-        <p>Email:</p>
-        <input
-          type="text"
-          name="email"
-          data-testid="input-gravatar-email"
-          onChange={ this.handleEmail }
-        />
-
-        <button
-          disabled={ !enabled }
-          type="button"
-          data-testid="btn-play"
-
-        >
-          Jogar
-
-        </button>
-      </form>
-
+      <section>
+        <label htmlFor="userEmail">
+          Email do Gravatar:
+          <input
+            data-testid="input-gravatar-email"
+            type="text"
+            name="email"
+            value={ email }
+            onChange={ this.handleChange }
+          />
+        </label>
+        <label htmlFor="userName">
+          Nome do Jogador:
+          <input
+            data-testid="input-player-name"
+            type="text"
+            name="name"
+            value={ name }
+            onChange={ this.handleChange }
+          />
+        </label>
+        <Link to="/triviaGame">
+          <button
+            data-testid="btn-play"
+            disabled={ disabled }
+            type="button"
+            onClick={ () => this.requestUserToken() }
+          >
+            JOGAR!
+          </button>
+        </Link>
+      </section>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getUserToken: (token) => dispatch(saveUserToken(token)),
+});
+
+Login.propTypes = {
+  getUserToken: func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);
