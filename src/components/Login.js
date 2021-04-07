@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import triviaRequest from '../services/api';
 
 class Login extends React.Component {
   constructor() {
@@ -8,7 +10,9 @@ class Login extends React.Component {
       email: '',
       name: '',
     };
+
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event) {
@@ -20,6 +24,11 @@ class Login extends React.Component {
         this.setState({ buttonDisabled: true });
       }
     });
+  }
+
+  async handleClick() {
+    const token = await triviaRequest();
+    localStorage.setItem('token', token);
   }
 
   render() {
@@ -44,15 +53,15 @@ class Login extends React.Component {
             type="text"
             name="email"
             onChange={ this.handleChange }
+            onClick={ this.handleClick }
           />
         </label>
-        <button
-          data-testid="btn-play"
-          type="button"
-          disabled={ buttonDisabled }
-        >
-          Jogar
-        </button>
+
+        <Link to="/game">
+          <button data-testid="btn-play" type="button" disabled={ buttonDisabled }>
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
