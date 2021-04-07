@@ -37,6 +37,7 @@ class GameQuestions extends Component {
         key={ correct }
         name="correctAnswer"
         className={ answerClicked ? 'correct' : null }
+        onClick={ this.handleClick }
       >
         {correct}
       </button>
