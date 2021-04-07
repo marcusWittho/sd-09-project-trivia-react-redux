@@ -110,16 +110,26 @@ class Login extends Component {
 
   renderButtonPlay(isNotValidated) {
     return (
-      <Link to="/screen-game">
-        <button
-          disabled={ isNotValidated }
-          data-testid="btn-play"
-          type="button"
-          onClick={ this.toPlay }
-        >
-          Play
-        </button>
-      </Link>
+      <div>
+        <Link to="/screen-game">
+          <button
+            disabled={ isNotValidated }
+            data-testid="btn-play"
+            type="button"
+            onClick={ this.toPlay }
+          >
+            Play
+          </button>
+        </Link>
+        <Link to="/settings">
+          <button
+            data-testid="btn-settings"
+            type="button"
+          >
+            Configurações
+          </button>
+        </Link>
+      </div>
     );
   }
 
