@@ -9,10 +9,13 @@ class GameQuestions extends Component {
     super(props);
     this.state = {
       questionNumber: 0,
+      answerClicked: false,
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   setAnswer(incorrects, correct) {
+    const { answerClicked } = this.state;
     const incorrectsElements = incorrects.map(
       (incorrect, index) => (
         <button
@@ -20,6 +23,7 @@ class GameQuestions extends Component {
           key={ incorrect }
           data-testid={ `wrong-answer-${index}` }
           name="incorrectAnswer"
+          className={ answerClicked ? 'incorrect' : null }
           onClick={ this.handleClick }
         >
           {incorrect}
@@ -32,7 +36,7 @@ class GameQuestions extends Component {
         data-testid="correct-answer"
         key={ correct }
         name="correctAnswer"
-        onClick={ this.handleClick }
+        className={ answerClicked ? 'correct' : null }
       >
         {correct}
       </button>
@@ -42,17 +46,16 @@ class GameQuestions extends Component {
     return incorrectsElements;
   }
 
-  handleClick({ target }) {
-    if (target.name === 'correctAnswer') {
-      target.className = 'correct';
-    } else {
-      target.className = 'incorrect';
-    }
+  handleClick() {
+    this.setState({
+      answerClicked: true,
+    });
   }
 
   render() {
     const { fetchQuestions, token, loading, questions } = this.props;
     const { questionNumber } = this.state;
+    console.log(questions);
     if (loading) {
       fetchQuestions(token);
       return <h3>Loading</h3>;
