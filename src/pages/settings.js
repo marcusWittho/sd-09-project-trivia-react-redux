@@ -3,7 +3,7 @@ import React from 'react';
 class Settings extends React.Component {
   render() {
     return (
-      <p>Settings Page</p>
+      <h1 data-testid="settings-title">Settings Page</h1>
     );
   }
 }
