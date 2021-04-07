@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import triviaRequest from '../services/api';
+import triviaTokenRequest from '../services/api';
+import updateToken from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -27,7 +29,10 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const token = await triviaRequest();
+    // const { fetchToken } = this.props;
+    const token = await triviaTokenRequest();
+    console.log(token);
+    fetchToken(token);
     localStorage.setItem('token', token);
   }
 
@@ -53,12 +58,16 @@ class Login extends React.Component {
             type="text"
             name="email"
             onChange={ this.handleChange }
-            onClick={ this.handleClick }
           />
         </label>
 
         <Link to="/game">
-          <button data-testid="btn-play" type="button" disabled={ buttonDisabled }>
+          <button
+            data-testid="btn-play"
+            type="button"
+            onClick={ this.handleClick }
+            disabled={ buttonDisabled }
+          >
             Jogar
           </button>
         </Link>
@@ -67,4 +76,8 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  fetchToken: (token) => dispatch(updateToken(token)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
