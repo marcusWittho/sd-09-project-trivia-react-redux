@@ -11,12 +11,13 @@ class Question extends React.Component {
           .concat(incorrectAnswers)
           .map((answer, index) => ({ answer, index })))
           .map((answerObj) => (
-            <p
+            <button
+              type="button"
               key={ answerObj.index }
               data-testid={ (answerObj.index) ? 'correct-answer' : 'wrong-answer' }
             >
               { answerObj.answer }
-            </p>
+            </button>
           )))}
       </>
     );
