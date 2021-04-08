@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import getQuestionsApiAction from '../redux/Actions/getRequestQuestionsApiAction';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
+import '../styles/styleButonsAnswers.css';
 
 class ScreenGame extends React.Component {
   constructor(props) {
@@ -26,8 +27,11 @@ class ScreenGame extends React.Component {
       category: '',
       question: '',
       timer: 30,
+      changeClass: false,
     };
     this.updateState = this.updateState.bind(this);
+    this.changeClassAnswer = this.changeClassAnswer.bind(this);
+    this.changeClassCorrectAnswer = this.changeClassCorrectAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -93,6 +97,7 @@ class ScreenGame extends React.Component {
 
   addScore() {
     const getLocalStorage = JSON.parse(localStorage.getItem('state'));
+    console.log(localStorage);
     const { timer, difficulty, player } = this.state;
     const correctAnswer = 10;
     const difficultyScore = this.difficultScore(difficulty);
@@ -111,11 +116,25 @@ class ScreenGame extends React.Component {
       },
     }), () => console.log(player));
 
-    localStorage.setItem('state', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
+  changeClassAnswer() {
+    this.setState({
+      changeClass: true,
+    });
+  }
+
+  changeClassCorrectAnswer() {
+    this.setState({
+      changeClass: true,
+    });
+
+    this.addScore();
   }
 
   render() {
-    const { correct, allAnswers, timer, category, question } = this.state;
+    const { correct, allAnswers, timer, category, question, changeClass } = this.state;
     const { btnState } = this.props;
     return (
       <section>
@@ -133,9 +152,9 @@ class ScreenGame extends React.Component {
                 key={ Math.random() }
                 type="button"
                 data-testid="correct-answer"
-                onClick={ this.addScore }
+                onClick={ this.changeClassCorrectAnswer }
                 disabled={ btnState }
-                style={ { border: '3px solid rgb(6, 240, 15)' } }
+                className={ (changeClass) ? 'correct' : null }
               >
                 {answer}
               </button>);
@@ -146,7 +165,8 @@ class ScreenGame extends React.Component {
               type="button"
               data-testid={ `wrong-answer-${index}` }
               disabled={ btnState }
-              style={ { border: '3px solid rgb(255, 0, 0)' } }
+              className={ (changeClass) ? 'incorrect' : null }
+              onClick={ this.changeClassAnswer }
             >
               {answer}
             </button>
