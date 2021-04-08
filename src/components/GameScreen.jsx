@@ -6,18 +6,18 @@ import { getQuestions } from '../redux/action';
 class GameScreen extends Component {
   constructor() {
     super();
-
     this.state = {
       questions: [],
       numberOFQuestion: 0,
       loading: true,
       timer: 30,
       disabled: false,
+      colorQuestion: false,
     };
-
     this.nextQuestion = this.nextQuestion.bind(this);
     this.loadingQuestions = this.loadingQuestions.bind(this);
     this.decreaseTime = this.decreaseTime.bind(this);
+    this.clickQuestion = this.clickQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -72,8 +72,13 @@ class GameScreen extends Component {
     this.decreaseTime();
   }
 
+  clickQuestion() {
+    this.setState({ colorQuestion: true });
+  }
+
   render() {
-    const { questions, numberOFQuestion, loading, timer, disabled } = this.state;
+    const { questions,
+      numberOFQuestion, loading, timer, disabled, colorQuestion } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
     if (loading) return <h1>Loading...</h1>;
@@ -86,18 +91,20 @@ class GameScreen extends Component {
           data-testid="correct-answer"
           type="button"
           disabled={ disabled }
-          onClick={ () => {} }
+          style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
+          onClick={ this.clickQuestion }
         >
           { orderQuestions.correct_answer }
         </button>
         <div>
-          {orderQuestions.incorrect_answers.map((answer, index) => (
+          { orderQuestions.incorrect_answers.map((answer, index) => (
             <button
               key={ index }
               data-testid={ `wrong-answer-${index}` }
               type="button"
               disabled={ disabled }
-              onClick={ () => {} }
+              style={ (colorQuestion) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+              onClick={ this.clickQuestion }
             >
               { answer }
             </button>
