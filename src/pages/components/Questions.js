@@ -14,13 +14,22 @@ class Questions extends React.Component {
       correctAnswer: '',
       questionIndex: 0,
       isSelected: false,
+      disableAlternatives: false,
     };
     this.getQuestions = this.getQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.disableAlternatives = this.disableAlternatives.bind(this);
   }
 
   componentDidMount() {
     this.getQuestions();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { timesUp } = this.props;
+    if (prevProps.timesUp !== timesUp) {
+      this.disableAlternatives();
+    }
   }
 
   async getQuestions() {
@@ -44,8 +53,21 @@ class Questions extends React.Component {
     });
   }
 
+  disableAlternatives() {
+    this.setState({
+      disableAlternatives: true,
+    });
+  }
+
   render() {
-    const { category, question, alternatives, correctAnswer, isSelected } = this.state;
+    const {
+      category,
+      question,
+      alternatives,
+      correctAnswer,
+      isSelected,
+      disableAlternatives,
+    } = this.state;
     const number = -1;
     let indexQuestion = number;
     return (
@@ -61,6 +83,7 @@ class Questions extends React.Component {
                 className={ (isSelected) ? 'correct-answer' : undefined }
                 data-testid="correct-answer"
                 onClick={ this.handleClick }
+                disabled={ disableAlternatives }
               >
                 { alternative }
               </button>);
@@ -73,6 +96,7 @@ class Questions extends React.Component {
               className={ (isSelected) ? 'wrong-answer' : undefined }
               data-testid={ `wrong-answer-${indexQuestion}` }
               onClick={ this.handleClick }
+              disabled={ disableAlternatives }
             >
               { alternative }
             </button>);
@@ -84,10 +108,12 @@ class Questions extends React.Component {
 
 const mapStateToProps = (state) => ({
   token: state.loginUser.token,
+  timesUp: state.timer.timesUp,
 });
 
 Questions.propTypes = {
   token: PropTypes.string,
+  timesUp: PropTypes.bool,
 }.isRequired;
 
 export default connect(mapStateToProps)(Questions);
