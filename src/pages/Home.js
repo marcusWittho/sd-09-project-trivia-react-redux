@@ -7,23 +7,22 @@ import { questionsAPI } from '../services/api';
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.getQuestions = this.getQuestions.bind(this)
+    this.getQuestions = this.getQuestions.bind(this);
   }
 
   async getQuestions() {
     const { token } = this.props;
     const questions = await questionsAPI(token);
-    console.log(questions)
-    return questions;
+    console.log(questions[0].category);
+    return questions[0];
   }
 
   render() {
-    
-    const { nickname, email, questionsList, token } = this.props;
+    const { nickname, email, token } = this.props;
     const hashEmail = md5(email).toString();
-    console.log(`Token: ${token}`)
-    console.log(`Hash: ${hashEmail}`)
-    this.getQuestions()
+    console.log(`Token: ${token}`);
+    console.log(`Hash: ${hashEmail}`);
+    this.getQuestions();
     return (
       <div>
         <header>
@@ -45,10 +44,10 @@ class Home extends Component {
             Categoria:
           </p>
           <p data-testid="question-text">Pergunta</p>
-          <button data-testid="correct-answer">Alternativa 1</button>
-          <button data-testid="wrong-answer-0">Alternativa 2</button>
-          <button data-testid="wrong-answer-1">Alternativa 3</button>
-          <button data-testid="wrong-answer-2">Alternativa 4</button>
+          <button type="button" data-testid="correct-answer">Alternativa 1</button>
+          <button type="button" data-testid="wrong-answer-0">Alternativa 2</button>
+          <button type="button" data-testid="wrong-answer-1">Alternativa 3</button>
+          <button type="button" data-testid="wrong-answer-2">Alternativa 4</button>
         </main>
       </div>
     );
@@ -58,7 +57,7 @@ class Home extends Component {
 Home.propTypes = {
   nickname: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  dispatchQuestions: PropTypes.func,
+  token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -69,6 +68,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchQuestions: (token) => dispatch(questionsAPI(token)),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

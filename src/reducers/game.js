@@ -6,14 +6,14 @@ const GAME_INITIAL_STATE = {
 
 function game(state = GAME_INITIAL_STATE, action) {
   switch (action.type) {
-    case GET_TOKEN:
-      return {
-        ...state,
-        token: action.token,
-      }
-    default:
-      return state;
+  case GET_TOKEN:
+    return {
+      ...state,
+      token: action.token,
+    };
+  default:
+    return state;
   }
-};
+}
 
 export default game;

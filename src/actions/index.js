@@ -1,4 +1,4 @@
-import { questionsAPI, tokenAPI } from '../services/api';
+import { tokenAPI } from '../services/api';
 
 export const LOGIN = 'LOGIN';
 export const GET_TOKEN = 'GET_TOKEN';

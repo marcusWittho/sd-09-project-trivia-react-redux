@@ -89,11 +89,13 @@ class Login extends Component {
 
 Login.propTypes = {
   loginData: PropTypes.func.isRequired,
+  token: PropTypes.object.isRequired,
+  tokenData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   token: state.game.token,
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
   loginData: (email, nickname) => dispatch(saveLoginInfo(email, nickname)),
