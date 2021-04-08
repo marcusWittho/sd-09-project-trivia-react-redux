@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { doLogin } from '../actions/index';
 import { getToken } from '../services/api';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -58,28 +59,24 @@ class Login extends React.Component {
     const { doFormLogin } = this.props;
     return (
       <main>
-        <label htmlFor="input-name">
-          <input
-            data-testid="input-player-name"
-            id="input-name"
-            type="text"
-            value={ name }
-            placeholder="Nome"
-            name="name"
-            onChange={ (e) => { this.changeHandler(e); } }
-          />
-        </label>
-        <label htmlFor="input-email">
-          <input
-            data-testid="input-gravatar-email"
-            id="input-email"
-            type="email"
-            value={ email }
-            placeholder="Email"
-            name="email"
-            onChange={ (e) => { this.changeHandler(e); } }
-          />
-        </label>
+        <input
+          data-testid="input-player-name"
+          id="input-name"
+          type="text"
+          value={ name }
+          placeholder="Nome"
+          name="name"
+          onChange={ (e) => { this.changeHandler(e); } }
+        />
+        <input
+          data-testid="input-gravatar-email"
+          id="input-email"
+          type="email"
+          value={ email }
+          placeholder="Email"
+          name="email"
+          onChange={ (e) => { this.changeHandler(e); } }
+        />
         <Link to="/trivia">
           <button
             type="button"
@@ -93,11 +90,8 @@ class Login extends React.Component {
             Jogar
           </button>
         </Link>
-        <Link
-          to="/settings"
-          data-testid="btn-settings"
-        >
-          Configurações do jogo
+        <Link to="/settings" data-testid="btn-settings">
+          <button type="button">Configurações do jogo</button>
         </Link>
       </main>
     );
