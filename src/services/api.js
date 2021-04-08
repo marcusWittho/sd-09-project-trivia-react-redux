@@ -20,3 +20,11 @@ export const getUserToken = async () => {
   localStorage.setItem('token', (getToken.token));
   return getToken;
 };
+
+export const getQuestions = async () => {
+  const token = localStorage.getItem('token');
+  const numberQuestions = 5;
+  const requestQuestions = await fetch(`https://opentdb.com/api.php?amount=${numberQuestions}&token=${token}`);
+  const questions = await requestQuestions.json();
+  return questions;
+};

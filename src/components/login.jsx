@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import fetchPlayerToken from '../actions/index';
+import { fetchPlayerToken } from '../actions/index';
 import { getUserGravatar } from '../services/api';
 
 class Login extends React.Component {
