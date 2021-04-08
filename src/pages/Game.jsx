@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class Game extends Component {
   render() {
     const { image } = this.props;
     const { player } = JSON.parse(localStorage.getItem('state'));
+
     return (
       <div>
         <header>
@@ -13,7 +15,7 @@ class Game extends Component {
           <span data-testid="header-player-name">{player.name}</span>
           <span data-testid="header-score">{player.score}</span>
         </header>
-       <span>
+        <span>
           <Link to="/feedback">feedback</Link>
         </span>
       </div>
@@ -24,5 +26,9 @@ class Game extends Component {
 const mapStateToProps = ({ loginReducer }) => ({
   image: loginReducer.picture,
 });
+
+Game.propTypes = {
+  image: PropTypes.string.isRequired,
+};
 
 export default connect(mapStateToProps)(Game);

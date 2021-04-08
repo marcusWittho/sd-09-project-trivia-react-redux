@@ -23,6 +23,7 @@ class Login extends Component {
     });
   }
 
+  // eslint-disable-next-line max-lines-per-function
   render() {
     const { name, email } = this.state;
     const { getToken } = this.props;
@@ -55,6 +56,17 @@ class Login extends Component {
           <Link to="/game">
             <button
               onClick={ () => {
+                const stateKey = {
+                  player: {
+                    name,
+                    assertions: 0,
+                    score: 0,
+                    gravatarEmail: email,
+                  },
+                };
+
+                localStorage.setItem('state', JSON.stringify(stateKey));
+
                 getToken({ name, email });
               } }
               data-testid="btn-play"
