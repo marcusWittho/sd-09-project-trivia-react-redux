@@ -14,6 +14,7 @@ class Gameplay extends Component {
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.testeSetState = this.testeSetState.bind(this);
+    this.randomAnswersOrder = this.randomAnswersOrder.bind(this);
   }
 
   async componentDidMount() {
@@ -29,9 +30,26 @@ class Gameplay extends Component {
     });
   }
 
+  randomAnswersOrder() {
+    const { questionList, questionIndex } = this.state;
+    const currentQuestionInfo = questionList.results[questionIndex];
+    const answersList = currentQuestionInfo.incorrect_answers;
+    const correctAnswer = currentQuestionInfo.correct_answer;
+    console.log(correctAnswer);
+    const randomIndex = Math.floor(Math.random() * (answersList.length + 1));
+    const newAnswersList = [...answersList];
+    newAnswersList.splice(randomIndex, 0, correctAnswer);
+    const answersAndPosition = {
+      newAnswersList,
+      randomIndex,
+    };
+    return answersAndPosition;
+  }
+
   renderQuestion() {
     const { questionList, questionIndex } = this.state;
     const currentQuestionInfo = questionList.results[questionIndex];
+    this.randomAnswersOrder();
     return (
       <section>
         <h1 data-testid="question-category">
@@ -43,34 +61,22 @@ class Gameplay extends Component {
   }
 
   renderAnswers() {
-    const { questionList, questionIndex } = this.state;
-    const currentQuestionInfo = questionList.results[questionIndex];
-    if (currentQuestionInfo.type === 'multiple') {
-      return (
-        <section>
-          <button type="button" data-testid="correct-answer">
-            {currentQuestionInfo.correct_answer}
-          </button>
-          <button type="button" data-testid="wrong-answer-0">
-            {currentQuestionInfo.incorrect_answers[0]}
-          </button>
-          <button type="button" data-testid="wrong-answer-1">
-            {currentQuestionInfo.incorrect_answers[1]}
-          </button>
-          <button type="button" data-testid="wrong-answer-2">
-            {currentQuestionInfo.incorrect_answers[2]}
-          </button>
-        </section>
-      );
-    }
+    const answersAndPos = this.randomAnswersOrder();
     return (
       <section>
-        <button type="button" data-testid="correct-answer">
-          {currentQuestionInfo.correct_answer}
-        </button>
-        <button type="button" data-testid="wrong-answer-0">
-          {currentQuestionInfo.incorrect_answers[0]}
-        </button>
+        { answersAndPos.newAnswersList.map((answer, index) => {
+          if (answersAndPos.randomIndex === index) {
+            return (
+              <button data-testid="correct-answer" type="button">
+                {answer}
+              </button>);
+          }
+          return (
+            <button data-testid={ `wrong-answer-${index}` } key={ index } type="button">
+              {answer}
+            </button>
+          );
+        })}
       </section>
     );
   }
