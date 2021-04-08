@@ -1,8 +1,10 @@
-import { GET_PLAYER_NAME, GET_TOKEN } from '../actions/actionTypes';
+import { GET_PLAYER_NAME, GET_PLAYER_EMAIL, GET_TOKEN } from '../actions/actionTypes';
 
 const INITIAL_PLAYER_STATE = {
   name: '',
   token: '',
+  email: '',
+  score: 0,
 };
 
 const player = (state = INITIAL_PLAYER_STATE, action) => {
@@ -16,6 +18,11 @@ const player = (state = INITIAL_PLAYER_STATE, action) => {
     return {
       ...state,
       token: action.token,
+    };
+  case GET_PLAYER_EMAIL:
+    return {
+      ...state,
+      email: action.email,
     };
   default:
     return state;
