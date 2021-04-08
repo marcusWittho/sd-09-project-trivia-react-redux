@@ -1,4 +1,5 @@
 import {
+  FETCHING_QUESTIONS,
   QUESTIONS_SUCCESS,
   QUESTIONS_FAILURE,
   LOGIN_EMAIL,
@@ -7,22 +8,27 @@ import {
 } from './actionsTypes';
 import fetchTrivia from '../services/triviaApi';
 
-export const successQuestions = (data) => ({
+const fetchingQuestions = () => ({
+  type: FETCHING_QUESTIONS,
+});
+
+const successQuestions = (data) => ({
   type: QUESTIONS_SUCCESS,
   questions: data.results,
 });
 
-export const failureQuestions = (error) => ({
+const failureQuestions = (error) => ({
   type: QUESTIONS_FAILURE,
   error,
 });
 
 export function questionsThunk() {
-  return (dispatch) => (
-    fetchTrivia()
+  return (dispatch) => {
+    dispatch(fetchingQuestions());
+    return fetchTrivia()
       .then((data) => dispatch(successQuestions(data)))
-      .catch((error) => dispatch(failureQuestions(error)))
-  );
+      .catch((error) => dispatch(failureQuestions(error)));
+  };
 }
 
 export const loginEmail = (email) => ({

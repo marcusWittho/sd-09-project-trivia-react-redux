@@ -19,6 +19,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.inputsValidator = this.inputsValidator.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    console.log('login', 'constructor');
   }
 
   handleChange({ target }) {
@@ -36,6 +37,15 @@ class Login extends React.Component {
     fetchAndSaveQuestions();
     saveEmail(email);
     saveName(name);
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
     this.setState({
       redirect: true,
     });
