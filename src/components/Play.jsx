@@ -1,10 +1,14 @@
 import React from 'react';
 import Header from './PlayHeader';
+import Timer from './Timer';
 
 class Play extends React.Component {
   render() {
     return (
-      <Header />
+      <div>
+        <Header />
+        <Timer />
+      </div>
     );
   }
 }
