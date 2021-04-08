@@ -10,7 +10,7 @@ import Footer from './components/Footer';
 export default class App extends React.Component {
   render() {
     return (
-      <>
+      <div className="app">
         <Header />
         <Switch>
           <Route exact path="/" component={ Login } />
@@ -18,7 +18,7 @@ export default class App extends React.Component {
           <Route path="/settings" component={ GameSettings } />
         </Switch>
         <Footer />
-      </>
+      </div>
     );
   }
 }
