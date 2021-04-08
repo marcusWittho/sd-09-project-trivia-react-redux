@@ -29,6 +29,7 @@ class Feedback extends React.Component {
           { `Você acertou ${questions} questões!` }
         </h3>
         <h3 data-testid="feedback-total-score">{ `Um total de ${points} pontos` }</h3>
+
       </div>
     );
   }
