@@ -2,3 +2,7 @@ export const USER_REGISTER = 'USER_REGISTER';
 export const FETCH_TOKEN = 'FETCH_TOKEN';
 export const RETURN_TOKEN = 'RETURN_TOKEN';
 export const ERROR_TOKEN = 'ERROR_TOKEN';
+
+export const FETCH_QUESTION = 'FETCH_QUESTION';
+export const RETURN_QUESTION = 'RETURN_QUESTION';
+export const ERROR_QUESTION = 'ERROR_QUESTION';
