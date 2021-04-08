@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchGameQuestions } from '../actions';
 import md5 from 'crypto-js/md5';
+import { fetchGameQuestions } from '../actions';
 
 class Game extends React.Component {
-    constructor() {
+  constructor() {
     super();
 
     this.renderPlayerInfo = this.renderPlayerInfo.bind(this);
+  }
+
+  componentDidMount() {
+    const { getToken, dispatchQuestions } = this.props;
+    dispatchQuestions(getToken.token);
   }
 
   renderPlayerInfo() {
@@ -30,11 +35,6 @@ class Game extends React.Component {
     );
   }
 
-  componentDidMount() {
-    const { getToken, dispatchQuestions } = this.props;
-    dispatchQuestions(getToken.token);
-  }
-
   render() {
     const { getQuestions, isLoading } = this.props;
     console.log(isLoading);
@@ -44,9 +44,9 @@ class Game extends React.Component {
     ) : (
       <div>
         <div>Game Page</div>
-    <main>
-        { this.renderPlayerInfo() }
-      </main>
+        <main>
+          { this.renderPlayerInfo() }
+        </main>
         {getQuestions.questions.results.map((item) => (
           <div key={ item.question }>
             <h2 data-testid="question-category">{item.category}</h2>
@@ -82,11 +82,10 @@ class Game extends React.Component {
             )}
           </div>
         ))}
-      </div>
- 
- 
+      </div>);
+  }
+}
 
- 
 Game.propTypes = {
   getToken: PropTypes.objectOf({
     token: PropTypes.string,
