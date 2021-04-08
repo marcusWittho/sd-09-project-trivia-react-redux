@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions, fetchToken, ERROR_CODE } from '../redux/actions';
 import Question from './Question';
-import './GamePaly.css';
+import './GamePlay.css';
 
 class GamePlay extends React.Component {
   constructor(props) {

@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Settings from './components/Settings';
 import './App.css';
-import GamePlay from './components/GamePlay.js';
+import GamePlay from './components/GamePlay';
 
 class App extends React.Component {
   render() {
