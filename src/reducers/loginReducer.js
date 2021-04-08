@@ -2,7 +2,7 @@ import LOGIN from '../actions';
 
 const INITIAL_STATE = {
   name: '',
-  gravatarEmail: '',
+  email: '',
 };
 
 const player = (state = INITIAL_STATE, action) => {
@@ -11,7 +11,7 @@ const player = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       name: action.name,
-      gravatarEmail: action.gravatarEmail,
+      email: action.email,
     };
 
   default:
