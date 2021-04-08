@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import FeedbackHeader from '../components/FeedbackHeader';
 
 export default class Game extends Component {
   render() {
     return (
       <div>
-        Página do Jogo
+        <FeedbackHeader />
       </div>
     );
   }

@@ -31,6 +31,31 @@
   font-weight: 700;
 }
 
+/* FEEDBACK HEADER */
+.feedback-header {
+  background-color: #24324d;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  font-size: calc(10px + 2vmin);
+  justify-content: space-between;
+  min-height: 10vh;
+  padding: 32px;
+}
+
+.header-score {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.header-player-image {
+  border: 1px solid white;
+  border-radius: 50%;
+  height: 40px;
+  margin-right: 16px;
+  width: 40px;
+}
+
 /* HEADER ANIMATION */
 .App {
   text-align: center;
@@ -58,7 +83,7 @@
 
 .App-header {
   align-items: center;
-  background-color: #282c34;
+  background-color: #24324d;
   color: white;
   display: flex;
   flex-direction: column;
