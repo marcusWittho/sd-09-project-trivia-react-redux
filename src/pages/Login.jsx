@@ -19,6 +19,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.inputsValidator = this.inputsValidator.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    console.log('login', 'constructor');
   }
 
   handleChange({ target }) {

@@ -27,12 +27,13 @@ class Play extends React.Component {
 
   componentDidMount() {
     this.startCounterTime();
+    // this.handleAnswers();
   }
 
   componentDidUpdate() {
-    const { questions } = this.props;
+    const { isFetching } = this.props;
     const { isButtonsRandomized } = this.state;
-    if (questions.length > 0 && !isButtonsRandomized) {
+    if (!isFetching && !isButtonsRandomized) {
       this.handleAnswers();
     }
   }
@@ -140,7 +141,11 @@ class Play extends React.Component {
   handleAnswers() {
     const { questionIndex } = this.state;
     const { questions } = this.props;
-    const currentQuestion = questions[questionIndex];
+    let currentQuestion;
+    if (questions) {
+      currentQuestion = questions[questionIndex];
+    }
+    // const currentQuestion = questions[questionIndex];
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
@@ -167,11 +172,19 @@ class Play extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, isFetching } = this.props;
     const { questionIndex, timeQuestion } = this.state;
-    if (questions.length === 0) return <div>Loading...</div>;
-    const currentQuestion = questions[questionIndex];
-    const { category, question } = currentQuestion;
+    if (isFetching) return <div>Loading...</div>;
+    let currentQuestion;
+    let category2;
+    let question2;
+    if (questions) {
+      currentQuestion = questions[questionIndex];
+    }
+    if (currentQuestion) {
+      category2 = currentQuestion.category;
+      question2 = currentQuestion.question;
+    }
     return (
       <main>
         <Header />
@@ -179,12 +192,12 @@ class Play extends React.Component {
           <p
             data-testid="question-category"
           >
-            { category }
+            { category2 }
           </p>
           <p
             data-testid="question-text"
           >
-            { question }
+            { question2 }
           </p>
         </section>
         { this.questionGenerator() }
@@ -196,10 +209,12 @@ class Play extends React.Component {
 
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.questions,
+  isFetching: state.triviaReducer.isFetching,
 });
 
 Play.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Play);
