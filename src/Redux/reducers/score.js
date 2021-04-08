@@ -1,7 +1,7 @@
 import { CURRENT_SCORE } from '../actions';
 
 const INITIAL_CURRENT_SCORE_STATE = {
-  currentScore: 0,
+  currentScore: 10,
 };
 
 const scoreReducer = (state = INITIAL_CURRENT_SCORE_STATE, action) => {
@@ -9,7 +9,7 @@ const scoreReducer = (state = INITIAL_CURRENT_SCORE_STATE, action) => {
   case CURRENT_SCORE:
     return {
       ...state,
-      currentScore: action.currentScore + action.score,
+      currentScore: state.currentScore + action.score,
     };
   default:
     return state;
