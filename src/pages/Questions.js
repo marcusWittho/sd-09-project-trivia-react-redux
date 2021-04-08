@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getQuestionsToStore } from '../actions';
-import saveQuestions from '../reducers/GetQuestions';
 import { getQuestions } from '../services/api';
 
 class Questions extends React.Component {
@@ -37,13 +36,13 @@ class Questions extends React.Component {
         <p data-testid="question-text">{ questions[questionNum].question }</p>
         <p data-testid="correct-answer">{ questions[questionNum].correct_answer }</p>
         {questions[questionNum].incorrect_answers
-          .map((item, index) => <p key={index} data-testid={`wrong-answer-${index}`}>{item}</p>)}
+          .map((item, index) => (
+            <p key={index} data-testid={`wrong-answer-${index}`}>{item}</p>))}
       </>
-    )
+    );
   }
 
   render() {
-    const { questions } = this.props;
     const { loading } = this.state;
     return (
       <div>
