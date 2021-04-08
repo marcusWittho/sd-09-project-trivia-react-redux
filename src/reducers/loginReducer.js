@@ -13,6 +13,7 @@ const loginReducer = (state = INITIAL_STATE, action) => {
       ...state,
       name: action.userInfo.name,
       email: action.userInfo.email,
+      picture: action.userInfo.picture,
     };
   case SEND_TOKEN:
     return {
