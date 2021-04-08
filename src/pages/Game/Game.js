@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string, shape, arrayOf, bool, number } from 'prop-types';
+import { string, shape, arrayOf, bool, number, func } from 'prop-types';
 import { Redirect } from 'react-router';
 import actionDecreaseTime from '../../redux/actions/actionDecreaseTime';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
