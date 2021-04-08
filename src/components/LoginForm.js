@@ -1,57 +1,73 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from '../actions';
 import { StartGameButton, ButtonDefinitions } from './index';
 
 class LoginForm extends React.Component {
-  constructor() {
-    super();
-    this.handleInputs = this.handleInputs.bind(this);
-    this.state = {
-      buttonStatus: true,
-    };
+  constructor(props) {
+    super(props);
+    this.submitLogin = this.submitLogin.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.buttonStatus = this.buttonStatus.bind(this);
+    this.state = { userName: '', email: '' };
   }
 
-  handleInputs() {
-    const { buttonStatus } = this.state;
-    const nameValue = document.getElementById('name-input').value;
-    const emailValue = document.getElementById('email-input').value;
-    if (emailValue !== ''  && nameValue !== '' && buttonStatus === true) {
-      this.setState({
-        buttonStatus: false,
-      });
-    } else if ((emailValue === '' || nameValue === '') && buttonStatus === false) {
-      this.setState({
-        buttonStatus: true,
-      });
-    }
+  componentDidUpdate() {
+    this.submitLogin();
+  }
+
+  submitLogin() {
+    const { submit } = this.props;
+    const { userName, email } = this.state;
+    submit(userName, email);
+  }
+
+  handleChange({ target: { name, value } }) {
+    this.setState({ [name]: value });
+  }
+
+  buttonStatus() {
+    const { userName, email } = this.state;
+    return !((userName !== '') && (email !== ''));
   }
 
   render() {
-    const { buttonStatus } = this.state;
+    const { userName, email } = this.state;
     return (
       <form>
         <label htmlFor="name-input">
           Nome:
           <input
-            onChange={ this.handleInputs }
-            type="text"
-            id="name-input"
             data-testid="input-player-name"
+            id="name-input"
+            name="userName"
+            value={ userName }
+            type="text"
+            onChange={ this.handleChange }
           />
         </label>
         <label htmlFor="email-input">
           Email:
           <input
-            onChange={ this.handleInputs }
-            type="text"
-            id="email-input"
             data-testid="input-gravatar-email"
+            id="email-input"
+            name="email"
+            value={ email }
+            type="text"
+            onChange={ this.handleChange }
           />
         </label>
-        <StartGameButton buttonStatus={ buttonStatus } />
+        <Link to="/question">
+          <StartGameButton buttonStatus={ this.buttonStatus() } />
+        </Link>
         <ButtonDefinitions />
       </form>
     );
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = (dispatch) => ({
+  submit: (name, email) => dispatch(login(name, email)),
+});
+export default connect(null, mapDispatchToProps)(LoginForm);
