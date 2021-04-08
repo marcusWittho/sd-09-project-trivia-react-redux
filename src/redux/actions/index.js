@@ -17,6 +17,7 @@ const setQuestions = (results) => ({
 
 export const getToken = () => async (dispatch) => {
   const data = await opentdbApi();
+  console.log(data);
   localStorage.setItem('token', data);
   dispatch(setTokenCode(data));
 };

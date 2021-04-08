@@ -39,12 +39,11 @@ class loginScreen extends React.Component {
   async handleClick() {
     const { propGetToken, propSetNameAndEmail } = this.props;
     const { name, email } = this.state;
-    console.log(propGetToken);
+    await propGetToken();
+    await propSetNameAndEmail(name, email);
     this.setState({
       login: true,
     });
-    await propGetToken();
-    await propSetNameAndEmail(name, email);
   }
 
   handleValidateEmail() {
@@ -60,9 +59,6 @@ class loginScreen extends React.Component {
         <div>
           <header className="App-header">
             <img src={ logo } className="App-logo" alt="logo" />
-            <p>
-              SUA VEZ
-            </p>
           </header>
         </div>
         <p>Login</p>
