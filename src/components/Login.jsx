@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../App.css';
-import loginPanel from './loginPanel.png';
 import { connect } from 'react-redux';
 import { fetchTrivaApi } from '../actions';
+import loginPanel from './loginPanel.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -101,6 +102,10 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAPI: () => dispatch(fetchTrivaApi()),
-})
+});
+
+Login.propTypes = {
+  fetchAPI: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
