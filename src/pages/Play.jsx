@@ -153,15 +153,18 @@ class Play extends React.Component {
           </p>
         </section>
         { this.questionGenerator() }
-        <p>Tempo: { timeQuestion }</p>
+        <p>{ `Tempo: ${timeQuestion}` }</p>
       </main>
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.questions,
 });
+
 Play.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
 export default connect(mapStateToProps)(Play);
