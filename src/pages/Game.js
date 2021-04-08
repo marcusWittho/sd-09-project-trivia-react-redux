@@ -18,10 +18,14 @@ class Game extends Component {
   async componentDidMount() {
     const token = localStorage.getItem('token');
     const triviaResponse = await requestTrivia(token);
+    const errorCode = 3;
+    const { response_code: responseCode, results } = triviaResponse;
 
-    const { response_code, results } = triviaResponse;
+    this.validateResponseFromApi(responseCode, errorCode, results);
+  }
 
-    if (response_code === 3) {
+  validateResponseFromApi(responseCode, errorCode, results) {
+    if (responseCode === errorCode) {
       this.setState({
         error: true,
       });
@@ -41,42 +45,48 @@ class Game extends Component {
 
   renderCorrectAnswer(correctAnswer) {
     return (
-      <button key={correctAnswer} data-testid="correct-answer">
-        {correctAnswer}
+      <button type="button" key={ correctAnswer } data-testid="correct-answer">
+        { correctAnswer }
       </button>
     );
   }
 
   renderIncorrectAnswers(incorrectAnswers) {
     return incorrectAnswers.map((answer, index) => (
-      <button key={answer} data-testid={`wrong-answer-${index}`}>
-        {answer}
+      <button type="button" key={ answer } data-testid={ `wrong-answer-${index}` }>
+        { answer }
       </button>
     ));
   }
 
-  renderAnswer(incorrect_answers, correct_answer) {
-    const incorrectButtons = this.renderIncorrectAnswers(incorrect_answers);
-    const correctButton = this.renderCorrectAnswer(correct_answer);
+  renderAnswer(incorrectAnswers, correctAnswer) {
+    const incorrectButtons = this.renderIncorrectAnswers(incorrectAnswers);
+    const correctButton = this.renderCorrectAnswer(correctAnswer);
     const answerArray = [...incorrectButtons, correctButton];
+    const randomModifier = 0.5;
 
-    return answerArray.sort(() => Math.random() - 0.5);
+    return answerArray.sort(() => Math.random() - randomModifier);
   }
 
   renderQuestion() {
     const { triviaArray } = this.state;
     const position = this.generateRandomNumber(triviaArray.length - 1);
     if (triviaArray.length > 0) {
-      const { incorrect_answers, correct_answer } = triviaArray[position];
+      const {
+        incorrect_answers: incorrectAnswers,
+        correct_answer: correctAnswer,
+      } = triviaArray[position];
       return (
         <div>
           <p data-testid="question-category">
-            Category: {triviaArray[position].category}
+            Category:
+            {triviaArray[position].category}
           </p>
           <p data-testid="question-text">
-            Question: {triviaArray[position].question}
+            Question:
+            {triviaArray[position].question}
           </p>
-          {this.renderAnswer(incorrect_answers, correct_answer)}
+          {this.renderAnswer(incorrectAnswers, correctAnswer)}
         </div>
       );
     }
