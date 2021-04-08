@@ -5,5 +5,5 @@
 
 .wrong-answers {
   background-color : rgb(red);
-  border: 3px solid rgb(red);
+  border: 3px solid red;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import options from './questionsShape';
-import Choices from '../CSS-Components/Choices.css';
+import '../CSS-Components/Choices.css';
 
 class CardQuestion extends React.Component {
   constructor(props) {
