@@ -1,6 +1,8 @@
 export const GET_GRAVATAR = 'GET_GRAVATAR';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
+export const TIME_OVER = 'TIME_OVER';
+export const TIME_STARTER = 'TIME_STARTER';
 
 export const gravatarHash = (hashEmail, name) => ({
   type: GET_GRAVATAR,
@@ -34,3 +36,11 @@ export function fetchThunkToken() {
     return dispatch(fetchQuestions(tokenObj.token));
   };
 }
+
+export const timeOver = () => ({
+  type: TIME_OVER,
+});
+
+export const timeStarter = () => ({
+  type: TIME_STARTER,
+});
