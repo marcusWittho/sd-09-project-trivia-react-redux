@@ -4,21 +4,43 @@ import PropTypes from 'prop-types';
 const shuffle = require('knuth-shuffle-seeded');
 
 class Question extends React.Component {
-  scrambleQuestions(correctAnswer, incorrectAnswers) {
+  constructor(props) {
+    super(props);
+    const { questionData: { correctAnswer, incorrectAnswers } } = this.props;
+    this.state = {
+      givenAnswer: -1,
+      scrambledAnswers: shuffle(([correctAnswer]
+        .concat(incorrectAnswers)
+        .map((answer, index) => ({ answer, index })))),
+    };
+  }
+
+  renderAternatives() {
+    const { scrambledAnswers, givenAnswer } = this.state;
     return (
       <>
-        { shuffle(([correctAnswer]
-          .concat(incorrectAnswers)
-          .map((answer, index) => ({ answer, index })))
+        { scrambledAnswers
+          .map((answerObj) => {
+            if (givenAnswer >= 0) {
+              return (answerObj.index)
+                ? Object.assign(answerObj, { feedback: '3px solid rgb(255, 0, 0)' })
+                : Object.assign(answerObj, { feedback: '3px solid rgb(6, 240, 15)' });
+            }
+            return Object.assign(answerObj, { feedback: 'red' });
+          })
           .map((answerObj) => (
             <button
               type="button"
               key={ answerObj.index }
-              data-testid={ (answerObj.index) ? 'correct-answer' : 'wrong-answer' }
+              data-testid={ (!answerObj.index) ? 'correct-answer' : 'wrong-answer' }
+              style={ { border: answerObj.feedback } }
+              onClick={ () => {
+                this.setState({ givenAnswer: answerObj.index });
+              } }
             >
               { answerObj.answer }
             </button>
-          )))}
+          ))}
       </>
     );
   }
@@ -30,8 +52,6 @@ class Question extends React.Component {
         type,
         difficulty,
         question,
-        correctAnswer,
-        incorrectAnswers,
       },
     } = this.props;
     return (
@@ -46,7 +66,7 @@ class Question extends React.Component {
         >
           { question }
         </p>
-        { this.scrambleQuestions(correctAnswer, incorrectAnswers) }
+        { this.renderAternatives.bind(this).call() }
         <p>{ type }</p>
         <p>{ difficulty }</p>
       </div>
