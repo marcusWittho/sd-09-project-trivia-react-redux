@@ -72,14 +72,14 @@ class Game extends Component {
       } = triviaArray[position];
       return (
         <div>
-          <p data-testid="question-category">
+          <span data-testid="question-category">
             Category:
             {triviaArray[position].category}
-          </p>
-          <p data-testid="question-text">
+          </span>
+          <span data-testid="question-text">
             Question:
             {triviaArray[position].question}
-          </p>
+          </span>
           {this.renderAnswer(incorrectAnswers, correctAnswer)}
         </div>
       );
