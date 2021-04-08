@@ -31,7 +31,10 @@ class InfoGames extends Component {
   renderQuestions() {
     const { questions, indice } = this.state;
     const crrQuestion = questions[indice];
-    console.log(crrQuestion);
+    const alternativesOld = crrQuestion.incorrect_answers
+      .concat(crrQuestion.correct_answer);
+    const numberMagic = 0.5;
+    const alternatives = alternativesOld.sort(() => Math.random() - numberMagic);
     return (
       <div>
         <Header />
@@ -39,25 +42,24 @@ class InfoGames extends Component {
           {crrQuestion.category}
         </h1>
         <h2 data-testid="question-text">{crrQuestion.question}</h2>
-        <button
-          type="button"
-          onClick={
-            () => this.setState((prevState) => ({ indice: prevState.indice + 1 }))
-          }
-        >
-          <p data-testid="correct-answer">{crrQuestion.correct_answer}</p>
-        </button>
-        {crrQuestion.incorrect_answers.map((incorrectAnswer, index) => (
+        {alternatives.map((alternative, index) => (
           <button
-            type="button"
             key={ Math.random() }
+            type="button"
             onClick={
               () => this.setState((prevState) => ({ indice: prevState.indice + 1 }))
             }
           >
-            <p data-testid={ `wrong-answer-${index}` } key={ Math.random() }>
-              {incorrectAnswer}
-            </p>
+            {alternative === crrQuestion.correct_answer ? (
+              <p data-testid="correct-answer">{alternative}</p>
+            ) : (
+              <p
+                data-testid={ `wrong-answer-${index}` }
+                key={ Math.random() }
+              >
+                {alternative}
+              </p>
+            ) }
           </button>
         ))}
       </div>
@@ -66,8 +68,9 @@ class InfoGames extends Component {
 
   render() {
     const { isLoading, indice } = this.state;
+    const nLimite = 4;
     return (
-      isLoading || indice > 4 ? <p>Loading...</p> : this.renderQuestions()
+      isLoading || indice > nLimite ? <p>Loading...</p> : this.renderQuestions()
     );
   }
 }
