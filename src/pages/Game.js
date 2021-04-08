@@ -14,6 +14,7 @@ class Game extends Component {
 
     this.renderAnswer = this.renderAnswer.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   async componentDidMount() {
@@ -38,9 +39,25 @@ class Game extends Component {
     });
   }
 
+  nextQuestion() {
+    const { position, triviaArray } = this.state;
+    if (position < triviaArray.length - 1) {
+      this.setState({
+        position: position + 1,
+      });
+
+      this.renderQuestion();
+    }
+  }
+
   renderCorrectAnswer(correctAnswer) {
     return (
-      <button type="button" key={ correctAnswer } data-testid="correct-answer">
+      <button
+        type="button"
+        key={ correctAnswer }
+        data-testid="correct-answer"
+        onClick={ this.nextQuestion }
+      >
         { correctAnswer }
       </button>
     );
@@ -65,6 +82,7 @@ class Game extends Component {
 
   renderQuestion() {
     const { triviaArray, position } = this.state;
+
     if (triviaArray.length > 0) {
       const {
         incorrect_answers: incorrectAnswers,
@@ -91,7 +109,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        <main>{error ? <p>Erro no carregamento</p> : this.renderQuestion()}</main>
+        { error ? <div>Erro de carregamento</div> : this.renderQuestion() }
       </div>
     );
   }
