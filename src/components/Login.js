@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { loginAction } from '../actions/loginAction';
 import { getThunkToken } from '../actions/apiTriviaAction';
+import { playerAction } from '../actions/gameAction';
 
 class Login extends React.Component {
   constructor(props) {
@@ -42,16 +43,18 @@ class Login extends React.Component {
   }
 
   clickButton() {
-    const { setQuestions } = this.props;
+    const { setQuestions, setPlayerAction } = this.props;
     setQuestions();
 
-    const { name } = this.state;
+    const { name, email } = this.state;
 
     const player = {
       name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
     };
-
-    localStorage.setItem('state', JSON.stringify(player));
+    setPlayerAction(player);
   }
 
   render() {
@@ -101,11 +104,13 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   setValue: (name, value) => dispatch(loginAction(name, value)),
   setQuestions: () => dispatch(getThunkToken()),
+  setPlayerAction: (player) => dispatch(playerAction(player)),
 });
 
 Login.propTypes = {
-  setValue: PropTypes.func.isRequired,
-  setQuestions: PropTypes.func.isRequired,
-};
+  setValue: PropTypes.func,
+  setQuestions: PropTypes.func,
+  setPlayerAction: PropTypes.func,
+}.isRequired;
 
 export default connect(null, mapDispatchToProps)(Login);
