@@ -1,17 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
+import { timeStarter } from '../redux/actions';
 
 class GamePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { questionNumber: 0 };
+    this.state = {
+      questionNumber: 0,
+      allowNextButton: 'none',
+      time: 30,
+    };
 
     this.createAnswers = this.createAnswers.bind(this);
+    this.handleNext = this.handleNext.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.countDown = this.countDown.bind(this);
   }
 
   changeAnswerColor() {
@@ -26,6 +33,7 @@ class GamePage extends React.Component {
 
   handleClick() {
     this.changeAnswerColor();
+    this.setState({ allowNextButton: 'block' });
   }
 
   createAnswers() {
@@ -64,29 +72,61 @@ class GamePage extends React.Component {
     return arrayOfElements;
   }
 
+  handleNext(index) {
+    const { restartTime } = this.props;
+    this.setState({
+      questionNumber: index + 1,
+      allowNextButton: 'none',
+      time: 30,
+    });
+    restartTime();
+  }
+
+  countDown() {
+    this.setState((state) => ({
+      time: state.time - 1,
+    }));
+  }
+
   render() {
-    const { questionNumber } = this.state;
+    const { questionNumber, allowNextButton, time } = this.state;
     const { questions, isFetching } = this.props;
-    if (isFetching) {
-      return <div>Loading</div>;
-    }
+    const totalIndex = 5;
+    if (isFetching) return <div>Loading</div>;
+
     return (
       <div>
-        <Header />
-        <Timer />
-        <h2 data-testid="question-category">
-          Category:
-          {questions[questionNumber].category}
-        </h2>
-        <h3 data-testid="question-text">
-          Question:
-          {questions[questionNumber].question}
-        </h3>
-        <p>
-          answer:
-          {this.createAnswers()}
-        </p>
-        <Link to="/Feedback">FEEDBACK </Link>
+        { questionNumber === totalIndex ? <Redirect to="/feedback" /> : (
+          <div>
+            <Header />
+            <Timer
+              noClick={ this.handleClick }
+              time={ time }
+              countDown={ this.countDown }
+            />
+            <h2 data-testid="question-category">
+              Category:
+              {questions[questionNumber].category}
+            </h2>
+            <h3 data-testid="question-text">
+              Question:
+              {questions[questionNumber].question}
+            </h3>
+            <p>
+              answer:
+              {this.createAnswers()}
+            </p>
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ () => this.handleNext(questionNumber) }
+              style={ { display: allowNextButton } }
+            >
+              Próxima
+            </button>
+            <Link to="/feedback" />
+          </div>
+        ) }
       </div>
     );
   }
@@ -98,9 +138,13 @@ const mapStateToProps = (state) => ({
   timeOver: state.gameReducer.timeOver,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  restartTime: () => dispatch(timeStarter()),
+});
+
 GamePage.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.string),
   isFetching: PropTypes.bool,
 }.isRequired;
 
-export default connect(mapStateToProps)(GamePage);
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

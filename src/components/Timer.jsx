@@ -6,7 +6,6 @@ import { timeOver } from '../redux/actions';
 class Timer extends Component {
   constructor(props) {
     super(props);
-    this.state = { time: 30 };
     this.timer = this.timer.bind(this);
   }
 
@@ -14,17 +13,24 @@ class Timer extends Component {
     this.timer();
   }
 
+  componentDidUpdate(prevProp) {
+    const { time } = this.props;
+    const magicNumber = 30;
+    if (prevProp.time === 0 && time === magicNumber) {
+      this.timer();
+    }
+  }
+
   timer() {
     const magicSecond = 1000;
-    const { finishTime } = this.props;
+    const { finishTime, noClick, countDown } = this.props;
 
     const interval = setInterval(() => {
-      const { time } = this.state;
+      const { time } = this.props;
       if (time > 0) {
-        this.setState((state) => ({
-          time: state.time - 1,
-        }));
+        countDown();
       } else {
+        noClick();
         finishTime();
         clearInterval(interval);
       }
@@ -32,7 +38,7 @@ class Timer extends Component {
   }
 
   render() {
-    const { time } = this.state;
+    const { time } = this.props;
     return (
       <div>
         Tempo:
