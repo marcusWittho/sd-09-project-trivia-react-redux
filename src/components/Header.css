@@ -2,7 +2,7 @@
   align-items: center;
   background-color: rgba(146, 35, 193, 1);
   display: flex;
-  font-family: 'Dela Gothic One', cursive;
+  font-family: Dela Gothic One , cursive;
   justify-content: space-between;
 }
 
@@ -21,7 +21,7 @@
 }
 
 p {
-  color: rgb(255, 255, 255);
-  font-weight: bold;
+  color: white;
   font-size: 20px;
+  font-weight: 700;
 }
