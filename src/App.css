@@ -32,8 +32,8 @@
 }
 
 .gravatar {
-  max-height: 3vw;
   margin: auto;
+  max-height: 3vw;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {

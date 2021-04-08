@@ -1,12 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Timer from './Timer';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      reset: false,
+      disableAnswers: false,
+      stopTimer: false,
+    };
     this.getRandomIntInclusive = this.getRandomIntInclusive.bind(this);
     this.renderAlternatives = this.renderAlternatives.bind(this);
     this.toggleNextQuestionButton = this.toggleNextQuestionButton.bind(this);
+    this.setResetFalse = this.setResetFalse.bind(this);
+    this.disableAnswersButtons = this.disableAnswersButtons.bind(this);
   }
 
   // by https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -16,25 +25,38 @@ class Question extends React.Component {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  setResetFalse() {
+    this.setState({ reset: false });
+  }
+
   toggleNextQuestionButton({ target }) {
     if (target.id === 'btn-next') {
       target.style.visibility = 'hidden';
       const { showNextQuestion } = this.props;
       showNextQuestion();
+      this.setState({ reset: true, disableAnswers: false, stopTimer: false });
     } else {
       const btn = document.getElementById('btn-next');
       btn.style.visibility = 'visible';
     }
   }
 
+  disableAnswersButtons() {
+    this.setState({ disableAnswers: true, stopTimer: true });
+    const btn = document.getElementById('btn-next');
+    btn.style.visibility = 'visible';
+  }
+
   renderAlternatives() {
     const { question } = this.props;
+    const { disableAnswers } = this.state;
     const correctAnswer = (
       <button
         key={ question.correctAnswer }
         onClick={ this.toggleNextQuestionButton }
         type="button"
         data-testid="correct-answer"
+        disabled={ disableAnswers }
       >
         { question.correct_answer }
       </button>
@@ -45,6 +67,7 @@ class Question extends React.Component {
         onClick={ this.toggleNextQuestionButton }
         type="button"
         data-testid={ `wrong-answer-${index}` }
+        disabled={ disableAnswers }
       >
         { answer }
       </button>));
@@ -70,6 +93,7 @@ class Question extends React.Component {
 
   render() {
     const { question } = this.props;
+    const { reset, stopTimer } = this.state;
     return (
       <div className="main-question">
         <div className="question-description">
@@ -92,6 +116,12 @@ class Question extends React.Component {
             Próxima
           </button>
         </div>
+        <Timer
+          reset={ reset }
+          toggleReset={ this.setResetFalse }
+          disableAnswers={ this.disableAnswersButtons }
+          stopTimer={ stopTimer }
+        />
       </div>
     );
   }
