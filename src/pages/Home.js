@@ -2,33 +2,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+// import { fetchQuestions, getQuestions } from '../actions/';
 import { questionsAPI } from '../services/api';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      questionsList: {},
-    }
+    this.getQuestions = this.getQuestions.bind(this)
   }
 
   componentDidMount() {
-    this.fetchQuestions();
+    // this.getQuestions();
   }
-
-  async fetchQuestions() {
-    const questions = await questionsAPI();
-    this.setState({
-      questionsList: questions,
-    })
+  async getQuestions() {
+    const { token } = this.props;
+    const questions = await questionsAPI(token);
+    console.log(questions)
+    return questions;
   }
 
   render() {
-    const { nickname, email } = this.props;
+    
+    const { nickname, email, questionsList, token } = this.props;
     const hashEmail = md5(email).toString();
-    const { questionsList } = this.state;
-    console.log(Object.values(questionsList)[1]);
-
+    console.log(`Token: ${token}`)
+    console.log(`Hash: ${hashEmail}`)
+    this.getQuestions()
     return (
       <div>
         <header>
@@ -48,7 +47,7 @@ class Home extends Component {
             data-testid="question-category"
           >
             Categoria:
-            {/* { questionsList.results[3].category } */}
+            { console.log(this.getQuestions()) }
           </p>
           <p data-testid="question-text">Pergunta</p>
           <button data-testid="correct-answer">Alternativa 1</button>
@@ -64,11 +63,19 @@ class Home extends Component {
 Home.propTypes = {
   nickname: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  // questionsList: PropTypes.objectOf({}).isRequired,
+  dispatchQuestions: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
   nickname: state.user.nickname,
+  // questionsList: state.questionsList,
+  token: state.game.token,
 });
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchQuestions: (token) => dispatch(questionsAPI(token))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

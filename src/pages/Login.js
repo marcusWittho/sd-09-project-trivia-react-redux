@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { saveLoginInfo } from '../actions';
-import { tokenAPI } from '../services/api';
+import { saveLoginInfo, fetchToken } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -16,6 +15,15 @@ class Login extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidUpdate() {
+    this.addLocalStorage();
+  }
+
+  addLocalStorage() {
+    const { token } = this.props;
+    localStorage.setItem('token', token.token);
+  }
+
   handleChange({ target }) {
     const { name } = target;
     this.setState({
@@ -23,16 +31,11 @@ class Login extends Component {
     });
   }
 
-  async fetchToken() {
-    const token = await tokenAPI();
-    localStorage.setItem('token', token);
-  }
-
-  handleClick() {
+  async handleClick() {
     const { email, nickname } = this.state;
-    const { loginData } = this.props;
+    const { loginData, tokenData, token } = this.props;
     loginData(email, nickname);
-    this.fetchToken();
+    await tokenData(token);
   }
 
   render() {
@@ -88,8 +91,13 @@ Login.propTypes = {
   loginData: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  token: state.game.token,
+})
+
 const mapDispatchToProps = (dispatch) => ({
   loginData: (email, nickname) => dispatch(saveLoginInfo(email, nickname)),
+  tokenData: (token) => dispatch(fetchToken(token)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
