@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import { Redirect, Link } from 'react-router-dom';
 import { bool, shape } from 'prop-types';
 
 class Ranking extends React.Component {
@@ -10,7 +10,14 @@ class Ranking extends React.Component {
     if (!validLogin) return <Redirect to="/" />;
     return (
       <section>
-        <h1 data-testid="ranking-title">Hanking</h1>
+        <div>
+          <h1 data-testid="ranking-title">Hanking</h1>
+          <Link exact to="/">
+            <button type="button" data-testid="btn-go-home">
+              Inicio
+            </button>
+          </Link>
+        </div>
       </section>
     );
   }
