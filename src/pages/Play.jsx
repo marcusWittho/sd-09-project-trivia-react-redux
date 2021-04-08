@@ -14,12 +14,15 @@ class Play extends React.Component {
       isButtonsRandomized: false,
       timeQuestion: 30,
       isDisabled: false,
+      questionLevel: '',
     };
     this.handleAnswers = this.handleAnswers.bind(this);
     this.toggle = this.toggle.bind(this);
     this.questionGenerator = this.questionGenerator.bind(this);
     this.startCounterTime = this.startCounterTime.bind(this);
     this.decrementCounterTime = this.decrementCounterTime.bind(this);
+    this.scoreCalculator = this.scoreCalculator.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +68,35 @@ class Play extends React.Component {
     });
   }
 
+  handleClick() {
+    this.toggle();
+    this.scoreCalculator();
+  }
+
+  scoreCalculator() {
+    const { timeQuestion, questionLevel } = this.state;
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    const magicNumber = 10;
+    const previousStorage = JSON.parse(localStorage.getItem('state'));
+    const { player: { score } } = previousStorage;
+    switch (questionLevel) {
+    case questionLevel === 'hard':
+      previousStorage.player.score = score + (magicNumber + (timeQuestion * hard));
+      localStorage.setItem('state', JSON.stringify(previousStorage));
+      break;
+    case questionLevel === 'medium':
+      previousStorage.player.score = score + (magicNumber + (timeQuestion * medium));
+      localStorage.setItem('state', JSON.stringify(previousStorage));
+      break;
+    default:
+      previousStorage.player.score = score + (magicNumber + (timeQuestion * easy));
+      localStorage.setItem('state', JSON.stringify(previousStorage));
+      break;
+    }
+  }
+
   questionGenerator() {
     const { randomized, addClass, isDisabled } = this.state;
     return (
@@ -91,7 +123,7 @@ class Play extends React.Component {
                 key={ index }
                 data-testid="correct-answer"
                 className={ addClass ? 'success' : 'riddle' }
-                onClick={ this.toggle }
+                onClick={ this.handleClick }
                 disabled={ isDisabled }
               >
                 { answer }
@@ -112,7 +144,11 @@ class Play extends React.Component {
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
+      difficulty,
     } = currentQuestion;
+    this.setState({
+      questionLevel: difficulty,
+    });
     const correct = {
       isTrue: true,
       answer: correctAnswer,

@@ -36,6 +36,15 @@ class Login extends React.Component {
     fetchAndSaveQuestions();
     saveEmail(email);
     saveName(name);
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
     this.setState({
       redirect: true,
     });
