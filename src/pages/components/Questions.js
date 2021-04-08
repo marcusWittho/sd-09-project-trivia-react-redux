@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import * as Api from '../../service/Api';
 
 class Questions extends React.Component {
@@ -20,15 +21,16 @@ class Questions extends React.Component {
 
   async getQuestions() {
     const { questionIndex } = this.state;
-    const questions = await Api.fetchQuestions();
-    const answers = [
-      questions[questionIndex].correct_answer,
-      ...questions[questionIndex].incorrect_answers,
-    ];
+    const { token } = this.props;
+    const questions = await Api.fetchQuestions(token);
+    console.log(questions);
     this.setState({
       category: questions[questionIndex].category,
       question: questions[questionIndex].question,
-      alternatives: answers.sort(),
+      alternatives: [
+        questions[questionIndex].correct_answer,
+        ...questions[questionIndex].incorrect_answers,
+      ].sort(),
       correctAnswer: questions[questionIndex].correct_answer,
     });
   }
@@ -39,7 +41,7 @@ class Questions extends React.Component {
     let indexQuestion = number;
     return (
       <div>
-        <h4 data-testeid="question-category">{ category }</h4>
+        <h4 data-testid="question-category">{ category }</h4>
         <p data-testid="question-text">{ question }</p>
         {alternatives.map((alternative, index) => {
           if (alternative === correctAnswer) {
@@ -67,4 +69,8 @@ class Questions extends React.Component {
   }
 }
 
-export default Questions;
+const mapStateToProps = (state) => ({
+  token: state.loginUser.token,
+});
+
+export default connect(mapStateToProps)(Questions);
