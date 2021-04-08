@@ -6,8 +6,7 @@ import questions from './gameQuestions';
 const reducers = combineReducers({
   token,
   questions,
-  player, 
-  token,
+  player,
 });
 
 export default reducers;
