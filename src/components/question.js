@@ -20,7 +20,7 @@ class Question extends React.Component {
         >
           {correctAnswer}
         </button>
-        {incorrectAnswers.map((element, i) => (
+        {incorrectAnswers.map((element) => (
           <button
             // data-testid={ `wrong-answer-${i}` }
             data-testid="wrong-answer"
