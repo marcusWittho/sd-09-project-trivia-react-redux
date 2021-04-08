@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { saveLoginInfo } from '../actions';
+import { saveLoginInfo } from '../actions/user';
 import tokenAPI from '../services/api';
 
 class Login extends Component {
@@ -25,7 +25,6 @@ class Login extends Component {
 
   async fetchToken() {
     const token = await tokenAPI();
-    console.log(token);
     localStorage.setItem('token', token);
   }
 
