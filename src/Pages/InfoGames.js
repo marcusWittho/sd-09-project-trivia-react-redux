@@ -31,6 +31,7 @@ class InfoGames extends Component {
   renderQuestions() {
     const { questions, indice } = this.state;
     const crrQuestion = questions[indice];
+    console.log(crrQuestion);
     return (
       <div>
         <Header />
@@ -64,9 +65,9 @@ class InfoGames extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, indice } = this.state;
     return (
-      isLoading ? <p>Loading...</p> : this.renderQuestions()
+      isLoading || indice > 4 ? <p>Loading...</p> : this.renderQuestions()
     );
   }
 }
