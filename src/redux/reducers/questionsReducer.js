@@ -1,29 +1,29 @@
 import {
-  REQUEST_TOKEN,
-  REQUEST_TOKEN_SUCCESS,
-  REQUEST_TOKEN_FAILURE,
+  REQUEST_QUESTIONS,
+  REQUEST_QUESTIONS_SUCCESS,
+  REQUEST_QUESTIONS_FAILURE,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   isFetching: false,
-  token: '',
+  questions: [],
   error: {},
 };
 
-const tokenReducer = (state = INITIAL_STATE, action) => {
+const questionsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case REQUEST_TOKEN:
+  case REQUEST_QUESTIONS:
     return {
       ...state,
       isFetching: true,
     };
-  case REQUEST_TOKEN_SUCCESS:
+  case REQUEST_QUESTIONS_SUCCESS:
     return {
       ...state,
       isFetching: false,
-      token: action.data.token,
+      questions: action.data,
     };
-  case REQUEST_TOKEN_FAILURE:
+  case REQUEST_QUESTIONS_FAILURE:
     return {
       ...state,
       isFetching: false,
@@ -34,4 +34,4 @@ const tokenReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default tokenReducer;
+export default questionsReducer;

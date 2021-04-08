@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import TriviaPage from './pages/TriviaPage';
 import Configuration from './pages/Configuration';
 import './App.css';
+import Feedback from './pages/Feedback';
 
 export default class App extends React.Component {
   render() {
@@ -12,6 +13,7 @@ export default class App extends React.Component {
         <Route exact path="/" component={ Login } />
         <Route path="/trivia" component={ TriviaPage } />
         <Route path="/config" component={ Configuration } />
+        <Route path="/feedback" component={ Feedback } />
       </Switch>
     );
   }

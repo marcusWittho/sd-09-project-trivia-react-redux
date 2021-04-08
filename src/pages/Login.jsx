@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import fetchToken from '../redux/actions';
+import { fetchToken, saveLogin } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -38,12 +38,50 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { getToken } = this.props;
+    const { getToken, loginAction } = this.props;
+    const { nameInput, emailInput } = this.state;
+    loginAction({ emailInput, nameInput });
     getToken();
   }
 
+  renderNameInput() {
+    const { nameInput } = this.state;
+    return (
+      <label htmlFor="name-input">
+        Nome:
+        <input
+          data-testid="input-player-name"
+          type="text"
+          id="name-input"
+          name="nameInput"
+          value={ nameInput }
+          onChange={ this.handleChange }
+          autoComplete="off"
+        />
+      </label>
+    );
+  }
+
+  renderEmailInput() {
+    const { emailInput } = this.state;
+    return (
+      <label htmlFor="email-input">
+        Email:
+        <input
+          data-testid="input-gravatar-email"
+          type="email"
+          id="email-input"
+          name="emailInput"
+          value={ emailInput }
+          onChange={ this.handleChange }
+          autoComplete="off"
+        />
+      </label>
+    );
+  }
+
   render() {
-    const { nameInput, emailInput, disabledButton } = this.state;
+    const { disabledButton } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -51,28 +89,8 @@ class Login extends React.Component {
         </header>
         <main>
           <h1>Login</h1>
-          <label htmlFor="name-input">
-            Nome:
-            <input
-              data-testid="input-player-name"
-              type="text"
-              id="name-input"
-              name="nameInput"
-              value={ nameInput }
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="email-input">
-            Email:
-            <input
-              data-testid="input-gravatar-email"
-              type="email"
-              id="email-input"
-              name="emailInput"
-              value={ emailInput }
-              onChange={ this.handleChange }
-            />
-          </label>
+          { this.renderNameInput() }
+          { this.renderEmailInput() }
           <Link to="/trivia">
             <button
               data-testid="btn-play"
@@ -92,12 +110,14 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  getToken: fetchToken,
-};
+const mapDispatchToProps = (dispatch) => ({
+  getToken: () => dispatch(fetchToken()),
+  loginAction: (obj) => dispatch(saveLogin(obj)),
+});
 
 Login.propTypes = {
   getToken: PropTypes.func.isRequired,
+  loginAction: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
