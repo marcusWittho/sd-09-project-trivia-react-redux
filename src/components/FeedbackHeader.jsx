@@ -15,7 +15,7 @@ export default class FeedbackHeader extends Component {
             data-testid="header-player-name"
             className="header-player-name"
           >
-            Nome jogador
+            Nome da pessoa
           </span>
         </div>
         <span
