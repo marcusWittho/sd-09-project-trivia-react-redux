@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as Api from '../../service/Api';
+import '../../styles/components/Questions.css';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -12,8 +13,10 @@ class Questions extends React.Component {
       alternatives: [],
       correctAnswer: '',
       questionIndex: 0,
+      isSelected: false,
     };
     this.getQuestions = this.getQuestions.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +27,6 @@ class Questions extends React.Component {
     const { questionIndex } = this.state;
     const { token } = this.props;
     const questions = await Api.fetchQuestions(token);
-    console.log(questions);
     this.setState({
       category: questions[questionIndex].category,
       question: questions[questionIndex].question,
@@ -36,8 +38,14 @@ class Questions extends React.Component {
     });
   }
 
+  handleClick() {
+    this.setState({
+      isSelected: true,
+    });
+  }
+
   render() {
-    const { category, question, alternatives, correctAnswer } = this.state;
+    const { category, question, alternatives, correctAnswer, isSelected } = this.state;
     const number = -1;
     let indexQuestion = number;
     return (
@@ -50,7 +58,9 @@ class Questions extends React.Component {
               <button
                 type="button"
                 key={ index }
+                className={ (isSelected) ? 'correct-answer' : undefined }
                 data-testid="correct-answer"
+                onClick={ this.handleClick }
               >
                 { alternative }
               </button>);
@@ -60,7 +70,9 @@ class Questions extends React.Component {
             <button
               type="button"
               key={ index }
+              className={ (isSelected) ? 'wrong-answer' : undefined }
               data-testid={ `wrong-answer-${indexQuestion}` }
+              onClick={ this.handleClick }
             >
               { alternative }
             </button>);
