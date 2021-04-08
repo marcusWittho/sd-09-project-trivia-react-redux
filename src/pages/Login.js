@@ -58,6 +58,7 @@ class Login extends React.Component {
 
   render() {
     const { name, email, login, button, settings } = this.state;
+    const a = name;
     return (
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
@@ -99,7 +100,7 @@ class Login extends React.Component {
           >
             Configurações
           </button>
-          { login ? <Redirect to="/game" /> : '' }
+          { login ? <Redirect to={ { pathname: '/game', state: { email, a } } } /> : '' }
           { settings ? <Redirect to="/settings" /> : '' }
         </form>
       </header>
