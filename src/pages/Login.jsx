@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
-import { fetchTrivaApi } from '../actions';
+import { Link } from 'react-router-dom';
+import { fetchTrivaApi, requestUserInfo } from '../actions';
 import SettingsButton from '../components/SettingsButton';
 import loginPanel from './loginPanel.png';
 import '../App.css';
@@ -19,6 +21,13 @@ class Login extends React.Component {
     this.fetchToken = this.fetchToken.bind(this);
   }
 
+  getUserInfo(email, name) {
+    const { requestUserInfoAction } = this.props;
+    const hash = md5(email).toString();
+    console.log(hash);
+    requestUserInfoAction(email, name, hash);
+  }
+
   changeState({ target: { id, value } }) {
     const { loginEmail, loginName } = this.state;
 
@@ -31,13 +40,15 @@ class Login extends React.Component {
     }
   }
 
-  async fetchToken() {
+  async fetchToken(email, name) {
     const { fetchAPI, token } = this.props;
     await fetchAPI();
     localStorage.setItem('token', token);
+    this.getUserInfo(email, name);
   }
 
   fields(changeState, buttonSubmit) {
+    const { loginEmail, loginName } = this.state;
     return (
       <>
         <label htmlFor="loginEmail">
@@ -65,14 +76,16 @@ class Login extends React.Component {
           />
         </label>
         <br />
-        <input
-          data-testid="btn-play"
-          type="button"
-          value="Jogar"
-          className="login-button"
-          onClick={ this.fetchToken }
-          disabled={ buttonSubmit }
-        />
+        <Link to="/main-page">
+          <input
+            data-testid="btn-play"
+            type="button"
+            value="Jogar"
+            className="login-button"
+            onClick={ () => this.fetchToken(loginEmail, loginName) }
+            disabled={ buttonSubmit }
+          />
+        </Link>
         <SettingsButton />
       </>
     );
@@ -113,11 +126,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAPI: () => dispatch(fetchTrivaApi()),
+  requestUserInfoAction: (email, name, hash) => (
+    dispatch(requestUserInfo(email, name, hash))),
 });
 
 Login.propTypes = {
   fetchAPI: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  requestUserInfoAction: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
