@@ -33,11 +33,8 @@ class GameScreen extends Component {
     this.setState(
       { loading: true },
       async () => {
-        const token = (
-          '873b6065d4597e3aec202abfb40b4f2c051d439faac20537198450905ff92fd1'
-        );
         const { getQuestionsAPI } = this.props;
-        const test = await getQuestionsAPI(token);
+        const test = await getQuestionsAPI(localStorage.getItem('token'));
         this.setState({
           questions: test.questions.results,
           loading: false,
@@ -76,6 +73,7 @@ class GameScreen extends Component {
           ))}
         </div>
         <button
+          data-testid="btn-next"
           type="button"
           onClick={ this.nextQuestion }
         >
