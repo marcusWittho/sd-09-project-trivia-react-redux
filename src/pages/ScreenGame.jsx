@@ -38,16 +38,23 @@ class ScreenGame extends React.Component {
         .map((a) => ({ sort: Math.random(), value: a }))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value);
-      this.updateState(correctAnswer, newArray, category, question);
+      const obj = {
+        correct: correctAnswer,
+        allAnswers: newArray,
+        category,
+        question,
+      };
+      this.updateState(obj);
     }
   }
 
-  updateState(correctAnswer, answersAsrray, filteredCategory, filteredQuestion) {
+  updateState(obj) {
+    const { correct, allAnswers, category, question } = obj;
     this.setState({
-      correct: correctAnswer,
-      allAnswers: answersAsrray,
-      category: filteredCategory,
-      question: filteredQuestion,
+      correct,
+      allAnswers,
+      category,
+      question,
     });
   }
 
