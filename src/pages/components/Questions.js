@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import * as Api from '../../service/Api';
 
 class Questions extends React.Component {
@@ -72,5 +73,9 @@ class Questions extends React.Component {
 const mapStateToProps = (state) => ({
   token: state.loginUser.token,
 });
+
+Questions.propTypes = {
+  token: PropTypes.string,
+}.isRequired;
 
 export default connect(mapStateToProps)(Questions);
