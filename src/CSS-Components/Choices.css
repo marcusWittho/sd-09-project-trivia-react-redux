@@ -4,6 +4,6 @@
 }
 
 .wrong-answers {
-  background-color : rgb(red);
+  background-color : red;
   border: 3px solid red;
 }

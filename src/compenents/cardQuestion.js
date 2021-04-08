@@ -9,12 +9,17 @@ class CardQuestion extends React.Component {
     super(props);
     this.state = {
       orderQuest: 0,
+      hidden: true,
     };
     this.paintingButton = this.paintingButton.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   paintingButton() {
     const buttons = document.querySelectorAll('#choiceButton');
+    this.setState({
+      hidden: false,
+    });
     buttons.forEach((button) => {
       console.log(button.className);
       console.log(button.className === 'correct-answer');
@@ -26,9 +31,19 @@ class CardQuestion extends React.Component {
     });
   }
 
+  nextQuestion() {
+    const { orderQuest } = this.state;
+    const magicNumber = 4;
+    if (orderQuest < magicNumber) {
+      this.setState({
+        orderQuest: orderQuest + 1,
+      });
+    }
+  }
+
   render() {
     const { questions } = this.props;
-    const { orderQuest } = this.state;
+    const { orderQuest, hidden } = this.state;
 
     const {
       category,
@@ -44,6 +59,14 @@ class CardQuestion extends React.Component {
         {
           options(correct, incorrects, this.paintingButton)
         }
+        <button
+          data-testid="btn-next"
+          type="button"
+          onClick={ this.nextQuestion }
+          hidden={ hidden }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
