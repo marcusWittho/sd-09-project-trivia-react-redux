@@ -14,7 +14,10 @@ class Header extends Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{ player.name }</p>
-        <p>Pontuação: <span data-testid="header-score">{ player.score }</span></p>
+        <p>
+          Pontuação:
+          <span data-testid="header-score">{ player.score }</span>
+        </p>
         <Link exact to="/">
           <button type="button" data-testid="btn-go-home">
             Inicio
