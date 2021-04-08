@@ -22,11 +22,18 @@ class GameScreen extends Component {
   }
 
   nextQuestion() {
-    const { numberOFQuestion } = this.state;
+    const { questions, numberOFQuestion } = this.state;
     const count = numberOFQuestion;
-    this.setState({
-      numberOFQuestion: count + 1,
-    });
+
+    if (numberOFQuestion < questions.length - 1) {
+      this.setState({
+        numberOFQuestion: count + 1,
+      });
+    } else {
+      this.setState({
+        numberOFQuestion: count + 0,
+      });
+    }
   }
 
   async loadingQuestions() {
