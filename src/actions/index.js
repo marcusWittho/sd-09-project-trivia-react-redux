@@ -4,9 +4,16 @@ import {
 
 } from '../services';
 
+export const NEW_PLAYER = 'NEW_PLAYER';
 export const NEW_GAME = 'NEW_GAME';
 export const GAME_QUESTIONS = 'GAME_QUESTIONS';
 export const LOADING_QUESTIONS = 'LOADING_QUESTIONS';
+
+export const newPlayerInfo = (name, email) => ({
+  type: NEW_PLAYER,
+  name,
+  email,
+});
 
 const receiveToken = (gameToken) => ({
   type: NEW_GAME,
