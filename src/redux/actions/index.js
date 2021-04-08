@@ -11,7 +11,6 @@ export const handleUserName = (nameInput) => ({
   type: SET_USER_NAME,
   nameInput,
 });
-
 export const handleUserEmail = (email) => ({
   type: SET_USER_EMAIL,
   email,

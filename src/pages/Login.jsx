@@ -1,6 +1,6 @@
 import React from 'react';
 import { func } from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { getToken } from '../services/triviaApi';
@@ -14,7 +14,7 @@ class Login extends React.Component {
       user: '',
       email: '',
       disableButton: true,
-      redirect: false,
+      // redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.updateGlobalStates = this.updateGlobalStates.bind(this);
@@ -51,7 +51,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { disableButton, redirect } = this.state;
+    const { disableButton } = this.state;
     // if (redirect) return (<Redirect to="/question" />);
     return (
       <div className="form-login">
@@ -76,7 +76,7 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link to="/jogo">
+          <Link to="/question">
             <button
               type="button"
               data-testid="btn-play"
@@ -84,6 +84,14 @@ class Login extends React.Component {
               onClick={ this.updateGlobalStates }
             >
               Jogar
+            </button>
+          </Link>
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
             </button>
           </Link>
         </form>
