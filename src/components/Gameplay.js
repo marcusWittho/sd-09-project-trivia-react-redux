@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../services';
+import '../CSS/gameplay.css';
 
 class Gameplay extends Component {
   constructor() {
@@ -10,29 +11,33 @@ class Gameplay extends Component {
       loading: true,
       questionList: {},
       questionIndex: 0,
+      correct: '',
+      incorrect: '',
     };
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
-    this.testeSetState = this.testeSetState.bind(this);
     this.randomAnswersOrder = this.randomAnswersOrder.bind(this);
+    this.chooseAnswer = this.chooseAnswer.bind(this);
   }
 
   async componentDidMount() {
     const { tokenState } = this.props;
     const questionList = await fetchQuestions(tokenState);
-    this.testeSetState(questionList);
+    this.randomAnswersOrder(questionList);
   }
 
-  testeSetState(questionList) {
+  chooseAnswer() {
     this.setState({
-      questionList,
-      loading: false,
+      correct: 'correct',
+      incorrect: 'incorrect',
     });
   }
 
-  randomAnswersOrder() {
-    const { questionList, questionIndex } = this.state;
-    const currentQuestionInfo = questionList.results[questionIndex];
+  randomAnswersOrder(questionList) {
+    const { questionIndex } = this.state;
+    console.log(questionList);
+    const questions = { ...questionList };
+    const currentQuestionInfo = questions.results[questionIndex];
     const answersList = currentQuestionInfo.incorrect_answers;
     const correctAnswer = currentQuestionInfo.correct_answer;
     console.log(correctAnswer);
@@ -43,13 +48,16 @@ class Gameplay extends Component {
       newAnswersList,
       randomIndex,
     };
-    return answersAndPosition;
+    this.setState({
+      answersAndPosition,
+      questionList: questions,
+      loading: false,
+    });
   }
 
   renderQuestion() {
     const { questionList, questionIndex } = this.state;
     const currentQuestionInfo = questionList.results[questionIndex];
-    this.randomAnswersOrder();
     return (
       <section>
         <h1 data-testid="question-category">
@@ -61,18 +69,32 @@ class Gameplay extends Component {
   }
 
   renderAnswers() {
-    const answersAndPos = this.randomAnswersOrder();
+    const { answersAndPosition } = this.state;
+    const { correct, incorrect } = this.state;
     return (
       <section>
-        { answersAndPos.newAnswersList.map((answer, index) => {
-          if (answersAndPos.randomIndex === index) {
+        { answersAndPosition.newAnswersList.map((answer, index) => {
+          if (answersAndPosition.randomIndex === index) {
             return (
-              <button data-testid="correct-answer" type="button">
+              <button
+                data-testid="correct-answer"
+                onClick={ this.chooseAnswer }
+                name="correct"
+                id={ correct }
+                type="button"
+              >
                 {answer}
               </button>);
           }
           return (
-            <button data-testid={ `wrong-answer-${index}` } key={ index } type="button">
+            <button
+              data-testid={ `wrong-answer-${index}` }
+              onClick={ this.chooseAnswer }
+              name="incorrect"
+              id={ incorrect }
+              key={ index }
+              type="button"
+            >
               {answer}
             </button>
           );
