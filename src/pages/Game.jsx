@@ -53,7 +53,7 @@ class Game extends React.Component {
             <p data-testid="question-text">{item.question}</p>
             { item.correct_answer && (
               <button
-                data-testid="correct-answrer"
+                data-testid="correct-answer"
                 type="button"
               >
                 {item.correct_answer}
