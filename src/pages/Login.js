@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import fetchToken from '../service/Api';
+import * as Api from '../service/Api';
 import { submitUser } from '../redux/actions';
 
 class Login extends Component {
@@ -40,7 +40,7 @@ class Login extends Component {
     this.setState({
       loggedIn: true,
     });
-    const resultApi = await fetchToken();
+    const resultApi = await Api.fetchToken();
     localStorage.setItem('token', resultApi);
     dispatchUser(name, email, resultApi);
   }
