@@ -3,9 +3,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import reducer from '../reducers';
 
-const storee = createStore(
+const store = createStore(
   reducer,
   composeWithDevTools(applyMiddleware(thunk)),
 );
 
-export default storee;
+export default store;

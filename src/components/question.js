@@ -9,13 +9,12 @@ class Question extends React.Component {
       question,
       category,
     } } = this.props;
-    console.log(this.props);
     return (
       <div>
         <h2 data-testid="question-category">{category}</h2>
         <h2 data-testid="question-text">{question}</h2>
         <button
-          data-testid="correct_answer"
+          data-testid="correct-answer"
           type="button"
           onClick={ this.handleClick }
         >
@@ -23,7 +22,8 @@ class Question extends React.Component {
         </button>
         {incorrectAnswers.map((element, i) => (
           <button
-            data-testid={ `wrong-answer-${i}` }
+            // data-testid={ `wrong-answer-${i}` }
+            data-testid="wrong-answer"
             type="button"
             key={ element }
             onClick={ this.handleClick }

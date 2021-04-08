@@ -13,9 +13,10 @@ class trivia extends React.Component {
       loading: true,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleGetToken = this.handleGetToken.bind(this);
   }
 
-  componentDidMount() {
+  handleGetToken() {
     const { propQuestions } = this.props;
     propQuestions()
       .then(() => this.setState({ loading: false }));
@@ -35,6 +36,7 @@ class trivia extends React.Component {
     const { results } = this.props;
     const { index, loading } = this.state;
     const question = results.find((_question, i) => i === index);
+    if (loading) this.handleGetToken();
     return (
       <div className="App">
         <Header />
@@ -56,9 +58,10 @@ trivia.propTypes = {
   propQuestions: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer: { token, results } }) => ({
-  token,
-  results,
+const mapStateToProps = ({ actionsReducer }) => ({
+  token: actionsReducer.token,
+  results: actionsReducer.results,
+  actionsReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
