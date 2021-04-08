@@ -1,7 +1,7 @@
 import { GET_PLAYER_NAME, GET_TOKEN } from '../actions/actionTypes';
 
 const INITIAL_PLAYER_STATE = {
-  player: {},
+  name: '',
   token: '',
 };
 
@@ -10,7 +10,7 @@ const player = (state = INITIAL_PLAYER_STATE, action) => {
   case GET_PLAYER_NAME:
     return {
       ...state,
-      player: action.player,
+      name: action.name,
     };
   case GET_TOKEN:
     return {

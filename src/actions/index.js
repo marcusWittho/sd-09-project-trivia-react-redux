@@ -1,15 +1,11 @@
-// import GET_PLAYER_NAME from './actionTypes';
-import { GET_TOKEN } from './actionTypes';
-// import triviaTokenRequest from '../services/api';
+import { GET_PLAYER_NAME, GET_TOKEN } from './actionTypes';
 
-const updateToken = (token) => ({
+export const updateToken = (token) => ({
   type: GET_TOKEN,
   token,
 });
-// function getToken() {
-//  return (dispatch) => (
-//    triviaTokenRequest().then((token) => dispatch(updateToken(token)))
-//  );
-// }
 
-export default updateToken();
+export const updatePlayerName = (name) => ({
+  type: GET_PLAYER_NAME,
+  name,
+});
