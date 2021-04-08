@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import { asyncToken, loginAction } from '../actions';
 import logo from '../trivia.png';
+import { createPlayerInRanking } from '../services/localStorage';
 
 class Home extends React.Component {
   constructor(props) {
@@ -27,6 +29,8 @@ class Home extends React.Component {
   handleClick() {
     const { username, email } = this.state;
     const { loginActionFunc, saveToken } = this.props;
+    const emailHash = md5(email).toString();
+    const requestHash = `https://www.gravatar.com/avatar/${emailHash}`;
     saveToken();
     loginActionFunc(username, email);
     const objPlayer = {
@@ -37,7 +41,13 @@ class Home extends React.Component {
         gravatarEmail: email,
       },
     };
-
+    const rankingInfos = {
+      name: username,
+      userEmail: email,
+      score: 0,
+      picture: requestHash,
+    };
+    createPlayerInRanking(rankingInfos);
     localStorage.setItem('state', JSON.stringify(objPlayer));
   }
 
@@ -100,9 +110,13 @@ Home.propTypes = {
   loginActionFunc: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  token: state.token,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   saveToken: () => dispatch(asyncToken()),
   loginActionFunc: (username, email) => dispatch(loginAction(username, email)),
 });
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
