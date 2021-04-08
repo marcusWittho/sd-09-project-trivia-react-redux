@@ -1,6 +1,8 @@
 import { NEW_GAME } from '../actions';
 
-const INITIAL_STATE = '';
+const INITIAL_STATE = {
+  token: localStorage.getItem('token') || '',
+};
 
 const token = (state = INITIAL_STATE, action) => {
   switch (action.type) {
