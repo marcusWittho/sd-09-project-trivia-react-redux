@@ -51,7 +51,7 @@ class Login extends Component {
         </label>
         <Link to="/game">
           <button
-            onClick={() => {
+            onClick={ () => {
               const stateKey = {
                 player: {
                   name,
@@ -63,7 +63,7 @@ class Login extends Component {
 
               localStorage.setItem('state', JSON.stringify(stateKey));
               getToken({ name, email });
-            }}
+            } }
             data-testid="btn-play"
             type="button"
             disabled={ !name || !email }
