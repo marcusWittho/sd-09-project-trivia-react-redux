@@ -41,7 +41,7 @@ class GamePlay extends React.Component {
     const { currentQuestion } = this.state;
     return (
       <div className="main-game-play">
-      <GamePlayHeader />
+        <GamePlayHeader />
         {
           questions.results || questions.response_code === ERROR_CODE
             ? (
