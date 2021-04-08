@@ -15,8 +15,8 @@ class Game extends React.Component {
     const { loading, email, user } = this.props;
     return (
       <div>
-        <Header email={ email } name={ user } />
         <p>As configurações do jogo vão ficar aqui</p>
+        { loading ? '' : <Header email={ email } name={ user } /> }
         { loading ? '' : <CardQuestion /> }
       </div>
     );
