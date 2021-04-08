@@ -11,14 +11,33 @@ class GameScreen extends Component {
       questions: [],
       numberOFQuestion: 0,
       loading: true,
+      timer: 30,
+      disabled: false,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
     this.loadingQuestions = this.loadingQuestions.bind(this);
+    this.decreaseTime = this.decreaseTime.bind(this);
   }
 
   componentDidMount() {
     this.loadingQuestions();
+  }
+
+  decreaseTime() {
+    const counter = 1000;
+    setInterval(() => {
+      const { timer } = this.state;
+      this.setState({
+        timer: timer - 1,
+      });
+      if (timer === 0) {
+        this.nextQuestion();
+        this.setState({
+          disabled: true,
+        });
+      }
+    }, counter);
   }
 
   nextQuestion() {
@@ -28,6 +47,7 @@ class GameScreen extends Component {
     if (numberOFQuestion < questions.length - 1) {
       this.setState({
         numberOFQuestion: count + 1,
+        timer: 30,
       });
     } else {
       this.setState({
@@ -49,10 +69,11 @@ class GameScreen extends Component {
         });
       },
     );
+    this.decreaseTime();
   }
 
   render() {
-    const { questions, numberOFQuestion, loading } = this.state;
+    const { questions, numberOFQuestion, loading, timer, disabled } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
     if (loading) return <h1>Loading...</h1>;
@@ -64,6 +85,7 @@ class GameScreen extends Component {
         <button
           data-testid="correct-answer"
           type="button"
+          disabled={ disabled }
           onClick={ () => {} }
         >
           { orderQuestions.correct_answer }
@@ -74,15 +96,18 @@ class GameScreen extends Component {
               key={ index }
               data-testid={ `wrong-answer-${index}` }
               type="button"
+              disabled={ disabled }
               onClick={ () => {} }
             >
               { answer }
             </button>
           ))}
         </div>
+        <p>{ timer }</p>
         <button
           data-testid="btn-next"
           type="button"
+          disabled={ disabled }
           onClick={ this.nextQuestion }
         >
           Próxima
