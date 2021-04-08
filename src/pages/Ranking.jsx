@@ -5,23 +5,17 @@ import { connect } from 'react-redux';
 class Ranking extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
-    this.getRanking = this.getRanking.bind(this);
-  }
-
-  getRanking() {
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
-    return ranking;
+    this.mapRankingPlayers = this.mapRankingPlayers.bind(this);
+    this.layoutPlayer = this.layoutPlayer.bind(this);
   }
 
   layoutPlayer(player, index) {
     return (
-      <section>
+      <section key={ player.name + index }>
         <h3>{`${index + 1}º lugar`}</h3>
         <span>
           <img
-            src={ `https://www.gravatar.com/avatar/${player.picture}` }
+            src={ player.picture }
             alt="imagem do jogador"
           />
           <span data-testid={ `player-name-${index}` }>{player.name}</span>
@@ -31,19 +25,18 @@ class Ranking extends React.Component {
     );
   }
 
-  mapRankingPlayers(ranking) {
-    console.log(ranking);
-    ranking.sort((a, b) => a.score - b.score);
-    ranking.map((player, index) => this.layoutPlayer(player, index));
+  mapRankingPlayers() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.sort((a, b) => Number(b.score) - Number(a.score));
+    return ranking.map((player, index) => this.layoutPlayer(player, index));
   }
 
   render() {
-    const ranking = this.getRanking();
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         <div>
-          {this.mapRankingPlayers(ranking)}
+          {this.mapRankingPlayers()}
         </div>
       </div>
     );
