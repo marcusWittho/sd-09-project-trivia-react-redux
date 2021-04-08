@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Game extends Component {
   render() {
@@ -12,6 +13,9 @@ class Game extends Component {
           <span data-testid="header-player-name">{player.name}</span>
           <span data-testid="header-score">{player.score}</span>
         </header>
+       <span>
+          <Link to="/feedback">feedback</Link>
+        </span>
       </div>
     );
   }
