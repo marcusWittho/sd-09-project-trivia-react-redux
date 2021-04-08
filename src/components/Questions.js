@@ -11,6 +11,7 @@ class Questions extends React.Component {
 
   render() {
     const { questions } = this.props;
+    if (questions.length === 0) return <div />;
     return (
       <main>
         <p
@@ -19,11 +20,19 @@ class Questions extends React.Component {
           Categoria:
           { questions[1].category }
         </p>
-        <p data-testid="question-text">Pergunta</p>
-        <button data-testid="correct-answer">Alternativa 1</button>
-        <button data-testid="wrong-answer-0">Alternativa 2</button>
-        <button data-testid="wrong-answer-1">Alternativa 3</button>
-        <button data-testid="wrong-answer-2">Alternativa 4</button>
+        <p data-testid="question-text">{ questions[1].question }</p>
+        <button type="button" data-testid="wrong-answer-0">
+          { questions[1].correct_answer }
+        </button>
+        <button type="button" data-testid="wrong-answer-1">
+          { questions[1].incorrect_answers[0] }
+        </button>
+        <button type="button" data-testid="wrong-answer-2">
+          { questions[1].incorrect_answers[1] }
+        </button>
+        <button type="button" data-testid="wrong-answer-2">
+          { questions[1].incorrect_answers[2] }
+        </button>
       </main>
 
     );
