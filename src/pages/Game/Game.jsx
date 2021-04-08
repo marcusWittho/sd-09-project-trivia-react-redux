@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
-import Answers from '../components/Answers';
+import Header from '../../components/Header';
+import Answers from '../../components/Answers';
+import './game.css';
 
 class Game extends Component {
   render() {

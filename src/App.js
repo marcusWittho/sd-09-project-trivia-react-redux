@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router';
 import logo from './trivia.png';
 import './App.css';
 import Login from './pages/Login';
-import Game from './pages/Game';
+import Game from './pages/Game/Game';
 import Config from './pages/Config';
 
 class App extends Component {
