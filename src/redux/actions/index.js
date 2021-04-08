@@ -1,11 +1,12 @@
 import { playerLogin } from './player';
-import { requestQuestions, requestToken } from './game';
+import { requestQuestions, requestToken, updateIndex } from './game';
 import fecthTrivia from '../../Services/fetchApi';
 
 export {
   playerLogin,
   requestQuestions,
   requestToken,
+  updateIndex,
 };
 
 export const requestApiToken = () => (

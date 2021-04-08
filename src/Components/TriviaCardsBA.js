@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateIndex } from '../redux/actions';
 
-class BooleanAnwers extends Component {
+class BooleanAnswers extends Component {
   constructor(props) {
     super(props);
     this.validateAnswers = this.validateAnswers.bind(this);
+    this.updateQuestIndex = this.updateQuestIndex.bind(this);
   }
 
   validateAnswers(option, index) {
@@ -13,6 +16,13 @@ class BooleanAnwers extends Component {
       return `wrong-answer-${index}`;
     }
     return 'correct-answer';
+  }
+
+  updateQuestIndex() {
+    const { questIndex, dispatchIndex } = this.props;
+    let newIndex = questIndex;
+    newIndex += 1;
+    dispatchIndex(newIndex);
   }
 
   render() {
@@ -34,6 +44,7 @@ class BooleanAnwers extends Component {
               type="button"
               key={ option }
               data-testid={ dataTestId }
+              onClick={ this.updateQuestIndex }
             >
               { option }
             </button>);
@@ -43,7 +54,17 @@ class BooleanAnwers extends Component {
   }
 }
 
-BooleanAnwers.propTypes = {
+const mapStateToProps = ({ game }) => ({
+  questIndex: game.index,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchIndex: (index) => dispatch(updateIndex(index)),
+});
+
+BooleanAnswers.propTypes = {
+  questIndex: PropTypes.number.isRequired,
+  dispatchIndex: PropTypes.func.isRequired,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
@@ -52,4 +73,4 @@ BooleanAnwers.propTypes = {
   }).isRequired,
 };
 
-export default BooleanAnwers;
+export default connect(mapStateToProps, mapDispatchToProps)(BooleanAnswers);

@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateIndex } from '../redux/actions';
 
 class MultipleAnswers extends Component {
   constructor(props) {
     super(props);
-    this.validateAnswers = this.validateAnswers.bind(this);
-    this.createChoices = this.createChoices.bind(this);
     this.state = {
       choice: [],
     };
+    this.validateAnswers = this.validateAnswers.bind(this);
+    this.createChoices = this.createChoices.bind(this);
+    this.updateQuestIndex = this.updateQuestIndex.bind(this);
   }
 
   componentDidMount() {
     this.createChoices();
+  }
+
+  updateQuestIndex() {
+    const { questIndex, dispatchIndex } = this.props;
+    let newIndex = questIndex;
+    newIndex += 1;
+    dispatchIndex(newIndex);
   }
 
   createChoices() {
@@ -54,6 +64,7 @@ class MultipleAnswers extends Component {
               type="button"
               key={ answer }
               data-testid={ dataTestId }
+              onClick={ this.updateQuestIndex }
             >
               { answer }
             </button>);
@@ -63,7 +74,17 @@ class MultipleAnswers extends Component {
   }
 }
 
+const mapStateToProps = ({ game }) => ({
+  questIndex: game.index,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchIndex: (index) => dispatch(updateIndex(index)),
+});
+
 MultipleAnswers.propTypes = {
+  questIndex: PropTypes.number.isRequired,
+  dispatchIndex: PropTypes.func.isRequired,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
@@ -72,4 +93,4 @@ MultipleAnswers.propTypes = {
   }).isRequired,
 };
 
-export default MultipleAnswers;
+export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);

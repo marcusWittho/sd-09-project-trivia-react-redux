@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import questionsAdd from '../redux/actions';
 import Header from '../Components/Header';
 import TriviaCardsBA from '../Components/TriviaCardsBA';
@@ -15,7 +15,10 @@ class Trivia extends Component {
   update() {
     const { questions } = this.props;
     if (questions) {
-      return questions.map((question) => (
+      const { questIndex } = this.props;
+      const i = parseInt(questIndex, 10);
+      const quest = questions[i];
+      return (Array(quest)).map((question) => (
         (question.type === 'multiple')
           ? <TriviaCardsMA question={ question } />
           : <TriviaCardsBA question={ question } />
@@ -35,8 +38,14 @@ class Trivia extends Component {
   }
 }
 
+Trivia.propTypes = {
+  questions: PropTypes.arrayOf(Object).isRequired,
+  questIndex: PropTypes.number.isRequired,
+};
+
 const mapStateToProps = ({ game }) => ({
   questions: game.questions,
+  questIndex: game.index,
 });
 
 export default connect(mapStateToProps)(Trivia);
