@@ -4,7 +4,8 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../actions/fetchToken';
 import { userEmail, userName, userAvatar } from '../actions/index';
-import '../App.css';
+// import '../App.css';
+import '../styles/Login.css';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -63,48 +64,51 @@ class Login extends React.Component {
   }
 
   render() {
+    const { history } = this.props;
     const { validated, email, name } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={ logo } className="App-logo" alt="logo" />
-          <form>
-            <label htmlFor="name">
-              Nome:
-              <input
-                type="text"
-                data-testid="input-player-name"
-                name="name"
-                onChange={ this.handleChange }
-              />
-            </label>
-            <br />
-            <label htmlFor="email">
-              Email:
-              <input
-                type="email"
-                data-testid="input-gravatar-email"
-                name="email"
-                onChange={ this.handleChange }
-              />
-            </label>
-            <br />
-            <button
-              disabled={ validated }
-              type="button"
-              data-testid="btn-play"
-              onClick={ () => {
-                this.handleClick();
-                this.handleClickUser(email, name);
-              } }
-            >
-              Jogar
-            </button>
-          </form>
-          <p>
-            SUA VEZ
-          </p>
-        </header>
+      <div className="App-container">
+        <img src={ logo } className="App-logo" alt="logo" />
+        <form className="form-container">
+          <button
+            className="configurations-button"
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/configurations') }
+          >
+            {}
+          </button>
+          <label htmlFor="name">
+            Nome:
+            <input
+              type="text"
+              data-testid="input-player-name"
+              name="name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            Email:
+            <input
+              type="email"
+              data-testid="input-gravatar-email"
+              name="email"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <button
+            className="play-button"
+            disabled={ validated }
+            type="submit"
+            data-testid="btn-play"
+            onClick={ () => {
+              this.handleClick();
+              this.handleClickUser(email, name);
+            } }
+          >
+            Jogar
+          </button>
+        </form>
       </div>
     );
   }
