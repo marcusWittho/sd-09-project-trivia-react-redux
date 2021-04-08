@@ -54,6 +54,7 @@ class Game extends React.Component {
 
   updateScore(dataStorage) {
     const { savScore } = this.props;
+    dataStorage.player.assertions += 1;
     savScore(dataStorage.player.score);
     localStorage.setItem('state', JSON.stringify({ ...dataStorage }));
   }
