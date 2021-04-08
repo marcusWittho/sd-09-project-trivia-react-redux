@@ -1,12 +1,13 @@
 import React from 'react';
 import HeaderFeedback from '../components/HeaderFeedback';
+import MessageFeedback from '../components/MenssageFeedback';
 
 class Feedback extends React.Component {
   render() {
     return (
       <div>
         <HeaderFeedback />
-        <p data-testid="feedback-text">Parabéns ou Náo KKKKK</p>
+        <MessageFeedback />
       </div>
     );
   }

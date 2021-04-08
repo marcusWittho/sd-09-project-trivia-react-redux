@@ -36,7 +36,7 @@ class Home extends React.Component {
     const objPlayer = {
       player: {
         name: username,
-        assertions: '',
+        assertions: 0,
         score: 0,
         gravatarEmail: email,
       },
