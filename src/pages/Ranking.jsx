@@ -54,4 +54,6 @@ const mapStateToProps = (state) => ({
   gravatar: state.trivia.gravatar,
 });
 
+// xablau
+
 export default connect(mapStateToProps)(Ranking);
