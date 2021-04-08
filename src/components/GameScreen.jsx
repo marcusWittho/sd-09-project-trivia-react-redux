@@ -31,6 +31,7 @@ class GameScreen extends Component {
       });
     } else {
       this.setState({
+        // disabled: true,
         numberOFQuestion: count + 0,
       });
     }
@@ -41,9 +42,9 @@ class GameScreen extends Component {
       { loading: true },
       async () => {
         const { getQuestionsAPI } = this.props;
-        const test = await getQuestionsAPI(localStorage.getItem('token'));
+        const response = await getQuestionsAPI(localStorage.getItem('token'));
         this.setState({
-          questions: test.questions.results,
+          questions: response.questions.results,
           loading: false,
         });
       },
@@ -54,7 +55,7 @@ class GameScreen extends Component {
     const { questions, numberOFQuestion, loading } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
-    if (loading) return <h1>Loading</h1>;
+    if (loading) return <h1>Loading...</h1>;
 
     return (
       <>
