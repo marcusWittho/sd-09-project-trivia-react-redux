@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Header.css';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   constructor(props) {
@@ -42,3 +43,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Header);
+
+Header.propTypes = {
+  email: PropTypes.string,
+  name: PropTypes.string,
+}.isRequired;
