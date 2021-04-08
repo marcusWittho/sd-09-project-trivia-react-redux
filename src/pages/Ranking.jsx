@@ -8,8 +8,12 @@ class Ranking extends Component {
       .map((player, index) => (
         <li key={ index }>
           <ul>
-            <li data-testid={ `${player.name}-${index}` }>{`Jogador: ${player.name}`}</li>
-            <li data-testid={ `${player.score}-${index}` }>{`Potuação: ${player.score}`}</li>
+            <li data-testid={ `${player.name}-${index}` }>
+              {`Jogador: ${player.name}`}
+            </li>
+            <li data-testid={ `${player.score}-${index}` }>
+              {`Potuação: ${player.score}`}
+            </li>
           </ul>
         </li>
       ));
