@@ -1,7 +1,7 @@
-export const REQUEST_API = 'REQUEST_API';
-export const triviaRequest = (data) => (
-  { type: REQUEST_API, data }
-);
+export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
+export const requestQuestions = (questions) => ({
+  type: REQUEST_QUESTIONS, questions,
+});
 
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const requestToken = (token) => ({

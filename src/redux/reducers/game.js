@@ -1,19 +1,20 @@
-import { REQUEST_API, REQUEST_TOKEN } from '../actions/game';
+import { REQUEST_QUESTIONS, REQUEST_TOKEN } from '../actions/game';
 
 const INITIAL_STATE = {
-  questions: [],
   token: {},
+  loading: false,
+  questions: [],
 };
 
 const game = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case REQUEST_API:
+  case REQUEST_QUESTIONS:
     return ({ ...state,
-      questions: action.data,
+      loading: true,
+      questions: action.questions,
     });
   case REQUEST_TOKEN:
-    return {
-      ...state,
+    return { ...state,
       token: action.token,
     };
   default:
