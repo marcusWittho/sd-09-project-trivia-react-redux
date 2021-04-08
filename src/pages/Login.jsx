@@ -4,11 +4,11 @@ import '../App.css';
 import { connect } from 'react-redux';
 import { fetchTrivaApi } from '../actions';
 import loginPanel from './loginPanel.png';
+import fetchTrivaToken from '../service/triviaApi';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.props;
     this.state = {
       buttonSubmit: true,
       loginEmail: '',
@@ -16,6 +16,7 @@ class Login extends React.Component {
     };
 
     this.changeState = this.changeState.bind(this);
+    this.fetchToken = this.fetchToken.bind(this);
   }
 
   changeState({ target: { id, value } }) {
@@ -30,8 +31,13 @@ class Login extends React.Component {
     }
   }
 
+  async fetchToken() {
+    const { fetchAPI, token } = this.props;
+    await fetchAPI();
+    localStorage.setItem('token', token);
+  }
+
   fields(changeState, buttonSubmit) {
-    const { fetchAPI } = this.props;
     return (
       <>
         <label htmlFor="loginEmail">
@@ -64,7 +70,7 @@ class Login extends React.Component {
           type="button"
           value="Jogar"
           className="login-button"
-          onClick={ fetchAPI }
+          onClick={ this.fetchToken }
           disabled={ buttonSubmit }
         />
       </>
@@ -89,7 +95,7 @@ class Login extends React.Component {
             <br />
             categorias, como Literatura, Entretenimento, História e Ciências.
           </p>
-          <h2>Coloque seu e-mail e nome para participar do jogo</h2>
+          <h2>Coloque seu e-mail e nome para participar do jogo.</h2>
           <form className="login-form">
             { this.fields(this.changeState, buttonSubmit) }
           </form>
@@ -100,6 +106,10 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  token: state.loginReducer.token.token,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   fetchAPI: () => dispatch(fetchTrivaApi()),
 });
@@ -108,4 +118,4 @@ Login.propTypes = {
   fetchAPI: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
