@@ -32,7 +32,6 @@
 }
 
 /* FEEDBACK HEADER */
-
 .feedback-header {
   background-color: #24324d;
   color: white;
@@ -53,8 +52,8 @@
   border: 1px solid white;
   border-radius: 50%;
   height: 40px;
-  width: 40px;
   margin-right: 16px;
+  width: 40px;
 }
 
 /* HEADER ANIMATION */
