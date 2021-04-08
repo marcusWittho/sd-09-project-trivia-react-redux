@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import SettingsPage from './pages/Settings';
 import FeedbackPage from './pages/FeedbackPage';
-import LoginPage from './components/Login';
+import LoginPage from './pages/Login';
 
 export default function App() {
   return (
