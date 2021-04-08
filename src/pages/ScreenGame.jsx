@@ -37,7 +37,7 @@ class ScreenGame extends React.Component {
     this.difficultScore = this.difficultScore.bind(this);
     this.submitAnswer = this.submitAnswer.bind(this);
     this.setIndexQuestion = this.setIndexQuestion.bind(this);
-}
+  }
 
   componentDidMount() {
     const { getQuestions } = this.props;
@@ -56,7 +56,8 @@ class ScreenGame extends React.Component {
       const { category } = results[indexQuestion];
       const { question } = results[indexQuestion];
       const correctAnswer = results[indexQuestion].correct_answer;
-      const incorrectAnswer = results[indexQuestion].incorrect_answers.map((answer) => answer);
+      const incorrectAnswer = results[indexQuestion].incorrect_answers
+        .map((answer) => answer);
       const concatAllAnswers = [...incorrectAnswer, correctAnswer];
 
       const mixTheAnswers = concatAllAnswers
@@ -88,19 +89,17 @@ class ScreenGame extends React.Component {
       }));
       const { questions } = this.props;
       const { results } = questions;
-
       const { difficulty } = results[indexQuestion];
       const { category } = results[indexQuestion];
       const { question } = results[indexQuestion];
       const correctAnswer = results[indexQuestion].correct_answer;
-      const incorrectAnswer = results[indexQuestion].incorrect_answers.map((answer) => answer);
+      const incorrectAnswer = results[indexQuestion].incorrect_answers
+        .map((answer) => answer);
       const concatAllAnswers = [...incorrectAnswer, correctAnswer];
-
       const mixTheAnswers = concatAllAnswers
         .map((asnwer) => ({ sort: Math.random(), value: asnwer }))
         .sort((a, b) => a.sort - b.sort)
         .map((answer) => answer.value);
-
       const objQuestions = {
         correct: correctAnswer,
         allAnswers: mixTheAnswers,
@@ -181,7 +180,8 @@ class ScreenGame extends React.Component {
   }
 
   render() {
-    const { correct, allAnswers, timer, category, question, changeClass, showNextQuestion } = this.state;
+    const { correct, allAnswers, timer,
+      category, question, changeClass, showNextQuestion } = this.state;
     const { btnState } = this.props;
     return (
       <section>
@@ -219,7 +219,8 @@ class ScreenGame extends React.Component {
             </button>
           );
         })}
-        { showNextQuestion && <NextQuestionButton setIndexQuestion={ this.setIndexQuestion } /> }
+        { showNextQuestion
+          && <NextQuestionButton setIndexQuestion={ this.setIndexQuestion } /> }
         <Timer timer={ timer } />
       </section>
     );
