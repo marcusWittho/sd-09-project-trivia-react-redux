@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { asyncAsks, saveScore } from '../actions';
+import { updateScoreToLocalStorage } from '../services/localStorage';
 
 class Game extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class Game extends React.Component {
   }
 
   setReduxAndLocalStorage(answer) {
-    const { asks, savScore } = this.props;
+    const { asks } = this.props;
     const { timer } = this.state;
     const ask = asks.find((askItem) => answer === askItem.correct_answer);
     const { difficulty } = ask;
@@ -41,14 +42,20 @@ class Game extends React.Component {
     const getData = localStorage.getItem('state');
     const dataStorage = { ...JSON.parse(getData) };
     dataStorage.player.score += score;
-    savScore(dataStorage.player.score);
-    localStorage.setItem('state', JSON.stringify({ ...dataStorage }));
+    updateScoreToLocalStorage(dataStorage.player.gravatarEmail, dataStorage.player.score);
+    this.updateScore(dataStorage);
   }
 
   setCronometer() {
     const time = 1000;
     const interval = setInterval(() => this.cronometer(), time);
     this.setState((state) => ({ ...state, idInterval: interval }));
+  }
+
+  updateScore(dataStorage) {
+    const { savScore } = this.props;
+    savScore(dataStorage.player.score);
+    localStorage.setItem('state', JSON.stringify({ ...dataStorage }));
   }
 
   cronometer() {
