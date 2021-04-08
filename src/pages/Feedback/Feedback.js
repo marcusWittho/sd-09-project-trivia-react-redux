@@ -1,13 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { number, shape } from 'prop-types';
+import { number, shape, func } from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import actionNewGame from '../../redux/actions/actionNewGame';
+import actionResetCounter from '../../redux/actions/actionResetCounter';
 
 class Feedback extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      isNewGame: false,
+    };
+  }
+
+  handleClick() {
+    const { startNewGame, resetTimer } = this.props;
+    startNewGame();
+    resetTimer();
+    this.setState({
+      isNewGame: true,
+    });
+  }
+
   render() {
     const { player } = this.props;
+    const { isNewGame } = this.state;
     const { assertions, name, score, gravatarEmail, validLogin } = player;
     if (!validLogin) return <Redirect exact to="/" />;
+    if (isNewGame) return <Redirect to="/" />;
     return (
       <div>
         <header>
@@ -35,6 +57,13 @@ class Feedback extends React.Component {
             { score }
           </span>
         </p>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ this.handleClick }
+        >
+          Jogar Novamente
+        </button>
       </div>
     );
   }
@@ -44,10 +73,17 @@ Feedback.propTypes = {
   player: shape({
     assertions: number,
   }).isRequired,
+  startNewGame: func.isRequired,
+  resetTimer: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   player: state.playerReducer.player,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  startNewGame: () => dispatch(actionNewGame()),
+  resetTimer: () => dispatch(actionResetCounter()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

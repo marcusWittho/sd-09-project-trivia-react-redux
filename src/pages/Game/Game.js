@@ -22,6 +22,7 @@ class Game extends React.Component {
     };
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.setInLocalStorage = this.setInLocalStorage.bind(this);
+    // this.clearInterval = this.clearInterval.bind(this);
   }
 
   componentDidMount() {
@@ -63,9 +64,14 @@ class Game extends React.Component {
       } else {
         stateDisableButton(true);
         stateShowButton(true);
+        // this.clearInterval(interval);
       }
     }, mileseconds);
   }
+
+  // clearInterval(interval) {
+  //   clearInterval(interval);
+  // }
 
   render() {
     const { player, questions, isFetching, showButton, time } = this.props;
