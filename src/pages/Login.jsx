@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import { Link } from 'react-router-dom';
-import saveUserToken from '../actions';
+import { saveUserToken } from '../actions';
 import { REQUEST_TOKEN } from '../services';
 
 class Login extends React.Component {
