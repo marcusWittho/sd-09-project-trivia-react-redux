@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { number, shape, func } from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
+import Header from '../../components/Header/Header';
 import actionNewGame from '../../redux/actions/actionNewGame';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
@@ -28,21 +29,13 @@ class Feedback extends React.Component {
 
   render() {
     const { player } = this.props;
+    const { assertions, score, validLogin } = player;
     const { isNewGame } = this.state;
-    const { assertions, name, score, gravatarEmail, validLogin } = player;
     if (!validLogin) return <Redirect exact to="/" />;
     if (isNewGame) return <Redirect to="/" />;
     return (
       <div>
-        <header>
-          <p data-testid="header-player-name">{ name }</p>
-          <img
-            data-testid="header-profile-picture"
-            src={ gravatarEmail }
-            alt={ `Avatar de ${name}` }
-          />
-          <p data-testid="header-score">{ score }</p>
-        </header>
+        <Header />
         <p data-testid="feedback-text">
           { assertions > 2 ? 'Mandou bem!' : 'Podia ser melhor...' }
         </p>

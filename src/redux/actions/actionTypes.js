@@ -24,4 +24,6 @@ export const CLEAN_OPTION_ANSWERS = 'CLEAN_OPTION_ANSWERS';
 
 export const ADD_ASSERTIONS = 'ADD_ASSERTIONS';
 
+export const RESET_QUESTIONS = 'RESET_QUESTIONS';
+
 export const NEW_GAME = 'NEW_GAME';
