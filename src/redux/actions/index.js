@@ -1,6 +1,6 @@
-export const CHANGE_NAME_LOGIN = 'CHANGE_EMAIL_LOGIN';
+export const SET_TOKEN = 'SET_TOKEN';
 
-export const handleName = (nameLogin) => ({
-  type: CHANGE_NAME_LOGIN,
-  nameLogin,
+export const handleToken = (data) => ({
+  type: SET_TOKEN,
+  data,
 });

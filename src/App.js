@@ -7,12 +7,12 @@ export default function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <p className="msg">SUA VEZ</p>
         <div className="logo">
           <img src={ logo } className="App-logo" alt="logo" />
         </div>
         <Login />
       </header>
-      <p className="msg">SUA VEZ</p>
     </div>
   );
 }
