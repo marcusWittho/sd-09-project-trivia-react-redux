@@ -9,3 +9,15 @@ export const getToken = async () => {
   localStorage.setItem('token', myToken);
   return myToken;
 };
+
+export const getQuestions = async (token) => {
+  const questions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+    .then((response) => response.json());
+  questions.results = questions.results.map((question) => (
+    Object.fromEntries(Object.entries(question).map(([key, value]) => {
+      if (key === 'correct_answer') return (['correctAnswer', value]);
+      if (key === 'incorrect_answers') return (['incorrectAnswers', value]);
+      return ([key, value]);
+    }))));
+  return questions;
+};
