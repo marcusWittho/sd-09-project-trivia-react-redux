@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
+import Header from '../../components/Header';
+import Answers from '../../components/Answers';
+import './game.css';
 
 class Game extends Component {
   render() {
@@ -7,6 +9,7 @@ class Game extends Component {
       <header>
         <h2>Página do jogo</h2>
         <Header />
+        <Answers />
       </header>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import { Link } from 'react-router-dom';
-import saveUserToken from '../actions';
+import { saveUserToken, saveRequest, getQuestions } from '../actions';
 import { REQUEST_TOKEN } from '../services';
 
 class Login extends React.Component {
@@ -37,7 +37,6 @@ class Login extends React.Component {
   async requestUserToken() {
     const { getUserToken } = this.props;
     const token = await REQUEST_TOKEN();
-    localStorage.setItem('token', token);
     getUserToken(token);
   }
 
@@ -97,7 +96,11 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getUserToken: (token) => dispatch(saveUserToken(token)),
+  getUserToken: (token) => {
+    dispatch(saveRequest());
+    dispatch(saveUserToken(token));
+    dispatch(getQuestions(token));
+  },
 });
 
 Login.propTypes = {
