@@ -1,14 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
-    const player = JSON.parse(localStorage.getItem('state'));
-    const { name, gravatarEmail, score } = player;
+    const { name, gravatar, score } = this.props;
     return (
       <header>
         <img
           data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
+          src={ `https://www.gravatar.com/avatar/${gravatar}` }
           alt="user-gravatar"
         />
         <h2 data-testid="header-player-name">{name}</h2>
@@ -18,4 +19,17 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  name: state.gameReducer.player.name,
+  gravatar: state.gameReducer.player.gravatarEmail,
+  score: state.gameReducer.player.score,
+
+});
+
+Header.propTypes = {
+  gravatar: PropTypes.string,
+  name: PropTypes.string,
+  score: PropTypes.number,
+}.isRequired;
+
+export default connect(mapStateToProps)(Header);

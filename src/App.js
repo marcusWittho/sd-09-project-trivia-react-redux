@@ -8,7 +8,7 @@ function App() {
   return (
     <Switch>
       <Route exact path="/" component={ Login } />
-      <Route path="/game" component={ GameScreen } />
+      <Route path="/:page" component={ GameScreen } />
     </Switch>
   );
 }
