@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { addLoginInfo, addToken } from '../actions';
 import { fetchAndSaveToken } from '../services';
 
@@ -16,9 +17,14 @@ class LoginForm extends Component {
     this.statusCheck = this.statusCheck.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.createUserStateLocalStorage = this.createUserStateLocalStorage.bind(this);
+    this.createUserRankingOnLocalStorage = this.createUserRankingOnLocalStorage
+      .bind(this);
   }
 
   async handleClick() {
+    this.createUserStateLocalStorage();
+    this.createUserRankingOnLocalStorage();
     const { addLoginInfoDispatch, addTokenDispatch } = this.props;
     const { name, email } = this.state;
     addLoginInfoDispatch({ email, name });
@@ -28,6 +34,30 @@ class LoginForm extends Component {
     this.setState({
       redirect: true,
     });
+  }
+
+  createUserRankingOnLocalStorage() {
+    const playerPerformanceData = JSON.parse(localStorage.getItem('state'));
+    const { player: { name, score, gravatarEmail } } = playerPerformanceData;
+    const gravatarEmailHashed = md5(gravatarEmail).toString();
+    const newUserRanking = {
+      name,
+      score,
+      picture: `https://www.gravatar.com/avatar/${gravatarEmailHashed}`,
+    };
+    console.log(newUserRanking);
+  }
+
+  createUserStateLocalStorage() {
+    const { name, email } = this.state;
+    const playerState = {
+      player: { name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email },
+    };
+    localStorage.setItem('state', JSON.stringify(playerState));
+    console.log(playerState);
   }
 
   handleChange({ target }) {
