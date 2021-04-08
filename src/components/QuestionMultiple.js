@@ -2,7 +2,7 @@ import React from 'react';
 
 class QuestionMultiple extends React.Component {
   render() {
-    const { question } = this.props;
+    const { question, disabled } = this.props;
     return (
       <div>
         <p data-testid="question-category">{ question.category }</p>
@@ -10,6 +10,8 @@ class QuestionMultiple extends React.Component {
         <button
           data-testid="correct-answer"
           type="button"
+          disabled={ disabled }
+
         >
           { question.correct_answer }
         </button>
@@ -18,6 +20,7 @@ class QuestionMultiple extends React.Component {
             data-testid={ `wrong-answer-${index}` }
             type="button"
             key={ `wrong-answer-${index}` }
+            disabled={ disabled }
           >
             { wrong }
           </button>)) }
