@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { number, shape, func } from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import actionNewGame from '../../redux/actions/actionNewGame';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
@@ -52,6 +52,9 @@ class Feedback extends React.Component {
             { score }
           </span>
         </p>
+        <Link to="/ranking" data-testid="btn-ranking">
+          <button type="button"> Ver Ranking </button>
+        </Link>
         <button
           type="button"
           data-testid="btn-play-again"
