@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Timer from './Timer';
 import { updateScore } from '../redux/actions';
@@ -15,12 +16,14 @@ class Question extends React.Component {
       timer: 30,
       stopTimer: false,
       disabledButton: false,
+      redirect: false,
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.timeChange = this.timeChange.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +37,25 @@ class Question extends React.Component {
       stopTimer: true,
       disabledButton: true,
     }));
+  }
+
+  nextQuestion() {
+    const { questionIndex } = this.state;
+    const { questions } = this.props;
+    if (questionIndex === questions.length - 1) {
+      this.setState({
+        redirect: true,
+      });
+    }
+    this.setState((state) => ({
+      questionIndex: state.questionIndex + 1,
+      clicked: false,
+      timer: 30,
+      stopTimer: false,
+      disabledButton: false,
+    }), () => {
+      this.renderQuestion();
+    });
   }
 
   changeScore({ target }) {
@@ -108,10 +130,14 @@ class Question extends React.Component {
 
   render() {
     const { fetching } = this.props;
-    const { timer, stopTimer } = this.state;
+    const { timer, stopTimer, disabledButton, redirect } = this.state;
 
     if (fetching) {
       return <h3>Carregando pergunta...</h3>;
+    }
+
+    if (redirect) {
+      return <Redirect to="/feedback" />;
     }
 
     return (
@@ -128,6 +154,17 @@ class Question extends React.Component {
           stopTimer={ stopTimer }
           handleClick={ this.handleClick }
         />
+        {
+          disabledButton && (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.nextQuestion }
+            >
+              Próxima
+            </button>
+          )
+        }
       </div>
     );
   }
