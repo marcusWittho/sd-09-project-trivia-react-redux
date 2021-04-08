@@ -11,9 +11,9 @@ class FeedbackHeader extends React.Component {
     const points = 20;
     return (
       <div className="feedback-header">
+        <img src={ avatar } alt="avatar" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{ `Jogador: ${player}` }</p>
         <p data-testid="header-score">{ `Pontos: ${points}` }</p>
-        <img src={ avatar } alt="avatar" data-testid="header-profile-picture" />
       </div>
     );
   }

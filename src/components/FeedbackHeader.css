@@ -1,8 +1,9 @@
 .feedback-header {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
-.feedback-header p:nth-child(1) {
-  width: 60vw;
+.feedback-header p:nth-child(2) {
+  width: 80vw;
+  text-align: left;
 }

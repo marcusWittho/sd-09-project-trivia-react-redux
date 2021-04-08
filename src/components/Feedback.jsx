@@ -19,10 +19,16 @@ class Feedback extends React.Component {
 
   render() {
     const feedbackText = this.getFeedbackMessage();
+    const questions = 2;
+    const points = 20;
     return (
       <div>
         <FeedbackHeader />
-        <h2 data-testid="feedback-text">{ feedbackText }</h2>
+        <h1 data-testid="feedback-text">{ feedbackText }</h1>
+        <h3 data-testid="feedback-total-question">
+          { `Você acertou ${questions} questões!` }
+        </h3>
+        <h3 data-testid="feedback-total-score">{ `Um total de ${points} pontos` }</h3>
       </div>
     );
   }
