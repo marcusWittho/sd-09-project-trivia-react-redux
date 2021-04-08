@@ -2,7 +2,6 @@ import { GET_PLAYER_NAME, GET_TOKEN } from '../actions/actionTypes';
 
 const INITIAL_PLAYER_STATE = {
   player: {},
-  token: '',
 };
 
 const player = (state = INITIAL_PLAYER_STATE, action) => {
@@ -15,7 +14,7 @@ const player = (state = INITIAL_PLAYER_STATE, action) => {
   case GET_TOKEN:
     return {
       ...state,
-      token: action.token,
+      player: { token: action.token },
     };
   default:
     return state;

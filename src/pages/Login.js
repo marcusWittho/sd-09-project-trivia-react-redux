@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import triviaTokenRequest from '../services/api';
-import updateToken from '../actions/index';
+import { updateToken } from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -29,7 +30,7 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    // const { fetchToken } = this.props;
+    const { fetchToken } = this.props;
     const token = await triviaTokenRequest();
     console.log(token);
     fetchToken(token);
@@ -76,8 +77,16 @@ class Login extends React.Component {
   }
 }
 
+Login.propTypes = {
+  fetchToken: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
   fetchToken: (token) => dispatch(updateToken(token)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  token: state.player.player.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
