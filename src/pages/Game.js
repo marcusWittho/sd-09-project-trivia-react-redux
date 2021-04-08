@@ -8,9 +8,9 @@ class Game extends Component {
     this.state = {
       triviaArray: [],
       error: false,
+      position: 0,
     };
 
-    this.generateRandomNumber = this.generateRandomNumber.bind(this);
     this.renderAnswer = this.renderAnswer.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
   }
@@ -35,12 +35,6 @@ class Game extends Component {
       triviaArray: results,
       error: false,
     });
-  }
-
-  generateRandomNumber(number) {
-    const randomNumber = Math.floor(Math.random() * number);
-
-    return randomNumber;
   }
 
   renderCorrectAnswer(correctAnswer) {
@@ -69,8 +63,7 @@ class Game extends Component {
   }
 
   renderQuestion() {
-    const { triviaArray } = this.state;
-    const position = this.generateRandomNumber(triviaArray.length - 1);
+    const { triviaArray, position } = this.state;
     if (triviaArray.length > 0) {
       const {
         incorrect_answers: incorrectAnswers,
