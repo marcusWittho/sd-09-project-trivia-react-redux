@@ -9,7 +9,9 @@ const INITIAL_STATE = {
   email: '',
   token: '',
   score: 0,
-  results: [],
+  results: [{
+    correct_answer: '',
+  }],
 };
 
 function actionsReducer(state = INITIAL_STATE, action) {

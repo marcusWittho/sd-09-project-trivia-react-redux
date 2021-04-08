@@ -9,12 +9,13 @@ class Question extends React.Component {
       question,
       category,
     } } = this.props;
+    console.log(this.props);
     return (
       <div>
         <h2 data-testid="question-category">{category}</h2>
         <h2 data-testid="question-text">{question}</h2>
         <button
-          data-testid="correct-answer"
+          data-testid="correct_answer"
           type="button"
           onClick={ this.handleClick }
         >
@@ -37,7 +38,7 @@ class Question extends React.Component {
 
 Question.propTypes = {
   question: PropTypes.shape({
-    answer: PropTypes.string,
+    correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     question: PropTypes.string,
     category: PropTypes.string,
