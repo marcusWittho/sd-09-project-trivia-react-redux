@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class FeedbackHeader extends Component {
+class FeedbackHeader extends Component {
   render() {
+    const { scoreState } = this.props;
     return (
       <header className="feedback-header">
         <div className="header-left">
@@ -22,9 +25,19 @@ export default class FeedbackHeader extends Component {
           data-testid="header-score"
           className="header-score"
         >
-          0
+          { scoreState }
         </span>
       </header>
     );
   }
 }
+
+FeedbackHeader.propTypes = {
+  scoreState: PropTypes.string,
+}.isRequired;
+
+const mapStateToProps = (state) => ({
+  scoreState: state.scoreReducer.currentScore,
+});
+
+export default connect(mapStateToProps, null)(FeedbackHeader);
