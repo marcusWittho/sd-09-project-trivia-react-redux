@@ -22,19 +22,26 @@ class GameScreen extends Component {
 
   componentDidMount() {
     this.loadingQuestions();
+    this.decreaseTime();
   }
 
   decreaseTime() {
     const counter = 1000;
+    const countQuestions = 4;
     setInterval(() => {
-      const { timer } = this.state;
+      const { timer, numberOFQuestion } = this.state;
       this.setState({
         timer: timer - 1,
       });
       if (timer === 0) {
-        this.nextQuestion();
+        if (numberOFQuestion === countQuestions) {
+          this.setState({
+            timer: 0,
+          });
+        }
         this.setState({
           disabled: true,
+          timer: 0,
         });
       }
     }, counter);
@@ -48,10 +55,10 @@ class GameScreen extends Component {
       this.setState({
         numberOFQuestion: count + 1,
         timer: 30,
+        disabled: false,
       });
     } else {
       this.setState({
-        // disabled: true,
         numberOFQuestion: count + 0,
       });
     }
@@ -69,7 +76,6 @@ class GameScreen extends Component {
         });
       },
     );
-    this.decreaseTime();
   }
 
   clickQuestion() {
@@ -114,7 +120,6 @@ class GameScreen extends Component {
         <button
           data-testid="btn-next"
           type="button"
-          disabled={ disabled }
           onClick={ this.nextQuestion }
         >
           Próxima
