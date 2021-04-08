@@ -1,6 +1,8 @@
 import { ADD_USER_INFO } from './types';
 
-export default addUserInfo = (info) => ({
+const addUserInfo = (info) => ({
   type: ADD_USER_INFO,
   payload: info,
 });
+
+export default addUserInfo;

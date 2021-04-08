@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import addUserInfo from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -18,6 +21,7 @@ class Login extends React.Component {
 
   render() {
     const { name, email } = this.state;
+    const { addUserInfo: addUser } = this.props;
     const disableButton = name === '' || email === '';
 
     return (
@@ -35,6 +39,7 @@ class Login extends React.Component {
           onChange={ this.getValue }
         />
         <input
+          onClick={ () => addUser(this.state) }
           data-testid="btn-play"
           type="button"
           disabled={ disableButton }
@@ -45,4 +50,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  addUserInfo: (state) => dispatch(addUserInfo(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  addUserInfo: PropTypes.func.isRequired,
+};

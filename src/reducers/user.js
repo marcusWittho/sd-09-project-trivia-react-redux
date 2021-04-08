@@ -1,7 +1,7 @@
 import { ADD_USER_INFO } from '../actions/types';
 
 const INITIAL_STATE = {
-  username: '',
+  name: '',
   email: '',
 };
 
