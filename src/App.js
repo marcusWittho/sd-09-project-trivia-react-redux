@@ -4,6 +4,7 @@ import logo from './trivia.png';
 import './App.css';
 import Login from './pages/Login';
 import Game from './pages/Game';
+import Config from './pages/Config';
 
 class App extends Component {
   render() {
@@ -17,6 +18,9 @@ class App extends Component {
             </Route>
             <Route exact path="/">
               <Login />
+            </Route>
+            <Route path="/Config">
+              <Config />
             </Route>
           </Switch>
         </header>
