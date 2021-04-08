@@ -1,19 +1,14 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
+  align-items: center;
   display: flex;
   flex-flow: column wrap;
-  align-items: center;
-  justify-content: center;
   height: 90vh;
+  justify-content: center;
   width: 100vw;
-}
-
-#root {
-  height: 100%;
-  width: 100%;
 }
