@@ -80,7 +80,7 @@ class Gameplay extends Component {
                 data-testid="correct-answer"
                 onClick={ this.chooseAnswer }
                 name="correct"
-                id={ correct }
+                className={ correct }
                 type="button"
               >
                 {answer}
@@ -91,7 +91,7 @@ class Gameplay extends Component {
               data-testid={ `wrong-answer-${index}` }
               onClick={ this.chooseAnswer }
               name="incorrect"
-              id={ incorrect }
+              className={ incorrect }
               key={ index }
               type="button"
             >
