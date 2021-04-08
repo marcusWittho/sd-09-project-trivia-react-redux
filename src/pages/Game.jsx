@@ -9,7 +9,7 @@ class Game extends Component {
     const { player } = JSON.parse(localStorage.getItem('state'));
 
     return (
-      <div>
+      <>
         <header>
           <img data-testid="header-profile-picture" src={ image } alt="player avatar" />
           <span data-testid="header-player-name">{player.name}</span>
@@ -18,7 +18,7 @@ class Game extends Component {
         <span>
           <Link to="/feedback">feedback</Link>
         </span>
-      </div>
+      </>
     );
   }
 }
