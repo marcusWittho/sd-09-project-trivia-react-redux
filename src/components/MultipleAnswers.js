@@ -6,6 +6,7 @@ import actionDecreaseTime from '../redux/actions/actionDecreaseTime';
 import actionDisableButton from '../redux/actions/actionDisableButton';
 import ShowButton from '../redux/actions/actionShowButton';
 import actionResetFunction from '../redux/actions/actionResetFunction';
+import actionAddOptionAnswers from '../redux/actions/actionAddOptionAnswers';
 
 const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
@@ -18,16 +19,15 @@ class MultipleAnswers extends React.Component {
     this.handleClcik = this.handleClcik.bind(this);
     this.setScoreInGlobalState = this.setScoreInGlobalState.bind(this);
     this.state = {
-      optionAnswers: [],
       correctClass: '',
       wrongClass: '',
       // disableButtons: false,
     };
   }
 
-  componentDidMount() {
-    this.randomAnswer();
-  }
+  // componentDidMount() {
+  //   this.randomAnswer();
+  // }
 
   setScoreInGlobalState() {
     const { question, time, addScore } = this.props;
@@ -63,20 +63,22 @@ class MultipleAnswers extends React.Component {
     return correctAnswer;
   }
 
-  randomAnswer() {
-    const { question } = this.props;
+  randomAnswer(question) {
+    const { addOptionAnswers } = this.props;
     const optionAnswers = question.incorrect_answers;
     const maxNumber = 4;
     optionAnswers
       .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
-    this.setState({
-      optionAnswers,
-    });
+    // return optionAnswers;
+    addOptionAnswers(optionAnswers);
   }
 
   render() {
-    const { optionAnswers, correctClass, wrongClass } = this.state;
-    const { question, disableButton } = this.props;
+    const { correctClass, wrongClass } = this.state;
+    const { question, disableButton, optionAnswers } = this.props;
+    if (optionAnswers.length === 0) {
+      this.randomAnswer(question);
+    }
     let index = 0;
     return (
       <div>
@@ -107,10 +109,11 @@ class MultipleAnswers extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  time: state.questionsReducer.timer,
-  disableButton: state.questionsReducer.disableButton,
-  player: state.playerReducer.player,
+const mapStateToProps = ({ playerReducer, questionsReducer, answersReducer }) => ({
+  time: questionsReducer.timer,
+  disableButton: questionsReducer.disableButton,
+  player: playerReducer.player,
+  optionAnswers: answersReducer.optionAnswers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -119,6 +122,7 @@ const mapDispatchToProps = (dispatch) => ({
   stateShowButton: (value) => dispatch(ShowButton(value)),
   resetFunctions: () => dispatch(actionResetFunction()),
   addScore: (points) => dispatch(actionAddScore(points)),
+  addOptionAnswers: (value) => dispatch(actionAddOptionAnswers(value)),
 });
 
 MultipleAnswers.propTypes = {
@@ -131,6 +135,8 @@ MultipleAnswers.propTypes = {
   stateDisableButton: bool.isRequired,
   stateShowButton: bool.isRequired,
   disableButton: bool.isRequired,
+  optionAnswers: arrayOf().isRequired,
+  addOptionAnswers: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);
