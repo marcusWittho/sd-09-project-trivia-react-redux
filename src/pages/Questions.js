@@ -1,14 +1,50 @@
 import React from 'react';
-import Header from '../components/Header';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Questions extends React.Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      questionNum: 0,
+    };
+
+    this.renderQuestion = this.renderQuestion.bind(this);
+  }
+
+  renderQuestion(question) {
+    const { questions } = this.props;
+    console.log(questions);
+    console.log(question);
     return (
-      <section>
-        <Header />
-      </section>
+      <>
+        <p data-testid="question-category">{ question.category }</p>
+        <p data-testid="question-text">{ question.question }</p>
+        <p data-testid="correct-answer">{ question.correct_answer }</p>
+        {question.incorrect_answers
+          .map((item, index) => (
+            <p key={ index } data-testid={ `wrong-answer-${index}` }>{item}</p>))}
+      </>
+    );
+  }
+
+  render() {
+    const { questionNum } = this.state;
+    const { questions } = this.props;
+    return (
+      <div>
+        { this.renderQuestion(questions[questionNum]) }
+      </div>
     );
   }
 }
 
-export default Questions;
+const mapStateToProps = (state) => ({
+  questions: state.getQuestions.questions,
+});
+
+Questions.propTypes = {
+  questions: PropTypes.arrayOf(Object).isRequired,
+};
+
+export default connect(mapStateToProps)(Questions);
