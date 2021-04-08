@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getQuestionsApiAction from '../redux/Actions/getRequestQuestionsApiAction';
 import Header from '../components/Header';
+import NextQuestionButton from '../components/NextQuestionButton';
 
 class ScreenGame extends React.Component {
   constructor(props) {
@@ -10,7 +11,9 @@ class ScreenGame extends React.Component {
     this.state = {
       correct: '',
       allAnswers: [],
+      showNextQuestion: false,
     };
+    this.submitAnswer = this.submitAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -54,8 +57,14 @@ class ScreenGame extends React.Component {
     return random;
   }
 
+  submitAnswer() {
+    this.setState({
+      showNextQuestion: true,
+    });
+  }
+
   render() {
-    const { correct, allAnswers } = this.state;
+    const { correct, allAnswers, showNextQuestion } = this.state;
     const results = this.randomArray();
     return (
       <section>
@@ -79,6 +88,7 @@ class ScreenGame extends React.Component {
                 key={ Math.random() }
                 type="button"
                 data-testid="correct-answer"
+                onClick={ this.submitAnswer }
               >
                 {answer}
               </button>);
@@ -88,11 +98,13 @@ class ScreenGame extends React.Component {
               key={ Math.random() }
               type="button"
               data-testid={ `wrong-answer-${index}` }
+              onClick={ this.submitAnswer }
             >
               {answer}
             </button>
           );
         })}
+        { showNextQuestion && <NextQuestionButton /> }
       </section>
     );
   }
