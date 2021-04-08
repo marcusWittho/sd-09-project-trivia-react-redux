@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   showButtonNextQuestion: false,
   disableButton: false,
   isFetching: false,
-  timer: 5,
+  timer: 30,
 };
 
 const questionsReducer = (state = INITIAL_STATE, action) => {
@@ -33,7 +33,7 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
   case RESET_TIMER_QUESTION:
     return {
       ...state,
-      timer: 5,
+      timer: 30,
     };
   case DISABLE_BUTTON:
     return {

@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string, shape, arrayOf, bool, number } from 'prop-types';
+import { string, shape, arrayOf, bool, number, func } from 'prop-types';
 import { Redirect } from 'react-router';
-import actionAddQuestions from '../../redux/actions/actionAddQuestion';
 import actionDecreaseTime from '../../redux/actions/actionDecreaseTime';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import MultipleAnswers from '../../components/MultipleAnswers';
@@ -15,27 +14,36 @@ import './Game.css';
 class Game extends React.Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
+
     this.state = {
       counter: 0,
+      redirectFeedback: false,
     };
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.setInLocalStorage = this.setInLocalStorage.bind(this);
   }
 
   componentDidMount() {
-    console.log('did mount');
     this.counterTimer();
+  }
+
+  setInLocalStorage(playerData) {
+    localStorage.setItem('state', JSON.stringify({ player: playerData }));
   }
 
   // Fazer a verificação, se a questão foi marcada então passe para a próxima
   handleNextQuestion() {
     const { ResetCounter, DisableButton, StateShowButton } = this.props;
+    const { counter } = this.state;
     ResetCounter();
     DisableButton(false);
     StateShowButton(false);
     this.setState((previousState) => ({
       counter: previousState.counter + 1,
     }));
+    if (counter >= '4') {
+      this.setState({ redirectFeedback: true });
+    }
   }
 
   counterTimer() {
@@ -49,26 +57,18 @@ class Game extends React.Component {
         stateShowButton(true);
       }
     }, mileseconds);
-=======
-
-    this.setInLocalStorage = this.setInLocalStorage.bind(this);
-  }
-
-  setInLocalStorage(playerData) {
-    localStorage.setItem('state', JSON.stringify({ player: playerData }));
->>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
   }
 
   render() {
     const { player, questions, isFetching, showButton, time } = this.props;
     const { validLogin } = player;
-<<<<<<< HEAD
-    const { counter } = this.state;
-=======
+    const { counter, redirectFeedback } = this.state;
     this.setInLocalStorage(player);
->>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
     if (!validLogin) return <Redirect exact to="/" />;
-    if (isFetching || !questions) return <Loading />;
+    if (isFetching || !questions) {
+      return <Loading />;
+    }
+    if (redirectFeedback) return <Redirect exact to="/feedback" />;
     return (
       <section className="game-container">
         <header>
@@ -97,7 +97,6 @@ class Game extends React.Component {
                 Próxima
               </button>
             )}
-
           </div>
         </main>
       </section>
@@ -136,6 +135,9 @@ Game.propTypes = {
   ResetCounter: number.isRequired,
   DisableButton: bool.isRequired,
   StateShowButton: bool.isRequired,
+  decreaseTime: func.isRequired,
+  stateDisableButton: func.isRequired,
+  stateShowButton: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
