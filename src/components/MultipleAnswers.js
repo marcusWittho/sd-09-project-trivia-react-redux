@@ -1,8 +1,11 @@
 import React from 'react';
-import { string, shape, arrayOf, number, func } from 'prop-types';
+import { string, shape, arrayOf, number, func, bool } from 'prop-types';
 import { connect } from 'react-redux';
 import actionAddScore from '../redux/actions/actionAddScore';
 import actionDecreaseTime from '../redux/actions/actionDecreaseTime';
+import actionDisableButton from '../redux/actions/actionDisableButton';
+import ShowButton from '../redux/actions/actionShowButton';
+import actionResetFunction from '../redux/actions/actionResetFunction';
 
 const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
@@ -11,7 +14,6 @@ class MultipleAnswers extends React.Component {
 
     this.randomAnswer = this.randomAnswer.bind(this);
     this.selectDataTest = this.selectDataTest.bind(this);
-    this.counterTimer = this.counterTimer.bind(this);
 
     this.handleClcik = this.handleClcik.bind(this);
     this.setScoreInGloblaState = this.setScoreInGloblaState.bind(this);
@@ -19,12 +21,14 @@ class MultipleAnswers extends React.Component {
       optionAnswers: [],
       correctClass: '',
       wrongClass: '',
-      disableButtons: false,
+      // disableButtons: false,
     };
   }
 
   componentDidMount() {
     this.randomAnswer();
+<<<<<<< HEAD
+=======
     this.counterTimer();
   }
 
@@ -46,6 +50,7 @@ class MultipleAnswers extends React.Component {
       const { time, decreaseTime } = this.props;
       return (time > 0) ? decreaseTime() : this.setState({ disableButtons: true });
     }, mileseconds);
+>>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
   }
 
   handleClcik({ target }) {
@@ -71,27 +76,20 @@ class MultipleAnswers extends React.Component {
     const { question } = this.props;
     const optionAnswers = question.incorrect_answers;
     const maxNumber = 4;
-    if (optionAnswers.length < maxNumber) {
-      optionAnswers
-        .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
-      this.setState({
-        optionAnswers,
-      });
-    } else {
-      this.setState({
-        optionAnswers,
-      });
-    }
+    optionAnswers
+      .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
+    this.setState({
+      optionAnswers,
+    });
   }
 
   render() {
-    const { optionAnswers, correctClass, wrongClass, disableButtons } = this.state;
-    const { question, time } = this.props;
+    const { optionAnswers, correctClass, wrongClass } = this.state;
+    const { question, time, disableButton } = this.props;
     let index = 0;
     return (
       <div>
         <div className="question-container">
-          <p>{ `Tempo: ${time}` }</p>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>
@@ -107,7 +105,7 @@ class MultipleAnswers extends React.Component {
               type="button"
               key={ option }
               data-testid={ dataTestId }
-              disabled={ disableButtons }
+              disabled={ disableButton }
               onClick={ this.handleClcik }
             >
               { option }
@@ -120,12 +118,22 @@ class MultipleAnswers extends React.Component {
 
 const mapStateToProps = (state) => ({
   time: state.questionsReducer.timer,
+<<<<<<< HEAD
+  disableButton: state.questionsReducer.disableButton,
+=======
   player: state.playerReducer.player,
+>>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
 });
 
 const mapDispatchToProps = (dispatch) => ({
   decreaseTime: () => dispatch(actionDecreaseTime()),
+<<<<<<< HEAD
+  stateDisableButton: (value) => dispatch(actionDisableButton(value)),
+  stateShowButton: (value) => dispatch(ShowButton(value)),
+  resetFunctions: () => dispatch(actionResetFunction()),
+=======
   addScore: (points) => dispatch(actionAddScore(points)),
+>>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
 });
 
 MultipleAnswers.propTypes = {
@@ -136,6 +144,10 @@ MultipleAnswers.propTypes = {
   addScore: func.isRequired,
   time: number.isRequired,
   decreaseTime: func.isRequired,
+  resetFunctions: func.isRequired,
+  stateDisableButton: bool.isRequired,
+  stateShowButton: bool.isRequired,
+  disableButton: bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);
