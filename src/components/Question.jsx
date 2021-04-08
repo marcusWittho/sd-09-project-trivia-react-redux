@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import './Question.css';
 
 class Question extends React.Component {
   constructor(props) {
@@ -8,10 +9,18 @@ class Question extends React.Component {
 
     this.state = {
       questionIndex: 0,
+      clicked: false,
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState((state) => ({
+      clicked: !state.clicked,
+    }));
   }
 
   renderQuestion() {
@@ -21,12 +30,15 @@ class Question extends React.Component {
   }
 
   renderAnswers() {
+    const { clicked } = this.state;
     const question = this.renderQuestion();
     return (
       <>
         <button
           type="button"
           data-testid="correct-answer"
+          className={ (clicked) ? 'correct-answer' : '' }
+          onClick={ this.handleClick }
         >
           {question.correct_answer}
         </button>
@@ -35,6 +47,8 @@ class Question extends React.Component {
             type="button"
             data-testid={ `wrong-answer-${index}` }
             key={ index }
+            className={ (clicked) ? 'incorrect-answer' : '' }
+            onClick={ this.handleClick }
           >
             {answer}
           </button>
