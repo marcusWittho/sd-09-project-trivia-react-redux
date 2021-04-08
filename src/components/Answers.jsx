@@ -13,7 +13,7 @@ class Answers extends Component {
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestionsAndCategories = this.renderQuestionsAndCategories.bind(this);
     this.changeColorAnswer = this.changeColorAnswer.bind(this);
-    this.renderMutipleAnswers = this.renderMutipleAnswers.bind(this);
+    this.nextButton = this.nextButton.bind(this);
   }
 
   nextQuestion(event) {
@@ -26,45 +26,25 @@ class Answers extends Component {
     }
   }
 
+  nextButton(color) {
+    return color && (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.nextQuestion }
+      >
+        Proxima
+      </button>
+    );
+  }
+
   changeColorAnswer() {
     this.setState({
       color: true,
     });
   }
 
-  renderMutipleAnswers() {
-    const { answerIndex, color } = this.state;
-    const { questions } = this.props;
-
-    const courrentQuestion = questions.results[answerIndex];
-
-    const beetween = 0.5;
-    const answer = [...courrentQuestion.incorrect_answers,
-      courrentQuestion.correct_answer];
-    const sortanswer = answer.sort(() => Math.random() - beetween);
-    return (
-      <section>
-        {sortanswer.map((selected, index) => (
-          <button
-            onClick={ this.changeColorAnswer }
-            key={ index }
-            type="button"
-            data-testid={ `${selected === courrentQuestion.correct_answer
-              ? 'correct-answer' : `wrong-answer-${index}`}` }
-            className={ `${color ? `${selected === courrentQuestion.correct_answer
-              ? 'correct' : 'wrong'}` : 'no-color'}` }
-          >
-            {selected}
-          </button>
-        ))}
-      </section>
-    );
-  }
-
-  renderQuestionsAndCategories() {
-    const { answerIndex } = this.state;
-    const { questions } = this.props;
-
+  renderQuestionsAndCategories(answerIndex, questions) {
     const courretAsk = questions.results[answerIndex];
     return (
       <section>
@@ -75,20 +55,16 @@ class Answers extends Component {
       </section>);
   }
 
-  renderAnswers() {
-    const { answerIndex, color } = this.state;
-    const { questions } = this.props;
+  renderAnswers(answerIndex, questions, color) {
     const courrentQuestion = questions.results[answerIndex];
-
-    if (courrentQuestion.type === 'multiple') {
-      return this.renderMutipleAnswers();
-    }
+    const multipleAnswers = [
+      ...courrentQuestion.incorrect_answers,
+      courrentQuestion.correct_answer,
+    ];
+    const { type } = questions.results[answerIndex];
+    const answer = type === 'multiple' ? multipleAnswers : ['True', 'False'];
     const beetween = 0.5;
-
-    const answer = [courrentQuestion.incorrect_answers[0],
-      courrentQuestion.correct_answer];
     const sortanswerToF = answer.sort(() => Math.random() - beetween);
-
     return (
       <section>
         {sortanswerToF.map((selected, index) => (
@@ -110,13 +86,14 @@ class Answers extends Component {
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, questions } = this.props;
+    const { color, answerIndex } = this.state;
     if (loading) return <h1>Carregando...</h1>;
     return (
       <div>
-        {this.renderQuestionsAndCategories()}
-        {this.renderAnswers()}
-        <button type="button" onClick={ this.nextQuestion }>Proxima</button>
+        {this.renderQuestionsAndCategories(answerIndex, questions)}
+        {this.renderAnswers(answerIndex, questions, color)}
+        {this.nextButton(color)}
       </div>
     );
   }
