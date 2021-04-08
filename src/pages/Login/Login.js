@@ -7,6 +7,7 @@ import fetchAPIToken from '../../services/apiToken';
 import actionPlayerId from '../../redux/actions/actionPlayerId';
 import actionAddQuestions from '../../redux/actions/actionAddQuestion';
 import actionValidLogin from '../../redux/actions/actionValidLogin';
+import actionResetCounter from '../../redux/actions/actionResetCounter';
 import './Login.css';
 
 class Login extends React.Component {
@@ -43,6 +44,7 @@ class Login extends React.Component {
       actionPlayerId: sendDataPlayerId,
       actionAddQuestions: requestQuestions,
       actionValidLogin: sendValidLogin,
+      actionResetCounter: resetCounter,
     } = this.props;
     sendValidLogin();
     const { email, name } = this.state;
@@ -52,6 +54,7 @@ class Login extends React.Component {
     const gravatarEmail = `https://www.gravatar.com/avatar/${hash}`;
     sendDataPlayerId(name, gravatarEmail);
     requestQuestions(response.token);
+    resetCounter();
   }
 
   handleChange({ target }) {
@@ -102,12 +105,14 @@ const mapDispatchToProps = {
   actionPlayerId,
   actionAddQuestions,
   actionValidLogin,
+  actionResetCounter,
 };
 
 Login.propTypes = {
   actionPlayerId: func.isRequired,
   actionAddQuestions: func.isRequired,
   actionValidLogin: func.isRequired,
+  actionResetCounter: func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
