@@ -1,10 +1,10 @@
 import React from 'react';
-import FeedbackHeader from '../components/FeedbackHeader';
+import Header from '../components/Header';
 
 class FeedbackPage extends React.Component {
   render() {
     return (
-      <FeedbackHeader />
+      <Header />
     );
   }
 }

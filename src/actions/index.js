@@ -9,3 +9,10 @@ export const fetchTrivaApi = () => (dispach) => {
   fetchTrivaToken()
     .then((triviaApiResponse) => dispach(requestTriviaToken(triviaApiResponse)));
 };
+
+export const requestUserInfo = (email, name, hash) => ({
+  type: 'REQUEST_USER_INFO',
+  email,
+  name,
+  hash,
+});
