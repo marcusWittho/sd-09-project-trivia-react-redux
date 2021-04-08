@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { getQuestions } from '../actions/index';
 
-class Game extends Component {
+class Answers extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,11 +10,7 @@ class Game extends Component {
     };
     this.nextQuestion = this.nextQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
-  }
-
-  componentDidMount() {
-    const { propQuestions } = this.props;
-    propQuestions();
+    this.renderQuestionsAndCategories = this.renderQuestionsAndCategories.bind(this);
   }
 
   nextQuestion(event) {
@@ -28,9 +23,24 @@ class Game extends Component {
     }
   }
 
+  renderQuestionsAndCategories() {
+    const { answerIndex } = this.state;
+    const { questions } = this.props;
+
+    const courretAsk = questions.results[answerIndex];
+    return (
+      <section>
+        <h1 data-testid="question-category">
+          { courretAsk.category }
+        </h1>
+        <p data-testid="question-text">{ courretAsk.question }</p>
+      </section>);
+  }
+
   renderAnswers() {
     const { answerIndex } = this.state;
     const { questions } = this.props;
+
     const courrentAnswer = questions.results[answerIndex];
     const beetween = 0.5;
 
@@ -45,7 +55,7 @@ class Game extends Component {
               key={ index }
               type="button"
               data-testid={ `${selected === courrentAnswer.correct_answer
-                ? 'correct' : 'wrong'}-answer-${index}` }
+                ? 'correct-answer' : `wrong-answer-${index}`}` }
             >
               {selected}
             </button>
@@ -63,7 +73,7 @@ class Game extends Component {
             key={ index }
             type="button"
             data-testid={ `${selected === courrentAnswer.correct_answer
-              ? 'correct' : 'wrong'}-answer-${index}` }
+              ? 'correct-answer' : `wrong-answer-${index}`}` }
           >
             {selected}
           </button>
@@ -73,22 +83,11 @@ class Game extends Component {
   }
 
   render() {
-    const { answerIndex } = this.state;
     const { isFetching } = this.props;
-    if (isFetching === true) {
-      return <h1>Carregando</h1>;
-    }
-    const { questions } = this.props;
-    const courretAsk = questions.results[answerIndex];
-    console.log(questions);
+    if (isFetching) return <h1>Carregando...</h1>;
     return (
       <div>
-        <section>
-          <h1 data-testid="question-category">
-            { courretAsk.category }
-          </h1>
-          <p data-testid="question-text">{ courretAsk.question }</p>
-        </section>
+        {this.renderQuestionsAndCategories()}
         {this.renderAnswers()}
         <button type="button" onClick={ this.nextQuestion }>Proxima</button>
       </div>
@@ -96,18 +95,13 @@ class Game extends Component {
   }
 }
 
-Game.propTypes = {
+Answers.propTypes = {
   propQuestions: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer: { token, questions, isFetching } }) => ({
-  token,
+const mapStateToProps = ({ actionsReducer: { questions, isFetching } }) => ({
   questions,
   isFetching,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  propQuestions: () => dispatch(getQuestions()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps)(Answers);

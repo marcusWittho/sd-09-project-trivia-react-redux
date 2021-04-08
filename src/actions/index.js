@@ -10,7 +10,12 @@ const setQuestions = (questions) => ({
   questions,
 });
 
-export const getQuestions = () => async (dispatch) => {
-  const data = await REQUEST_QUESTIONS();
+export const saveRequest = () => ({
+  type: 'REQ_QUESTIONS',
+});
+
+export const getQuestions = (token) => async (dispatch) => {
+  const data = await REQUEST_QUESTIONS(token);
   dispatch(setQuestions(data));
+  return data;
 };
