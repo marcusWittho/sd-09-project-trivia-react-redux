@@ -7,9 +7,22 @@ import Header from '../components/Header';
 class ScreenGame extends React.Component {
   constructor(props) {
     super(props);
+    const { userName, userEmail } = props;
+
+    this.addScore = this.addScore.bind(this);
+    this.difficultScore = this.difficultScore.bind(this);
+
     this.state = {
       correct: '',
       allAnswers: [],
+      timer: 30,
+      difficulty: '',
+      player: {
+        name: userName,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: userEmail,
+      },
     };
   }
 
@@ -17,12 +30,16 @@ class ScreenGame extends React.Component {
     const { getQuestions } = this.props;
     const token = localStorage.getItem('token');
     getQuestions(token);
+
+    const { player } = this.state;
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   componentDidUpdate(props) {
     const { questions } = this.props;
     const { results } = questions;
     if (props !== this.props) {
+      const { difficulty } = results[0];
       const correctAnswer = results[0].correct_answer;
       const incorrectAnswer = results[0].incorrect_answers.map((answer) => answer);
       const array = [...incorrectAnswer, correctAnswer];
@@ -31,14 +48,15 @@ class ScreenGame extends React.Component {
         .map((a) => ({ sort: Math.random(), value: a }))
         .sort((a, b) => a.sort - b.sort)
         .map((a) => a.value);
-      this.updateState(correctAnswer, newArray);
+      this.updateState(correctAnswer, newArray, difficulty);
     }
   }
 
-  updateState(correctAnswer, array) {
+  updateState(correctAnswer, array, difficulty) {
     this.setState({
       correct: correctAnswer,
       allAnswers: array,
+      difficulty,
     });
   }
 
@@ -52,6 +70,40 @@ class ScreenGame extends React.Component {
       results.splice(index, 1);
     }
     return random;
+  }
+
+  difficultScore(difficulty) {
+    const three = 3;
+    switch (difficulty) {
+    case 'easy':
+      return 1;
+    case 'medium':
+      return 2;
+    default:
+      return three;
+    }
+  }
+
+  addScore() {
+    const getLocalStorage = JSON.parse(localStorage.getItem('state'));
+    const { timer, difficulty, player } = this.state;
+    const correctAnswer = 10;
+    const difficultyScore = this.difficultScore(difficulty);
+    const calculateScore = (
+      correctAnswer + (timer * difficultyScore) + getLocalStorage.score
+    );
+
+    const { userName, userEmail } = this.props;
+    this.setState(({ player: { score, assertions } }) => ({
+      player: {
+        name: userName,
+        assertions: assertions + 1,
+        score: score + calculateScore,
+        gravatarEmail: userEmail,
+      },
+    }), () => console.log(player));
+
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   render() {
@@ -79,6 +131,7 @@ class ScreenGame extends React.Component {
                 key={ Math.random() }
                 type="button"
                 data-testid="correct-answer"
+                onClick={ this.addScore }
               >
                 {answer}
               </button>);
@@ -103,10 +156,14 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
+  userName: state.loginReducer.userName,
+  userEmail: state.loginReducer.userEmail,
   questions: state.questionsReducer.questions,
 });
 
 ScreenGame.propTypes = {
+  userName: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.shape().isRequired,
 };
