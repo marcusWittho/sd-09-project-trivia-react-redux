@@ -19,5 +19,5 @@ export const getQuestions = async (token) => {
       if (key === 'incorrect_answers') return (['incorrectAnswers', value]);
       return ([key, value]);
     }))));
-  return questions;
+  return questions.results;
 };

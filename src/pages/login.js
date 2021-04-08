@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getToken, gravatarURL, getQuestions } from '../services/api';
+import { getToken, gravatarURL } from '../services/api';
+import { fetchQuestions } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,22 +34,29 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const token = await getToken();
+    await getToken();
     const { name, email } = this.state;
+    const { getMyQuestions } = this.props;
     const player = {
       name,
       gravatarEmail: email,
       assertions: 0,
       score: 0,
     };
+    // coloca o player no localStorage
     localStorage.setItem('player', JSON.stringify(player));
     const myURL = gravatarURL(email);
     localStorage.setItem('gravatarURL', myURL);
 
+    // faz a requisição das perguntas do jogo ( retirar daqui )
+    // isso é um array com as perguntas e temos que colocar na store
+    // const questions = await getQuestions(token);
+    // console.log(questions);
+
+    getMyQuestions();
+    // redireciona para a pagina do game
     const { history: { push } } = this.props;
     push('/game');
-
-    getQuestions(token);
   }
 
   handleSettingsButton() {
@@ -104,10 +112,15 @@ class Login extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  getMyQuestions: () => dispatch(fetchQuestions(dispatch)),
+});
+
 Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  getMyQuestions: PropTypes.func.isRequired,
 };
 
-export default connect()(Login);
+export default connect(null, mapDispatchToProps)(Login);

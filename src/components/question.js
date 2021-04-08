@@ -8,6 +8,7 @@ class Question extends React.Component {
     super(props);
     const { questionData: { correctAnswer, incorrectAnswers } } = this.props;
     this.state = {
+      disabled: false,
       givenAnswer: -1,
       scrambledAnswers: shuffle(([correctAnswer]
         .concat(incorrectAnswers)
@@ -16,7 +17,7 @@ class Question extends React.Component {
   }
 
   renderAternatives() {
-    const { scrambledAnswers, givenAnswer } = this.state;
+    const { scrambledAnswers, givenAnswer, disabled } = this.state;
     return (
       <>
         { scrambledAnswers
@@ -26,16 +27,19 @@ class Question extends React.Component {
                 ? Object.assign(answerObj, { feedback: '3px solid rgb(255, 0, 0)' })
                 : Object.assign(answerObj, { feedback: '3px solid rgb(6, 240, 15)' });
             }
-            return Object.assign(answerObj, { feedback: 'red' });
+            return Object.assign(answerObj, { feedback: '3px solid black' });
           })
           .map((answerObj) => (
             <button
               type="button"
+              disabled={ disabled }
               key={ answerObj.index }
               data-testid={ (!answerObj.index) ? 'correct-answer' : 'wrong-answer' }
               style={ { border: answerObj.feedback } }
               onClick={ () => {
-                this.setState({ givenAnswer: answerObj.index });
+                this.setState({
+                  givenAnswer: answerObj.index,
+                  disabled: true });
               } }
             >
               { answerObj.answer }
