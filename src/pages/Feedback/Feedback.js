@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { number, shape } from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 class Feedback extends React.Component {
   render() {
     const { player } = this.props;
-    const { assertions, name, score, gravatarEmail } = player;
+    const { assertions, name, score, gravatarEmail, validLogin } = player;
+    if (!validLogin) return <Redirect exact to="/" />;
     return (
       <div>
         <header>
@@ -20,10 +22,19 @@ class Feedback extends React.Component {
         <p data-testid="feedback-text">
           { assertions > 2 ? 'Mandou bem!' : 'Podia ser melhor...' }
         </p>
-        <p data-testid="feedback-total-question">
-          { `Você acertou ${assertions} questões!` }
+        <p>
+          Você acertou
+          <span data-testid="feedback-total-question">
+            { assertions }
+          </span>
+          questões!
         </p>
-        <p data-testid="feedback-total-score">{ `Um total de ${score}` }</p>
+        <p>
+          Um total de
+          <span data-testid="feedback-total-score">
+            { score }
+          </span>
+        </p>
       </div>
     );
   }
