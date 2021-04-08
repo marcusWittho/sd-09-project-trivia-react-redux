@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { loginAction } from '../actions/loginAction';
@@ -45,10 +46,14 @@ class Login extends React.Component {
     const { setQuestions } = this.props;
     setQuestions();
 
-    const { name } = this.state;
+    const { name, email } = this.state;
+    const gravatarEmail = md5(email).toString();
+    const score = 0;
 
     const player = {
       name,
+      score,
+      gravatarEmail,
     };
 
     localStorage.setItem('state', JSON.stringify(player));
