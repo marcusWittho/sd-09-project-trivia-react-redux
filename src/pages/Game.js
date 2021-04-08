@@ -1,12 +1,11 @@
 import React from 'react';
-import HomeButton from './HomeButton';
+import HeaderPages from './HeaderPages';
 
 class Game extends React.Component {
   render() {
     return (
       <div>
-        Game
-        <HomeButton />
+        <HeaderPages />
       </div>
     );
   }
