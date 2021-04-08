@@ -104,6 +104,9 @@ class GamePage extends React.Component {
               time={ time }
               countDown={ this.countDown }
             />
+            <button type="button" data-testid="btn-ranking">
+              <Link to="/Ranking">Ranking de jogadores</Link>
+            </button>
             <h2 data-testid="question-category">
               Category:
               {questions[questionNumber].category}
