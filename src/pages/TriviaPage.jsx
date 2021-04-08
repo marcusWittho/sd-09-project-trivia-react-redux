@@ -1,15 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
+import { fetchQuestions } from '../redux/actions';
+import Header from '../components/Header';
 
 class TriviaPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      imgUrl: '',
+    };
+
+    this.getImgUrl = this.getImgUrl.bind(this);
+  }
+
+  componentDidMount() {
+    const { getQuestions, token } = this.props;
+    const storageToken = localStorage.getItem('token');
+    if (storageToken && storageToken.length > 0) {
+      getQuestions(JSON.parse(storageToken));
+    } else {
+      getQuestions(token);
+    }
+    this.getImgUrl();
+  }
+
   componentDidUpdate() {
     const { token } = this.props;
-    localStorage.setItem('token', JSON.stringify(token));
+    const currentToken = localStorage.getItem('token');
+    if (currentToken !== token) {
+      localStorage.setItem('token', JSON.stringify(token));
+    }
+  }
+
+  getImgUrl() {
+    const { location: { player: { email } } } = this.props;
+    const emailHash = md5(email).toString();
+    this.setState({
+      imgUrl: `https://www.gravatar.com/avatar/${emailHash}`,
+    });
   }
 
   render() {
-    const { fetching } = this.props;
+    const { fetching, questions, location: { player: { name } } } = this.props;
+    const { imgUrl } = this.state;
+    console.log(questions);
     if (fetching) {
       return (
         <h1>Carregando...</h1>
@@ -17,7 +54,11 @@ class TriviaPage extends React.Component {
     }
 
     return (
-      <div>Página de jogo</div>
+      <>
+        <Header imgSrc={ imgUrl } name={ name } />
+        <h2>Página de jogo</h2>
+        {/* { questions && questions.map((question) => <p>{ question.question }</p>) } */}
+      </>
     );
   }
 }
@@ -25,11 +66,24 @@ class TriviaPage extends React.Component {
 const mapStateToProps = (state) => ({
   token: state.tokenReducer.token,
   fetching: state.tokenReducer.isFetching,
+  questions: state.questionsReducer.questions,
 });
+
+const mapDispatchToProps = {
+  getQuestions: fetchQuestions,
+};
 
 TriviaPage.propTypes = {
   token: PropTypes.string.isRequired,
   fetching: PropTypes.bool.isRequired,
+  getQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  location: PropTypes.shape({
+    player: PropTypes.shape({
+      email: PropTypes.string,
+      name: PropTypes.string,
+    }),
+  }).isRequired,
 };
 
-export default connect(mapStateToProps)(TriviaPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TriviaPage);

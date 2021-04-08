@@ -1,3 +1,7 @@
 import fetchToken from './tokenActions';
+import fetchQuestions from './questionsActions';
 
-export default fetchToken;
+export {
+  fetchToken,
+  fetchQuestions,
+};
