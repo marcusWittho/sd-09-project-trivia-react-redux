@@ -84,7 +84,7 @@ class Login extends React.Component {
             <br />
             categorias, como Literatura, Entretenimento, História e Ciências.
           </p>
-          <h2>Coloque seu e-mail e nome para participar do jogo.</h2>
+          <h2>Coloque seu e-mail e nome para participar do jogo..</h2>
           <form className="login-form">
             { this.fields(this.changeState, buttonSubmit) }
           </form>
