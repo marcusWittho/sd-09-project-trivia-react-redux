@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../actions/fetchToken';
+import { userEmail, userName, userAvatar } from '../actions/index';
 import '../App.css';
 import logo from '../trivia.png';
 
@@ -18,6 +20,8 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.validateInputs = this.validateInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleClickUser = this.handleClickUser.bind(this);
+    this.fetchGravata = this.fetchGravata.bind(this);
   }
 
   handleChange({ target }) {
@@ -43,8 +47,23 @@ class Login extends React.Component {
     history.push('./game');
   }
 
+  handleClickUser(email, name) {
+    const { userEmailDispatcher, userNameDispatcher } = this.props;
+    userEmailDispatcher(email);
+    userNameDispatcher(name);
+    this.fetchGravata();
+  }
+
+  fetchGravata() {
+    const { userAvatarDispatcher } = this.props;
+    const { email } = this.props;
+    const hashEmail = md5(email).toString();
+    const urlAvatar = `https://www.gravatar.com/avatar/${hashEmail}`;
+    userAvatarDispatcher(urlAvatar);
+  }
+
   render() {
-    const { validated } = this.state;
+    const { validated, email, name } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -74,7 +93,10 @@ class Login extends React.Component {
               disabled={ validated }
               type="button"
               data-testid="btn-play"
-              onClick={ this.handleClick }
+              onClick={ () => {
+                this.handleClick();
+                this.handleClickUser(email, name);
+              } }
             >
               Jogar
             </button>
@@ -88,15 +110,23 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  token: (key) => dispatch(fetchToken(key)),
-});
-
 Login.propTypes = {
   token: PropTypes.func.isRequired,
+  userEmailDispatcher: PropTypes.func,
+  userNameDispatcher: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
-  }).isRequired,
-};
+  }),
+}.isRequired;
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapDispatchToProps = (dispatch) => ({
+  token: (key) => dispatch(fetchToken(key)),
+  userEmailDispatcher: (email) => dispatch(userEmail(email)),
+  userNameDispatcher: (name) => dispatch(userName(name)),
+  userAvatarDispatcher: (avatar) => dispatch(userAvatar(avatar)),
+});
+const mapStatetoProps = (state) => ({
+  email: state.user.email,
+});
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Login);
