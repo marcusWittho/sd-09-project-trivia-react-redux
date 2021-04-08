@@ -35,7 +35,6 @@ class Play extends React.Component {
   }
 
   componentWillUnmount() {
-    // remove o intervalo para nao pesar na aplicacao.
     clearInterval(this.timerInterval);
   }
 
