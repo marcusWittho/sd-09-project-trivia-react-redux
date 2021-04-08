@@ -19,18 +19,18 @@ class Header extends React.Component {
   }
 
   render() {
-    const { username, email, score } = this.props;
+    const { name, gravatarEmail, score } = this.props;
 
     return (
       <header>
         <img
-          src={ this.getAvatar(email) }
+          src={ this.getAvatar(gravatarEmail) }
           alt="userImage"
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">
           Username:
-          <span>{ username }</span>
+          <span>{ name }</span>
         </p>
         <p data-testid="header-score">
           Placar:
@@ -42,14 +42,14 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  username: state.loginReducer.username,
-  email: state.loginReducer.email,
-  score: state.loginReducer.score,
+  name: state.player.name,
+  gravatarEmail: state.player.gravatarEmail,
+  score: state.player.score,
 });
 
 Header.propTypes = {
-  username: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
 

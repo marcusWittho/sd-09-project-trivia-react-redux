@@ -11,7 +11,6 @@ class Home extends React.Component {
     this.state = {
       username: '',
       email: '',
-      score: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -26,10 +25,20 @@ class Home extends React.Component {
   }
 
   handleClick() {
-    const { username, email, score } = this.state;
+    const { username, email } = this.state;
     const { loginActionFunc, saveToken } = this.props;
     saveToken();
-    loginActionFunc(username, email, score);
+    loginActionFunc(username, email);
+    const objPlayer = {
+      player: {
+        name: username,
+        assertions: '',
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(objPlayer));
   }
 
   disableButton(username, email) {
@@ -93,8 +102,7 @@ Home.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   saveToken: () => dispatch(asyncToken()),
-  loginActionFunc:
-    (username, email, score) => dispatch(loginAction(username, email, score)),
+  loginActionFunc: (username, email) => dispatch(loginAction(username, email)),
 });
 
 export default connect(null, mapDispatchToProps)(Home);

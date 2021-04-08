@@ -3,14 +3,17 @@ import { getToken, getAsks } from '../serviceAPI';
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
 export const SAVE_ASKS = 'SAVE_ASKS';
+export const SAVE_SCORE = 'SAVE_SCORE';
 
-export const loginAction = (username, email, score) => ({
+export const saveScore = (score) => ({
+  type: SAVE_SCORE,
+  score,
+});
+
+export const loginAction = (username, email) => ({
   type: LOGIN,
-  payload: {
-    username,
-    email,
-    score,
-  },
+  username,
+  email,
 });
 
 export const saveAsks = (asks) => ({
