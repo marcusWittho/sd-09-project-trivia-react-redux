@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Timer from './Timer';
 import './Question.css';
 
 class Question extends React.Component {
@@ -10,17 +11,30 @@ class Question extends React.Component {
     this.state = {
       questionIndex: 0,
       clicked: false,
+      timer: 30,
+      stopTimer: false,
+      disabledButton: false,
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.timeChange = this.timeChange.bind(this);
   }
 
   handleClick() {
     this.setState((state) => ({
       clicked: !state.clicked,
+      stopTimer: true,
+      disabledButton: true,
     }));
+  }
+
+  timeChange() {
+    const { timer } = this.state;
+    this.setState({
+      timer: timer - 1,
+    });
   }
 
   renderQuestion() {
@@ -30,7 +44,7 @@ class Question extends React.Component {
   }
 
   renderAnswers() {
-    const { clicked } = this.state;
+    const { clicked, disabledButton } = this.state;
     const question = this.renderQuestion();
     return (
       <>
@@ -39,6 +53,7 @@ class Question extends React.Component {
           data-testid="correct-answer"
           className={ (clicked) ? 'correct-answer' : '' }
           onClick={ this.handleClick }
+          disabled={ disabledButton }
         >
           {question.correct_answer}
         </button>
@@ -49,6 +64,7 @@ class Question extends React.Component {
             key={ index }
             className={ (clicked) ? 'incorrect-answer' : '' }
             onClick={ this.handleClick }
+            disabled={ disabledButton }
           >
             {answer}
           </button>
@@ -59,6 +75,7 @@ class Question extends React.Component {
 
   render() {
     const { fetching } = this.props;
+    const { timer, stopTimer } = this.state;
 
     if (fetching) {
       return <h3>Carregando pergunta...</h3>;
@@ -72,6 +89,12 @@ class Question extends React.Component {
         <h4>Question:</h4>
         <p data-testid="question-text">{this.renderQuestion().question}</p>
         {this.renderAnswers()}
+        <Timer
+          timer={ timer }
+          timeChange={ this.timeChange }
+          stopTimer={ stopTimer }
+          handleClick={ this.handleClick }
+        />
       </div>
     );
   }
