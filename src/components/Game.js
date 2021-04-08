@@ -38,10 +38,11 @@ class Game extends React.Component {
     else if (valueDifficulty === 'medium') valueDifficulty = 2;
     valueDifficulty = 1;
     const score = valuePattern + (timer * valueDifficulty);
-    const dataStorage = JSON.parse(localStorage.getItem('state'));
+    const getData = localStorage.getItem('state');
+    const dataStorage = { ...JSON.parse(getData) };
     dataStorage.player.score += score;
     savScore(dataStorage.player.score);
-    localStorage.setItem('state', JSON.stringify(dataStorage));
+    localStorage.setItem('state', JSON.stringify({ ...dataStorage }));
   }
 
   setCronometer() {
@@ -119,6 +120,20 @@ class Game extends React.Component {
   }
 
   elementButtonNext() {
+    const { answerIndex } = this.state;
+    const MAX = 4;
+    if (answerIndex === MAX) {
+      return (
+        <Link to="/feedback">
+          <button
+            type="button"
+            data-testid="btn-next"
+          >
+            Finalizar
+          </button>
+        </Link>
+      );
+    }
     return (
       <button
         type="button"
@@ -159,10 +174,8 @@ class Game extends React.Component {
             </div>
           )))}
         </p>
-        {(answerSelected && answerIndex < MAX_QUESTIONS)
+        {(answerSelected && answerIndex <= MAX_QUESTIONS)
         && this.elementButtonNext()}
-        {(answerSelected && answerIndex === MAX_QUESTIONS)
-        && <Link to="/">Finalizar</Link>}
         <p>{`Timer: ${timer}`}</p>
       </div>
     );
