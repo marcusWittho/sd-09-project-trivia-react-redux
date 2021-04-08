@@ -1,0 +1,8 @@
+.feedback-header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.feedback-header p:nth-child(1) {
+  width: 60vw;
+}
