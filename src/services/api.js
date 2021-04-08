@@ -4,7 +4,6 @@ const tokenAPI = async () => {
   try {
     const response = await fetch(URL);
     const token = await response.json();
-    // .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
     return token.token;
   } catch (error) {
     console.log(error);
