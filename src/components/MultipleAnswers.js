@@ -7,6 +7,7 @@ import actionDisableButton from '../redux/actions/actionDisableButton';
 import ShowButton from '../redux/actions/actionShowButton';
 import actionResetFunction from '../redux/actions/actionResetFunction';
 import actionAddOptionAnswers from '../redux/actions/actionAddOptionAnswers';
+import actionAddAssertions from '../redux/actions/actionAddAssertions';
 
 const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
@@ -17,35 +18,40 @@ class MultipleAnswers extends React.Component {
     this.selectDataTest = this.selectDataTest.bind(this);
 
     this.handleClcik = this.handleClcik.bind(this);
-    this.setScoreInGloblaState = this.setScoreInGloblaState.bind(this);
+    this.setScoreInGlobalState = this.setScoreInGlobalState.bind(this);
     this.state = {
       correctClass: '',
       wrongClass: '',
-      // disableButtons: false,
     };
   }
 
-  // componentDidMount() {
-  //   this.randomAnswer();
-  // }
-
-  setScoreInGloblaState() {
+  setScoreInGlobalState() {
     const { question, time, addScore } = this.props;
     const hardPoints = 3;
     const constant = 10;
+    const stateLocalStorage = JSON.parse(localStorage.getItem('state'));
+    const { player } = stateLocalStorage;
     let difficultyNumber;
     if (question.difficulty === 'hard') difficultyNumber = hardPoints;
     if (question.difficulty === 'medium') difficultyNumber = 2;
     if (question.difficulty === 'easy') difficultyNumber = 1;
-    const points = (constant + (time * difficultyNumber));
+    const points = (constant + (time * difficultyNumber)) + player.score;
     addScore(points);
   }
 
   handleClcik({ target }) {
-    const { stateDisableButton, stateShowButton } = this.props;
+    const {
+      stateDisableButton,
+      stateShowButton,
+      addAssertions,
+    } = this.props;
     const { id } = target;
     if (id === correctAnswer) {
-      this.setScoreInGloblaState();
+      this.setScoreInGlobalState();
+      const stateLocalStorage = JSON.parse(localStorage.getItem('state'));
+      const { player } = stateLocalStorage;
+      const totalAsserts = player.assertions + 1;
+      addAssertions(totalAsserts);
     }
     this.setState({
       correctClass: 'correct-answer',
@@ -69,7 +75,6 @@ class MultipleAnswers extends React.Component {
     const maxNumber = 4;
     optionAnswers
       .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
-    // return optionAnswers;
     addOptionAnswers(optionAnswers);
   }
 
@@ -114,6 +119,7 @@ const mapStateToProps = ({ playerReducer, questionsReducer, answersReducer }) =>
   disableButton: questionsReducer.disableButton,
   player: playerReducer.player,
   optionAnswers: answersReducer.optionAnswers,
+  assertions: playerReducer.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -123,6 +129,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetFunctions: () => dispatch(actionResetFunction()),
   addScore: (points) => dispatch(actionAddScore(points)),
   addOptionAnswers: (value) => dispatch(actionAddOptionAnswers(value)),
+  addAssertions: (assertions) => dispatch(actionAddAssertions(assertions)),
 });
 
 MultipleAnswers.propTypes = {
@@ -137,6 +144,7 @@ MultipleAnswers.propTypes = {
   disableButton: bool.isRequired,
   optionAnswers: arrayOf().isRequired,
   addOptionAnswers: func.isRequired,
+  addAssertions: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);

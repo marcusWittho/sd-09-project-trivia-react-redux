@@ -6,6 +6,7 @@ import actionDisableButton from '../redux/actions/actionDisableButton';
 import ShowButton from '../redux/actions/actionShowButton';
 import actionResetFunction from '../redux/actions/actionResetFunction';
 import actionAddScore from '../redux/actions/actionAddScore';
+import actionAddAssertions from '../redux/actions/actionAddAssertions';
 
 const correctAnswer = 'correct-answer';
 class BooleanAnswers extends React.Component {
@@ -26,19 +27,25 @@ class BooleanAnswers extends React.Component {
     const { question, time, addScore } = this.props;
     const hardPoints = 3;
     const constant = 10;
+    const stateLocalStorage = JSON.parse(localStorage.getItem('state'));
+    const { player } = stateLocalStorage;
     let difficultyNumber;
     if (question.difficulty === 'hard') difficultyNumber = hardPoints;
     if (question.difficulty === 'medium') difficultyNumber = 2;
     if (question.difficulty === 'easy') difficultyNumber = 1;
-    const points = (constant + (time * difficultyNumber));
+    const points = (constant + (time * difficultyNumber)) + player.score;
     addScore(points);
   }
 
   handleClcik({ target }) {
-    const { stateDisableButton, stateShowButton } = this.props;
+    const { stateDisableButton, stateShowButton, addAssertions } = this.props;
     const { id } = target;
     if (id === correctAnswer) {
       this.setScoreInGloblaState();
+      const stateLocalStorage = JSON.parse(localStorage.getItem('state'));
+      const { player } = stateLocalStorage;
+      const totalAsserts = player.assertions + 1;
+      addAssertions(totalAsserts);
     }
     this.setState({
       correctClass: 'correct-answer',
@@ -100,6 +107,7 @@ const mapDispatchToProps = (dispatch) => ({
   stateShowButton: (value) => dispatch(ShowButton(value)),
   resetFunctions: () => dispatch(actionResetFunction()),
   addScore: (points) => dispatch(actionAddScore(points)),
+  addAssertions: (assertions) => dispatch(actionAddAssertions(assertions)),
 });
 
 BooleanAnswers.propTypes = {
@@ -112,6 +120,7 @@ BooleanAnswers.propTypes = {
   stateDisableButton: bool.isRequired,
   stateShowButton: bool.isRequired,
   disableButton: bool.isRequired,
+  addAssertions: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BooleanAnswers);
