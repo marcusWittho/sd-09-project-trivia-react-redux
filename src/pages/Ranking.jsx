@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
+import GoHome from '../components/GoHome';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class Ranking extends React.Component {
         <h1 data-testid="ranking-title">Ranking</h1>
         <div>
           {this.mapRankingPlayers()}
+          <GoHome />
         </div>
       </div>
     );
