@@ -1,59 +1,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 class Ranking extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
     };
-    this.getScore = this.getScore.bind(this);
+    this.getRanking = this.getRanking.bind(this);
   }
 
-  getScore() {
-    const state = JSON.parse(localStorage.getItem('state'));
-    return state;
+  getRanking() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    return ranking;
+  }
+
+  layoutPlayer(player, index) {
+    return (
+      <section>
+        <h3>{`${index + 1}º lugar`}</h3>
+        <span>
+          <img
+            src={ `https://www.gravatar.com/avatar/${player.picture}` }
+            alt="imagem do jogador"
+          />
+          <span data-testid={ `player-name-${index}` }>{player.name}</span>
+          <span data-testid={ `player-score-${index}` }>{player.score}</span>
+        </span>
+      </section>
+    );
+  }
+
+  mapRankingPlayers(ranking) {
+    console.log(ranking);
+    ranking.sort((a, b) => a.score - b.score);
+    ranking.map((player, index) => this.layoutPlayer(player, index));
   }
 
   render() {
-    const index = 0;
-    const { gravatar } = this.props;
-    const { player } = this.getScore();
+    const ranking = this.getRanking();
     return (
       <div>
-        <h1>Ranking</h1>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <div>
-          <section>
-            <h3>Primeiro lugar</h3>
-            <span>
-              <img
-                src={ gravatar }
-                alt="imagem do primeiro colocado no ranking do jogo"
-              />
-              <span data-testid={ `player-name-${index}` }>{player.name}</span>
-              <span data-testid={ `player-score-${index}` }>{player.score}</span>
-            </span>
-          </section>
-          <section>
-            <h3>Segundo lugar</h3>
-            <span>
-              <img
-                src={ gravatar }
-                alt="imagem do segundo colocado no ranking do jogo"
-              />
-              <span data-testid={ `player-name-${index}` }>{player.name}</span>
-              <span data-testid={ `player-score-${index}` }>{player.score}</span>
-            </span>
-          </section>
+          {this.mapRankingPlayers(ranking)}
         </div>
       </div>
     );
   }
 }
-
-Ranking.propTypes = {
-  gravatar: PropTypes.string,
-}.isRequired;
 
 const mapStateToProps = (state) => ({
   gravatar: state.trivia.gravatar,
