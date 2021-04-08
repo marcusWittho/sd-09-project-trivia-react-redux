@@ -2,8 +2,7 @@ import React from 'react';
 
 class QuestionBool extends React.Component {
   render() {
-    const { question } = this.props;
-    console.log(question);
+    const { question, disabled } = this.props;
     return (
       <div>
         <p data-testid="question-category">{ question.category }</p>
@@ -11,12 +10,14 @@ class QuestionBool extends React.Component {
         <button
           data-testid="correct-answer"
           type="button"
+          disabled={ disabled }
         >
           { question.correct_answer }
         </button>
         <button
           data-testid="wrong-answer"
           type="button"
+          disabled={ disabled }
         >
           { question.incorrect_answers[0] }
         </button>
