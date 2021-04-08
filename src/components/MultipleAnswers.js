@@ -27,9 +27,6 @@ class MultipleAnswers extends React.Component {
 
   componentDidMount() {
     this.randomAnswer();
-<<<<<<< HEAD
-=======
-    this.counterTimer();
   }
 
   setScoreInGloblaState() {
@@ -44,16 +41,8 @@ class MultipleAnswers extends React.Component {
     addScore(points);
   }
 
-  counterTimer() {
-    const mileseconds = 1000;
-    setInterval(() => {
-      const { time, decreaseTime } = this.props;
-      return (time > 0) ? decreaseTime() : this.setState({ disableButtons: true });
-    }, mileseconds);
->>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
-  }
-
   handleClcik({ target }) {
+    const { stateDisableButton, stateShowButton } = this.props;
     const { id } = target;
     if (id === correctAnswer) {
       this.setScoreInGloblaState();
@@ -62,6 +51,8 @@ class MultipleAnswers extends React.Component {
       correctClass: 'correct-answer',
       wrongClass: 'wrong-answer',
     });
+    stateDisableButton(true);
+    stateShowButton(true);
   }
 
   selectDataTest(option, index) {
@@ -85,7 +76,7 @@ class MultipleAnswers extends React.Component {
 
   render() {
     const { optionAnswers, correctClass, wrongClass } = this.state;
-    const { question, time, disableButton } = this.props;
+    const { question, disableButton } = this.props;
     let index = 0;
     return (
       <div>
@@ -118,22 +109,16 @@ class MultipleAnswers extends React.Component {
 
 const mapStateToProps = (state) => ({
   time: state.questionsReducer.timer,
-<<<<<<< HEAD
   disableButton: state.questionsReducer.disableButton,
-=======
-  player: state.playerReducer.player,
->>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
+  player: state.playerReducer.player
 });
 
 const mapDispatchToProps = (dispatch) => ({
   decreaseTime: () => dispatch(actionDecreaseTime()),
-<<<<<<< HEAD
   stateDisableButton: (value) => dispatch(actionDisableButton(value)),
   stateShowButton: (value) => dispatch(ShowButton(value)),
   resetFunctions: () => dispatch(actionResetFunction()),
-=======
   addScore: (points) => dispatch(actionAddScore(points)),
->>>>>>> 285e531722e4a890fa02ab62959934cb60fba019
 });
 
 MultipleAnswers.propTypes = {

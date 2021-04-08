@@ -35,4 +35,4 @@ const mapStateToProps = (state) => ({
   player: state.playerReducer.player,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
+export default connect(mapStateToProps)(Feedback);
