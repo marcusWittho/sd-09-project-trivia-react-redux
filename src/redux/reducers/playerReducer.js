@@ -2,7 +2,8 @@ import {
   ACTIVE_LOGIN,
   ADD_ASSERTIONS,
   ADD_GRAVATAR,
-  ADD_SCORE } from '../actions/actionTypes';
+  ADD_SCORE,
+  NEW_GAME } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   player: {
@@ -48,6 +49,15 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       player: {
         ...state.player,
         assertions: action.assertions,
+      },
+    };
+  case NEW_GAME:
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        score: 0,
+        assertions: 0,
       },
     };
   default:

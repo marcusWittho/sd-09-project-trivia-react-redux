@@ -10,9 +10,9 @@ import BooleanAnswers from '../../components/BooleanAnswers';
 import Loading from '../../components/Loading/Loading';
 import actionDisableButton from '../../redux/actions/actionDisableButton';
 import ShowButton from '../../redux/actions/actionShowButton';
-import './Game.css';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
 import Header from '../../components/Header/Header';
+import './Game.css';
 
 class Game extends React.Component {
   constructor(props) {
