@@ -27,10 +27,10 @@ class MultipleAnswers extends React.Component {
 
   setScoreInGlobalState() {
     const { question, time, addScore } = this.props;
-    const hardPoints = 3;
-    const constant = 10;
     const stateLocalStorage = JSON.parse(localStorage.getItem('state'));
     const { player } = stateLocalStorage;
+    const hardPoints = 3;
+    const constant = 10;
     let difficultyNumber;
     if (question.difficulty === 'hard') difficultyNumber = hardPoints;
     if (question.difficulty === 'medium') difficultyNumber = 2;
