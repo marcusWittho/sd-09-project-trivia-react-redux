@@ -9,8 +9,8 @@ import BooleanAnswers from '../../components/BooleanAnswers';
 import Loading from '../../components/Loading/Loading';
 import actionDisableButton from '../../redux/actions/actionDisableButton';
 import ShowButton from '../../redux/actions/actionShowButton';
-import './Game.css';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
+import './Game.css';
 
 class Game extends React.Component {
   constructor(props) {
@@ -22,11 +22,14 @@ class Game extends React.Component {
     };
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.setInLocalStorage = this.setInLocalStorage.bind(this);
-    // this.clearInterval = this.clearInterval.bind(this);
   }
 
   componentDidMount() {
     this.counterTimer();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   setInLocalStorage(playerData) {
@@ -57,21 +60,16 @@ class Game extends React.Component {
 
   counterTimer() {
     const mileseconds = 1000;
-    setInterval(() => {
+    this.interval = setInterval(() => {
       const { time, decreaseTime, stateDisableButton, stateShowButton } = this.props;
       if (time !== 0) {
         decreaseTime();
       } else {
         stateDisableButton(true);
         stateShowButton(true);
-        // this.clearInterval(interval);
       }
     }, mileseconds);
   }
-
-  // clearInterval(interval) {
-  //   clearInterval(interval);
-  // }
 
   render() {
     const { player, questions, isFetching, showButton, time } = this.props;

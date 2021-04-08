@@ -4,6 +4,7 @@ import { number, shape, func } from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import actionNewGame from '../../redux/actions/actionNewGame';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
+import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -16,9 +17,10 @@ class Feedback extends React.Component {
   }
 
   handleClick() {
-    const { startNewGame, resetTimer } = this.props;
+    const { startNewGame, resetTimer, cleanOptionAnswers } = this.props;
     startNewGame();
     resetTimer();
+    cleanOptionAnswers();
     this.setState({
       isNewGame: true,
     });
@@ -75,6 +77,7 @@ Feedback.propTypes = {
   }).isRequired,
   startNewGame: func.isRequired,
   resetTimer: func.isRequired,
+  cleanOptionAnswers: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -84,6 +87,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startNewGame: () => dispatch(actionNewGame()),
   resetTimer: () => dispatch(actionResetCounter()),
+  cleanOptionAnswers: () => dispatch(actionCleanOptionAnswers()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
