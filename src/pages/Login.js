@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import loginAction from '../actions/loginAction';
 import logo from '../trivia.png';
 import requestToken from '../services/tokenAPI';
+import ConfigButton from '../components/configButton';
 
 class Login extends Component {
   constructor(props) {
@@ -59,9 +60,9 @@ class Login extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <ConfigButton />
           <img src={ logo } className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
-
           <section>
             <label htmlFor="name">
               Nome
