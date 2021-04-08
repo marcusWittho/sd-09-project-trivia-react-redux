@@ -18,11 +18,11 @@ class Timer extends Component {
 
   componentDidUpdate(_, prevState) {
     const { seconds } = this.state;
-    const { dispatchTimesUp } = this.props;
-    if ((seconds > 0) && (prevState.seconds !== seconds)) {
+    const { dispatchTimesUp, stopTime } = this.props;
+    if ((seconds > 0) && (prevState.seconds !== seconds) && stopTime === false) {
       this.gameTimer();
-    } else if ((seconds === 0) && (prevState.seconds !== seconds)) {
-      dispatchTimesUp();
+    } else if (((seconds === 0) && (prevState.seconds !== seconds)) || stopTime) {
+      dispatchTimesUp(seconds);
     }
   }
 
@@ -43,11 +43,15 @@ class Timer extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchTimesUp: () => dispatch(timesUp()),
+  dispatchTimesUp: (seconds) => dispatch(timesUp(seconds)),
+});
+
+const mapStateToProps = (state) => ({
+  stopTime: state.timer.stopTime,
 });
 
 Timer.propTypes = {
   dispatchTimesUp: PropTypes.func,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Timer);
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

@@ -41,7 +41,13 @@ class Login extends Component {
       loggedIn: true,
     });
     const resultApi = await Api.fetchToken();
-    localStorage.setItem('token', resultApi);
+    const player = {
+      name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('player', JSON.stringify(player));
     dispatchUser(name, email, resultApi);
   }
 
