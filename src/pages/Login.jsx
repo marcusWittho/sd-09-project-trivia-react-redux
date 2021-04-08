@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import fetchToken from '../redux/actions';
+import { fetchToken, saveLogin } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -38,7 +38,9 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { getToken } = this.props;
+    const { getToken, loginAction } = this.props;
+    const { nameInput, emailInput } = this.state;
+    loginAction({ emailInput, nameInput });
     getToken();
   }
 
@@ -92,12 +94,14 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  getToken: fetchToken,
-};
+const mapDispatchToProps = (dispatch) => ({
+  getToken: () => dispatch(fetchToken()),
+  loginAction: (obj) => dispatch(saveLogin(obj)),
+});
 
 Login.propTypes = {
   getToken: PropTypes.func.isRequired,
+  loginAction: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
