@@ -1,25 +1,9 @@
+body {
+  background-color: #282c34;
+}
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.red-border {
-  border: 1px solid red;
-}
-
-.green-border {
-  border: 1px solid green;
-}
-
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  }
 }
 
 .App-header {
@@ -29,29 +13,44 @@
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  justify-content: center;
+  height: 500px;
+  justify-content: bottom;
   min-height: 100vh;
+}
+
+.App-logo {
+  pointer-events: none;
+  width: 180px;
+}
+
+@media ( prefers-reduced-motion : no-preference ) {
+
+  .App-logo {
+    animation: App-logo-spin infinite 2s linear;
+  }
+
 }
 
 .App-link {
   color: #61dafb;
 }
 
-@keyframes shake {
+p {
+  font-size: 1;
+}
 
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
+.logo {
+  height: 20%;
+  margin-top: 6%;
+}
+
+@keyframes App-logo-spin {
+
+  from {
+    transform: rotate(0deg);
   }
 
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
+  to {
+    transform: rotate(360deg);
   }
 }
