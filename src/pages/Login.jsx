@@ -13,6 +13,7 @@ class Login extends Component {
       name: '',
       email: '',
       submmit: false,
+      settings: false,
     };
 
 <<<<<<< HEAD
@@ -24,6 +25,7 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleLocalStorage = this.handleLocalStorage.bind(this);
     this.formFunction = this.formFunction.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
   }
 
   handleLocalStorage() {
@@ -33,6 +35,12 @@ class Login extends Component {
       submmit: true,
     });
 >>>>>>> f2cd80e65a9d3494aa763a8566d71d54a91b7a89
+  }
+
+  handleSettings() {
+    this.setState({
+      settings: true,
+    });
   }
 
   handleValidation() {
@@ -97,18 +105,32 @@ class Login extends Component {
           Entrar
 >>>>>>> f2cd80e65a9d3494aa763a8566d71d54a91b7a89
         </button>
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ this.handleSettings }
+        >
+          Configurações
+        </button>
       </form>
     );
   }
 
   render() {
-    const { submmit } = this.state;
+    const { submmit, settings } = this.state;
+
+    if (settings) {
+      return (
+        <Redirect to="/settings" />
+      );
+    }
 
     if (submmit) {
       return (
         <Redirect to="/game" />
       );
     }
+
     return (
       this.formFunction()
     );
