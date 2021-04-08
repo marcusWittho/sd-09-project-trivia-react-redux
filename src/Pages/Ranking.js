@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import SettingsButton from '../Components/SettingsButton';
 
 class Ranking extends Component {
   render() {
@@ -24,6 +25,7 @@ class Ranking extends Component {
             Home
           </Link>
         </button>
+        <SettingsButton />
       </div>
     );
   }

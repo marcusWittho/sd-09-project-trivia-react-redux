@@ -1,7 +1,9 @@
-const getQuestions = async (token) => {
+const getQuestions = async (token, type = '', category = '', difficulty = '') => {
+  const URL = `https://opentdb.com/api.php?amount=5&token=${token}&category=${category}&difficulty=${difficulty}&type=${type}`;
   try {
-    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const response = await fetch(URL);
     const obj = await response.json();
+    console.log(obj);
     return obj;
   } catch (error) {
     return new Error(error);
