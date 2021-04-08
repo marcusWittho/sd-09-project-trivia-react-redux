@@ -31,10 +31,7 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
       timer: state.timer - 1,
     };
   case RESET_TIMER_QUESTION:
-    return {
-      ...state,
-      timer: 30,
-    };
+    return { ...state, timer: 30 };
   case DISABLE_BUTTON:
     return {
       ...state,

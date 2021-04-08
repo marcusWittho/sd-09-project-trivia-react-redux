@@ -2,15 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { number, shape } from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import Header from '../../components/Header/Header';
 
 class Feedback extends React.Component {
   render() {
     const { player } = this.props;
-    const { assertions, name, score, gravatarEmail, validLogin } = player;
+    const { assertions, score, validLogin } = player;
     if (!validLogin) return <Redirect exact to="/" />;
     return (
       <div>
-        <header>
+        {/* <header>
           <p data-testid="header-player-name">{ name }</p>
           <img
             data-testid="header-profile-picture"
@@ -18,7 +19,8 @@ class Feedback extends React.Component {
             alt={ `Avatar de ${name}` }
           />
           <p data-testid="header-score">{ score }</p>
-        </header>
+        </header> */}
+        <Header />
         <p data-testid="feedback-text">
           { assertions > 2 ? 'Mandou bem!' : 'Podia ser melhor...' }
         </p>

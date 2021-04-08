@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { string, shape, arrayOf, bool, number, func } from 'prop-types';
 import { Redirect } from 'react-router';
+// import { Link } from 'react-router-dom';
 import actionDecreaseTime from '../../redux/actions/actionDecreaseTime';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import MultipleAnswers from '../../components/MultipleAnswers';
@@ -11,6 +12,7 @@ import actionDisableButton from '../../redux/actions/actionDisableButton';
 import ShowButton from '../../redux/actions/actionShowButton';
 import './Game.css';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
+import Header from '../../components/Header/Header';
 
 class Game extends React.Component {
   constructor(props) {
@@ -26,6 +28,10 @@ class Game extends React.Component {
 
   componentDidMount() {
     this.counterTimer();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   setInLocalStorage(playerData) {
@@ -56,9 +62,9 @@ class Game extends React.Component {
 
   counterTimer() {
     const mileseconds = 1000;
-    setInterval(() => {
+    this.interval = setInterval(() => {
       const { time, decreaseTime, stateDisableButton, stateShowButton } = this.props;
-      if (time !== 0) {
+      if (time !== 0 || time < 0) {
         decreaseTime();
       } else {
         stateDisableButton(true);
@@ -79,15 +85,7 @@ class Game extends React.Component {
     if (redirectFeedback) return <Redirect exact to="/feedback" />;
     return (
       <section className="game-container">
-        <header>
-          <img
-            src={ player.gravatarEmail }
-            alt={ `Avatar ${player.name}` }
-            data-testid="header-profile-picture"
-          />
-          <p data-testid="header-player-name">{ player.name }</p>
-          <p data-testid="header-score">{`Score: ${player.score}`}</p>
-        </header>
+        <Header />
         <main className="main-container">
           <div className="answers">
             <p>{ `Tempo: ${time}` }</p>
