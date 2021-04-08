@@ -7,18 +7,17 @@ class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getScore = this.getScore.bind(this);
     this.getFeedback = this.getFeedback.bind(this);
+    this.makeRanking = this.makeRanking.bind(this);
   }
 
-  getScore() {
-    const state = JSON.parse(localStorage.getItem('state'));
-    return state;
+  componentDidMount() {
+    this.makeRanking();
   }
 
-  getFeedback(score) {
+  getFeedback(assertions) {
     const medianScore = 3;
-    const bellowThree = score < medianScore;
+    const bellowThree = assertions < medianScore;
     switch (bellowThree) {
     case true:
       return 'Podia ser melhor...';
@@ -27,20 +26,35 @@ class Feedback extends React.Component {
     }
   }
 
+  makeRanking() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    let ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (!ranking) ranking = [];
+    const scoreToRanking = {
+      name: player.name,
+      score: player.score,
+      picture: `https://www.gravatar.com/avatar/${player.gravatarEmail}`,
+    };
+    ranking.push(scoreToRanking);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   render() {
-    const { player } = this.getScore();
     const { gravatar } = this.props;
+    const { player } = JSON.parse(localStorage.getItem('state'));
     return (
       <main>
         <header>
           <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${gravatar}` } alt={ player.name } />
           <span data-testid="header-player-name">{player.name}</span>
-          <span data-test-id="header-score">{player.score}</span>
+          <span data-testid="header-score">{Number(player.score)}</span>
         </header>
         <section>
-          <h3 data-testid="feedback-text">{this.getFeedback(player.score)}</h3>
-          <h2 data-testid="feedback-total-score">{player.score}</h2>
-          <h3 data-testid="feedback-total-question">{player.assertions}</h3>
+          <h3 data-testid="feedback-text">
+            {this.getFeedback(Number(player.assertions))}
+          </h3>
+          <h2 data-testid="feedback-total-score">{Number(player.score)}</h2>
+          <h3 data-testid="feedback-total-question">{Number(player.assertions)}</h3>
         </section>
         <section>
           <button type="button" data-testid="btn-play-again">
