@@ -1,9 +1,9 @@
 import LOGIN from '.';
 
-const loginAction = (name, email) => ({
+const loginAction = (name, gravatarEmail) => ({
   type: LOGIN,
   name,
-  email,
+  gravatarEmail,
 });
 
 export default loginAction;
