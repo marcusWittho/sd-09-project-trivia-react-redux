@@ -8,7 +8,7 @@ class Settings extends Component {
           <h4 data-testid="settings-title">Configuração</h4>
         </header>
       </div>
-    )
+    );
   }
 }
 

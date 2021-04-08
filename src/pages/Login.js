@@ -61,9 +61,7 @@ class Login extends Component {
         <header className="App-header">
           <Link to="/settings">
             <button
-              type="button"
-              data-testid="btn-settings"
-            >
+              type="button"  data-testid="btn-settings">
               Configuração
             </button>
           </Link>
