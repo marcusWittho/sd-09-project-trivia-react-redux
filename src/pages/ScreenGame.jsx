@@ -48,22 +48,23 @@ class ScreenGame extends React.Component {
       const { question } = results[0];
       const correctAnswer = results[0].correct_answer;
       const incorrectAnswer = results[0].incorrect_answers.map((answer) => answer);
-      const array = [...incorrectAnswer, correctAnswer];
+      const concatAllAnswers = [...incorrectAnswer, correctAnswer];
 
-      const newArray = array
-        .map((a) => ({ sort: Math.random(), value: a }))
+      const mixTheAnswers = concatAllAnswers
+        .map((asnwer) => ({ sort: Math.random(), value: asnwer }))
         .sort((a, b) => a.sort - b.sort)
-        .map((a) => a.value);
+        .map((answer) => answer.value);
 
       const objQuestions = {
         correct: correctAnswer,
-        allAnswers: newArray,
+        allAnswers: mixTheAnswers,
         category,
         question,
         difficulty,
       };
 
       this.updateState(objQuestions);
+      this.addScore();
     }
   }
 
