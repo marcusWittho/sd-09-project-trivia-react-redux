@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeButton from './HomeButton';
+import HomeButton from '../Componentes/HomeButton';
 
 class Ranking extends React.Component {
   render() {
