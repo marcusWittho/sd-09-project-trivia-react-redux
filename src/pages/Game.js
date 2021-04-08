@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import requestTrivia from '../services/triviaAPI';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor(props) {
@@ -95,7 +96,10 @@ class Game extends Component {
   render() {
     const { error } = this.state;
     return (
-      <main>{error ? <p>Erro no carregamento</p> : this.renderQuestion()}</main>
+      <div>
+        <Header />
+        <main>{error ? <p>Erro no carregamento</p> : this.renderQuestion()}</main>
+      </div>
     );
   }
 }
