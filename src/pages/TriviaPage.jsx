@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { fetchQuestions } from '../redux/actions';
 import Header from '../components/Header';
+import Question from '../components/Question';
 
 class TriviaPage extends React.Component {
   constructor(props) {
@@ -44,9 +45,8 @@ class TriviaPage extends React.Component {
   }
 
   render() {
-    const { fetching, questions, location: { player: { name } } } = this.props;
+    const { fetching, location: { player: { name } } } = this.props;
     const { imgUrl } = this.state;
-    console.log(questions);
     if (fetching) {
       return (
         <h1>Carregando...</h1>
@@ -57,7 +57,7 @@ class TriviaPage extends React.Component {
       <>
         <Header imgSrc={ imgUrl } name={ name } />
         <h2>Página de jogo</h2>
-        {/* { questions && questions.map((question) => <p>{ question.question }</p>) } */}
+        <Question />
       </>
     );
   }
@@ -66,7 +66,6 @@ class TriviaPage extends React.Component {
 const mapStateToProps = (state) => ({
   token: state.tokenReducer.token,
   fetching: state.tokenReducer.isFetching,
-  questions: state.questionsReducer.questions,
 });
 
 const mapDispatchToProps = {
@@ -77,7 +76,6 @@ TriviaPage.propTypes = {
   token: PropTypes.string.isRequired,
   fetching: PropTypes.bool.isRequired,
   getQuestions: PropTypes.func.isRequired,
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   location: PropTypes.shape({
     player: PropTypes.shape({
       email: PropTypes.string,

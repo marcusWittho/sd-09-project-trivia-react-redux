@@ -54,7 +54,7 @@ class Login extends React.Component {
           name="nameInput"
           value={ nameInput }
           onChange={ this.handleChange }
-          autoComplete="off"
+          // autoComplete="off"
         />
       </label>
     );
@@ -72,7 +72,7 @@ class Login extends React.Component {
           name="emailInput"
           value={ emailInput }
           onChange={ this.handleChange }
-          autoComplete="off"
+          // autoComplete="off"
         />
       </label>
     );
