@@ -74,7 +74,7 @@ class Game extends React.Component {
               </button>)}
             { item.incorrect_answers[2] && (
               <button
-                data-testid="wrong-answer-1"
+                data-testid="wrong-answer-2"
                 type="button"
               >
                 {item.incorrect_answers[2]}
