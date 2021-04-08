@@ -11,6 +11,21 @@ class GamePage extends React.Component {
 
     this.createAnswers = this.createAnswers.bind(this);
     this.handleNext = this.handleNext.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  changeAnswerColor() {
+    const answers = document.querySelectorAll('#answer');
+    answers.forEach((answer) => {
+      answer.style.border = '3px solid rgb(255, 0, 0)';
+      if (answer.attributes[2].value === 'correct-answer') {
+        answer.style.border = '3px solid rgb(6, 240, 15)';
+      }
+    });
+  }
+
+  handleClick() {
+    this.changeAnswerColor();
   }
 
   createAnswers() {
@@ -23,6 +38,7 @@ class GamePage extends React.Component {
 
     const arrayOfElements = incorrectAnswers.map((answer, index) => (
       <button
+        id="answer"
         type="button"
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
@@ -33,6 +49,7 @@ class GamePage extends React.Component {
     ));
     arrayOfElements.push(
       <button
+        id="answer"
         type="button"
         key={ correctAnswer }
         data-testid="correct-answer"
@@ -46,38 +63,43 @@ class GamePage extends React.Component {
   }
 
   handleNext(index) {
-    const totalIndex = 4;
-    if (index === totalIndex) return <Redirect to="/feedback" />;
+    // const totalIndex = 4;
+    // if (index === totalIndex) return <Redirect to="/feedback" />;
     return this.setState({ questionNumber: index + 1 });
   }
 
   render() {
     const { questionNumber } = this.state;
     const { questions, isFetching } = this.props;
+    const totalIndex = 5;
     if (isFetching) return <div>Loading</div>;
 
     return (
       <div>
-        <Header />
-        <h2 data-testid="question-category">
-          Category:
-          {questions[questionNumber].category}
-        </h2>
-        <h3 data-testid="question-text">
-          Question:
-          {questions[questionNumber].question}
-        </h3>
-        <p>
-          answer:
-          {this.createAnswers()}
-        </p>
-        <button
-          type="button"
-          data-testid="btn-next"
-          onClick={ () => this.handleNext(questionNumber) }
-        >
-          Próximo
-        </button>
+        { questionNumber === totalIndex ? <Redirect to="/feedback" /> : (
+          <div>
+            <Header />
+            <h2 data-testid="question-category">
+              Category:
+              {questions[questionNumber].category}
+            </h2>
+            <h3 data-testid="question-text">
+              Question:
+              {questions[questionNumber].question}
+            </h3>
+            <p>
+              answer:
+              {this.createAnswers()}
+            </p>
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ () => this.handleNext(questionNumber) }
+            >
+              Próximo
+            </button>
+          </div>
+        ) }
       </div>
     );
   }
