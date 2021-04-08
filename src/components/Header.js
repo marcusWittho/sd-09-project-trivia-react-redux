@@ -7,6 +7,7 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.getGravatarInfo = this.getGravatarInfo.bind(this);
+    this.getScore = this.getScore.bind(this);
     this.state = { avatar: '' };
   }
 
@@ -17,10 +18,17 @@ class Header extends React.Component {
   async getGravatarInfo() {
     const { email } = this.props;
     const hash = await CryptoJS.MD5(email).toString();
-    console.log(hash);
     const avatar = await getGravatar(hash);
-    // console.log(avatar);
     this.setState({ avatar });
+  }
+
+  getScore() {
+    let score = 0;
+    const timer = 0;
+    const dificult = 0;
+    const baseScore = 10;
+    score = baseScore + (timer * dificult);
+    return score;
   }
 
   render() {
@@ -32,7 +40,7 @@ class Header extends React.Component {
         <h3 data-testid="header-player-name">{ name }</h3>
         <h3>
           Placar:
-          <span data-testid="header-score">0</span>
+          <span data-testid="header-score">{ this.getScore() }</span>
         </h3>
       </header>
     );

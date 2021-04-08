@@ -21,6 +21,5 @@ export async function getQuestions() {
 export async function getGravatar(hash) {
   const endpoint = `https://www.gravatar.com/avatar/${hash}`;
   const data = await fetch(endpoint);
-  console.log(data);
   return data.url;
 }
