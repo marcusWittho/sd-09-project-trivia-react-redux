@@ -8,10 +8,17 @@ class MultipleAnswers extends Component {
     super(props);
     this.state = {
       choice: [],
+      rightAnswerClass: '',
+      wrongAnswerClass: '',
+      nextButton: true,
+      correctAnswer: 'correct-answer',
+
     };
     this.validateAnswers = this.validateAnswers.bind(this);
     this.createChoices = this.createChoices.bind(this);
     this.updateQuestIndex = this.updateQuestIndex.bind(this);
+    this.answerCheck = this.answerCheck.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -30,8 +37,8 @@ class MultipleAnswers extends Component {
     const choice = question.incorrect_answers;
     const choices = 4;
     if (choice.length < choices) {
-      choice.splice(Math.floor(Math.random() * choices),
-        0, question.correct_answer);
+      choice.splice(Math.floor(Math.random() * choices), 0,
+        question.correct_answer);
       this.setState({ choice });
     } else {
       this.setState({ choice });
@@ -46,8 +53,25 @@ class MultipleAnswers extends Component {
     return 'correct-answer';
   }
 
+  answerCheck() {
+    this.setState({
+      nextButton: false,
+      rightAnswerClass: 'rightAnswer',
+      wrongAnswerClass: 'wrongAnswer',
+    });
+  }
+
+  nextQuestion() {
+    this.updateQuestIndex();
+    this.createChoices();
+    this.setState({ rightAnswerClass: '',
+      wrongAnswerClass: '',
+      nextButton: true,
+    });
+  }
+
   render() {
-    const { choice } = this.state;
+    const { choice, rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer } = this.state;
     const { question } = this.props;
     let index = 0;
     return (
@@ -61,14 +85,24 @@ class MultipleAnswers extends Component {
           if (dataTestId !== 'correct-answer') index += 1;
           return (
             <button
+              className={ dataTestId === correctAnswer ? rightAnswerClass
+                : wrongAnswerClass }
               type="button"
               key={ answer }
               data-testid={ dataTestId }
-              onClick={ this.updateQuestIndex }
+              onClick={ this.answerCheck }
             >
               { answer }
             </button>);
         })}
+        <button
+          data-testid="btn-next"
+          type="button"
+          onClick={ this.nextQuestion }
+          disabled={ nextButton }
+        >
+          next
+        </button>
       </div>
     );
   }
@@ -85,7 +119,7 @@ const mapDispatchToProps = (dispatch) => ({
 MultipleAnswers.propTypes = {
   questIndex: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
-  question: PropTypes.shape({
+  question: PropTypes.shape({grupo-01-Trivia-main
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     category: PropTypes.string,

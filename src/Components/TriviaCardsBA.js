@@ -10,6 +10,10 @@ class BooleanAnswers extends Component {
     this.updateQuestIndex = this.updateQuestIndex.bind(this);
   }
 
+  componentDidUpdate() {
+    this.updateQuestIndex();
+  }
+
   validateAnswers(option, index) {
     const { question } = this.props;
     if (question.correct_answer !== option) {
@@ -41,6 +45,7 @@ class BooleanAnswers extends Component {
           const dataTestId = this.validateAnswers(option, index);
           return (
             <button
+              className={ dataTestId === 'correct-answer' ? 'rightAnswer' : 'wrongAnswer' }
               type="button"
               key={ option }
               data-testid={ dataTestId }

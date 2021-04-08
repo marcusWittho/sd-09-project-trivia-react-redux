@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Header from '../Components/Header';
 import TriviaCardsBA from '../Components/TriviaCardsBA';
 import TriviaCardsMA from '../Components/TriviaCardsMA';
+import './answers.css';
 
 class Trivia extends Component {
   constructor(props) {
