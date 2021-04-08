@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getToken, gravatarURL } from '../services/api';
+import { getToken, gravatarURL, getQuestions } from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,9 +33,8 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    await getToken();
+    const token = await getToken();
     const { name, email } = this.state;
-    // localStorage.setItem('token', token);
     const player = {
       name,
       gravatarEmail: email,
@@ -48,6 +47,8 @@ class Login extends React.Component {
 
     const { history: { push } } = this.props;
     push('/game');
+
+    getQuestions(token);
   }
 
   handleSettingsButton() {
