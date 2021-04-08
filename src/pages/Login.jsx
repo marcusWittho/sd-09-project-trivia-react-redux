@@ -46,7 +46,7 @@ class Login extends Component {
   savePlayerLocalStorage(hashEmail, name) {
     const player = {
       name,
-      assertions: '',
+      assertions: 0,
       score: 0,
       gravatarEmail: hashEmail,
     };
