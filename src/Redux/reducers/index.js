@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
+import scoreReducer from './score';
 
-const rootReducer = combineReducers({ });
+const rootReducer = combineReducers({ scoreReducer });
 
 export default rootReducer;
