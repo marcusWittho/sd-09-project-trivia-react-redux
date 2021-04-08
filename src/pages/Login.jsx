@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { fetchAPI } from '../redux/action';
 
 class Login extends Component {
-  constructor(props) { 
+  constructor(props) {
     super(props);
 
     this.state = {
