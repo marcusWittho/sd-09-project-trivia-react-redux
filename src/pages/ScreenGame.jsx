@@ -79,6 +79,7 @@ class ScreenGame extends React.Component {
                 key={ Math.random() }
                 type="button"
                 data-testid="correct-answer"
+                style={ { border: '3px solid rgb(6, 240, 15)' } }
               >
                 {answer}
               </button>);
@@ -88,6 +89,7 @@ class ScreenGame extends React.Component {
               key={ Math.random() }
               type="button"
               data-testid={ `wrong-answer-${index}` }
+              style={ { border: '3px solid rgb(255, 0, 0)' } }
             >
               {answer}
             </button>
