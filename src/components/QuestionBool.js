@@ -3,8 +3,6 @@ import React from 'react';
 class QuestionBool extends React.Component {
   render() {
     const { question, disabled } = this.props;
-    console.log(disabled);
-    console.log(question);
     return (
       <div>
         <p data-testid="question-category">{ question.category }</p>
