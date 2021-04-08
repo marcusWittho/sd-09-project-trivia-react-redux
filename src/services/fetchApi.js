@@ -5,10 +5,10 @@ export async function fetchGravatar(email) {
   email = email.replace(/\s/g, '');
   const hash = md5(email).toString();
   try {
-    const requestAPI = await fetch(`https://www.gravatar.com/avatar/${hash}`);
-    const blob = await requestAPI.blob();
-    console.log(blob);
-    return blob;
+    const response = await fetch(`https://www.gravatar.com/avatar/${hash}`);
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    return url;
   } catch (error) {
     console.log(error);
   }

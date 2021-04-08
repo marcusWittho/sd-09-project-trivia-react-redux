@@ -1,8 +1,8 @@
 import { CLICK_PLAY } from './typeActions';
 
-const clickPlay = (state) => ({
+const clickPlay = (credentials) => ({
   type: CLICK_PLAY,
-  email: state,
+  credentials,
 });
 
 export default clickPlay;
