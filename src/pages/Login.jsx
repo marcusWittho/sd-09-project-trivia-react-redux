@@ -32,7 +32,7 @@ class Login extends React.Component {
     const { handleLogin, history } = this.props;
     const { name, email } = this.state;
     handleLogin(name, email);
-    history.push('/feedback');
+    history.push('/game');
   }
 
   render() {
