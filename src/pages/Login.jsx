@@ -8,14 +8,16 @@ import { fetchAPI } from '../redux/action';
 class Login extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      name: '',
-      email: '',
       submmit: false,
+      player: {
+        name: '',
+        assertions: '',
+        score: '',
+        gravatarEmail: '',
+      },
       settings: false,
     };
-
     this.handleValidation = this.handleValidation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleLocalStorage = this.handleLocalStorage.bind(this);
@@ -26,6 +28,7 @@ class Login extends Component {
   handleLocalStorage() {
     const { token } = this.props;
     localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify(this.state));
     this.setState({
       submmit: true,
     });
@@ -38,12 +41,19 @@ class Login extends Component {
   }
 
   handleValidation() {
-    const { name, email } = this.state;
-    return !(name && email);
+    const { player: { name, gravatarEmail } } = this.state;
+    return !(name && gravatarEmail);
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value });
+    this.setState((previousState) => (
+      {
+        player: {
+          ...previousState.player,
+          [name]: value,
+        },
+      }
+    ));
   }
 
   formFunction() {
@@ -66,7 +76,7 @@ class Login extends Component {
           Email
           <input
             id="email"
-            name="email"
+            name="gravatarEmail"
             type="text"
             placeholder="Email"
             data-testid="input-gravatar-email"

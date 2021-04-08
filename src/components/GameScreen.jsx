@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import { getQuestions } from '../redux/action';
 
 class GameScreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      name: '',
+      gravatarEmail: '',
       questions: [],
       numberOFQuestion: 0,
       loading: true,
@@ -18,11 +21,23 @@ class GameScreen extends Component {
     this.loadingQuestions = this.loadingQuestions.bind(this);
     this.decreaseTime = this.decreaseTime.bind(this);
     this.clickQuestion = this.clickQuestion.bind(this);
+    this.recoveringLocalStorage = this.recoveringLocalStorage.bind(this);
+    this.header = this.header.bind(this);
   }
 
   componentDidMount() {
     this.loadingQuestions();
     this.decreaseTime();
+    this.recoveringLocalStorage();
+  }
+
+  recoveringLocalStorage() {
+    const storage = JSON.parse(localStorage.getItem('state'));
+    console.log(storage);
+    this.setState({
+      name: storage.player.name,
+      gravatarEmail: storage.player.gravatarEmail,
+    });
   }
 
   decreaseTime() {
@@ -82,6 +97,24 @@ class GameScreen extends Component {
     this.setState({ colorQuestion: true });
   }
 
+  header() {
+    const { name, gravatarEmail } = this.state;
+    return (
+      <header>
+        <img
+          data-testid="header-profile-picture"
+          src={ `https://www.gravatar.com/avatar/${md5(gravatarEmail).toString()}` }
+          alt="Gravatar"
+        />
+        <p data-testid="header-player-name">
+          Jogador:
+          {name}
+        </p>
+        <p data-testid="header-score">Placar: 0</p>
+      </header>
+    );
+  }
+
   render() {
     const { questions,
       numberOFQuestion, loading, timer, disabled, colorQuestion } = this.state;
@@ -91,8 +124,9 @@ class GameScreen extends Component {
 
     return (
       <>
-        <h3 data-testid="question-category">{ orderQuestions.type }</h3>
-        <p data-testid="question-text">{ orderQuestions.question }</p>
+        { this.header() }
+        <h3 data-testid="question-category">{orderQuestions.type}</h3>
+        <p data-testid="question-text">{orderQuestions.question}</p>
         <button
           data-testid="correct-answer"
           type="button"
@@ -100,10 +134,10 @@ class GameScreen extends Component {
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
           onClick={ this.clickQuestion }
         >
-          { orderQuestions.correct_answer }
+          {orderQuestions.correct_answer}
         </button>
         <div>
-          { orderQuestions.incorrect_answers.map((answer, index) => (
+          {orderQuestions.incorrect_answers.map((answer, index) => (
             <button
               key={ index }
               data-testid={ `wrong-answer-${index}` }
@@ -112,11 +146,11 @@ class GameScreen extends Component {
               style={ (colorQuestion) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
               onClick={ this.clickQuestion }
             >
-              { answer }
+              { answer}
             </button>
           ))}
         </div>
-        <p>{ timer }</p>
+        <p>{timer}</p>
         <button
           data-testid="btn-next"
           type="button"
