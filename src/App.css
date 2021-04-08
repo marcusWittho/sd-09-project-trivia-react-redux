@@ -15,6 +15,12 @@
   border: 1px solid green;
 }
 
+.game-header-info {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+}
+
 .header-player {
   background-color: #282c34;
   display: flex;
@@ -27,7 +33,7 @@
 
 .gravatar {
   max-height: 3vw;
-  padding: 2px;
+  margin: auto;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {
