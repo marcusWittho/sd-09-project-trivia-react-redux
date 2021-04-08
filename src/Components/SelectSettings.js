@@ -11,14 +11,9 @@ class SelectSettings extends Component {
       renderSettings: false,
     };
 
-    // this.createButton = this.createButton.bind(this);
     this.renderSettings = this.renderSettings.bind(this);
     this.changeState = this.changeState.bind(this);
   }
-
-  // componentDidMount() {
-
-  // }
 
   changeState() {
     this.setState({
@@ -27,19 +22,6 @@ class SelectSettings extends Component {
     });
     this.renderSettings();
   }
-
-  // createButton() {
-  //   return (
-  //     <button
-  //       className="btn"
-  //       type="button"
-  //       data-testid="btn-settings"
-  //       onClick={ this.changeState }
-  //     >
-  //       Setup
-  //     </button>
-  //   );
-  // }
 
   renderSettings() {
     return (

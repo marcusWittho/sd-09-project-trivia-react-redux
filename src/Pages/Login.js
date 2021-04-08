@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { playerLogin, requestApiToken } from '../redux/actions';
+import { playerLogin, requestApiToken, requestApiQuestions } from '../redux/actions';
 import SelectSettings from '../Components/SelectSettings';
 
 class Login extends Component {
@@ -43,7 +43,8 @@ class Login extends Component {
   }
 
   async play() {
-    const { getToken } = this.props;
+    const { getToken, getQuestions } = this.props;
+    await getQuestions();
     await getToken();
   }
 
@@ -69,7 +70,7 @@ class Login extends Component {
           placeholder="Informe seu email"
           autoComplete="off"
         />
-        <Link to="/home">
+        <Link to="/trivia">
           <button
             data-testid="btn-play"
             type="button"
@@ -86,17 +87,19 @@ class Login extends Component {
 }
 
 // const mapStatetoProps = (state) => ({
-//   token: state.game.token,
+//   questions: state.game.questions,
 // });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchNameEmail: (email, name) => dispatch(playerLogin(email, name)),
   getToken: () => dispatch(requestApiToken()),
+  getQuestions: () => dispatch(requestApiQuestions()),
 });
 
 Login.propTypes = {
   dispatchNameEmail: PropTypes.func.isRequired,
   getToken: PropTypes.func.isRequired,
+  getQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

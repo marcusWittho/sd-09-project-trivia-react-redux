@@ -1,10 +1,12 @@
 import { playerLogin } from './player';
-import { triviaRequest, requestToken } from './game';
+import { requestQuestions, requestToken, updateIndex } from './game';
+import fecthTrivia from '../../Services/fetchApi';
 
 export {
   playerLogin,
-  triviaRequest,
+  requestQuestions,
   requestToken,
+  updateIndex,
 };
 
 export const requestApiToken = () => (
@@ -19,3 +21,13 @@ export const requestApiToken = () => (
     }
   }
 );
+
+export const requestApiQuestions = () => async (dispatch) => {
+  dispatch(requestQuestions());
+  try {
+    const response = await fecthTrivia();
+    return dispatch(requestQuestions(response.results));
+  } catch (error) {
+    return console.log(error);
+  }
+};

@@ -1,31 +1,51 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { string, number } from 'prop-types';
+import PropTypes from 'prop-types';
+// import questionsAdd from '../redux/actions';
 import Header from '../Components/Header';
-import TriviaCards from '../Components/TriviaCards';
+import TriviaCardsBA from '../Components/TriviaCardsBA';
+import TriviaCardsMA from '../Components/TriviaCardsMA';
 
 class Trivia extends Component {
+  constructor(props) {
+    super(props);
+    this.update = this.update.bind(this);
+  }
+
+  update() {
+    const { questions } = this.props;
+    if (questions) {
+      const { questIndex } = this.props;
+      const i = parseInt(questIndex, 10);
+      const quest = questions[i];
+      return (Array(quest)).map((question) => (
+        (question.type === 'multiple')
+          ? <TriviaCardsMA question={ question } />
+          : <TriviaCardsBA question={ question } />
+      ));
+    }
+  }
+
   render() {
-    const { email, total, score } = this.props;
     return (
       <div>
-        <Header email={ email } total={ total } score={ score } />
-        <TriviaCards />
+        <Header />
+        <div>
+          { this.update() }
+        </div>
       </div>
     );
   }
 }
 
 Trivia.propTypes = {
-  email: string,
-  total: string,
-  score: number,
-}.isRequired;
+  questions: PropTypes.arrayOf(Object).isRequired,
+  questIndex: PropTypes.number.isRequired,
+};
 
-const mapStatetoProps = (state) => ({
-  email: state.user.email,
-  total: state.user.total,
-  score: state.user.total,
+const mapStateToProps = ({ game }) => ({
+  questions: game.questions,
+  questIndex: game.index,
 });
 
-export default connect(mapStatetoProps)(Trivia);
+export default connect(mapStateToProps)(Trivia);
