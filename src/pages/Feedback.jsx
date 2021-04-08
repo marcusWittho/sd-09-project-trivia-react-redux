@@ -18,11 +18,10 @@ class Feedback extends React.Component {
 
   getFeedback(score) {
     const medianScore = 3;
-    switch (score) {
-    case score < medianScore:
+    const bellowThree = score < medianScore;
+    switch (bellowThree) {
+    case true:
       return 'Podia ser melhor...';
-    case score >= medianScore:
-      return 'Mandou bem!';
     default:
       return 'Mandou bem!';
     }
@@ -34,7 +33,7 @@ class Feedback extends React.Component {
     return (
       <main>
         <header>
-          <img data-testid="header-profile-picture" src={ gravatar } alt="" />
+          <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${gravatar}` } alt={ player.name } />
           <span data-testid="header-player-name">{player.name}</span>
           <span data-test-id="header-score">{player.score}</span>
         </header>
