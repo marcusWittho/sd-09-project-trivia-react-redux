@@ -10,6 +10,7 @@ import Loading from '../../components/Loading/Loading';
 import actionDisableButton from '../../redux/actions/actionDisableButton';
 import ShowButton from '../../redux/actions/actionShowButton';
 import './Game.css';
+import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
 
 class Game extends React.Component {
   constructor(props) {
@@ -33,14 +34,21 @@ class Game extends React.Component {
 
   // Fazer a verificação, se a questão foi marcada então passe para a próxima
   handleNextQuestion() {
-    const { ResetCounter, DisableButton, StateShowButton } = this.props;
+    const {
+      ResetCounter,
+      DisableButton,
+      StateShowButton,
+      cleanOptionAnswers,
+    } = this.props;
     const { counter } = this.state;
     ResetCounter();
     DisableButton(false);
     StateShowButton(false);
+    cleanOptionAnswers();
     this.setState((previousState) => ({
       counter: previousState.counter + 1,
     }));
+
     if (counter >= '4') {
       this.setState({ redirectFeedback: true });
     }
@@ -119,6 +127,7 @@ const mapDispatchToProps = (dispatch) => ({
   decreaseTime: () => dispatch(actionDecreaseTime()),
   stateDisableButton: (value) => dispatch(actionDisableButton(value)),
   stateShowButton: (value) => dispatch(ShowButton(value)),
+  cleanOptionAnswers: () => dispatch(actionCleanOptionAnswers()),
 });
 
 Game.propTypes = {
@@ -138,6 +147,7 @@ Game.propTypes = {
   decreaseTime: func.isRequired,
   stateDisableButton: func.isRequired,
   stateShowButton: func.isRequired,
+  cleanOptionAnswers: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
