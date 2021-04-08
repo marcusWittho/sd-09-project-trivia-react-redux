@@ -57,7 +57,7 @@ class BooleanAnswers extends React.Component {
   }
 
   render() {
-    const { question, time, disableButton } = this.props;
+    const { question, disableButton } = this.props;
     const { correctClass, wrongClass } = this.state;
     const answers = ['True', 'False'];
     const index = 0;
@@ -109,8 +109,6 @@ BooleanAnswers.propTypes = {
   }).isRequired,
   addScore: func.isRequired,
   time: number.isRequired,
-  decreaseTime: func.isRequired,
-  resetFunctions: func.isRequired,
   stateDisableButton: bool.isRequired,
   stateShowButton: bool.isRequired,
   disableButton: bool.isRequired,

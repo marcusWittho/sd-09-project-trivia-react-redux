@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { string, shape, arrayOf, bool, number } from 'prop-types';
 import { Redirect } from 'react-router';
-import actionAddQuestions from '../../redux/actions/actionAddQuestion';
 import actionDecreaseTime from '../../redux/actions/actionDecreaseTime';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import MultipleAnswers from '../../components/MultipleAnswers';
@@ -136,6 +135,9 @@ Game.propTypes = {
   ResetCounter: number.isRequired,
   DisableButton: bool.isRequired,
   StateShowButton: bool.isRequired,
+  decreaseTime: func.isRequired,
+  stateDisableButton: func.isRequired,
+  stateShowButton: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

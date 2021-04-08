@@ -110,7 +110,7 @@ class MultipleAnswers extends React.Component {
 const mapStateToProps = (state) => ({
   time: state.questionsReducer.timer,
   disableButton: state.questionsReducer.disableButton,
-  player: state.playerReducer.player
+  player: state.playerReducer.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -128,8 +128,6 @@ MultipleAnswers.propTypes = {
   }).isRequired,
   addScore: func.isRequired,
   time: number.isRequired,
-  decreaseTime: func.isRequired,
-  resetFunctions: func.isRequired,
   stateDisableButton: bool.isRequired,
   stateShowButton: bool.isRequired,
   disableButton: bool.isRequired,
