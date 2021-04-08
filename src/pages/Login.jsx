@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../App.css';
 import { connect } from 'react-redux';
 import { fetchTrivaApi } from '../actions';
+import SettingsButton from '../components/SettingsButton';
 import loginPanel from './loginPanel.png';
+import '../App.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -40,19 +41,19 @@ class Login extends React.Component {
     return (
       <>
         <label htmlFor="loginEmail">
-          Email
+          Email:
           <br />
           <input
             data-testid="input-gravatar-email"
             type="text"
-            placeholder="example@mail.com"
+            placeholder="example@email.com"
             id="loginEmail"
             onChange={ changeState }
             required
           />
         </label>
         <label htmlFor="loginName">
-          Nome
+          Nome:
           <br />
           <input
             data-testid="input-player-name"
@@ -72,6 +73,7 @@ class Login extends React.Component {
           onClick={ this.fetchToken }
           disabled={ buttonSubmit }
         />
+        <SettingsButton />
       </>
     );
   }
