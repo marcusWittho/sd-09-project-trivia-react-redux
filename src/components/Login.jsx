@@ -1,6 +1,8 @@
 import React from 'react';
 import '../App.css';
 import loginPanel from './loginPanel.png';
+import { connect } from 'react-redux';
+import { fetchTrivaApi } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,6 +30,7 @@ class Login extends React.Component {
   }
 
   fields(changeState, buttonSubmit) {
+    const { fetchAPI } = this.props;
     return (
       <>
         <label htmlFor="loginEmail">
@@ -60,6 +63,7 @@ class Login extends React.Component {
           type="button"
           value="Jogar"
           className="login-button"
+          onClick={ fetchAPI }
           disabled={ buttonSubmit }
         />
       </>
@@ -95,4 +99,8 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  fetchAPI: () => dispatch(fetchTrivaApi()),
+})
+
+export default connect(null, mapDispatchToProps)(Login);
