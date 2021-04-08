@@ -7,9 +7,13 @@ class Header extends React.Component {
     const { name, gravatar, score } = this.props;
     return (
       <header>
-        <img src={ gravatar } alt="ImgGravatar" data-testid="header-profile-picture" />
-        <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">{score}</p>
+        <img
+          data-testid="header-profile-picture"
+          src={ `https://www.gravatar.com/avatar/${gravatar}` }
+          alt="user-gravatar"
+        />
+        <h2 data-testid="header-player-name">{name}</h2>
+        <div data-testid="header-score">{score}</div>
       </header>
     );
   }
@@ -17,7 +21,7 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   name: state.gameReducer.player.name,
-  gravatar: state.gameReducer.player.gravatar,
+  gravatar: state.gameReducer.player.gravatarEmail,
   score: state.gameReducer.player.score,
 
 });

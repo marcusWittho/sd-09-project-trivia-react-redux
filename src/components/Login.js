@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { loginAction } from '../actions/loginAction';
@@ -47,13 +48,15 @@ class Login extends React.Component {
     setQuestions();
 
     const { name, email } = this.state;
+    const gravatarEmail = md5(email).toString();
 
     const player = {
       name,
       assertions: 0,
       score: 0,
-      gravatarEmail: email,
+      gravatarEmail,
     };
+
     setPlayerAction(player);
   }
 
