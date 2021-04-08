@@ -13,12 +13,34 @@ class GamePage extends React.Component {
       questionNumber: 0,
       allowNextButton: 'none',
       time: 30,
+      disabledAnswers: false,
     };
 
     this.createAnswers = this.createAnswers.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.countDown = this.countDown.bind(this);
+    this.makeScore = this.makeScore.bind(this);
+    this.saveScoreLocalStorage = this.saveScoreLocalStorage.bind(this);
+  }
+
+  saveScoreLocalStorage(points) {
+    const state = JSON.parse(localStorage.getItem('state'));
+    state.player.score += points;
+    state.player.assertions = Number(state.player.assertions) + 1;
+    return localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  makeScore(event) {
+    if (event.target.attributes[2].value === 'correct-answer') {
+      const difficultyObj = { easy: 1, medium: 2, hard: 3 };
+      const { questionNumber, time } = this.state;
+      const { questions } = this.props;
+      const magic10 = 10;
+      const { difficulty } = questions[questionNumber];
+      const points = magic10 + (time * difficultyObj[difficulty]);
+      return this.saveScoreLocalStorage(points);
+    }
   }
 
   changeAnswerColor() {
@@ -31,13 +53,15 @@ class GamePage extends React.Component {
     });
   }
 
-  handleClick() {
+  handleClick(event) {
     this.changeAnswerColor();
     this.setState({ allowNextButton: 'block' });
+    if (event) this.makeScore(event);
+    this.setState({ disabledAnswers: true });
   }
 
   createAnswers() {
-    const { questionNumber } = this.state;
+    const { questionNumber, disabledAnswers } = this.state;
     const { questions, timeOver } = this.props;
     const {
       correct_answer: correctAnswer,
@@ -50,8 +74,8 @@ class GamePage extends React.Component {
         type="button"
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
-        onClick={ this.handleClick }
-        disabled={ timeOver }
+        onClick={ (event) => this.handleClick(event) }
+        disabled={ timeOver || disabledAnswers }
       >
         {answer}
       </button>
@@ -62,8 +86,8 @@ class GamePage extends React.Component {
         type="button"
         key={ correctAnswer }
         data-testid="correct-answer"
-        onClick={ this.handleClick }
-        disabled={ timeOver }
+        onClick={ (event) => this.handleClick(event) }
+        disabled={ timeOver || disabledAnswers }
       >
         {correctAnswer}
       </button>,
@@ -78,6 +102,7 @@ class GamePage extends React.Component {
       questionNumber: index + 1,
       allowNextButton: 'none',
       time: 30,
+      disabledAnswers: false,
     });
     restartTime();
   }
