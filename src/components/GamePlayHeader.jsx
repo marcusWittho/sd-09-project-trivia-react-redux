@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class PlayHeader extends React.Component {
+class GamePlayHeader extends React.Component {
   render() {
     const { avatar, name } = this.props;
     return (
@@ -36,9 +36,9 @@ const mapStatetoProps = (state) => ({
   name: state.triviaReducer.name,
 });
 
-PlayHeader.propTypes = {
+GamePlayHeader.propTypes = {
   avatar: PropTypes.string,
   name: PropTypes.string,
 }.isRequired;
 
-export default connect(mapStatetoProps)(PlayHeader);
+export default connect(mapStatetoProps)(GamePlayHeader);
