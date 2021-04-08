@@ -30,7 +30,7 @@ const trueOrFalseObject = (correct, incorrects) => ([
   },
 ]);
 
-const options = (correct, incorrects) => {
+const options = (correct, incorrects, paintingButton) => {
   const multipleChoise = multipleChoisesObject(correct, incorrects);
   const trueOrFalse = trueOrFalseObject(correct, incorrects);
   const keyToMathRandom = 0.5;
@@ -47,9 +47,12 @@ const options = (correct, incorrects) => {
       {
         allChoises.map(({ id, option }) => (
           <button
+            className={ id }
+            id="choiceButton"
             key={ id }
             type="button"
             data-testid={ id }
+            onClick={ paintingButton }
           >
             { option }
           </button>
