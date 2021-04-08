@@ -55,13 +55,13 @@
 }
 
 .play-button:hover:enabled {
+  color: lime;
   opacity: 1;
-  color:rgb(0, 255, 0);
 }
 
 .configurations-button {
   align-self: flex-end;
-  background: #000000;
+  background: black;
   background-image: url('https://iconsplace.com/wp-content/uploads/_icons/40e0d0/256/png/settings-icon-17-256.png');
   background-position: center;
   background-repeat: no-repeat;
