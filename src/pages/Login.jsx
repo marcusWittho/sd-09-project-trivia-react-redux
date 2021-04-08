@@ -9,6 +9,8 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
+      loginError: false,
+      error: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.verifyTextInputs = this.verifyTextInputs.bind(this);
@@ -28,18 +30,25 @@ class Login extends React.Component {
     return true;
   }
 
-  handleClick() {
+  async handleClick() {
     const { handleLogin, history } = this.props;
     const { name, email } = this.state;
-    handleLogin(name, email);
-    history.push('/game');
+    try {
+      await handleLogin(name, email);
+      history.push('/game');
+    } catch (error) {
+      this.setState({ loginError: true, error });
+    }
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, loginError, error } = this.state;
     return (
       <div>
         <h1>Login</h1>
+        {
+          loginError && <p>{ error }</p>
+        }
         <form>
           <label
             htmlFor="name-input"
