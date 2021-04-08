@@ -16,7 +16,7 @@ class MultipleAnswers extends React.Component {
     this.selectDataTest = this.selectDataTest.bind(this);
 
     this.handleClcik = this.handleClcik.bind(this);
-    this.setScoreInGloblaState = this.setScoreInGloblaState.bind(this);
+    this.setScoreInGlobalState = this.setScoreInGlobalState.bind(this);
     this.state = {
       optionAnswers: [],
       correctClass: '',
@@ -29,7 +29,7 @@ class MultipleAnswers extends React.Component {
     this.randomAnswer();
   }
 
-  setScoreInGloblaState() {
+  setScoreInGlobalState() {
     const { question, time, addScore } = this.props;
     const hardPoints = 3;
     const constant = 10;
@@ -45,7 +45,7 @@ class MultipleAnswers extends React.Component {
     const { stateDisableButton, stateShowButton } = this.props;
     const { id } = target;
     if (id === correctAnswer) {
-      this.setScoreInGloblaState();
+      this.setScoreInGlobalState();
     }
     this.setState({
       correctClass: 'correct-answer',
