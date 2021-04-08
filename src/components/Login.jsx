@@ -74,7 +74,7 @@ class Login extends React.Component {
               onChange={ this.onChange }
             />
           </label>
-          <Link to="/play">
+          <Link to="/gameplay">
             <button
               type="button"
               data-testid="btn-play"

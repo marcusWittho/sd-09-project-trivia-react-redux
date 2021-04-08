@@ -2,10 +2,12 @@ import {
   REQUEST_TOKEN,
   SET_GRAVATAR_IMAGE,
   SET_PLAYER_NAME,
+  REQUEST_QUESTIONS,
 } from '../actions';
 
 const INITIAL_TRIVIA_STATE = {
   token: {},
+  questions: {},
   avatar: '',
   name: '',
 };
@@ -16,6 +18,10 @@ const triviaReducer = (state = INITIAL_TRIVIA_STATE, action) => {
     return {
       ...state,
       token: action.token,
+    };
+  case REQUEST_QUESTIONS:
+    return { ...state,
+      questions: action.questions,
     };
   case SET_GRAVATAR_IMAGE:
     return {
