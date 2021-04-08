@@ -15,11 +15,6 @@ class Login extends Component {
       submmit: false,
     };
 
-<<<<<<< HEAD
-    this.HandleValidation = this.HandleValidation.bind(this);
-    this.HandleChange = this.HandleChange.bind(this);
-    this.saveLocal = this.saveLocal.bind(this);
-=======
     this.handleValidation = this.handleValidation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleLocalStorage = this.handleLocalStorage.bind(this);
@@ -32,7 +27,6 @@ class Login extends Component {
     this.setState({
       submmit: true,
     });
->>>>>>> f2cd80e65a9d3494aa763a8566d71d54a91b7a89
   }
 
   handleValidation() {
@@ -44,16 +38,8 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
-<<<<<<< HEAD
-  saveLocal() {
-    localStorage.setItem('token', '123123');
-  }
-
-  render() {
-=======
   formFunction() {
     const { getToken } = this.props;
->>>>>>> f2cd80e65a9d3494aa763a8566d71d54a91b7a89
     return (
       <form>
         <h1>Login</h1>
@@ -82,12 +68,6 @@ class Login extends Component {
         <button
           data-testid="btn-play"
           type="button"
-<<<<<<< HEAD
-          disabled={ this.HandleValidation() }
-          onClick={ this.saveLocal }
-        >
-          entrar
-=======
           disabled={ this.handleValidation() }
           onClick={ async () => {
             await getToken();
@@ -95,7 +75,6 @@ class Login extends Component {
           } }
         >
           Entrar
->>>>>>> f2cd80e65a9d3494aa763a8566d71d54a91b7a89
         </button>
       </form>
     );

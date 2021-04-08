@@ -12,10 +12,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "redux": "^4.0.5",
-<<<<<<< HEAD
-=======
     "redux-devtools": "^3.7.0",
->>>>>>> f2cd80e65a9d3494aa763a8566d71d54a91b7a89
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0"
   },

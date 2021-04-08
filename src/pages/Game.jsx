@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import GameScreen from '../components/GameScreen';
 
 class Game extends Component {
   render() {
     return (
-
       <div>
-        <h1>JogaAE</h1>
+        <GameScreen />
       </div>
     );
   }
