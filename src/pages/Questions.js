@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getQuestionsToStore } from '../actions';
-import { getQuestions } from '../services/api';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -15,27 +13,16 @@ class Questions extends React.Component {
     this.renderQuestion = this.renderQuestion.bind(this);
   }
 
-  componentDidMount() {
-    this.getAndSaveQuestions();
-  }
-
-  async getAndSaveQuestions() {
-    const { saveQuestions } = this.props;
-    const userToken = localStorage.getItem('token');
-    const API_RESULT = await getQuestions(userToken);
-    saveQuestions(API_RESULT);
-    this.setState({ loading: false });
-  }
-
-  renderQuestion(num) {
+  renderQuestion(question) {
     const { questions } = this.props;
-    const { questionNum } = this.state;
+    console.log(questions);
+    console.log(question);
     return (
       <>
-        <p data-testid="question-category">{ questions[questionNum].category }</p>
-        <p data-testid="question-text">{ questions[questionNum].question }</p>
-        <p data-testid="correct-answer">{ questions[questionNum].correct_answer }</p>
-        {questions[questionNum].incorrect_answers
+        <p data-testid="question-category">{ question.category }</p>
+        <p data-testid="question-text">{ question.question }</p>
+        <p data-testid="correct-answer">{ question.correct_answer }</p>
+        {question.incorrect_answers
           .map((item, index) => (
             <p key={index} data-testid={`wrong-answer-${index}`}>{item}</p>))}
       </>
@@ -43,10 +30,10 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { questions } = this.props;
     return (
       <div>
-        { loading ? (<div>Loading</div>) : this.renderQuestion() }
+        { this.renderQuestion(questions[0]) }
       </div>
     );
   }
@@ -56,12 +43,4 @@ const mapStateToProps = (state) => ({
   questions: state.getQuestions.questions,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  saveQuestions: (questions) => dispatch(getQuestionsToStore(questions)),
-});
-
-Questions.propTypes = {
-  saveQuestions: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Questions);
+export default connect(mapStateToProps)(Questions);
