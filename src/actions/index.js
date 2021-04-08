@@ -15,25 +15,16 @@ const sendTokenAction = (token) => ({
 export default function getTokenThunk({ name, email }) {
   return async (dispatch) => {
     const token = await fetchToken();
-    const stateKey = {
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        gravatarEmail: email,
-      },
-    };
+    const cryptoEmail = md5(email).toString();
+    const picture = `https://www.gravatar.com/avatar/${cryptoEmail}`;
 
     dispatch(sendTokenAction(token));
-    dispatch(logUserAction({ name, email }));
+    dispatch(logUserAction({ name, email, picture }));
 
-    localStorage.setItem('state', JSON.stringify(stateKey));
     localStorage.setItem('token', token);
 
     if (!localStorage.getItem('ranking')) localStorage.setItem('ranking', '[]');
 
-    const cryptoEmail = md5(email).toString();
-    const picture = `https://www.gravatar.com/avatar/${cryptoEmail}`;
     const ranking = [
       ...JSON.parse(localStorage.getItem('ranking')),
       { name, score: 0, picture },
