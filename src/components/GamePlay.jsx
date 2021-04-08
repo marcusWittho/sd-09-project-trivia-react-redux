@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions, fetchToken, ERROR_CODE } from '../redux/actions';
 import Question from './Question';
+import GamePlayHeader from './GamePlayHeader';
 import './GamePlay.css';
 
 class GamePlay extends React.Component {
@@ -40,6 +41,7 @@ class GamePlay extends React.Component {
     const { currentQuestion } = this.state;
     return (
       <div className="main-game-play">
+      <GamePlayHeader />
         {
           questions.results || questions.response_code === ERROR_CODE
             ? (

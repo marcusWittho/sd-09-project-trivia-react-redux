@@ -2,15 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchToken } from '../redux/actions';
+import { MD5 } from 'crypto-js';
 import logo from '../trivia.png';
+import { fetchToken, setGravatarImage, setPlayerName } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      player: '',
+      name: '',
       email: '',
       playButton: false,
     };
@@ -21,29 +22,31 @@ class Login extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentDidUpdate() {
-    this.saveToLocalStorage();
-  }
-
   onChange({ target }) {
     const { id, value } = target;
     this.setState({ [id]: value }, () => this.validateFields());
   }
 
   saveToLocalStorage() {
-    const { token } = this.props;
-    localStorage.setItem('token', token.token);
+    const { name, email: gravatarEmail } = this.state;
+    const player = { name, gravatarEmail };
+    localStorage.setItem('player', JSON.stringify(player));
   }
 
-  async startGame() {
-    const { setToken } = this.props;
-    await setToken();
+  startGame() {
+    const { setToken, dispatchSetGravatarImage, dispatchSetPlayerName } = this.props;
+    const { email, name } = this.state;
+    const emailHash = MD5(email).toString();
+    setToken();
+    dispatchSetGravatarImage(emailHash);
+    dispatchSetPlayerName(name);
+    this.saveToLocalStorage();
   }
 
   validateFields() {
-    const { player, email } = this.state;
+    const { name, email } = this.state;
     const regex = /^[\w.]+@[a-z]+\.\w{2,3}$/g;
-    const playButton = player.length > 0 && regex.test(email);
+    const playButton = name.length > 0 && regex.test(email);
     this.setState({ playButton });
   }
 
@@ -53,11 +56,11 @@ class Login extends React.Component {
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <label htmlFor="player">
+          <label htmlFor="name">
             Name
             <input
               type="text"
-              id="player"
+              id="name"
               data-testid="input-player-name"
               onChange={ this.onChange }
             />
@@ -96,16 +99,19 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
-  token: PropTypes.shape().isRequired,
-};
+  setToken: PropTypes.func,
+  dispatchSetGravatarImage: PropTypes.func,
+  token: PropTypes.shape(),
+}.isRequired;
 
-const mapStatetoProps = (state) => ({
+const mapStateToProps = (state) => ({
   token: state.triviaReducer.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: () => dispatch(fetchToken()),
+  dispatchSetGravatarImage: (emailHash) => dispatch(setGravatarImage(emailHash)),
+  dispatchSetPlayerName: (name) => dispatch(setPlayerName(name)),
 });
 
-export default connect(mapStatetoProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
