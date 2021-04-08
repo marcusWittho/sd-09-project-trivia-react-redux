@@ -1,9 +1,10 @@
 import React from 'react';
 import { func } from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import { getToken } from '../services/triviaApi';
-import { handleToken } from '../redux/actions';
+import { handleToken, handleUserName, handleUserEmail } from '../redux/actions';
 import './css/login.css';
 
 class Login extends React.Component {
@@ -13,17 +14,30 @@ class Login extends React.Component {
       user: '',
       email: '',
       disableButton: true,
+      redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.fetchToken = this.fetchToken.bind(this);
+    this.updateGlobalStates = this.updateGlobalStates.bind(this);
+    // this.redirect = this.redirect.bind(this);
   }
 
-  async fetchToken() {
-    const { propHandleToken } = this.props;
+  async updateGlobalStates() {
+    const { propHandleToken, propHandleUser, propHandleEmail } = this.props;
+    const { user, email } = this.state;
     const token = await getToken();
     propHandleToken(token.token);
     localStorage.setItem('token', token.token);
+    propHandleUser(user);
+    propHandleEmail(md5(email).toString());
+    // redirect();
   }
+
+  // redirect() {
+  //   const { emailDispatcher } = this.props;
+  //   const { email } = this.state;
+  //   this.setState({ redirect: true });
+  //   emailDispatcher(email);
+  // }
 
   handleChange({ target: { value, name } }) {
     this.setState({ [name]: value }, () => {
@@ -37,7 +51,8 @@ class Login extends React.Component {
   }
 
   render() {
-    const { disableButton } = this.state;
+    const { disableButton, redirect } = this.state;
+    // if (redirect) return (<Redirect to="/question" />);
     return (
       <div className="form-login">
         <form className="fieldset-login">
@@ -66,7 +81,7 @@ class Login extends React.Component {
               type="button"
               data-testid="btn-play"
               disabled={ disableButton }
-              onClick={ this.fetchToken }
+              onClick={ this.updateGlobalStates }
             >
               Jogar
             </button>
@@ -79,6 +94,8 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   propHandleToken: (data) => dispatch(handleToken(data)),
+  propHandleUser: (user) => dispatch(handleUserName(user)),
+  propHandleEmail: (email) => dispatch(handleUserEmail(email)),
 });
 
 Login.propTypes = {
