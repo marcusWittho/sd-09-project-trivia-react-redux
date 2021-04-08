@@ -1,6 +1,6 @@
-export const PLAYER_DATA = 'PLAYER_DATA';
+export const SET_TOKEN = 'SET_TOKEN';
 
-export const handlePlayerData = (data) => ({
-  type: PLAYER_DATA,
+export const handleToken = (data) => ({
+  type: SET_TOKEN,
   data,
 });

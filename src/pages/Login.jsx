@@ -1,8 +1,9 @@
 import React from 'react';
 import { func } from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getToken } from '../services/triviaApi';
-import { handlePlayerData } from '../redux/actions';
+import { handleToken } from '../redux/actions';
 import './css/login.css';
 
 class Login extends React.Component {
@@ -18,15 +19,10 @@ class Login extends React.Component {
   }
 
   async fetchToken() {
-    const { user, email } = this.state;
-    const { propHandlePlayerData } = this.props;
+    const { propHandleToken } = this.props;
     const token = await getToken();
-    const data = { user, email, token };
-    propHandlePlayerData(data);
-
-    localStorage.setItem('player', {
-      name: '', assertions: '', score: '', gravatarEmail: '',
-    });
+    propHandleToken(token.token);
+    localStorage.setItem('token', token.token);
   }
 
   handleChange({ target: { value, name } }) {
@@ -65,14 +61,16 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ disableButton }
-            onClick={ this.fetchToken }
-          >
-            Jogar
-          </button>
+          <Link to="/jogo">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ disableButton }
+              onClick={ this.fetchToken }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
       </div>
     );
@@ -80,7 +78,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  propHandlePlayerData: (data) => dispatch(handlePlayerData(data)),
+  propHandleToken: (data) => dispatch(handleToken(data)),
 });
 
 Login.propTypes = {
