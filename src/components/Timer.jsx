@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Timer extends React.Component {
   componentDidMount() {
@@ -12,7 +13,6 @@ class Timer extends React.Component {
         timeChange();
       }
     }, parseInt(INTERVAL, 10));
-
   }
 
   componentWillUnmount() {
@@ -28,5 +28,12 @@ class Timer extends React.Component {
     );
   }
 }
+
+Timer.propTypes = {
+  timer: PropTypes.number.isRequired,
+  timeChange: PropTypes.func.isRequired,
+  stopTimer: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func.isRequired,
+};
 
 export default Timer;

@@ -18,15 +18,24 @@ class TriviaPage extends React.Component {
   }
 
   componentDidUpdate() {
-    const { token } = this.props;
+    const { token, emailInput, nameInput, score, assertions } = this.props;
     const currentToken = localStorage.getItem('token');
+    const information = {
+      player: {
+        name: nameInput,
+        score,
+        assertions,
+        gravatarEmail: emailInput,
+      },
+    };
     if (currentToken !== token) {
       localStorage.setItem('token', JSON.stringify(token));
+      localStorage.setItem('state', JSON.stringify(information));
     }
   }
 
   render() {
-    const { fetching, emailInput, nameInput } = this.props;
+    const { fetching, emailInput, nameInput, score } = this.props;
     const emailHash = md5(emailInput).toString();
     if (fetching) {
       return (
@@ -45,7 +54,7 @@ class TriviaPage extends React.Component {
           Jogador:
           <span data-testid="header-player-name">{ nameInput }</span>
           Placar:
-          <span data-testid="header-score">0</span>
+          <span data-testid="header-score">{ score }</span>
         </header>
         <Question />
       </>
@@ -58,6 +67,8 @@ const mapStateToProps = (state) => ({
   fetching: state.tokenReducer.isFetching,
   emailInput: state.loginReducer.emailInput,
   nameInput: state.loginReducer.nameInput,
+  score: state.scoreReducer.score,
+  assertions: state.scoreReducer.assertions,
 });
 
 const mapDispatchToProps = {
@@ -70,6 +81,8 @@ TriviaPage.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   emailInput: PropTypes.string.isRequired,
   nameInput: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TriviaPage);

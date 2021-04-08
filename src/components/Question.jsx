@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from './Timer';
+import { updateScore } from '../redux/actions';
 import './Question.css';
 
 class Question extends React.Component {
@@ -22,12 +23,44 @@ class Question extends React.Component {
     this.timeChange = this.timeChange.bind(this);
   }
 
+  componentDidMount() {
+    const playerInformation = localStorage.getItem('state');
+    console.log(JSON.parse(playerInformation));
+  }
+
   handleClick() {
     this.setState((state) => ({
       clicked: !state.clicked,
       stopTimer: true,
       disabledButton: true,
     }));
+  }
+
+  changeScore({ target }) {
+    const { timer } = this.state;
+    const { updateValue } = this.props;
+    let { score } = this.props;
+    const { innerText } = target;
+    const question = this.renderQuestion();
+    const TEN_POINTS = 10;
+    const MEDIUM_MULTIPLIER = 2;
+    const HARD_MULTIPLIER = 3;
+    if (innerText === question.correct_answer) {
+      switch (question.difficulty) {
+      case 'easy':
+        score = score + TEN_POINTS + timer;
+        break;
+      case 'medium':
+        score = score + TEN_POINTS + (timer * MEDIUM_MULTIPLIER);
+        break;
+      case 'hard':
+        score = score + TEN_POINTS + (timer * HARD_MULTIPLIER);
+        break;
+      default:
+        break;
+      }
+      updateValue({ score });
+    }
   }
 
   timeChange() {
@@ -52,7 +85,7 @@ class Question extends React.Component {
           type="button"
           data-testid="correct-answer"
           className={ (clicked) ? 'correct-answer' : '' }
-          onClick={ this.handleClick }
+          onClick={ (e) => { this.handleClick(); this.changeScore(e); } }
           disabled={ disabledButton }
         >
           {question.correct_answer}
@@ -63,7 +96,7 @@ class Question extends React.Component {
             data-testid={ `wrong-answer-${index}` }
             key={ index }
             className={ (clicked) ? 'incorrect-answer' : '' }
-            onClick={ this.handleClick }
+            onClick={ (e) => { this.handleClick(); this.changeScore(e); } }
             disabled={ disabledButton }
           >
             {answer}
@@ -103,11 +136,20 @@ class Question extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.questionsReducer.questions,
   fetching: state.questionsReducer.isFetching,
+  score: state.scoreReducer.score,
+  name: state.loginReducer.nameInput,
+  email: state.loginReducer.emailInput,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateValue: (payload) => dispatch(updateScore(payload)),
 });
 
 Question.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetching: PropTypes.bool.isRequired,
+  score: PropTypes.number.isRequired,
+  updateValue: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
