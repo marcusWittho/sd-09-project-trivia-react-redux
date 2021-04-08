@@ -1,10 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import triviaRequest from '../services/api';
+import triviaTokenRequest from '../services/api';
+import { updatePlayerName, updateToken } from '../actions/index';
 
 class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       buttonDisabled: true,
       email: '',
@@ -27,7 +31,11 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const token = await triviaRequest();
+    const { storeName, storeToken } = this.props;
+    const { name } = this.state;
+    const token = await triviaTokenRequest();
+    storeToken(token);
+    storeName(name);
     localStorage.setItem('token', token);
   }
 
@@ -53,12 +61,16 @@ class Login extends React.Component {
             type="text"
             name="email"
             onChange={ this.handleChange }
-            onClick={ this.handleClick }
           />
         </label>
 
         <Link to="/game">
-          <button data-testid="btn-play" type="button" disabled={ buttonDisabled }>
+          <button
+            data-testid="btn-play"
+            type="button"
+            onClick={ this.handleClick }
+            disabled={ buttonDisabled }
+          >
             Jogar
           </button>
         </Link>
@@ -67,4 +79,18 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  storeToken: PropTypes.func.isRequired,
+  storeName: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  storeToken: (token) => dispatch(updateToken(token)),
+  storeName: (name) => dispatch(updatePlayerName(name)),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.player.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
