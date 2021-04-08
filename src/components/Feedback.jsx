@@ -30,6 +30,11 @@ class Feedback extends React.Component {
           { `Você acertou ${questions} questões!` }
         </h3>
         <h3 data-testid="feedback-total-score">{ `Um total de ${points} pontos` }</h3>
+        <Link to="/ranking">
+          <button type="button" data-testid="btn-ranking">
+            Ver ranking
+          </button>
+        </Link>
         <Link to="/">
           <button type="button" data-testid="btn-play-again">
             Jogar novamente
