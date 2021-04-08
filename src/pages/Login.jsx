@@ -1,5 +1,8 @@
 import React from 'react';
-// import { func } from 'prop-types';
+import { func } from 'prop-types';
+import { connect } from 'react-redux';
+import { getToken } from '../services/triviaApi';
+import { handlePlayerData } from '../redux/actions';
 import './css/login.css';
 
 class Login extends React.Component {
@@ -11,6 +14,19 @@ class Login extends React.Component {
       disableButton: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.fetchToken = this.fetchToken.bind(this);
+  }
+
+  async fetchToken() {
+    const { user, email } = this.state;
+    const { propHandlePlayerData } = this.props;
+    const token = await getToken();
+    const data = { user, email, token };
+    propHandlePlayerData(data);
+
+    localStorage.setItem('player', {
+      name: '', assertions: '', score: '', gravatarEmail: '',
+    });
   }
 
   handleChange({ target: { value, name } }) {
@@ -53,7 +69,7 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-play"
             disabled={ disableButton }
-            // onClick={ this.redirect }
+            onClick={ this.fetchToken }
           >
             Jogar
           </button>
@@ -63,8 +79,12 @@ class Login extends React.Component {
   }
 }
 
-// Login.propTypes = {
-//   emailDispatcher: func,
-// }.isRequired;
+const mapDispatchToProps = (dispatch) => ({
+  propHandlePlayerData: (data) => dispatch(handlePlayerData(data)),
+});
 
-export default Login;
+Login.propTypes = {
+  propHandlePlayerData: func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);

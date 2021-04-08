@@ -1,11 +1,15 @@
+import { PLAYER_DATA } from '../actions';
+
 const INITIAL_STATE = {
-  name: '',
+  user: '',
+  email: '',
+  token: '',
 };
 
 const loginReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case CHANGE_EMAIL_LOGIN:
-    return {};
+  case PLAYER_DATA:
+    return { ...state, ...action.data };
   default:
     return state;
   }
