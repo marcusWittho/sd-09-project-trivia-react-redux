@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchToken } from '../redux/actions';
+import { fetchToken, saveLogin } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -38,7 +38,9 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { getToken } = this.props;
+    const { getToken, loginAction } = this.props;
+    const { nameInput, emailInput } = this.state;
+    loginAction({ emailInput, nameInput });
     getToken();
   }
 
@@ -54,7 +56,7 @@ class Login extends React.Component {
           name="nameInput"
           value={ nameInput }
           onChange={ this.handleChange }
-          // autoComplete="off"
+          autoComplete="off"
         />
       </label>
     );
@@ -72,14 +74,14 @@ class Login extends React.Component {
           name="emailInput"
           value={ emailInput }
           onChange={ this.handleChange }
-          // autoComplete="off"
+          autoComplete="off"
         />
       </label>
     );
   }
 
   render() {
-    const { nameInput, emailInput, disabledButton } = this.state;
+    const { disabledButton } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -89,9 +91,7 @@ class Login extends React.Component {
           <h1>Login</h1>
           { this.renderNameInput() }
           { this.renderEmailInput() }
-          <Link
-            to={ { pathname: '/trivia', player: { email: emailInput, name: nameInput } } }
-          >
+          <Link to="/trivia">
             <button
               data-testid="btn-play"
               type="button"
@@ -110,12 +110,14 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  getToken: fetchToken,
-};
+const mapDispatchToProps = (dispatch) => ({
+  getToken: () => dispatch(fetchToken()),
+  loginAction: (obj) => dispatch(saveLogin(obj)),
+});
 
 Login.propTypes = {
   getToken: PropTypes.func.isRequired,
+  loginAction: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
