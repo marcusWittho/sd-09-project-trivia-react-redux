@@ -12,17 +12,11 @@ class Feedback extends Component {
     const minimumScore = 3;
 
     return (
-      <div>
+      <>
         <header>
-          <span>
-            <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${cryptoEmail}` } alt="profile" />
-          </span>
-          <span>
-            <h1 data-testid="header-player-name">{ player.name }</h1>
-          </span>
-          <span>
-            <p data-testid="header-score">{ player.score }</p>
-          </span>
+          <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${cryptoEmail}` } alt="profile" />
+          <h1 data-testid="header-player-name">{ player.name }</h1>
+          <p data-testid="header-score">{ player.score }</p>
         </header>
         <main>
           <section>
@@ -51,7 +45,7 @@ class Feedback extends Component {
             </Link>
           </section>
         </main>
-      </div>
+      </>
     );
   }
 }
