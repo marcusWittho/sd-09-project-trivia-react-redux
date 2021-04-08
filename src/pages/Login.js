@@ -59,6 +59,14 @@ class Login extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configuração
+            </button>
+          </Link>
           <img src={ logo } className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
 
