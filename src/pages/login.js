@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import { getToken, gravatarURL, getQuestions } from '../services/api';
+import store from '../store/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -48,7 +50,8 @@ class Login extends React.Component {
     const { history: { push } } = this.props;
     push('/game');
 
-    getQuestions(token);
+    const questions = await getQuestions(token);
+    console.log(questions);
   }
 
   handleSettingsButton() {
