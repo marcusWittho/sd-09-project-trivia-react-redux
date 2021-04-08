@@ -2,3 +2,4 @@ export const SET_LOGIN = 'SET_LOGIN';
 export const INITIAL_REQUEST = 'NITIAL_REQUEST';
 export const SUCCESS_REQUEST = 'SUCCESS_REQUEST';
 export const ERROR_REQUEST = 'ERROR_REQUEST';
+export const BTN_STATE = 'BTN_STATE';
