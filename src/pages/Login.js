@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import triviaTokenRequest from '../services/api';
-import { updatePlayerName, updateToken } from '../actions/index';
+import { updatePlayerName, updatePlayerEmail, updateToken } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -31,11 +31,12 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { storeName, storeToken } = this.props;
-    const { name } = this.state;
+    const { storeName, storeEmail, storeToken } = this.props;
+    const { name, email } = this.state;
     const token = await triviaTokenRequest();
     storeToken(token);
     storeName(name);
+    storeEmail(email);
     localStorage.setItem('token', token);
   }
 
@@ -82,11 +83,13 @@ class Login extends React.Component {
 Login.propTypes = {
   storeToken: PropTypes.func.isRequired,
   storeName: PropTypes.func.isRequired,
+  storeEmail: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   storeToken: (token) => dispatch(updateToken(token)),
   storeName: (name) => dispatch(updatePlayerName(name)),
+  storeEmail: (email) => dispatch(updatePlayerEmail(email)),
 });
 
 const mapStateToProps = (state) => ({

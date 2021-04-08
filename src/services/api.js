@@ -10,4 +10,9 @@ function triviaTokenRequest() {
 //   .then((response) => response.results);
 // }
 
+export function gravatarRequest(hash) {
+  return fetch(`https://www.gravatar.com/avatar/${hash}`)
+    .then((response) => console.log(response));
+}
+
 export default triviaTokenRequest;
