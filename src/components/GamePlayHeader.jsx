@@ -13,18 +13,20 @@ class GamePlayHeader extends React.Component {
           data-testid="header-profile-picture"
           className="gravatar"
         />
-        <div
-          className="header-title"
-          data-testid="header-player-name"
-        >
-          Player:
-          { name }
-        </div>
-        <div
-          data-testid="header-score"
-          className="header-title"
-        >
-          Points: 0
+        <div className="game-header-info">
+          <div
+            className="header-title"
+            data-testid="header-player-name"
+          >
+            Player:
+            { name }
+          </div>
+          <div
+            data-testid="header-score"
+            className="header-title"
+          >
+            Points: 0
+          </div>
         </div>
       </header>
     );
