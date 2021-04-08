@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import options from './questionsShape';
+import '../CSS-Components/Choices.css';
 
 class CardQuestion extends React.Component {
   constructor(props) {
@@ -9,6 +10,20 @@ class CardQuestion extends React.Component {
     this.state = {
       orderQuest: 0,
     };
+    this.paintingButton = this.paintingButton.bind(this);
+  }
+
+  paintingButton() {
+    const buttons = document.querySelectorAll('#choiceButton');
+    buttons.forEach((button) => {
+      console.log(button.className);
+      console.log(button.className === 'correct-answer');
+      if (button.className === 'correct-answer') {
+        button.className = 'correct-answers';
+      } else {
+        button.className = 'wrong-answers';
+      }
+    });
   }
 
   render() {
@@ -27,7 +42,7 @@ class CardQuestion extends React.Component {
         <h2 data-testid="question-category">{ category }</h2>
         <h3 data-testid="question-text">{ question }</h3>
         {
-          options(correct, incorrects)
+          options(correct, incorrects, this.paintingButton)
         }
       </div>
     );
