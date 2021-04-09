@@ -1,4 +1,4 @@
-import { getToken, getAsks } from '../serviceAPI';
+import { getToken, getAsks, getGravatar } from '../serviceAPI';
 
 export const LOGIN = 'LOGIN';
 export const TOKEN = 'TOKEN';
@@ -10,7 +10,7 @@ export const saveScore = (score) => ({
   score,
 });
 
-export const loginAction = (username, email) => ({
+export const login = (username, email) => ({
   type: LOGIN,
   username,
   email,
@@ -30,9 +30,11 @@ export const asyncToken = () => (dispatch) => {
   getToken().then((response) => {
     localStorage.setItem('token', response.token);
     dispatch(tokenAction(response.token));
+    getAsks(response.token)
+      .then((responseAsks) => dispatch(saveAsks(responseAsks.results)));
   });
 };
 
-export const asyncAsks = (token) => (dispatch) => {
-  getAsks(token).then((response) => dispatch(saveAsks(response.results)));
+export const loginAction = (username, email) => (dispatch) => {
+  getGravatar(email).then((response) => dispatch(login(username, response.url)));
 };

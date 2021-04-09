@@ -5,7 +5,6 @@ const INITIAL_STATE = {
   assertions: 0,
   score: 0,
   gravatarEmail: '',
-  token: '',
 };
 
 const player = (state = INITIAL_STATE, action) => {

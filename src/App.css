@@ -78,3 +78,8 @@
 .image-trivia {
   width: 50%;
 }
+
+.section-header {
+  display: flex;
+  justify-content: center;
+}

@@ -1,6 +1,8 @@
 import { SAVE_ASKS } from '../actions';
 
-const INITIAL_STATE = [];
+const INITIAL_STATE = [
+  { category: '', question: '', correct_answer: '', incorrect_answers: [] },
+];
 
 const askAndAnswersReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {

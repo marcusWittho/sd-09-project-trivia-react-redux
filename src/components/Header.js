@@ -2,29 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-// import { getGravatar } from '../serviceAPI';
-import md5 from 'crypto-js/md5';
-
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.getAvatar = this.getAvatar.bind(this);
-  }
-
-  getAvatar(email) {
-    const emailHash = md5(email).toString();
-    const requestHash = `https://www.gravatar.com/avatar/${emailHash}`;
-    return requestHash;
-  }
-
   render() {
-    const { name, gravatarEmail, score } = this.props;
-
+    const { name, score, avatar } = this.props;
     return (
       <header>
         <img
-          src={ this.getAvatar(gravatarEmail) }
+          src={ avatar }
           alt="userImage"
           data-testid="header-profile-picture"
         />
@@ -43,13 +27,13 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   name: state.player.name,
-  gravatarEmail: state.player.gravatarEmail,
+  avatar: state.player.gravatarEmail,
   score: state.player.score,
 });
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
 

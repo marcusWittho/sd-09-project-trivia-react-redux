@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import md5 from 'crypto-js/md5';
 import { asyncToken, loginAction } from '../actions';
 import logo from '../trivia.png';
-import { createPlayerInRanking } from '../services/localStorage';
+import { createRanking } from '../services/localStorage';
+import { getGravatar } from '../serviceAPI';
 
 class Home extends React.Component {
   constructor(props) {
@@ -15,8 +15,6 @@ class Home extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.disableButton = this.disableButton.bind(this);
   }
 
   handleChange({ target }) {
@@ -29,30 +27,20 @@ class Home extends React.Component {
   handleClick() {
     const { username, email } = this.state;
     const { loginActionFunc, saveToken } = this.props;
-    const emailHash = md5(email).toString();
-    const requestHash = `https://www.gravatar.com/avatar/${emailHash}`;
     saveToken();
     loginActionFunc(username, email);
-    const objPlayer = {
-      player: {
-        name: username,
-        assertions: 0,
-        score: 0,
-        gravatarEmail: email,
-      },
-    };
-    const rankingInfos = {
-      name: username,
-      userEmail: email,
-      score: 0,
-      picture: requestHash,
-    };
-    createPlayerInRanking(rankingInfos);
-    localStorage.setItem('state', JSON.stringify(objPlayer));
-  }
-
-  disableButton(username, email) {
-    return username.length === 0 || email.length === 0;
+    getGravatar(email).then((response) => {
+      const player = {
+        player: {
+          name: username,
+          assertions: 0,
+          score: 0,
+          gravatarEmail: response.url,
+        },
+      };
+      localStorage.setItem('state', JSON.stringify(player));
+    });
+    createRanking();
   }
 
   render() {
@@ -85,7 +73,7 @@ class Home extends React.Component {
             <button
               type="submit"
               data-testid="btn-play"
-              disabled={ this.disableButton(username, email) }
+              disabled={ (!email || !username) }
               onClick={ () => this.handleClick() }
             >
               Jogar
@@ -110,13 +98,9 @@ Home.propTypes = {
   loginActionFunc: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  token: state.token,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   saveToken: () => dispatch(asyncToken()),
   loginActionFunc: (username, email) => dispatch(loginAction(username, email)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(null, mapDispatchToProps)(Home);

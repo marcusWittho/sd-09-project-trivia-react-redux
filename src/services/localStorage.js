@@ -1,23 +1,18 @@
-export function createPlayerInRanking(initialPlayerInfos) {
+export function createRanking() {
   const ranking = JSON.parse(localStorage.getItem('ranking'));
-  if (ranking) {
-    ranking.push(initialPlayerInfos);
-    localStorage.ranking = JSON.stringify(ranking);
-  } else {
-    localStorage.setItem('ranking', JSON.stringify([initialPlayerInfos]));
-  }
+  if (!ranking) localStorage.setItem('ranking', JSON.stringify([]));
 }
 
 export function getCurrentPlayerInfos() {
   const ranking = JSON.parse(localStorage.getItem('ranking'));
   const currentPlayer = ranking[ranking.length - 1];
-  const { name, picture, score } = currentPlayer;
-  return { name, picture, score };
+  const { name, gravatarEmail, score } = currentPlayer;
+  return { name, gravatarEmail, score };
 }
 
-export function updateScoreToLocalStorage(playerEmail, scoreToAdd) {
+export function addPlayerInRanking(gravatarEmail, player) {
   const ranking = JSON.parse(localStorage.getItem('ranking'));
-  ranking[ranking.length - 1].score = scoreToAdd;
-  const newRanking = ranking;
-  localStorage.setItem('ranking', JSON.stringify(newRanking));
+  ranking.push(player);
+  ranking.sort((playerOne, playerTWO) => playerTWO.score - playerOne.score);
+  localStorage.setItem('ranking', JSON.stringify(ranking));
 }
