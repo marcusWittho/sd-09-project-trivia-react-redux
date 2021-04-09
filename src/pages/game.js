@@ -4,25 +4,27 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Question from '../components/question';
 
-// const fooQuestions = [{
-//   category: 'Science: Computers',
-//   type: 'multiple',
-//   difficulty: 'easy',
-//   question: 'The seriseries (Broadwell) is called:',
-//   correctAnswer: 'wsqehn',
-//   incorrectAnswers: [
-//     'sfdfsdahics 700 ',
-//     'asdfbdg',
-//     'uewgbfdfg',
-//   ],
-// }];
-
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentQuestion: 0,
     };
+    this.clickButton = this.clickButton.bind(this);
+  }
+
+  clickButton() {
+    let { currentQuestion } = this.state;
+    const questionLimit = 4;
+    if (currentQuestion < questionLimit) {
+      currentQuestion += 1;
+      this.setState(() => ({
+        currentQuestion,
+      }));
+    } else {
+      const { history: { push } } = this.props;
+      push('/feedback');
+    }
   }
 
   render() {
@@ -35,6 +37,12 @@ class Game extends React.Component {
             <Header />
             <p>Game Page</p>
             <Question questionData={ questions[currentQuestion] } />
+            <button
+              type="button"
+              onClick={ this.clickButton }
+            >
+              Próxima
+            </button>
           </div>
         )
     );
@@ -49,6 +57,9 @@ const mapStateToProps = (state) => ({
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   loading: PropTypes.bool.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(Game);

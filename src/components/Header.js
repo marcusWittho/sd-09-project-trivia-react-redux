@@ -21,7 +21,7 @@ class Header extends Component {
           <span
             data-testid="header-score"
           >
-            0
+            { player.score }
           </span>
         </p>
       </header>
