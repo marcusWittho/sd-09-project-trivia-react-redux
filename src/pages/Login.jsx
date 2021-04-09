@@ -24,7 +24,6 @@ class Login extends React.Component {
   getUserInfo(email, name) {
     const { requestUserInfoAction } = this.props;
     const hash = md5(email).toString();
-    console.log(hash);
     requestUserInfoAction(email, name, hash);
   }
 
@@ -41,9 +40,8 @@ class Login extends React.Component {
   }
 
   async fetchToken(email, name) {
-    const { fetchAPI, token } = this.props;
+    const { fetchAPI } = this.props;
     await fetchAPI();
-    localStorage.setItem('token', token);
     this.getUserInfo(email, name);
   }
 
@@ -120,10 +118,6 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  token: state.loginReducer.token.token,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   fetchAPI: () => dispatch(fetchTrivaApi()),
   requestUserInfoAction: (email, name, hash) => (
@@ -132,8 +126,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   fetchAPI: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
   requestUserInfoAction: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
