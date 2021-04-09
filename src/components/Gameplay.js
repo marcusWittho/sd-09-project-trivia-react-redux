@@ -35,12 +35,10 @@ class Gameplay extends Component {
 
   randomAnswersOrder(questionList) {
     const { questionIndex } = this.state;
-    console.log(questionList);
     const questions = { ...questionList };
     const currentQuestionInfo = questions.results[questionIndex];
     const answersList = currentQuestionInfo.incorrect_answers;
     const correctAnswer = currentQuestionInfo.correct_answer;
-    console.log(correctAnswer);
     const randomIndex = Math.floor(Math.random() * (answersList.length + 1));
     const newAnswersList = [...answersList];
     newAnswersList.splice(randomIndex, 0, correctAnswer);
