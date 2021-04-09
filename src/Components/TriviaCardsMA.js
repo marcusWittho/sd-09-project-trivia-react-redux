@@ -103,7 +103,7 @@ class MultipleAnswers extends Component {
         <p data-testid="question-text">{ question.question }</p>
         {choice.map((answer) => {
           const dataTestId = this.validateAnswers(answer, index);
-          if (dataTestId !== 'correct-answer') index += 1;
+          if (dataTestId !== correctAnswer) index += 1;
           return (
             <button
               className={ dataTestId === correctAnswer ? rightAnswerClass
