@@ -22,6 +22,8 @@ class Questions extends Component {
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
     this.createScore = this.createScore.bind(this);
+    this.createScore = this.createScore.bind(this);
+    this.saveScoreAtStorage = this.saveScoreAtStorage.bind(this);
   }
 
   componentDidMount() {
@@ -56,8 +58,15 @@ class Questions extends Component {
     return selectedAnswer === 'correct-answer';
   }
 
+  saveScoreAtStorage(score) {
+    const state = JSON.parse(localStorage.getItem('state'));
+    state.player.score += score;
+    state.player.assertions = Number(state.player.assertions) + 1;
+    return localStorage.setItem('state', JSON.stringify(state));
+  }
+
   createScore() {
-    const { currentQuestionIndex, seconds, selectedAnswer  } = this.state;
+    const { currentQuestionIndex, seconds } = this.state;
     const { questions } = this.props;
     const questionDifficultyScore = {
       hard: 3,
@@ -70,9 +79,8 @@ class Questions extends Component {
       const currentQuestionDifficultyScore = questions[currentQuestionIndex].difficulty;
       score = scoreConstant
       + (seconds * questionDifficultyScore[currentQuestionDifficultyScore]);
-      return score;
+      return this.saveScoreAtStorage(score);
     }
-    return score;
   }
 
   startTimer() {
