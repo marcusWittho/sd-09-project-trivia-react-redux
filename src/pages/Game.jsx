@@ -69,7 +69,6 @@ class Game extends Component {
             })}
           </span>
         </div>
-      </div>
       </>
     );
   }
