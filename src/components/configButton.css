@@ -1,0 +1,14 @@
+.btn-container {
+  display: flex;
+  margin-left: 1000px;
+}
+
+.btn {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.config-img {
+  height: 35px;
+}

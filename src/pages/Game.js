@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
@@ -87,6 +88,7 @@ class Game extends Component {
 
   render() {
     const { error, triviaArray } = this.state;
+    if (!triviaArray) return <Redirect to="/" />;
 
     return (
       <div>
