@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
-import { doLogin, getQuestionsToStore } from '../actions/index';
-import { getToken, getQuestions } from '../services/api';
+import { doLogin } from '../actions/index';
+import { getToken } from '../services/api';
 import './Login.css';
 
 class Login extends React.Component {
@@ -20,15 +20,11 @@ class Login extends React.Component {
     this.changeHandler = this.changeHandler.bind(this);
     this.validateBtnLogin = this.validateBtnLogin.bind(this);
     this.enableButton = this.enableButton.bind(this);
-    this.getAndSaveQuestions = this.getAndSaveQuestions.bind(this);
   }
 
-  async getAndSaveQuestions() {
+  async getAndSaveToken() {
     const token = await getToken();
     localStorage.setItem('token', token);
-    const { saveQuestions } = this.props;
-    const API_RESULT = await getQuestions(token);
-    saveQuestions(API_RESULT);
     this.setState({ loginReady: true });
   }
 
@@ -91,7 +87,7 @@ class Login extends React.Component {
           disabled={ this.enableButton() }
           onClick={ () => {
             doFormLogin({ name, email });
-            this.getAndSaveQuestions();
+            this.getAndSaveToken();
           } }
         >
           Jogar
@@ -106,7 +102,6 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   doFormLogin: (obj) => dispatch(doLogin(obj)),
-  saveQuestions: (questions) => dispatch(getQuestionsToStore(questions)),
 });
 
 const mapStateToProps = (state) => ({
@@ -116,6 +111,5 @@ const mapStateToProps = (state) => ({
 
 Login.propTypes = {
   doFormLogin: PropTypes.func.isRequired,
-  saveQuestions: PropTypes.func.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

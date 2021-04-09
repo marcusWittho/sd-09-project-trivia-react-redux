@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { timeRunOut } from '../actions/index';
+import { getQuestionsToStore, timeRunOut } from '../actions/index';
 import Timer from '../components/Timer';
+import { getQuestions } from '../services/api';
+import localStorageService from '../services/localStorage';
 
 import './Questions.css';
 
@@ -19,6 +21,13 @@ class Questions extends Component {
     this.randomizedAnswers = this.randomizedAnswers.bind(this);
     this.hadleAnswerClick = this.hadleAnswerClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
+  async componentDidMount() {
+    const { saveQuestions } = this.props;
+    const token = localStorageService.getToken();
+    const API_RESULT = await getQuestions(token);
+    saveQuestions(API_RESULT);
   }
 
   randomizedAnswers(question) {
@@ -92,10 +101,11 @@ class Questions extends Component {
   render() {
     const { questionNum, questionTime } = this.state;
     const { questions, outaTime } = this.props;
+    const currentQuestion = questions[questionNum];
     return (
       <div>
         { !outaTime ? <Timer timeInterval={ questionTime } /> : <span>Time is up</span>}
-        { this.renderQuestion(questions[questionNum]) }
+        { currentQuestion && this.renderQuestion(currentQuestion) }
       </div>
     );
   }
@@ -108,12 +118,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   resetTimer: (bool) => dispatch(timeRunOut(bool)),
+  saveQuestions: (questions) => dispatch(getQuestionsToStore(questions)),
 });
 
 Questions.propTypes = {
   questions: PropTypes.arrayOf(Object).isRequired,
   outaTime: PropTypes.bool.isRequired,
   resetTimer: PropTypes.func.isRequired,
+  saveQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
