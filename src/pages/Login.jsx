@@ -2,8 +2,8 @@ import React from 'react';
 import { func } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getToken } from '../services/triviaApi';
-import { handleToken } from '../redux/actions';
+import { apiMock, getAnswer, getToken } from '../services/triviaApi';
+import { dataGame, handleToken } from '../redux/actions';
 import './css/login.css';
 
 class Login extends React.Component {
@@ -15,7 +15,12 @@ class Login extends React.Component {
       disableButton: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.fetchAnswer = this.fetchAnswer.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchAnswer();
   }
 
   async fetchToken() {
@@ -23,6 +28,19 @@ class Login extends React.Component {
     const token = await getToken();
     propHandleToken(token.token);
     localStorage.setItem('token', token.token);
+  }
+
+  async fetchAnswer() {
+    const answer = await getAnswer('5', getToken);
+    const mock = await apiMock();
+    const { propDataGame } = this.props;
+    const status = 3;
+    if (answer.response_code === status) return propDataGame(mock.results);
+    propDataGame(answer.results);
+    console.log(answer.response_code);
+    console.log(answer.results);
+    console.log(answer.results[3]);
+    console.log(answer.results[3].type);
   }
 
   handleChange({ target: { value, name } }) {
@@ -61,7 +79,7 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link to="/jogo">
+          <Link to="/Game">
             <button
               type="button"
               data-testid="btn-play"
@@ -86,10 +104,12 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+  propDataGame: (data) => dispatch(dataGame(data)),
   propHandleToken: (data) => dispatch(handleToken(data)),
 });
 
 Login.propTypes = {
+  propDataGame: func,
   propHandlePlayerData: func,
 }.isRequired;
 
