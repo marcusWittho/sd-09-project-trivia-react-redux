@@ -339,7 +339,7 @@ O token expira em 6 horas e te retornará um `response_code: 3` caso esteja expi
 }
 ```
 
----
+-
 
 ### Gravatar
 
@@ -387,7 +387,7 @@ O avaliador testa a aplicação de maneira integrada. Ou seja: a tela de jogo s�
 
 Recomendamos, além disso, que os **requisitos de uma mesma tela** sejam feitos em sequência ou paralelamente por pessoas se comunicando _bastante_, para não haver conflitos. Embora requisitos de uma mesma tela com prioridades iguais possam ser feitos em paralelo, isso exigirá organização por parte das pessoas dividindo a tarefa para não haver conflitos.
 
----
+--
 
 ### Observações técnicas
 
