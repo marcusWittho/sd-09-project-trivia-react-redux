@@ -4,3 +4,19 @@ body {
   height: 100vh;
   justify-content: center;
 }
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: flex;
+}
+
+li img, p {
+  margin: 1rem;
+}
+
+li img {
+  max-width: 70px;
+}

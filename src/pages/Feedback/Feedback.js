@@ -17,6 +17,26 @@ class Feedback extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { player } = this.props;
+    this.setRanking(player);
+  }
+
+  setRanking(player) {
+    const initialRanking = JSON.parse(localStorage.getItem('ranking'));
+    const rankingArray = [];
+    if (initialRanking !== null) {
+      rankingArray.push(...initialRanking);
+    }
+    const objRanking = {
+      name: player.name,
+      score: player.score,
+      picture: player.gravatarEmail,
+    };
+    rankingArray.push(objRanking);
+    localStorage.setItem('ranking', JSON.stringify(rankingArray));
+  }
+
   handleClick() {
     const { startNewGame, resetTimer, cleanOptionAnswers } = this.props;
     startNewGame();
