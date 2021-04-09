@@ -70,9 +70,11 @@ class Questions extends Component {
       );
     }
     return (
-      <EachQuestion questions={ questions } questionIndex={ currentQuestionIndex } 
-      questionAnswered={ questionAnswered }
-      answerQuestion= { this.answerQuestion }
+      <EachQuestion
+        questions={ questions }
+        questionIndex={ currentQuestionIndex }
+        questionAnswered={ questionAnswered }
+        answerQuestion={ this.answerQuestion }
       />
     );
   }
