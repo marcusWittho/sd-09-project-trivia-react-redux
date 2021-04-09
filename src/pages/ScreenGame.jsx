@@ -26,6 +26,7 @@ class ScreenGame extends React.Component {
       category: '',
       question: '',
       timer: 30,
+      restartTime: false,
       changeClass: false,
       indexQuestion: 0,
       redirect: false,
@@ -63,6 +64,7 @@ class ScreenGame extends React.Component {
         indexQuestion: prevState.indexQuestion + 1,
         showNextQuestion: false,
         changeClass: false,
+        restartTime: false,
       }));
       this.attQuestions();
     } else {
@@ -153,6 +155,7 @@ class ScreenGame extends React.Component {
   changeClassCorrectAnswer() {
     this.setState({
       changeClass: true,
+      restartTime: true,
     });
 
     this.addScore();
@@ -162,12 +165,13 @@ class ScreenGame extends React.Component {
   submitAnswer() {
     this.setState({
       showNextQuestion: true,
+      restartTime: true,
     });
   }
 
   render() {
-    const { correct, allAnswers, timer,
-      category, question, changeClass, showNextQuestion, redirect } = this.state;
+    const { correct, allAnswers, timer, category,
+      question, changeClass, showNextQuestion, redirect, restartTime } = this.state;
     const { btnState } = this.props;
     if (redirect) { return <Redirect to="/feedback" />; }
     return (
@@ -208,7 +212,7 @@ class ScreenGame extends React.Component {
         })}
         { showNextQuestion
           && <NextQuestionButton setIndexQuestion={ this.setIndexQuestion } /> }
-        <Timer timer={ timer } />
+        <Timer restartTime={ restartTime } timer={ timer } />
       </section>
     );
   }
