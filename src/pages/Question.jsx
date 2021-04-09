@@ -7,23 +7,8 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
 
-    /* this.state = {
-      data: [],
-    }; */
-
     this.createHeader = this.createHeader.bind(this);
-    this.fetchAPI = this.fetchAPI.bind(this);
-    // this.inQuestion = this.inQuestion.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchAPI();
-  }
-
-  fetchAPI() {
-    const { dataAnswer } = this.props;
-    console.log(dataAnswer);
-    // this.setState({ data: dataAnswer });
+    this.inQuestion = this.inQuestion.bind(this);
   }
 
   createHeader() {
@@ -44,10 +29,10 @@ class Question extends React.Component {
 
   inQuestion() {
     const { dataAnswer } = this.props;
-    dataAnswer.map((element, index) => {
+    return dataAnswer.map((element, index) => {
       console.log(element);
       console.log(index);
-      if (element[index].type === 'boolean') {
+      if (element.type === 'boolean') {
         return (
           <div key={ index }>
             <p>
@@ -70,46 +55,45 @@ class Question extends React.Component {
     });
   }
 
-    /* const { dataAnswer } = this.props;
-    // console.log(dataAnswer);
-    const { type } = dataAnswer[id];
-    // if (dataAnswer === 'Seu login expirou!') return data;
-    if (type === 'boolean') {
-      return (
-        <div>
-          <p>
-            Questão 0
-            { 1 }
-          </p>
-          <p>Boolean</p>
-        </div>
-      );
-    }
+  /* const { dataAnswer } = this.props;
+  // console.log(dataAnswer);
+  const { type } = dataAnswer[id];
+  // if (dataAnswer === 'Seu login expirou!') return data;
+  if (type === 'boolean') {
     return (
       <div>
         <p>
           Questão 0
           { 1 }
         </p>
-        <p>Multipla Escolha</p>
+        <p>Boolean</p>
       </div>
-    ); */
+    );
+  }
+  return (
+    <div>
+      <p>
+        Questão 0
+        { 1 }
+      </p>
+      <p>Multipla Escolha</p>
+    </div>
+  ); */
 
   render() {
-    // const { data } = this.state;
-    // const { dataAnswer } = this.props;
+    const { dataAnswer } = this.props;
     return (
       <div>
         { this.createHeader() }
         <h1>Game</h1>
-        { this.inQuestion() }
+        { dataAnswer ? this.inQuestion() : 'Carregando' }
       </div>
     );
   }
 }
 
 const mapStateToProps = ((state) => ({
-  dataAnswer: state.dataGame.data,
+  dataAnswer: state.dataGame.data.results,
   playerState: state.player,
 }));
 
@@ -121,4 +105,4 @@ Question.propTypes = {
   }),
 }.isRequired;
 
-export default connect(mapStateToProps, null)(Question);
+export default connect(mapStateToProps)(Question);
