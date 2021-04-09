@@ -93,8 +93,9 @@ class GameScreen extends Component {
     );
   }
 
-  clickQuestion() {
+  clickQuestion(difficulty) {
     this.setState({ colorQuestion: true });
+    console.log(difficulty);
   }
 
   header() {
@@ -132,7 +133,7 @@ class GameScreen extends Component {
           type="button"
           disabled={ disabled }
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-          onClick={ this.clickQuestion }
+          onClick={ () => this.clickQuestion(orderQuestions.difficulty) }
         >
           {orderQuestions.correct_answer}
         </button>
