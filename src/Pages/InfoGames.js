@@ -18,14 +18,15 @@ class InfoGames extends Component {
     this.requestAPI();
   }
 
-  async requestAPI() {
+  requestAPI() {
     const token = JSON.parse(localStorage.getItem('token'));
-    const quantitiQuestions = 5;
-    const responsRequest = await api.fetchTrivia(token, quantitiQuestions);
-    this.setState({
-      questions: responsRequest.results,
-      isLoading: false,
-    });
+    console.log(token);
+    const quantityQuestions = 5;
+    api.fetchTrivia(token, quantityQuestions).then((responseRequest) => (
+      this.setState({
+        questions: responseRequest.results,
+        isLoading: false,
+      })));
   }
 
   renderQuestions() {
