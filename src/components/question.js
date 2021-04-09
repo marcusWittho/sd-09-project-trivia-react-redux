@@ -6,23 +6,23 @@ import '../css/questions.css';
 
 class Question extends React.Component {
   constructor(props) {
-    const { next } = props;
     super(props);
     this.state = {
       selectedAnswer: null,
-      next,
+
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   async handleClick(e) {
-    const { propSetNext } = this.props;
+    const { propSetNext, handleAnswer } = this.props;
+    handleAnswer();
     this.setState({ selectedAnswer: e.target });
     await propSetNext();
   }
 
   render() {
-    const { handleAnswer, question: {
+    const { question: {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
       question,
@@ -37,7 +37,7 @@ class Question extends React.Component {
           data-testid="correct-answer"
           type="button"
           className={ selectedAnswer && 'correct' }
-          onClick={ handleAnswer }
+          onClick={ this.handleClick }
         >
           {correctAnswer}
         </button>
@@ -47,7 +47,7 @@ class Question extends React.Component {
             type="button"
             key={ element }
             className={ selectedAnswer && 'incorrect' }
-            onClick={ handleAnswer }
+            onClick={ this.handleClick }
           >
             {element}
           </button>
@@ -67,12 +67,8 @@ Question.propTypes = {
   }),
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer: { next } }) => ({
-  next,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   propSetNext: () => dispatch(setNext()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Question);
+export default connect(null, mapDispatchToProps)(Question);
