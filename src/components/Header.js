@@ -15,6 +15,16 @@ class Header extends React.Component {
     this.getGravatarInfo();
   }
 
+  componentDidUpdate() {
+    const { totalScore, name, email } = this.props;
+    localStorage.state = JSON.stringify({ player: {
+      score: totalScore,
+      assertion: [],
+      name,
+      gravatarEmail: email,
+    } });
+  }
+
   async getGravatarInfo() {
     const { email } = this.props;
     const hash = CryptoJS.MD5(email).toString();
