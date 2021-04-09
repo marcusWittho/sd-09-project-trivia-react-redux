@@ -15,7 +15,7 @@ function shuffleArray(array) {
 
 class EachQuestion extends Component {
   render() {
-    const { questions, questionIndex } = this.props;
+    const { questions, questionIndex, questionAnswered, answerQuestion } = this.props;
     const shuffledAlternatives = shuffleArray(questions[questionIndex].incorrect_answers);
     return (
       <main>
@@ -31,6 +31,8 @@ class EachQuestion extends Component {
         <button
           data-testid="correct-answer"
           type="button"
+          style={ (questionAnswered) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
+          onClick={ answerQuestion }
         >
           {questions[questionIndex].correct_answer}
         </button>
@@ -39,6 +41,8 @@ class EachQuestion extends Component {
             data-testid={ `wrong-answer-${index}` }
             type="button"
             key={ `${index}` }
+            style={ (questionAnswered) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+            onClick={ answerQuestion }
           >
             {alternative}
           </button>

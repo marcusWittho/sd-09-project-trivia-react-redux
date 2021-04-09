@@ -10,8 +10,10 @@ class Questions extends Component {
     super(props);
     this.state = {
       currentQuestionIndex: 0,
+      questionAnswered: false,
     };
     this.dispatchQuestions = this.dispatchQuestions.bind(this);
+    this.answerQuestion = this.answerQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -25,9 +27,13 @@ class Questions extends Component {
     sendQuestionsToRedux(questions);
   }
 
+  answerQuestion() {
+    this.setState({ questionAnswered: true });
+  }
+
   render() {
     const { questions } = this.props;
-    const { currentQuestionIndex } = this.state;
+    const { currentQuestionIndex, questionAnswered } = this.state;
     if (!questions) {
       return (
         <main>
@@ -64,7 +70,10 @@ class Questions extends Component {
       );
     }
     return (
-      <EachQuestion questions={ questions } questionIndex={ currentQuestionIndex } />
+      <EachQuestion questions={ questions } questionIndex={ currentQuestionIndex } 
+      questionAnswered={ questionAnswered }
+      answerQuestion= { this.answerQuestion }
+      />
     );
   }
 }
