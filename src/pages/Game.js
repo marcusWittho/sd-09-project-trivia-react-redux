@@ -8,13 +8,11 @@ class Game extends Component {
 
     this.state = {
       triviaArray: [],
-      error: false,
       position: 0,
+      error: false,
     };
 
     this.renderAnswer = this.renderAnswer.bind(this);
-    this.renderQuestion = this.renderQuestion.bind(this);
-    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   async componentDidMount() {
@@ -37,17 +35,6 @@ class Game extends Component {
       triviaArray: results,
       error: false,
     });
-  }
-
-  nextQuestion() {
-    const { position, triviaArray } = this.state;
-    if (position < triviaArray.length - 1) {
-      this.setState({
-        position: position + 1,
-      });
-
-      this.renderQuestion();
-    }
   }
 
   renderCorrectAnswer(correctAnswer) {
@@ -80,36 +67,30 @@ class Game extends Component {
     return answerArray.sort(() => Math.random() - randomModifier);
   }
 
-  renderQuestion() {
-    const { triviaArray, position } = this.state;
-
-    if (triviaArray.length > 0) {
-      const {
-        incorrect_answers: incorrectAnswers,
-        correct_answer: correctAnswer,
-      } = triviaArray[position];
-      return (
-        <div>
-          <span data-testid="question-category">
-            Category:
-            {triviaArray[position].category}
-          </span>
-          <span data-testid="question-text">
-            Question:
-            {triviaArray[position].question}
-          </span>
-          {this.renderAnswer(incorrectAnswers, correctAnswer)}
-        </div>
-      );
-    }
-  }
-
   render() {
-    const { error } = this.state;
+    const { error, triviaArray, position } = this.state;
+
     return (
       <div>
         <Header />
-        { error ? <div>Erro de carregamento</div> : this.renderQuestion() }
+        {triviaArray.length > 0 && !error ? (
+          <div>
+            <span data-testid="question-category">
+              Category:
+              {triviaArray[position].category}
+            </span>
+            <span data-testid="question-text">
+              Question:
+              {triviaArray[position].question}
+            </span>
+            {this.renderAnswer(
+              triviaArray[position].incorrect_answers,
+              triviaArray[position].correct_answer,
+            )}
+          </div>
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
     );
   }
