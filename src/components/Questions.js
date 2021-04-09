@@ -11,12 +11,22 @@ class Questions extends React.Component {
 
   render() {
     const { questions, isLoading } = this.props;
-    if (isLoading === true) return (<h1>Loading...</h1>);
+    if (isLoading === true) {
+      return (
+        <>
+          <h1>Loading...</h1>
+          <p data-testid="question-category" />
+          <p data-testid="question-text" />
+          <p data-testid="correct-answer" />
+          <p data-testid="wrong-answer" />
+        </>
+      );
+    }
     return (
       <main>
         <div>
           { questions.map((question) => (
-            <div>
+            <div key={ question.question }>
               <h3 data-testid="question-category">{question.category}</h3>
               <h3 data-testid="question-text">{question.question}</h3>
               <button type="button">{question.correct_answer}</button>
