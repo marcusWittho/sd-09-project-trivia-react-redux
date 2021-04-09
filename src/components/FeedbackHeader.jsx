@@ -6,7 +6,7 @@ class FeedbackHeader extends Component {
   render() {
     const { currentScoreState } = this.props;
     const userToken = localStorage.getItem('token');
-    const { name } = JSON.parse(localStorage.getItem('state'));
+    const { player: { name } } = JSON.parse(localStorage.getItem('state'));
     return (
       <header className="feedback-header">
         <div className="header-left">
