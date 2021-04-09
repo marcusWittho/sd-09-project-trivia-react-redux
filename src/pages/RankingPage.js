@@ -3,7 +3,7 @@ import '../styles/RankingPage.css';
 
 const rankingTest = [
   { name: 'nome-da-pessoa 1', score: 30, picture: 'https://www.gravatar.com/avatar/9e34f9c6d60b08c3049a260331c827f9' },
-  { name: 'nome-da-pessoa 2', score: 20, picture: 'https://www.gravatar.com/avatar/9e34f9c6d60b08c3049a260331c827f9' },
+  { name: 'nome-da-pessoa 2', score: 40, picture: 'https://www.gravatar.com/avatar/9e34f9c6d60b08c3049a260331c827f9' },
 ];
 
 class RankingPage extends React.Component {
