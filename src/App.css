@@ -10,5 +10,21 @@
 }
 
 .invisible {
-    visibility: hidden;
+  visibility: hidden;
+}
+
+.red-border {
+  border: 1px solid red;
+}
+
+.green-border {
+  border: 1px solid green;
+}
+
+.ok {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.fail {
+  border: 3px solid red;
 }

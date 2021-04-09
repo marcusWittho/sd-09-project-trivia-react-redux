@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {incrementScore } from '../redux/actions/index';
+import { incrementScore } from '../redux/actions/index';
 import Header from '../components/Header';
 import * as api from '../services/fetchApi';
 
@@ -9,6 +10,7 @@ class InfoGames extends Component {
     super(props);
     this.state = {
       questions: [],
+      alternativeRandom: [],
       indice: 0,
       isLoading: true,
       isAnswered: false,
@@ -16,6 +18,8 @@ class InfoGames extends Component {
     this.requestAPI = this.requestAPI.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
+    this.changeAnswer = this.changeAnswer.bind(this);
+    this.randomizeQuestions = this.randomizeQuestions.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
@@ -47,27 +51,42 @@ class InfoGames extends Component {
   }
 
   nextQuestion() {
-    this.setState((prevState) => ({ indice: prevState.indice + 1 }));
-    this.setState({ isAnswered: false });
+    this.setState((prevState) => ({ indice: prevState.indice + 1, isAnswered: false }));
   }
 
   requestAPI() {
     const token = JSON.parse(localStorage.getItem('token'));
     const quantityQuestions = 5;
-    api.fetchTrivia(token, quantityQuestions).then((responseRequest) => (
+    api.fetchTrivia(token, quantityQuestions).then((responseRequest) => {
       this.setState({
         questions: responseRequest.results,
         isLoading: false,
-      })));
+      });
+      this.randomizeQuestions();
+    });
   }
 
-  renderQuestions() {
-    const { questions, indice, isAnswered } = this.state;
+  changeAnswer(alternative, crrQuestion) {
+    return alternative === crrQuestion.correct_answer
+      ? 'ok' : 'fail';
+  }
+
+  randomizeQuestions() {
+    const { questions, indice } = this.state;
     const crrQuestion = questions[indice];
     const alternativesOld = crrQuestion.incorrect_answers
       .concat(crrQuestion.correct_answer);
     const numberMagic = 0.5;
     const alternatives = alternativesOld.sort(() => Math.random() - numberMagic);
+    this.setState(() => ({
+      isAnswered: false,
+      alternativeRandom: alternatives,
+    }));
+  }
+
+  renderQuestions() {
+    const { questions, isAnswered, alternativeRandom, indice } = this.state;
+    const crrQuestion = questions[indice];
     return (
       <div>
         <Header />
@@ -75,13 +94,16 @@ class InfoGames extends Component {
           {crrQuestion.category}
         </h1>
         <h2 data-testid="question-text">{crrQuestion.question}</h2>
-        {alternatives.map((alternative, index) => (
+        {alternativeRandom.map((alternative, index) => (
           <button
+            disabled={ isAnswered }
             key={ Math.random() }
             type="button"
+            value={ alternative }
             onClick={
-              event => this.checkAnswer(crrQuestion.correct_answer, event)
+              (event) => this.checkAnswer(crrQuestion.correct_answer, event)
             }
+            className={ isAnswered ? this.changeAnswer(alternative, crrQuestion) : null }
             data-testid={ alternative === crrQuestion.correct_answer ? 'correct-answer'
               : `wrong-answer-${index}` }
           >
@@ -92,7 +114,7 @@ class InfoGames extends Component {
           type="button"
           data-testid="btn-next"
           onClick={ this.nextQuestion }
-          className={isAnswered ? 'visible' : 'invisible' }
+          className={ isAnswered ? 'visible' : 'invisible' }
         >
           Próxima
         </button>
@@ -108,6 +130,10 @@ class InfoGames extends Component {
     );
   }
 }
+
+InfoGames.propTypes = {
+  dispatchIncrementScore: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchIncrementScore: (localScore) => dispatch(incrementScore(localScore)) });
