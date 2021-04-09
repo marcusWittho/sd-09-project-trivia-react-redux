@@ -4,19 +4,21 @@ import { getCurrentPlayerInfos } from '../services/localStorage';
 
 class HeaderFeedback extends React.Component {
   render() {
-    const { name, picture, score } = getCurrentPlayerInfos();
+    const { name, gravatarEmail, score } = getCurrentPlayerInfos();
     return (
       <header>
-        <section>
-          <span data-testid="header-player-name">{ name }</span>
+        <section className="section-header">
           <figure>
             <img
-              src={ picture }
+              src={ gravatarEmail }
               alt={ `${name}` }
               data-testid="header-profile-picture"
             />
           </figure>
-          <span data-testid="header-score">{Number(score)}</span>
+          <div>
+            <h2 data-testid="header-player-name">{ name }</h2>
+            <h2 data-testid="header-score">{ score }</h2>
+          </div>
         </section>
       </header>
     );

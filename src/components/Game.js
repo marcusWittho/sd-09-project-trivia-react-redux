@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { asyncAsks, saveScore } from '../actions';
-import { updateScoreToLocalStorage } from '../services/localStorage';
+import { saveScore } from '../actions';
+import { addPlayerInRanking } from '../services/localStorage';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      statusRandom: true,
       answerIndex: 0,
       answerSelected: false,
       statusTimer: false,
@@ -21,9 +22,12 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const { getAsks, token } = this.props;
-    getAsks(token);
     this.setCronometer();
+  }
+
+  setRanking() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    addPlayerInRanking(player.gravatarEmail, player);
   }
 
   setReduxAndLocalStorage(answer) {
@@ -39,10 +43,8 @@ class Game extends React.Component {
     else if (valueDifficulty === 'medium') valueDifficulty = 2;
     valueDifficulty = 1;
     const score = valuePattern + (timer * valueDifficulty);
-    const getData = localStorage.getItem('state');
-    const dataStorage = { ...JSON.parse(getData) };
+    const dataStorage = { ...JSON.parse(localStorage.getItem('state')) };
     dataStorage.player.score += score;
-    updateScoreToLocalStorage(dataStorage.player.gravatarEmail, dataStorage.player.score);
     this.updateScore(dataStorage);
   }
 
@@ -111,11 +113,12 @@ class Game extends React.Component {
   }
 
   elementAnswer(answer, testid, index, correctAnswer) {
-    const { timer } = this.state;
+    const { timer, answerSelected } = this.state;
     return (
       <button
+        className="btn-answer"
         value={ (correctAnswer === answer) ? answer : '' }
-        disabled={ (timer === 'Finished') }
+        disabled={ (timer === 'Finished' || answerSelected) }
         key={ index }
         type="button"
         data-testid={ testid }
@@ -134,6 +137,7 @@ class Game extends React.Component {
       return (
         <Link to="/feedback">
           <button
+            onClick={ this.setRanking }
             type="button"
             data-testid="btn-next"
           >
@@ -153,57 +157,61 @@ class Game extends React.Component {
     );
   }
 
-  render() {
-    const MAX_QUESTIONS = 4;
-    const { answerIndex, answerSelected, timer, statusTimer } = this.state;
+  prepareAnswers(answerIndex) {
     const { asks } = this.props;
-    if (!asks.length) return <p>Carregando...</p>;
-    const { category,
-      question,
+    const {
       correct_answer: correctAnswer,
-      incorrect_answers: wrongAnswers } = asks[answerIndex];
+      incorrect_answers: wrongAnswers,
+    } = asks[answerIndex];
     const allAnswers = [correctAnswer, ...wrongAnswers];
     const array = [];
-    allAnswers.map(
+
+    allAnswers.forEach(
       (answer, index) => (answer === correctAnswer
         ? array.push(this.elementAnswer(answer, 'correct-answer', index, correctAnswer))
         : array.push(this
           .elementAnswer(answer, `wrong-answer-${index - 1}`, index, correctAnswer))),
     );
-    return (
-      <div className="ask-container">
-        <p data-testid="question-category">{ category }</p>
-        <p data-testid="question-text">{ question }</p>
-        <p>
-          { !answerSelected && !statusTimer && this.shuffleAnswers(array) }
-          { array.map(((element, index) => (
-            <div key={ index }>
-              { element }
-            </div>
-          )))}
-        </p>
-        {(answerSelected && answerIndex <= MAX_QUESTIONS)
-        && this.elementButtonNext()}
-        <p>{`Timer: ${timer}`}</p>
-      </div>
-    );
+    return array;
+  }
+
+  render() {
+    const MAX_QUESTIONS = 4;
+    const { answerIndex, answerSelected, timer } = this.state;
+    const { asks } = this.props;
+    const { category, question } = asks[answerIndex];
+    if (asks[answerIndex].category !== '') {
+      return (
+        <div className="ask-container">
+          <p data-testid="question-category">{ category }</p>
+          <p data-testid="question-text">{ question }</p>
+          <div>
+            { this.prepareAnswers(answerIndex).map(((element, index) => (
+              <div key={ index }>
+                { element }
+              </div>
+            )))}
+          </div>
+          {(answerSelected && answerIndex <= MAX_QUESTIONS)
+          && this.elementButtonNext()}
+          <p>{`Timer: ${timer}`}</p>
+        </div>
+      );
+    }
+    return <p>Carregando... PREPARE-SE!</p>;
   }
 }
 
 Game.propTypes = {
-  token: PropTypes.string.isRequired,
   asks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  getAsks: PropTypes.func.isRequired,
   savScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  token: state.token,
   asks: state.askAndAnswersReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getAsks: (token) => dispatch(asyncAsks(token)),
   savScore: (score) => dispatch(saveScore(score)),
 });
 
