@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getToken } from '../services/Api';
 
 export default class LoginForm extends Component {
@@ -26,10 +27,12 @@ export default class LoginForm extends Component {
     const token = await getToken();
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify({
-      name,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: email,
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
     }));
     history.push('/game');
   }
@@ -68,6 +71,11 @@ export default class LoginForm extends Component {
         >
           JOGAR
         </button>
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">
+            Configurações
+          </button>
+        </Link>
       </form>
     );
   }
