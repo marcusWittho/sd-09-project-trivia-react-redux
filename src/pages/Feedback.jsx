@@ -21,8 +21,6 @@ class Feedback extends React.Component {
     if (savedRanking) {
       savedRanking.push(ranking);
     }
-    console.log(savedRanking);
-
     localStorage.setItem('ranking', JSON.stringify(savedRanking));
   }
 
