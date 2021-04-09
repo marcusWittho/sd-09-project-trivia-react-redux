@@ -1,8 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { login } from '../actions';
+import { string, bool } from 'prop-types';
 import { getToken } from '../services/api';
 
 class StartGameButton extends React.Component {
@@ -13,10 +11,8 @@ class StartGameButton extends React.Component {
   }
 
   async handleClick() {
-    const { name, email, setToken } = this.props;
     const token = await getToken();
     localStorage.token = `${token}`;
-    setToken(name, email, `${token}`);
   }
 
   render() {
@@ -30,24 +26,12 @@ class StartGameButton extends React.Component {
         onClick={ this.handleClick }
         disabled={ buttonStatus }
       >
-        Jogar
+        Start Game
       </button>
     );
   }
 }
 
-StartGameButton.propTypes = {
-  setToken: PropTypes.string,
-  buttonStatus: PropTypes.bool,
-}.isRequired;
+StartGameButton.propTypes = { setToken: string, buttonStatus: bool }.isRequired;
 
-const mapStateToProps = ({ user }) => ({
-  name: user.name,
-  email: user.email,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setToken: (name, email, token) => dispatch(login(name, email, token)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(StartGameButton);
+export default StartGameButton;

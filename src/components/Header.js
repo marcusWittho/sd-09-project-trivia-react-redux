@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { string } from 'prop-types';
 import CryptoJS from 'crypto-js';
 import { getGravatar } from '../services/api';
 
@@ -18,7 +18,7 @@ class Header extends React.Component {
 
   async getGravatarInfo() {
     const { email } = this.props;
-    const hash = await CryptoJS.MD5(email).toString();
+    const hash = CryptoJS.MD5(email).toString();
     const avatar = await getGravatar(hash);
     this.setState({ avatar });
   }
@@ -38,9 +38,12 @@ class Header extends React.Component {
     return (
       <header>
         <img data-testid="header-profile-picture" src={ avatar } alt="user-avatar" />
-        <h3 data-testid="header-player-name">{ name }</h3>
         <h3>
-          Placar:
+          Player:
+          <span data-testid="header-player-name">{ name }</span>
+        </h3>
+        <h3>
+          Score:
           <span data-testid="header-score">{ this.getScore() }</span>
         </h3>
       </header>
@@ -48,14 +51,8 @@ class Header extends React.Component {
   }
 }
 
-Header.propTypes = {
-  name: PropTypes.string,
-  email: PropTypes.string,
-}.isRequired;
+Header.propTypes = { name: string, email: string }.isRequired;
 
-const mapStateToProps = ({ user }) => ({
-  name: user.name,
-  email: user.email,
-});
+const mapStateToProps = ({ user: { name, email } }) => ({ name, email });
 
 export default connect(mapStateToProps)(Header);
