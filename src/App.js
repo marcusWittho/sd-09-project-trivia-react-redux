@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Game from './pages/Game/Game';
 import Config from './pages/Config';
 import Rankings from './pages/Rankings';
+import Feedback from './pages/Feedback';
 
 class App extends Component {
   render() {
@@ -17,14 +18,17 @@ class App extends Component {
             <Route path="/triviaGame">
               <Game />
             </Route>
-            <Route exact path="/">
-              <Login />
-            </Route>
             <Route path="/Config">
               <Config />
             </Route>
             <Route path="/Rankings">
               <Rankings />
+            </Route>
+            <Route path="/feedback">
+              <Feedback />
+            </Route>
+            <Route exact path="/">
+              <Login />
             </Route>
           </Switch>
         </header>

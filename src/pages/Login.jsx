@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { saveUserToken, saveRequest, getQuestions } from '../actions';
+import { saveUserToken, saveRequest,
+  getQuestions, setPlayerName, setPlayerEmail } from '../actions';
 import { REQUEST_TOKEN } from '../services';
 
 class Login extends React.Component {
@@ -34,24 +35,26 @@ class Login extends React.Component {
     }
   }
 
-  async requestUserToken() {
-    const { getUserToken } = this.props;
+  async requestUserToken(getUserToken) {
     const token = await REQUEST_TOKEN();
     getUserToken(token);
   }
 
-  savePlayerInfo({ name, email }) {
-    const playerInfo = {
+  savePlayerInfo({ name, email }, saveName, saveEmail) {
+    const player = {
       name,
       gravatarEmail: email,
       assertions: 0,
       score: 0,
     };
-    localStorage.setItem('player', JSON.stringify(playerInfo));
+    saveName(name);
+    saveEmail(email);
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   render() {
     const { email, name, disabled } = this.state;
+    const { getUserToken, saveName, saveEmail } = this.props;
     return (
       <section>
         <label htmlFor="userEmail">
@@ -80,8 +83,8 @@ class Login extends React.Component {
             disabled={ disabled }
             type="button"
             onClick={ () => {
-              this.requestUserToken();
-              this.savePlayerInfo(this.state);
+              this.requestUserToken(getUserToken);
+              this.savePlayerInfo(this.state, saveName, saveEmail);
             } }
           >
             JOGAR!
@@ -89,9 +92,6 @@ class Login extends React.Component {
         </Link>
         <Link to="/Config">
           <button type="button" data-testid="btn-settings">Configurações</button>
-        </Link>
-        <Link to="/Rankings">
-          <button type="button" data-testid="btn-ranking">Ver Ranking</button>
         </Link>
       </section>
     );
@@ -104,10 +104,14 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(saveUserToken(token));
     dispatch(getQuestions(token));
   },
+  saveName: (name) => dispatch(setPlayerName(name)),
+  saveEmail: (email) => dispatch(setPlayerEmail(email)),
 });
 
 Login.propTypes = {
   getUserToken: func,
+  saveName: func,
+  saveEmail: func,
 }.isRequired;
 
 export default connect(null, mapDispatchToProps)(Login);
