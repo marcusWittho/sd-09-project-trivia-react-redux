@@ -106,11 +106,9 @@ class Answers extends Component {
     if (loading) return <h1>Carregando...</h1>;
     return (
       <div>
-
         {this.renderQuestionsAndCategories(answerIndex, questions)}
         {this.renderAnswers(answerIndex, questions, color)}
         {this.nextButton(color, answerIndex)}
-
       </div>
     );
   }
