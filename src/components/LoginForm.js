@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../actions';
 import { StartGameButton, ButtonDefinitions } from './index';
@@ -67,7 +68,12 @@ class LoginForm extends React.Component {
   }
 }
 
+LoginForm.propTypes = {
+  submit: PropTypes.func,
+}.isRequired;
+
 const mapDispatchToProps = (dispatch) => ({
   submit: (name, email) => dispatch(login(name, email)),
 });
+
 export default connect(null, mapDispatchToProps)(LoginForm);

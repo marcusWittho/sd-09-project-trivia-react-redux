@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class QuestionMultiple extends React.Component {
   constructor(props) {
@@ -62,5 +63,11 @@ class QuestionMultiple extends React.Component {
     );
   }
 }
+
+QuestionMultiple.propTypes = {
+  question: PropTypes.string,
+  disabled: PropTypes.bool,
+  nextQuestion: PropTypes.func,
+}.isRequired;
 
 export default QuestionMultiple;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getQuestions } from '../services/api';
 import { setQuestions } from '../actions';
 import { Header, QuestionMultiple, QuestionBool } from '../components';
@@ -85,6 +86,10 @@ class QuestionPage extends React.Component {
     );
   }
 }
+
+QuestionPage.propTypes = {
+  updateQuestions: PropTypes.arrayOf(),
+}.isRequired;
 
 const mapStateToProps = ({ trivia }) => ({
   questions: trivia.questions,

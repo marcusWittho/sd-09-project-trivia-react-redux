@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { login } from '../actions';
 import { getToken } from '../services/api';
 
@@ -34,6 +35,11 @@ class StartGameButton extends React.Component {
     );
   }
 }
+
+StartGameButton.propTypes = {
+  setToken: PropTypes.string,
+  buttonStatus: PropTypes.bool,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(login(null, null, token)),
