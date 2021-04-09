@@ -90,6 +90,9 @@ class Login extends React.Component {
         <Link to="/Config">
           <button type="button" data-testid="btn-settings">Configurações</button>
         </Link>
+        <Link to="/Rankings">
+          <button type="button" data-testid="btn-ranking">Ver Ranking</button>
+        </Link>
       </section>
     );
   }

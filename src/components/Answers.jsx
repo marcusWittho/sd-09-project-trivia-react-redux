@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import Timer from './Timer';
 
 class Answers extends Component {
   constructor(props) {
@@ -8,7 +9,10 @@ class Answers extends Component {
     this.state = {
       answerIndex: 0,
       color: false,
+      isButtonDisabled: false,
+
     };
+
     this.nextQuestion = this.nextQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestionsAndCategories = this.renderQuestionsAndCategories.bind(this);
@@ -93,6 +97,7 @@ class Answers extends Component {
       <section>
         {sortanswerToF.map((selected, index) => (
           <button
+            disabled={ this.state.isButtonDisabled }
             onClick={ this.changeColorAnswer }
             id="tof-button"
             key={ index }
@@ -116,6 +121,7 @@ class Answers extends Component {
       <div>
         {this.renderQuestionsAndCategories()}
         {this.renderAnswers()}
+        <Timer />
         <button type="button" onClick={ this.nextQuestion }>Proxima</button>
       </div>
     );
