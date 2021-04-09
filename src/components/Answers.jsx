@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Timer from './Timer';
 
 class Answers extends Component {
   constructor(props) {
@@ -107,8 +106,6 @@ class Answers extends Component {
     if (loading) return <h1>Carregando...</h1>;
     return (
       <div>
-
-        <Timer />
 
         {this.renderQuestionsAndCategories(answerIndex, questions)}
         {this.renderAnswers(answerIndex, questions, color)}
