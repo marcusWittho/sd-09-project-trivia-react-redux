@@ -1,65 +1,61 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { timeRunOut } from '../actions/index';
 
+const defaultTime = 30;
 class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      seconds: 0,
+      timeLeft: defaultTime,
     };
-
-    this.setGameTime = this.setGameTime.bind(this);
-    this.countDown = this.countDown.bind(this);
-    this.clockTick = this.clockTick.bind(this);
   }
 
-  componentDidMount() {
-    this.setGameTime();
+  getTime() {
+    const { timeLeft } = this.state;
+    return timeLeft;
   }
 
-  setGameTime() {
-    const { timeInterval } = this.props;
-    const miliSeconds = 1000;
-    this.setState({ seconds: timeInterval }, () => {
-      this.countDown(miliSeconds);
-    });
+  start() {
+    this.countDown();
   }
 
-  countDown(miliSeconds) {
-    const { resetTimer } = this.props;
-    const myTimer = setInterval(() => {
-      const { seconds } = this.state;
-      if (seconds === 0) {
-        clearInterval(myTimer);
-        resetTimer(true);
-        return null;
+  reset() {
+    this.setState({ timeLeft: defaultTime });
+  }
+
+  countDown() {
+    const { timeUp } = this.props;
+    const second = 1000;
+    this.timerInterval = setInterval(() => {
+      const { timeLeft } = this.state;
+      if (timeLeft === 0) {
+        timeUp();
+        this.pause();
+        return;
       }
       this.clockTick();
-    }, miliSeconds);
+    }, second);
+  }
+
+  pause() {
+    clearInterval(this.timerInterval);
   }
 
   clockTick() {
     const secondsToDecrease = 1;
-    this.setState(({ seconds }) => ({ seconds: seconds - secondsToDecrease }));
+    this.setState(({ timeLeft }) => ({ timeLeft: timeLeft - secondsToDecrease }));
   }
 
   render() {
-    const { seconds } = this.state;
+    const { timeLeft } = this.state;
     return (
-      <span>{`faltam ${seconds} segundos`}</span>
+      timeLeft ? <span>{`faltam ${timeLeft} segundos`}</span> : <span>Time is up</span>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  resetTimer: (bool) => dispatch(timeRunOut(bool)),
-});
-
 Timer.propTypes = {
-  timeInterval: PropTypes.number.isRequired,
-  resetTimer: PropTypes.func.isRequired,
+  timeUp: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Timer);
+export default Timer;
