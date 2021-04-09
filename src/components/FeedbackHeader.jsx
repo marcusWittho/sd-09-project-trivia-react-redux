@@ -12,7 +12,7 @@ class FeedbackHeader extends Component {
         <div className="header-left">
           <img
             data-testid="header-profile-picture"
-            alt={ `${name}` }
+            alt={ name }
             src={ `https://www.gravatar.com/avatar/${userToken}` }
             className="header-profile-picture"
           />
