@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import addUserInfo from '../actions';
+import ButtonSettings from '../components/ButtonSettings';
 import fetchTrivia from '../actions/trivia';
 
 class Login extends React.Component {
@@ -45,13 +47,17 @@ class Login extends React.Component {
           type="email"
           onChange={ this.getValue }
         />
-        <input
-          onClick={ this.proceedToGame }
-          data-testid="btn-play"
-          type="button"
-          disabled={ disableButton }
-          value="Jogar"
-        />
+        <Link to="/game">
+          <button
+            onClick={ this.proceedToGame }
+            data-testid="btn-play"
+            type="button"
+            disabled={ disableButton }
+          >
+            Jogar
+          </button>
+        </Link>
+        <ButtonSettings />
       </section>
     );
   }
