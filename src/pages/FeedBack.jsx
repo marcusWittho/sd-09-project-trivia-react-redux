@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class FeedBack extends React.Component {
@@ -6,9 +7,13 @@ class FeedBack extends React.Component {
     super(props);
     this.state = {
       correctAnswers: 0,
+      totalScore: 0,
     };
     this.getLocalStorage = this.getLocalStorage.bind(this);
     this.verifyAssertions = this.verifyAssertions.bind(this);
+    this.scoreBoardGenerator = this.scoreBoardGenerator.bind(this);
+    this.playAgain = this.playAgain.bind(this);
+    this.rankingButton = this.rankingButton.bind(this);
   }
 
   componentDidMount() {
@@ -17,8 +22,11 @@ class FeedBack extends React.Component {
 
   getLocalStorage() {
     const getStorageInfos = JSON.parse(localStorage.getItem('state'));
-    const { player: { assertions } } = getStorageInfos;
-    this.setState({ correctAnswers: assertions });
+    const { player: { assertions, score } } = getStorageInfos;
+    this.setState({
+      correctAnswers: assertions,
+      totalScore: score,
+    });
   }
 
   verifyAssertions() {
@@ -34,12 +42,55 @@ class FeedBack extends React.Component {
     );
   }
 
+  scoreBoardGenerator() {
+    const { correctAnswers, totalScore } = this.state;
+    return (
+      <div>
+        <p data-testid="feedback-total-score">
+          {totalScore}
+        </p>
+        <p data-testid="feedback-total-question">
+          {correctAnswers}
+        </p>
+      </div>
+    );
+  }
+
+  playAgain() {
+    return (
+      <Link to="/">
+        <button
+          type="button"
+          data-testid="btn-play-again"
+        >
+          Jogar novamente
+        </button>
+      </Link>
+    );
+  }
+
+  rankingButton() {
+    return (
+      <Link to="/ranking">
+        <button
+          type="button"
+          data-testid="btn-ranking"
+        >
+          Ver Ranking
+        </button>
+      </Link>
+    );
+  }
+
   render() {
     return (
       <div>
         <h1 data-testid="feedback-text">FeedBack</h1>
         <Header />
         { this.verifyAssertions() }
+        { this.scoreBoardGenerator() }
+        { this.playAgain() }
+        { this.rankingButton() }
       </div>
     );
   }

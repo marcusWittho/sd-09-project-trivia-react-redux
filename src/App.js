@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Play from './pages/Play';
 import Config from './pages/Config';
 import FeedBack from './pages/FeedBack';
+import Ranking from './pages/Ranking';
 
 class App extends React.Component {
   render() {
@@ -11,8 +12,9 @@ class App extends React.Component {
       <Switch>
         <Route path="/play" component={ Play } />
         <Route path="/config" component={ Config } />
-        <Route exact path="/" component={ Login } />
         <Route path="/feedback" component={ FeedBack } />
+        <Route path="/ranking" component={ Ranking } />
+        <Route exact path="/" component={ Login } />
       </Switch>
     );
   }
