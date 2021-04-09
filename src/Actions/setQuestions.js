@@ -13,7 +13,7 @@ const dispatchExpired = () => ({
   type: SET_EXPIRED,
 });
 
-const dispatchLoading = () => ({
+export const dispatchLoading = () => ({
   type: SET_LOADING,
 });
 

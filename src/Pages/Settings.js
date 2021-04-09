@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setConfigs } from '../Actions/setConfigs';
 
@@ -108,6 +109,10 @@ class Settings extends Component {
     );
   }
 }
+
+Settings.propTypes = {
+  setConfig: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   setConfig: (state) => dispatch(setConfigs(state)),
