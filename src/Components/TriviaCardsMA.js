@@ -12,12 +12,14 @@ class MultipleAnswers extends Component {
       wrongAnswerClass: '',
       nextButton: true,
       correctAnswer: 'correct-answer',
+      btnDisplayed: false,
     };
     this.validateAnswers = this.validateAnswers.bind(this);
     // this.createChoices = this.createChoices.bind(this);
     this.updateQuestIndex = this.updateQuestIndex.bind(this);
     this.answerCheck = this.answerCheck.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.createNextBtn = this.createNextBtn.bind(this);
   }
 
   // componentDidMount() {
@@ -57,6 +59,7 @@ class MultipleAnswers extends Component {
       nextButton: false,
       rightAnswerClass: 'rightAnswer',
       wrongAnswerClass: 'wrongAnswer',
+      btnDisplayed: true,
     });
   }
 
@@ -67,11 +70,27 @@ class MultipleAnswers extends Component {
     this.setState({ rightAnswerClass: '',
       wrongAnswerClass: '',
       nextButton: true,
+      btnDisplayed: false,
     });
   }
 
+  createNextBtn(click, state) {
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ click }
+        disabled={ state }
+      >
+        next
+      </button>
+    );
+  }
+
   render() {
-    const { rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer } = this.state;
+    const {
+      rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer, btnDisplayed,
+    } = this.state;
     const { question } = this.props;
     // precisa jogar esse choice pra dentro de uma função para deixar as questões com respostas randomicas
     const choice = [...question.incorrect_answers, question.correct_answer];
@@ -97,14 +116,8 @@ class MultipleAnswers extends Component {
               { answer }
             </button>);
         })}
-        <button
-          data-testid="btn-next"
-          type="button"
-          onClick={ this.nextQuestion }
-          disabled={ nextButton }
-        >
-          next
-        </button>
+        { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
+          : null}
       </div>
     );
   }
