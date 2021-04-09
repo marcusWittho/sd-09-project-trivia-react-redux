@@ -12,6 +12,7 @@ class Questions extends React.Component {
       questionIndex: 0,
       correctAnswer: '',
       wrongAnswer: '',
+      buttonDisabled: false,
     };
     this.checkAnswer = this.checkAnswer.bind(this);
   }
@@ -19,6 +20,11 @@ class Questions extends React.Component {
   componentDidMount() {
     const { getQuestions } = this.props;
     getQuestions();
+    const disabledTimer = 30000;
+    this.timerToDisableButtons = setInterval(
+      () => this.disableButtons(),
+      disabledTimer,
+    );
   }
 
   checkAnswer() {
@@ -28,32 +34,37 @@ class Questions extends React.Component {
     });
   }
 
-  /* mockLoading() {
+  disableButtons() {
+    this.setState({
+      buttonDisabled: true,
+    });
+  }
+
+  categories(questions, questionIndex) {
     return (
-      <h1>Loading...</h1>
+      <p
+        data-testid="question-category"
+      >
+        Categoria:
+        { questions[questionIndex].category }
+      </p>
     );
-  } */
+  }
 
   render() {
     const { questions, isLoading } = this.props;
-    const { questionIndex, correctAnswer, wrongAnswer } = this.state;
-    console.log(questions, isLoading);
+    const { questionIndex, correctAnswer, wrongAnswer, buttonDisabled } = this.state;
     if (isLoading) return <h1>Loading...</h1>;
-    // if (questions.length === 0) return <h1>Loading...</h1>;
     return (
       <main>
-        <p
-          data-testid="question-category"
-        >
-          Categoria:
-          { questions[questionIndex].category }
-        </p>
+        { this.categories(questions, questionIndex) }
         <p data-testid="question-text">{ questions[0].question }</p>
         <button
           type="button"
           data-testid="correct-answer"
           className={ correctAnswer }
           onClick={ this.checkAnswer }
+          disabled={ buttonDisabled }
         >
           { questions[questionIndex].correct_answer }
         </button>
@@ -62,6 +73,7 @@ class Questions extends React.Component {
           data-testid="wrong-answer-0"
           className={ wrongAnswer }
           onClick={ this.checkAnswer }
+          disabled={ buttonDisabled }
         >
           { questions[questionIndex].incorrect_answers[0] }
         </button>
@@ -70,6 +82,7 @@ class Questions extends React.Component {
           data-testid="wrong-answer-1"
           className={ wrongAnswer }
           onClick={ this.checkAnswer }
+          disabled={ buttonDisabled }
         >
           { questions[questionIndex].incorrect_answers[1] }
         </button>
@@ -78,6 +91,7 @@ class Questions extends React.Component {
           data-testid="wrong-answer-2"
           className={ wrongAnswer }
           onClick={ this.checkAnswer }
+          disabled={ buttonDisabled }
         >
           { questions[questionIndex].incorrect_answers[2] }
         </button>
