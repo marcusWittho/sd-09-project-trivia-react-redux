@@ -29,7 +29,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { question } = this.props;
+    const { question, disableBtn } = this.props;
     const { showAwnser, alternatives } = this.state;
 
     return (
@@ -40,7 +40,7 @@ class Question extends React.Component {
         {alternatives.map((alternative, index) => (
           <div key={ index }>
             <button
-              disabled={ showAwnser }
+              disabled={ showAwnser || disableBtn }
               className={ showAwnser ? defineAnswer(alternative, question) : null }
               type="button"
               data-testid={ defineAnswer(alternative, question) }
@@ -57,6 +57,7 @@ class Question extends React.Component {
 
 Question.propTypes = {
   question: PropTypes.objectOf.isRequired,
+  disableBtn: PropTypes.objectOf.isRequired,
 };
 
 export default Question;

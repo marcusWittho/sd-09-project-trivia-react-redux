@@ -6,20 +6,56 @@ import Header from '../Componentes/Header';
 import Question from '../Componentes/Question';
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      timeToAnswer: 30,
+      step: 1000,
+      disableBtn: false,
+    };
+
+    this.timer = this.timer.bind(this);
+  }
+
   componentDidMount() {
     const { storeQuestions, token } = this.props;
     storeQuestions(token);
+    this.timer();
+  }
+
+  timer() {
+    const { timeToAnswer, step } = this.state;
+    let timeLimit = timeToAnswer;
+    const timeLeft = setInterval(() => {
+      this.setState({
+        timeToAnswer: timeLimit - 1,
+      });
+      timeLimit -= 1;
+      if (timeLimit === 0) {
+        this.setState({
+          disableBtn: true,
+        });
+        clearInterval(timeLeft);
+      }
+    }, step);
   }
 
   render() {
     const { questions, index, incremanteIndex } = this.props;
+    const { timeToAnswer, disableBtn } = this.state;
     return (
       <div>
         <Header />
+        <p>{`Timer: ${timeToAnswer}`}</p>
         <div>
           <div>
             {questions.map((question, index1) => (
-              index === index1 ? <Question key={ index1 } question={ question } /> : null
+              index === index1 ? <Question
+                key={ index1 }
+                question={ question }
+                disableBtn={ disableBtn }
+              /> : null
             ))}
           </div>
 
