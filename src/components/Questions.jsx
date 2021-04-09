@@ -115,6 +115,7 @@ class Questions extends Component {
       this.answerQuestion(e);
     }
   }
+  // * Source of the Timer`s Algorithm https://stackoverflow.com/questions/40885923/countdown-timer-in-react
 
   changeQuestion() {
     const { currentQuestionIndex } = this.state;
@@ -129,8 +130,6 @@ class Questions extends Component {
       }));
     }
   }
-
-  // * Source of the Timer`s Algorithm https://stackoverflow.com/questions/40885923/countdown-timer-in-react
 
   render() {
     const { questions } = this.props;
