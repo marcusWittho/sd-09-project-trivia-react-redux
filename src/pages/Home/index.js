@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { asyncToken, loginAction } from '../actions';
-import logo from '../trivia.png';
-import { createRanking } from '../services/localStorage';
-import { getGravatar } from '../serviceAPI';
+import { asyncToken, loginAction } from '../../actions';
+import logo from '../../trivia.png';
+import { createRanking } from '../../services/localStorage';
+import { getGravatar } from '../../serviceAPI';
+import './styles.css';
 
 class Home extends React.Component {
   constructor(props) {
@@ -46,12 +47,12 @@ class Home extends React.Component {
   render() {
     const { username, email } = this.state;
     return (
-      <div>
+      <div className="container-page-login">
         <img src={ logo } alt="Trivia Logo" className="image-trivia" />
-        <form>
+        <form className="form-login">
           <label htmlFor="player-name">
-            Player Name:
             <input
+              placeholder="Username"
               id="player-name"
               name="username"
               data-testid="input-player-name"
@@ -60,8 +61,8 @@ class Home extends React.Component {
             />
           </label>
           <label htmlFor="gravatar-email">
-            Gravatar E-mail:
             <input
+              placeholder="Email"
               id="gravatar-email"
               name="email"
               data-testid="input-gravatar-email"
@@ -69,8 +70,9 @@ class Home extends React.Component {
               value={ email }
             />
           </label>
-          <Link to="/play">
+          <Link to="/play" className="link-btn">
             <button
+              className="play-btn"
               type="submit"
               data-testid="btn-play"
               disabled={ (!email || !username) }
@@ -79,8 +81,9 @@ class Home extends React.Component {
               Jogar
             </button>
           </Link>
-          <Link to="/settings">
+          <Link to="/settings" className="link-btn">
             <button
+              className="config-btn"
               type="button"
               data-testid="btn-settings"
             >

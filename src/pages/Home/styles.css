@@ -1,0 +1,78 @@
+body {
+  background: rgb(103, 40, 175);
+}
+
+.container-page-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-top: 200px;
+}
+
+.image-trivia {
+  margin-bottom: 50px;
+  width: 400px;
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input {
+  background: rgb(226, 201, 255);
+  border: none;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+  padding: 10px 16px;
+}
+
+input::placeholder {
+  color: rgb(103, 40, 175);
+}
+
+.play-btn {
+  background: rgb(24, 160, 139);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 10px 0;
+  padding: 10px 16px;
+  transition: background-color ease-in-out 300ms;
+  width: 100%;
+}
+
+.play-btn:hover {
+  background: rgb(34, 192, 168);
+}
+
+.play-btn:disabled {
+  background: rgba(236, 236, 236, 0.637);
+  cursor: default;
+}
+
+.config-btn {
+  background: none;
+  border: 2px solid white;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  padding: 10px 16px;
+  transition: all ease-in-out 300ms;
+  width: 100%;
+}
+
+.config-btn:hover {
+  background: white;
+  color: rgb(103, 40, 175);
+  cursor: pointer;
+}
+
+
