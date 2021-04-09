@@ -3,6 +3,7 @@ import { ADD_USER_INFO } from '../actions/types';
 const INITIAL_STATE = {
   name: '',
   email: '',
+  score: 0,
 };
 
 const addUserInfoReducer = (state = INITIAL_STATE, action) => {
