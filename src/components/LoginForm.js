@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import { addLoginInfo, addToken } from '../actions';
 import { fetchAndSaveToken } from '../services';
 
@@ -34,18 +33,6 @@ class LoginForm extends Component {
     this.setState({
       redirect: true,
     });
-  }
-
-  createUserRankingOnLocalStorage() {
-    const playerPerformanceData = JSON.parse(localStorage.getItem('state'));
-    const { player: { name, score, gravatarEmail } } = playerPerformanceData;
-    const gravatarEmailHashed = md5(gravatarEmail).toString();
-    const newUserRanking = {
-      name,
-      score,
-      picture: `https://www.gravatar.com/avatar/${gravatarEmailHashed}`,
-    };
-    console.log(newUserRanking);
   }
 
   createUserStateLocalStorage() {
