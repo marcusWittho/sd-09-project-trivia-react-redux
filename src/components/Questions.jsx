@@ -13,7 +13,8 @@ class Questions extends Component {
       questionAnswered: false,
       selectedAnswer: '',
       time: {},
-      seconds: 30,
+      seconds: 4,
+      hide: true,
     };
     this.dispatchQuestions = this.dispatchQuestions.bind(this);
     this.answerQuestion = this.answerQuestion.bind(this);
@@ -21,6 +22,7 @@ class Questions extends Component {
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -47,6 +49,7 @@ class Questions extends Component {
     this.setState({
       questionAnswered: true,
       selectedAnswer: value,
+      hide: false,
     }, () => this.isAnswerCorrect());
   }
 
@@ -63,6 +66,20 @@ class Questions extends Component {
     }
   }
 
+  changeQuestion() {
+    const { currentQuestionIndex } = this.state;
+    const limit = 4;
+    if (currentQuestionIndex < limit) {
+      this.setState((prevState) => ({
+        currentQuestionIndex: prevState.currentQuestionIndex + 1,
+        seconds: 4,
+        hide: true,
+        questionAnswered: false,
+        selectedAnswer: '',
+      }));
+    }
+  }
+
   countDown() {
     const { seconds, questionAnswered } = this.state;
     if (seconds >= 1) {
@@ -74,6 +91,9 @@ class Questions extends Component {
     }
     if (seconds === 0 && !questionAnswered) {
       clearInterval(this.timer);
+      this.setState({
+        hide: false,
+      });
       const e = {
         target: {
           value: 'not-answered',
@@ -87,7 +107,7 @@ class Questions extends Component {
 
   render() {
     const { questions } = this.props;
-    const { currentQuestionIndex, questionAnswered, time } = this.state;
+    const { currentQuestionIndex, questionAnswered, time, hide } = this.state;
     if (!questions) {
       return (
         <div>
@@ -103,6 +123,8 @@ class Questions extends Component {
           questionAnswered={ questionAnswered }
           answerQuestion={ this.answerQuestion }
           timer={ time.s }
+          hide={ hide }
+          currentQuestion={ this.changeQuestion }
         />
         <span>
           {time.s}
