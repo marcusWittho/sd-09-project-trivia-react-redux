@@ -47,19 +47,13 @@ class InfoGames extends Component {
           <button
             key={ Math.random() }
             type="button"
+            value={ alternative }
             onClick={ ({ target }) => this.setState({ userAnswer: target.value }) }
             className={ crrQuestion.correct_answer ? 'ok' : 'fail' }
+            data-testid={ alternative === crrQuestion.correct_answer ? 'correct-answer'
+              : `wrong-answer-${index}` }
           >
-            {alternative === crrQuestion.correct_answer ? (
-              <p data-testid="correct-answer">{alternative}</p>
-            ) : (
-              <p
-                data-testid={ `wrong-answer-${index}` }
-                key={ Math.random() }
-              >
-                {alternative}
-              </p>
-            ) }
+            {alternative}
           </button>
         ))}
         <button
