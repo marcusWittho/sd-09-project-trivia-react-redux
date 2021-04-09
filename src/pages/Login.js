@@ -29,11 +29,12 @@ class Login extends Component {
     console.log(token);
   }
 
-  handleClick() {
+  async handleClick() {
     const { email, nickname } = this.state;
-    const { loginData } = this.props;
+    const { loginData, history } = this.props;
     loginData(email, nickname);
-    this.fetchToken();
+    await this.fetchToken();
+    history.push('/home');
   }
 
   render() {
@@ -61,16 +62,14 @@ class Login extends Component {
               data-testid="input-player-name"
             />
           </label>
-          <Link to="/home">
-            <button
-              type="button"
-              data-testid="btn-play"
-              onClick={ this.handleClick }
-              disabled={ !((patternEmail.test(email)) && (nickname.length > 0)) }
-            >
-              Jogar
-            </button>
-          </Link>
+          <button
+            type="button"
+            data-testid="btn-play"
+            onClick={ this.handleClick }
+            disabled={ !((patternEmail.test(email)) && (nickname.length > 0)) }
+          >
+            Jogar
+          </button>
         </form>
         <Link to="/settings">
           <button
@@ -87,6 +86,10 @@ class Login extends Component {
 
 Login.propTypes = {
   loginData: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+
 };
 
 const mapDispatchToProps = (dispatch) => ({

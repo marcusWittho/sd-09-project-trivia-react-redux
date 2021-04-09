@@ -3,12 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../actions/game';
 
+import './Questions.css';
+
 class Questions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       questionIndex: 0,
+      correctAnswer: '',
+      wrongAnswer: '',
     };
+    this.checkAnswer = this.checkAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -16,21 +21,25 @@ class Questions extends React.Component {
     getQuestions();
   }
 
-  render() {
-    const { questions } = this.props;
-    const { questionIndex } = this.state;
+  checkAnswer() {
+    this.setState({
+      correctAnswer: 'correct',
+      wrongAnswer: 'wrong',
+    });
+  }
 
-    if (questions.length === 0) {
-      return (
-        <>
-          <h1>Loading...</h1>
-          <p data-testid="question-category" />
-          <p data-testid="question-text" />
-          <p data-testid="correct-answer" />
-          <p data-testid="wrong-answer" />
-        </>
-      );
-    }
+  /* mockLoading() {
+    return (
+      <h1>Loading...</h1>
+    );
+  } */
+
+  render() {
+    const { questions, isLoading } = this.props;
+    const { questionIndex, correctAnswer, wrongAnswer } = this.state;
+    console.log(questions, isLoading);
+    if (isLoading) return <h1>Loading...</h1>;
+    // if (questions.length === 0) return <h1>Loading...</h1>;
     return (
       <main>
         <p
@@ -40,16 +49,36 @@ class Questions extends React.Component {
           { questions[questionIndex].category }
         </p>
         <p data-testid="question-text">{ questions[0].question }</p>
-        <button type="button" data-testid="correct-answer">
+        <button
+          type="button"
+          data-testid="correct-answer"
+          className={ correctAnswer }
+          onClick={ this.checkAnswer }
+        >
           { questions[questionIndex].correct_answer }
         </button>
-        <button type="button" data-testid="wrong-answer-0">
+        <button
+          type="button"
+          data-testid="wrong-answer-0"
+          className={ wrongAnswer }
+          onClick={ this.checkAnswer }
+        >
           { questions[questionIndex].incorrect_answers[0] }
         </button>
-        <button type="button" data-testid="wrong-answer-1">
+        <button
+          type="button"
+          data-testid="wrong-answer-1"
+          className={ wrongAnswer }
+          onClick={ this.checkAnswer }
+        >
           { questions[questionIndex].incorrect_answers[1] }
         </button>
-        <button type="button" data-testid="wrong-answer-2">
+        <button
+          type="button"
+          data-testid="wrong-answer-2"
+          className={ wrongAnswer }
+          onClick={ this.checkAnswer }
+        >
           { questions[questionIndex].incorrect_answers[2] }
         </button>
       </main>
@@ -60,6 +89,7 @@ class Questions extends React.Component {
 Questions.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
