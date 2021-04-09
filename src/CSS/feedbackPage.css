@@ -1,0 +1,14 @@
+.feedback-header{
+  background-color: #4CAF50;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 150%;
+}
+
+.feedback-header img {
+  border-radius: 50%;
+  border: 3px solid white;
+  margin: 10px;
+}
