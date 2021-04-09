@@ -16,6 +16,9 @@ class Game extends Component {
       questions: [],
       i: 0,
     };
+
+    this.returnGame = this.returnGame.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +34,23 @@ class Game extends Component {
     });
   }
 
+  correctAnswer() {
+    return 'correct-answer';
+  }
+
+  handleClick(event) {
+    const buttons = event.target.parentNode.children;
+
+    Object.values(buttons).forEach((button) => {
+      if (
+        button.className === this.correctAnswer()
+        || button.className === 'wrong-answer'
+      ) {
+        button.classList.add(`${button.className}-style`);
+      }
+    });
+  }
+
   returnGame() {
     const { image } = this.props;
     const negative = -1;
@@ -42,9 +62,18 @@ class Game extends Component {
       ...currentQuestion.incorrect_answers,
     ];
     const answers = allQuestions.map((answer, index) => {
-      const testId = index === 0 ? 'correct-answer' : `wrong-answer-${index - 1}`;
+      const testId = index === 0 ? this.correctAnswer() : `wrong-answer-${index - 1}`;
+      const answerClass = index === 0 ? this.correctAnswer() : 'wrong-answer';
       return (
-        <button key={ answer } type="button" data-testid={ testId }>{answer}</button>
+        <button
+          onClick={ this.handleClick }
+          className={ answerClass }
+          key={ answer }
+          type="button"
+          data-testid={ testId }
+        >
+          {answer}
+        </button>
       );
     });
     return (
@@ -61,13 +90,13 @@ class Game extends Component {
         <div>
           <h2 data-testid="question-category">{questions[i].category}</h2>
           <h3 data-testid="question-text">{questions[i].question}</h3>
-          <span>
+          <div>
             {answers.sort((buttonA, buttonB) => {
               if (buttonA.key > buttonB.key) return 1;
               if (buttonA.key < buttonB.key) return negative;
               return 0;
             })}
-          </span>
+          </div>
         </div>
       </>
     );

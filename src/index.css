@@ -7,6 +7,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wrong-answer, .correct-answer {
+  outline: none;
+}
+
+.correct-answer-style {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrong-answer-style {
+  border: 3px solid rgb(255, 0, 0)
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
