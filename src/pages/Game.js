@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import './game.css';
+import WaveTop from '../img/wave-top.svg';
+import WaveBottom from '../img/wave-bottom.svg';
+import Question from '../img/questao.png';
 
 class Game extends Component {
   constructor(props) {
@@ -91,12 +95,20 @@ class Game extends Component {
     if (!triviaArray) return <Redirect to="/" />;
 
     return (
-      <div>
+      <section className="game-section">
         <Header />
-        { error || triviaArray.length === 0
-          ? <span>Carregando... </span>
-          : this.renderQuestion() }
-      </div>
+        <img className="question-left" src={ Question } alt="wave" />
+        <section className="card-container">
+          <img className="wave-top" src={ WaveTop } alt="wave" />
+          <div className="game-card">
+            { error || triviaArray.length === 0
+              ? <span>Carregando... </span>
+              : this.renderQuestion() }
+          </div>
+          <img className="wave-bottom" src={ WaveBottom } alt="wave" />
+        </section>
+        <img className="question-right" src={ Question } alt="wave" />
+      </section>
     );
   }
 }

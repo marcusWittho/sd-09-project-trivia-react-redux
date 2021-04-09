@@ -1,0 +1,51 @@
+.game-section {
+  background-color:  rgb(99, 13, 136);
+  height: 100%;
+  padding-bottom: 110px;
+}
+
+.game-card {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+  border-radius: 20px;
+  padding: 10px;
+  height: 550px;
+  width: 500px;
+  background-color: white;
+  z-index: 100;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wave-top {
+  position: absolute;
+  width: 1276px;
+  margin-top: -207px;
+}
+
+.wave-bottom {
+  position: absolute;
+  width: 1276px;
+  margin-top: 319px;
+}
+
+.question-left {
+  height: 85px;
+  margin-top: 490px;
+  margin-left: 150px;
+  position: absolute;
+  transform: rotate(-40deg);
+}
+
+.question-right {
+  height: 95px;
+  margin-left: 1150px;
+  margin-top: -400px;
+  position: absolute;
+  transform: rotate(40deg);
+}
