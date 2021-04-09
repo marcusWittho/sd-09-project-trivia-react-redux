@@ -21,7 +21,7 @@ class Questions extends React.Component {
     this.getQuestions = this.getQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.disableAlternatives = this.disableAlternatives.bind(this);
-    this.setDificultNumber = this.setDificultNumber.bind(this);
+    this.getDifficulty = this.getDifficulty.bind(this);
     this.UpdateScore = this.UpdateScore.bind(this);
   }
 
@@ -52,39 +52,34 @@ class Questions extends React.Component {
     });
   }
 
-  setDificultNumber() {
+  getDifficulty() {
     const { difficulty } = this.state;
     const number = 0;
     let difficultNumber = number;
-    const UM = 1;
-    const DOIS = 2;
-    const TRES = 3;
-    this.setState({
-      isSelected: true,
-    });
+    const NUMBER_ONE = 1;
+    const NUMBER_TWO = 2;
+    const NUMBER_THREE = 3;
     if (difficulty === 'easy') {
-      difficultNumber = UM;
+      difficultNumber = NUMBER_ONE;
     } else if (difficulty === 'medium') {
-      difficultNumber = DOIS;
+      difficultNumber = NUMBER_TWO;
     } else if (difficulty === 'hard') {
-      difficultNumber = TRES;
+      difficultNumber = NUMBER_THREE;
     }
     return difficultNumber;
   }
 
   UpdateScore() {
     const { seconds } = this.props;
-    const TRINTA = 30;
-    console.log(seconds);
-    const secondsLeft = TRINTA - seconds;
-    const DEZ = 10;
+    const NUMBER_THIRTY = 30;
+    const secondsLeft = NUMBER_THIRTY - seconds;
+    const NUMBER_TEN = 10;
     const player = JSON.parse(localStorage.getItem('player'));
     const { score, assertions } = player;
     let totalScore = score;
     let totalAssertions = assertions;
-    const difficulty = this.setDificultNumber();
-    console.log(secondsLeft, difficulty);
-    totalScore = DEZ + (secondsLeft * difficulty);
+    const difficulty = this.getDifficulty();
+    totalScore = NUMBER_TEN + (secondsLeft * difficulty);
     totalAssertions += 1;
     player.score = totalScore;
     player.assertions = totalAssertions;
@@ -97,13 +92,13 @@ class Questions extends React.Component {
     if (value === 'correct-answer') {
       this.UpdateScore();
     }
+    this.setState({ isSelected: true });
     dispatchStopTime();
+    this.disableAlternatives();
   }
 
   disableAlternatives() {
-    this.setState({
-      disableAlternatives: true,
-    });
+    this.setState({ disableAlternatives: true });
   }
 
   render() {

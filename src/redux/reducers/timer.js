@@ -1,4 +1,4 @@
-import { STOP_TIME, TIMES_UP } from '../actions';
+import { STOP_TIME, TIMES_UP, GET_SECONDS } from '../actions';
 
 const INITIAL_STATE = {
   timesUp: false,
@@ -9,16 +9,11 @@ const INITIAL_STATE = {
 const timer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case TIMES_UP:
-    return {
-      ...state,
-      timesUp: true,
-      seconds: action.seconds,
-    };
+    return { ...state, timesUp: true, seconds: action.seconds };
   case STOP_TIME:
-    return {
-      ...state,
-      stopTime: true,
-    };
+    return { ...state, stopTime: true };
+  case GET_SECONDS:
+    return { ...state, seconds: action.seconds };
   default:
     return state;
   }

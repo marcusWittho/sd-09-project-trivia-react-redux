@@ -1,6 +1,7 @@
 export const SUBMIT_USER = 'SUBMIT_USER';
-export const TIMES_UP = 'STIMES_UP';
+export const TIMES_UP = 'TIMES_UP';
 export const STOP_TIME = 'STOP_TIME';
+export const GET_SECONDS = 'GET_SECONDS';
 
 export const submitUser = (name, email, token) => ({
   type: SUBMIT_USER,
@@ -9,11 +10,15 @@ export const submitUser = (name, email, token) => ({
   token,
 });
 
-export const timesUp = (seconds) => ({
+export const timesUp = () => ({
   type: TIMES_UP,
-  seconds,
 });
 
 export const stopTime = () => ({
   type: STOP_TIME,
+});
+
+export const getSeconds = (seconds) => ({
+  type: GET_SECONDS,
+  seconds,
 });
