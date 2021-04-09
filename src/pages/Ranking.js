@@ -4,9 +4,19 @@ import { Link } from 'react-router-dom';
 class Ranking extends React.Component {
   constructor(props) {
     super(props);
+    this.setRankingState = this.setRankingState.bind(this);
     this.state = {
-      players: JSON.parse(localStorage.getItem('ranking')),
+      players: [],
     };
+  }
+
+  componentDidMount() {
+    const players = JSON.parse(localStorage.getItem('ranking'));
+    this.setRankingState(players);
+  }
+
+  setRankingState(array) {
+    this.setState({ players: [...array] });
   }
 
   render() {

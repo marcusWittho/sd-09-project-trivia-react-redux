@@ -339,7 +339,7 @@ O token expira em 6 horas e te retornará um `response_code: 3` caso esteja expi
 }
 ```
 
----
+--
 
 ### Gravatar
 
