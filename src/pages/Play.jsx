@@ -15,6 +15,7 @@ class Play extends React.Component {
       timeQuestion: 30,
       isDisabled: false,
       questionLevel: '',
+      nextQuestion: false,
     };
     this.handleAnswers = this.handleAnswers.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -22,7 +23,9 @@ class Play extends React.Component {
     this.startCounterTime = this.startCounterTime.bind(this);
     this.decrementCounterTime = this.decrementCounterTime.bind(this);
     this.scoreCalculator = this.scoreCalculator.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClickSuccess = this.handleClickSuccess.bind(this);
+    this.handleClickFailure = this.handleClickFailure.bind(this);
+    this.nextQuestionButtonGenerator = this.nextQuestionButtonGenerator.bind(this);
   }
 
   componentDidMount() {
@@ -69,9 +72,30 @@ class Play extends React.Component {
     });
   }
 
-  handleClick() {
+  handleClickSuccess() {
     this.toggle();
     this.scoreCalculator();
+    this.setState({
+      nextQuestion: true,
+    });
+  }
+
+  handleClickFailure() {
+    this.toggle();
+    this.setState({
+      nextQuestion: true,
+    });
+  }
+
+  nextQuestionButtonGenerator() {
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+      >
+        Próxima
+      </button>
+    );
   }
 
   scoreCalculator() {
@@ -111,7 +135,7 @@ class Play extends React.Component {
                   type="button"
                   data-testid={ `wrong-answer-${index}` }
                   className={ addClass ? 'fail' : 'riddle' }
-                  onClick={ this.toggle }
+                  onClick={ this.handleClickFailure }
                   disabled={ isDisabled }
                 >
                   { answer }
@@ -124,7 +148,7 @@ class Play extends React.Component {
                 key={ index }
                 data-testid="correct-answer"
                 className={ addClass ? 'success' : 'riddle' }
-                onClick={ this.handleClick }
+                onClick={ this.handleClickSuccess }
                 disabled={ isDisabled }
               >
                 { answer }
@@ -173,7 +197,7 @@ class Play extends React.Component {
 
   render() {
     const { questions, isFetching } = this.props;
-    const { questionIndex, timeQuestion } = this.state;
+    const { questionIndex, timeQuestion, nextQuestion } = this.state;
     if (isFetching) return <div>Loading...</div>;
     let currentQuestion;
     let category2;
@@ -201,6 +225,7 @@ class Play extends React.Component {
           </p>
         </section>
         { this.questionGenerator() }
+        { nextQuestion && this.nextQuestionButtonGenerator() }
         <p>{ `Tempo: ${timeQuestion}` }</p>
       </main>
     );
