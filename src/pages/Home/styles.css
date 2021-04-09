@@ -24,8 +24,8 @@ input {
   background: rgb(226, 201, 255);
   border: none;
   border-radius: 10px;
-  margin: 10px 0;
   font-size: 16px;
+  margin: 10px 0;
   padding: 10px 16px;
 }
 
@@ -74,5 +74,3 @@ input::placeholder {
   color: rgb(103, 40, 175);
   cursor: pointer;
 }
-
-
