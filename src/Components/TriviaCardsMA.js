@@ -7,16 +7,24 @@ class MultipleAnswers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      choice: [],
+      // choice: [],
+      rightAnswerClass: '',
+      wrongAnswerClass: '',
+      nextButton: true,
+      correctAnswer: 'correct-answer',
+      btnDisplayed: false,
     };
     this.validateAnswers = this.validateAnswers.bind(this);
-    this.createChoices = this.createChoices.bind(this);
+    // this.createChoices = this.createChoices.bind(this);
     this.updateQuestIndex = this.updateQuestIndex.bind(this);
+    this.answerCheck = this.answerCheck.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.createNextBtn = this.createNextBtn.bind(this);
   }
 
-  componentDidMount() {
-    this.createChoices();
-  }
+  // componentDidMount() {
+  //   this.createChoices();
+  // }
 
   updateQuestIndex() {
     const { questIndex, dispatchIndex } = this.props;
@@ -25,18 +33,18 @@ class MultipleAnswers extends Component {
     dispatchIndex(newIndex);
   }
 
-  createChoices() {
-    const { question } = this.props;
-    const choice = question.incorrect_answers;
-    const choices = 4;
-    if (choice.length < choices) {
-      choice.splice(Math.floor(Math.random() * choices),
-        0, question.correct_answer);
-      this.setState({ choice });
-    } else {
-      this.setState({ choice });
-    }
-  }
+  // createChoices() {
+  //   const { question } = this.props;
+  //   const choice = question.incorrect_answers;
+  //   const choices = 4;
+  //   if (choice.length < choices) {
+  //     choice.splice(Math.floor(Math.random() * choices), 0,
+  //       question.correct_answer);
+  //     this.setState({ choice });
+  //   } else {
+  //     this.setState({ choice });
+  //   }
+  // }
 
   validateAnswers(answer, index) {
     const { question } = this.props;
@@ -46,9 +54,46 @@ class MultipleAnswers extends Component {
     return 'correct-answer';
   }
 
+  answerCheck() {
+    this.setState({
+      nextButton: false,
+      rightAnswerClass: 'rightAnswer',
+      wrongAnswerClass: 'wrongAnswer',
+      btnDisplayed: true,
+    });
+  }
+
+  nextQuestion() {
+    this.updateQuestIndex();
+    // nos teste ele nao mudou nada que percebi
+    // this.createChoices();
+    this.setState({ rightAnswerClass: '',
+      wrongAnswerClass: '',
+      nextButton: true,
+      btnDisplayed: false,
+    });
+  }
+
+  createNextBtn(click, state) {
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ click }
+        disabled={ state }
+      >
+        next
+      </button>
+    );
+  }
+
   render() {
-    const { choice } = this.state;
+    const {
+      rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer, btnDisplayed,
+    } = this.state;
     const { question } = this.props;
+    // precisa jogar esse choice pra dentro de uma função para deixar as questões com respostas randomicas
+    const choice = [...question.incorrect_answers, question.correct_answer];
     let index = 0;
     return (
       <div>
@@ -58,17 +103,21 @@ class MultipleAnswers extends Component {
         <p data-testid="question-text">{ question.question }</p>
         {choice.map((answer) => {
           const dataTestId = this.validateAnswers(answer, index);
-          if (dataTestId !== 'correct-answer') index += 1;
+          if (dataTestId !== correctAnswer) index += 1;
           return (
             <button
+              className={ dataTestId === correctAnswer ? rightAnswerClass
+                : wrongAnswerClass }
               type="button"
               key={ answer }
               data-testid={ dataTestId }
-              onClick={ this.updateQuestIndex }
+              onClick={ this.answerCheck }
             >
               { answer }
             </button>);
         })}
+        { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
+          : null}
       </div>
     );
   }
