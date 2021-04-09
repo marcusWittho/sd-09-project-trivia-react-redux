@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { timer } from '../actions';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 import '../styles/Play.css';
 
 class Play extends React.Component {
@@ -13,8 +15,6 @@ class Play extends React.Component {
       addClass: false,
       randomized: [],
       isButtonsRandomized: false,
-      timeQuestion: 30,
-      isDisabled: false,
       questionLevel: '',
       nextQuestion: false,
       redirectFeedBack: false,
@@ -22,8 +22,6 @@ class Play extends React.Component {
     this.handleAnswers = this.handleAnswers.bind(this);
     this.toggle = this.toggle.bind(this);
     this.questionGenerator = this.questionGenerator.bind(this);
-    this.startCounterTime = this.startCounterTime.bind(this);
-    this.decrementCounterTime = this.decrementCounterTime.bind(this);
     this.scoreCalculator = this.scoreCalculator.bind(this);
     this.handleClickSuccess = this.handleClickSuccess.bind(this);
     this.handleClickFailure = this.handleClickFailure.bind(this);
@@ -31,38 +29,10 @@ class Play extends React.Component {
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
-  componentDidMount() {
-    this.startCounterTime();
-  }
-
   componentDidUpdate() {
     const { isFetching } = this.props;
     const { isButtonsRandomized } = this.state;
     if (!isFetching && !isButtonsRandomized) this.handleAnswers();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerInterval);
-  }
-
-  decrementCounterTime() {
-    const { timeQuestion } = this.state;
-    if (timeQuestion === 1) {
-      clearInterval(this.timerInterval);
-      this.setState({
-        timeQuestion: 0,
-        isDisabled: true,
-      });
-    } else {
-      this.setState((prevState) => ({
-        timeQuestion: prevState.timeQuestion - 1,
-      }));
-    }
-  }
-
-  startCounterTime() {
-    const oneSecond = 1000;
-    this.timerInterval = setInterval(this.decrementCounterTime, oneSecond);
   }
 
   toggle() {
@@ -83,17 +53,18 @@ class Play extends React.Component {
 
   handleNextQuestion() {
     const { questionIndex } = this.state;
-    const { questions } = this.props;
+    const { questions, sendTime } = this.props;
+    const restartTime = 30;
     if (questionIndex === questions.length - 1) {
       this.setState({ redirectFeedBack: true });
     } else {
       this.setState({
         questionIndex: questionIndex + 1,
-        timeQuestion: 30,
         isButtonsRandomized: false,
         nextQuestion: false,
         addClass: false,
       });
+      sendTime(restartTime);
     }
   }
 
@@ -110,7 +81,8 @@ class Play extends React.Component {
   }
 
   scoreCalculator() {
-    const { timeQuestion, questionLevel } = this.state;
+    const { questionLevel } = this.state;
+    const { counter } = this.props;
     const hard = 3;
     const medium = 2;
     const easy = 1;
@@ -119,17 +91,17 @@ class Play extends React.Component {
     const { player: { score, assertions } } = previousStorage;
     switch (questionLevel) {
     case questionLevel === 'hard':
-      previousStorage.player.score = score + (magicNumber + (timeQuestion * hard));
+      previousStorage.player.score = score + (magicNumber + (counter * hard));
       previousStorage.player.assertions = assertions + 1;
       localStorage.setItem('state', JSON.stringify(previousStorage));
       break;
     case questionLevel === 'medium':
-      previousStorage.player.score = score + (magicNumber + (timeQuestion * medium));
+      previousStorage.player.score = score + (magicNumber + (counter * medium));
       previousStorage.player.assertions = assertions + 1;
       localStorage.setItem('state', JSON.stringify(previousStorage));
       break;
     default:
-      previousStorage.player.score = score + (magicNumber + (timeQuestion * easy));
+      previousStorage.player.score = score + (magicNumber + (counter * easy));
       previousStorage.player.assertions = assertions + 1;
       localStorage.setItem('state', JSON.stringify(previousStorage));
       break;
@@ -137,7 +109,8 @@ class Play extends React.Component {
   }
 
   questionGenerator() {
-    const { randomized, addClass, isDisabled } = this.state;
+    const { randomized, addClass } = this.state;
+    const { isDisabled } = this.props;
     return (
       <section>
         {
@@ -206,7 +179,7 @@ class Play extends React.Component {
 
   render() {
     const { questions, isFetching } = this.props;
-    const { questionIndex, timeQuestion, nextQuestion, redirectFeedBack } = this.state;
+    const { questionIndex, nextQuestion, redirectFeedBack } = this.state;
     if (isFetching) return <div>Loading...</div>;
     if (redirectFeedBack) return <Redirect to="/feedback" />;
     const currentQuestion = questions[questionIndex];
@@ -220,17 +193,29 @@ class Play extends React.Component {
         </section>
         { this.questionGenerator() }
         { nextQuestion && this.nextQuestionButtonGenerator() }
-        <p>{ `Tempo: ${timeQuestion}` }</p>
+        <Timer />
       </main>
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.questions,
   isFetching: state.triviaReducer.isFetching,
+  isDisabled: state.triviaReducer.isDisabled,
+  counter: state.triviaReducer.timer,
 });
+
+const mapDispatchToProps = (dispatch) => ({
+  sendTime: (time) => dispatch(timer(time)),
+});
+
 Play.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   isFetching: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
+  counter: PropTypes.number.isRequired,
+  sendTime: PropTypes.func.isRequired,
 };
-export default connect(mapStateToProps)(Play);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Play);
