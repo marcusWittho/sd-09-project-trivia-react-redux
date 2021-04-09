@@ -20,7 +20,6 @@ class InfoGames extends Component {
 
   requestAPI() {
     const token = JSON.parse(localStorage.getItem('token'));
-    console.log(token);
     const quantityQuestions = 5;
     api.fetchTrivia(token, quantityQuestions).then((responseRequest) => (
       this.setState({
