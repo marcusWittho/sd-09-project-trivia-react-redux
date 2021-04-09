@@ -9,7 +9,9 @@ class Answers extends Component {
     this.state = {
       answerIndex: 0,
       color: false,
+
     };
+
     this.nextQuestion = this.nextQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.renderQuestionsAndCategories = this.renderQuestionsAndCategories.bind(this);

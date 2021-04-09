@@ -5,6 +5,7 @@ import './App.css';
 import Login from './pages/Login';
 import Game from './pages/Game/Game';
 import Config from './pages/Config';
+import Rankings from './pages/Rankings';
 import Feedback from './pages/Feedback';
 
 class App extends Component {
@@ -19,6 +20,9 @@ class App extends Component {
             </Route>
             <Route path="/Config">
               <Config />
+            </Route>
+            <Route path="/Rankings">
+              <Rankings />
             </Route>
             <Route path="/feedback">
               <Feedback />
