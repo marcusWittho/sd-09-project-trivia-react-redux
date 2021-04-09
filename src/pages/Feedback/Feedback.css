@@ -1,8 +1,8 @@
 .main-container {
   align-items: center;
   display: flex;
-  justify-content: center;
   height: 100vh;
+  justify-content: center;
 }
 
 .feedback-container {
@@ -18,8 +18,8 @@
 }
 
 .feedback-text {
-  font-weight: 600;
   font-size: 1.5em;
+  font-weight: 600;
 }
 
 .text-default {
@@ -43,8 +43,8 @@
   border-radius: 5px;
   color: white;
   cursor: pointer;
-  font-size: 1em;
   flex-grow: 1;
+  font-size: 1em;
   padding: 1.2em;
   text-align: center;
   text-decoration: none;
