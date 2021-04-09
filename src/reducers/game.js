@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   questions: [],
   timer: 30,
   questionPos: 0,
-  isLoading: false,
+  isLoading: true,
 };
 
 const game = (state = INITIAL_STATE, action) => {
