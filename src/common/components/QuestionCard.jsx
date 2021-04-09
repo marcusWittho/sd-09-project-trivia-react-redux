@@ -16,6 +16,15 @@ class QuestionCard extends React.Component {
     this.isCorrect = this.isCorrect.bind(this);
   }
 
+  componentDidUpdate() {
+    const { playerState } = this.props;
+    let player = {};
+    player = {
+      player: playerState,
+    };
+    localStorage.setItem('state', JSON.stringify(player));
+  }
+
   isCorrect({ target }) {
     const {
       renderQuestion,
@@ -24,12 +33,11 @@ class QuestionCard extends React.Component {
       timer,
       disableOptions,
       stopTimerAction,
-      score } = this.props;
+    } = this.props;
     // this.setState({ runTimer: false });
 
     stopTimerAction(true);
-    disableOptions();
-    localStorage.setItem('score', JSON.stringify(score));
+    disableOptions(true);
     const { name } = target;
     const correctAnswer = 10;
     const easy = 1;
@@ -52,10 +60,10 @@ class QuestionCard extends React.Component {
 
   renderCurrentQuestion() {
     const {
-      renderQuestion,
-      updateQuestion,
-      applyStyle,
-      disableOptions } = this.props;
+      renderQuestion, updateQuestion, applyStyle,
+      disableOptions,
+      questionCounter } = this.props;
+    const numberOfQuestions = 3;
     return (
       <div>
         <h3 data-testid="question-category">
@@ -91,9 +99,10 @@ class QuestionCard extends React.Component {
           id="next-btn"
           data-testid="btn-next"
           disabled={ !applyStyle }
+          className={ applyStyle ? 'show-next-btn' : 'hide-next-btn' }
           onClick={ () => updateQuestion() }
         >
-          Próxima
+          { questionCounter > numberOfQuestions ? 'Fim de Jogo' : 'Próxima' }
         </button>
         <Timer updateQuestion={ updateQuestion } disableOptions={ disableOptions } />
       </div>
@@ -125,13 +134,17 @@ QuestionCard.propTypes = {
   disableOptions: PropTypes.func.isRequired,
   timer: PropTypes.number.isRequired,
   stopTimerAction: PropTypes.func.isRequired,
-  score: PropTypes.number.isRequired,
+  questionCounter: PropTypes.number.isRequired,
+  playerState: PropTypes.shape({
+    score: PropTypes.number,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   timer: state.timerReducer,
   stopTimer: state.stopTimerReducer,
   score: state.userInfoReducer.score,
+  playerState: state.userInfoReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

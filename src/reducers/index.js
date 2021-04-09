@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   },
   token: '',
   questions: [],
-  timer: 10,
+  timer: 30,
   stopTimer: false,
 };
 

@@ -5,3 +5,11 @@
 .correctAnswerStyle {
   border: 3px solid rgb(6, 240, 15);
 }
+
+.show-next-btn {
+  display: block;
+}
+
+.hide-next-btn {
+  display: none;
+}
