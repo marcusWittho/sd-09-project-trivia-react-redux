@@ -66,20 +66,6 @@ class Questions extends Component {
     }
   }
 
-  changeQuestion() {
-    const { currentQuestionIndex } = this.state;
-    const limit = 4;
-    if (currentQuestionIndex < limit) {
-      this.setState((prevState) => ({
-        currentQuestionIndex: prevState.currentQuestionIndex + 1,
-        seconds: 4,
-        hide: true,
-        questionAnswered: false,
-        selectedAnswer: '',
-      }));
-    }
-  }
-
   countDown() {
     const { seconds, questionAnswered } = this.state;
     if (seconds >= 1) {
@@ -100,6 +86,20 @@ class Questions extends Component {
         },
       };
       this.answerQuestion(e);
+    }
+  }
+
+  changeQuestion() {
+    const { currentQuestionIndex } = this.state;
+    const limit = 4;
+    if (currentQuestionIndex < limit) {
+      this.setState((prevState) => ({
+        currentQuestionIndex: prevState.currentQuestionIndex + 1,
+        seconds: 4,
+        hide: true,
+        questionAnswered: false,
+        selectedAnswer: '',
+      }));
     }
   }
 
