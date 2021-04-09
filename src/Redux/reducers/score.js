@@ -1,7 +1,7 @@
 import { CURRENT_SCORE } from '../actions';
 
 const INITIAL_CURRENT_SCORE_STATE = {
-  currentScore: 10,
+  currentScore: 0,
 };
 
 const scoreReducer = (state = INITIAL_CURRENT_SCORE_STATE, action) => {
