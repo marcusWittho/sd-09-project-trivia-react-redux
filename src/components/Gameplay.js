@@ -42,7 +42,6 @@ class Gameplay extends Component {
     const currentQuestionInfo = questions.results[questionIndex];
     const answersList = currentQuestionInfo.incorrect_answers;
     const correctAnswer = currentQuestionInfo.correct_answer;
-    console.log(correctAnswer);
     const randomIndex = Math.floor(Math.random() * (answersList.length + 1));
     const newAnswersList = [...answersList];
     newAnswersList.splice(randomIndex, 0, correctAnswer);
