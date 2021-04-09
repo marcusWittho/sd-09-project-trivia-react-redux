@@ -5,7 +5,7 @@ export async function fetchToken() {
 }
 
 export async function fetchQuestions(token) {
-  const request = await fetch(`https://opentdb.com/api.php?amount=1&token=${token}`);
+  const request = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
   const data = await request.json();
   return data.results;
 }

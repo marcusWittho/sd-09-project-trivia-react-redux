@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../services/fetchApis';
 
@@ -8,17 +8,18 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
-    this.fetchQuest = this.fetchQuest.bind(this);
-    this.returnGame = this.returnGame.bind(this);
-
     this.state = {
       loading: true,
       questions: [],
+      isButtonVisible: false,
+      shouldDisable: false,
       i: 0,
     };
 
+    this.fetchQuest = this.fetchQuest.bind(this);
     this.returnGame = this.returnGame.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleNextQuest = this.handleNextQuest.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +41,6 @@ class Game extends Component {
 
   handleClick(event) {
     const buttons = event.target.parentNode.children;
-
     Object.values(buttons).forEach((button) => {
       if (
         button.className === this.correctAnswer()
@@ -49,13 +49,53 @@ class Game extends Component {
         button.classList.add(`${button.className}-style`);
       }
     });
+    this.setState({
+      isButtonVisible: true,
+      shouldDisable: true,
+    });
+  }
+
+  retunAnswers(negative, answers) {
+    return (
+      <div>
+        {answers.sort((buttonA, buttonB) => {
+          if (buttonA.key > buttonB.key) return 1;
+          if (buttonA.key < buttonB.key) return negative;
+          return 0;
+        })}
+      </div>
+    );
+  }
+
+  handleNextQuest() {
+    this.setState((previousState) => ({
+      i: previousState.i + 1,
+      isButtonVisible: false,
+      shouldDisable: false,
+    }));
+  }
+
+  returnNextButton() {
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.handleNextQuest }
+      >
+        Próxima
+      </button>
+    );
   }
 
   returnGame() {
+    const { questions, i, isButtonVisible, shouldDisable } = this.state;
+    const limitIndex = 5;
+    if (i === limitIndex) {
+      return <Redirect to="/feedback" />;
+    }
     const { image } = this.props;
     const negative = -1;
     const { player } = JSON.parse(localStorage.getItem('state'));
-    const { questions, i } = this.state;
     const currentQuestion = questions[i];
     const allQuestions = [
       currentQuestion.correct_answer,
@@ -71,11 +111,13 @@ class Game extends Component {
           key={ answer }
           type="button"
           data-testid={ testId }
+          disabled={ shouldDisable }
         >
           {answer}
         </button>
       );
     });
+
     return (
       <>
         <header>
@@ -86,18 +128,12 @@ class Game extends Component {
         <span>
           <Link to="/feedback">feedback</Link>
         </span>
-
         <div>
           <h2 data-testid="question-category">{questions[i].category}</h2>
           <h3 data-testid="question-text">{questions[i].question}</h3>
-          <div>
-            {answers.sort((buttonA, buttonB) => {
-              if (buttonA.key > buttonB.key) return 1;
-              if (buttonA.key < buttonB.key) return negative;
-              return 0;
-            })}
-          </div>
         </div>
+        {this.retunAnswers(negative, answers)}
+        { isButtonVisible ? this.returnNextButton() : null}
       </>
     );
   }
