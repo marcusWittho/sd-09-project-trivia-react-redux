@@ -9,7 +9,10 @@ const INITIAL_STATE = {
 const addUserInfoReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ADD_USER_INFO:
-    return action.payload;
+    return {
+      ...state,
+      ...action.payload,
+    };
   default:
     return state;
   }
