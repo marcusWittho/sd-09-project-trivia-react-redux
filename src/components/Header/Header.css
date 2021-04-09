@@ -1,0 +1,8 @@
+.header {
+  display: flex;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  justify-content: space-between;
+  background-color: #000812;
+}

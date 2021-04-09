@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import './Header.css';
 
 class Header extends Component {
   render() {
     const { player } = this.props;
     return (
-      <header>
+      <header className="header">
         <img
           src={ player.gravatarEmail }
           alt={ `Avatar ${player.name}` }
