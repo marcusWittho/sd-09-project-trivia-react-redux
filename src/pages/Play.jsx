@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import '../styles/Play.css';
 
@@ -16,6 +17,7 @@ class Play extends React.Component {
       isDisabled: false,
       questionLevel: '',
       nextQuestion: false,
+      redirectFeedBack: false,
     };
     this.handleAnswers = this.handleAnswers.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -26,19 +28,17 @@ class Play extends React.Component {
     this.handleClickSuccess = this.handleClickSuccess.bind(this);
     this.handleClickFailure = this.handleClickFailure.bind(this);
     this.nextQuestionButtonGenerator = this.nextQuestionButtonGenerator.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   componentDidMount() {
     this.startCounterTime();
-    // this.handleAnswers();
   }
 
   componentDidUpdate() {
     const { isFetching } = this.props;
     const { isButtonsRandomized } = this.state;
-    if (!isFetching && !isButtonsRandomized) {
-      this.handleAnswers();
-    }
+    if (!isFetching && !isButtonsRandomized) this.handleAnswers();
   }
 
   componentWillUnmount() {
@@ -67,24 +67,34 @@ class Play extends React.Component {
 
   toggle() {
     const { addClass } = this.state;
-    this.setState({
-      addClass: !addClass,
-    });
+    this.setState({ addClass: !addClass });
   }
 
   handleClickSuccess() {
     this.toggle();
     this.scoreCalculator();
-    this.setState({
-      nextQuestion: true,
-    });
+    this.setState({ nextQuestion: true });
   }
 
   handleClickFailure() {
     this.toggle();
-    this.setState({
-      nextQuestion: true,
-    });
+    this.setState({ nextQuestion: true });
+  }
+
+  handleNextQuestion() {
+    const { questionIndex } = this.state;
+    const { questions } = this.props;
+    if (questionIndex === questions.length - 1) {
+      this.setState({ redirectFeedBack: true });
+    } else {
+      this.setState({
+        questionIndex: questionIndex + 1,
+        timeQuestion: 30,
+        isButtonsRandomized: false,
+        nextQuestion: false,
+        addClass: false,
+      });
+    }
   }
 
   nextQuestionButtonGenerator() {
@@ -92,6 +102,7 @@ class Play extends React.Component {
       <button
         type="button"
         data-testid="btn-next"
+        onClick={ this.handleNextQuestion }
       >
         Próxima
       </button>
@@ -160,8 +171,6 @@ class Play extends React.Component {
     );
   }
 
-  // A função do Math.random da linha 43 foi retirada do site stackoverflow no link:
-  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   handleAnswers() {
     const { questionIndex } = this.state;
     const { questions } = this.props;
@@ -169,15 +178,12 @@ class Play extends React.Component {
     if (questions) {
       currentQuestion = questions[questionIndex];
     }
-    // const currentQuestion = questions[questionIndex];
     const {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
       difficulty,
     } = currentQuestion;
-    this.setState({
-      questionLevel: difficulty,
-    });
+    this.setState({ questionLevel: difficulty });
     const correct = {
       isTrue: true,
       answer: correctAnswer,
@@ -197,8 +203,9 @@ class Play extends React.Component {
 
   render() {
     const { questions, isFetching } = this.props;
-    const { questionIndex, timeQuestion, nextQuestion } = this.state;
+    const { questionIndex, timeQuestion, nextQuestion, redirectFeedBack } = this.state;
     if (isFetching) return <div>Loading...</div>;
+    if (redirectFeedBack) return <Redirect to="/feedback" />;
     let currentQuestion;
     let category2;
     let question2;
@@ -231,15 +238,12 @@ class Play extends React.Component {
     );
   }
 }
-
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.questions,
   isFetching: state.triviaReducer.isFetching,
 });
-
 Play.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   isFetching: PropTypes.bool.isRequired,
 };
-
 export default connect(mapStateToProps)(Play);
