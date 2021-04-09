@@ -48,37 +48,41 @@ class Login extends Component {
           Trivia
         </h2>
         <div className="insert-login">
-          <input
-            type="text"
-            name="name"
-            value={ name }
-            className="input-login"
-            placeholder="Name"
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-          />
-          <input
-            name="email"
-            type="text"
-            value={ email }
-            className="input-login"
-            placeholder="E-mail"
-            data-testid="input-gravatar-email"
-            onChange={ this.handleChange }
-          />
+          <div className="context-input">
+            <input
+              type="text"
+              name="name"
+              value={ name }
+              className="input-login"
+              placeholder="Name"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+            <input
+              name="email"
+              type="text"
+              value={ email }
+              className="input-login"
+              placeholder="E-mail"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+            />
+          </div>
 
-          <Link to="/trivia">
-            <button
-              type="button"
-              data-testid="btn-play"
-              className="btn-play"
-              disabled={ !this.validateLogin() }
-              onClick={ this.handleClick }
-            >
-              Play
-            </button>
-          </Link>
-          <SettingsButton />
+          <div className="context-button">
+            <Link to="/trivia">
+              <button
+                type="button"
+                data-testid="btn-play"
+                className="btn-play"
+                disabled={ !this.validateLogin() }
+                onClick={ this.handleClick }
+              >
+                Play
+              </button>
+            </Link>
+            <SettingsButton />
+          </div>
         </div>
       </div>
     );
