@@ -1,5 +1,7 @@
 body {
   align-items: center;
+  background-color: #14253c;
+  box-sizing: border-box;
   display: flex;
   height: 100vh;
   justify-content: center;
@@ -18,5 +20,5 @@ li img, p {
 }
 
 li img {
-  max-width: 70px;
+  max-width: 50px;
 }
