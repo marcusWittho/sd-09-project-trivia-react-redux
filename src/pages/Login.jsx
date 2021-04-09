@@ -53,6 +53,7 @@ class Login extends React.Component {
             Nome:
             <input
               id="enter-name"
+              className="enter-name"
               data-testid="input-player-name"
               type="text"
               name="user"
@@ -63,6 +64,7 @@ class Login extends React.Component {
             E-mail:
             <input
               id="enter-email"
+              className="enter-email"
               data-testid="input-gravatar-email"
               type="email"
               name="email"
@@ -71,6 +73,7 @@ class Login extends React.Component {
           </label>
           <Link to="/question">
             <button
+              className="btn-play"
               type="button"
               data-testid="btn-play"
               disabled={ disableButton }
@@ -80,10 +83,7 @@ class Login extends React.Component {
             </button>
           </Link>
           <Link to="/settings">
-            <button
-              type="button"
-              data-testid="btn-settings"
-            >
+            <button className="btn-settings" type="button" data-testid="btn-settings">
               Configurações
             </button>
           </Link>

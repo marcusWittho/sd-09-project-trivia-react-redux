@@ -14,7 +14,7 @@ class Question extends React.Component {
   createHeader() {
     const { playerState: { name, score, gravatarEmail } } = this.props;
     return (
-      <header>
+      <header className="header">
         <img
           src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
           alt="imagem do Gravatar"
@@ -35,11 +35,15 @@ class Question extends React.Component {
       if (element.type === 'boolean') {
         return (
           <div key={ index }>
-            <p>
-              Questão 0
-              { 1 }
-            </p>
-            <p>Boolean</p>
+            <section>
+              <h3 data-testid="question-category">{ element.category }</h3>
+              <p data-testid="question-text">{ element.question }</p>
+            </section>
+            <aside>
+              <button type="button" data-testid="correct-answer" value={ element.correct_answer }>Verdadeiro</button>
+              <button type="button" data-testid="" value={ element.incorrect_answers }>Falso</button>
+            </aside>
+            <button type="button">PRÓXIMO</button>
           </div>
         );
       }
@@ -83,7 +87,7 @@ class Question extends React.Component {
   render() {
     const { dataAnswer } = this.props;
     return (
-      <div>
+      <div className="question">
         { this.createHeader() }
         <h1>Game</h1>
         { dataAnswer ? this.inQuestion() : 'Carregando' }
