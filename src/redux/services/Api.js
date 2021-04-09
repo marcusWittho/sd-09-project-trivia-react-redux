@@ -7,6 +7,7 @@ export const opentdbApi = () => fetch('https://opentdb.com/api_token.php?command
 
 export const questionsApi = () => {
   const token = localStorage.getItem('token');
+  // seria bacana um catch aqui pro caso de erro
   return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
     .then((results) => results.json())
     .then(({ results }) => results);

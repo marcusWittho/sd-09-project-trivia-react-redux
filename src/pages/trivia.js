@@ -66,21 +66,28 @@ class trivia extends React.Component {
     const maxIndex = 4;
     const { index } = this.state;
     const { propSetNext, propSelectedAnswer } = this.props;
-    if (index === maxIndex) {
-      this.setState((previousState) => ({
-        index: previousState.index,
-        answered: false,
-        time: 30,
-        disabled: false,
-      }));
-    } else {
-      this.setState((previousState) => ({
-        index: previousState.index + 1,
-        answered: false,
-        time: 30,
-        disabled: false,
-      }));
-    }
+
+    this.setState((previousState) => ({
+      index: index === maxIndex ? previousState.index : previousState.index + 1,
+      answered: false,
+      time: 30,
+      disabled: false,
+    }));
+    // if (index === maxIndex) {
+    //   this.setState((previousState) => ({
+    //     index: previousState.index,
+    //     answered: false,
+    //     time: 30,
+    //     disabled: false,
+    //   }));
+    // } else {
+    //   this.setState((previousState) => ({
+    //     index: previousState.index + 1,
+    //     answered: false,
+    //     time: 30,
+    //     disabled: false,
+    //   }));
+    // }
     await propSelectedAnswer(null);
     await propSetNext();
   }
@@ -130,11 +137,17 @@ const mapStateToProps = ({
   selectedAnswer,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  propQuestions: () => dispatch(getQuestions()),
-  propSetNext: () => dispatch(setNext()),
-  propSelectedAnswer:
-    (selectedAnswer) => dispatch(setSelectedAnswer(selectedAnswer)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   propQuestions: () => dispatch(getQuestions()),
+//   propSetNext: () => dispatch(setNext()),
+//   propSelectedAnswer:
+//     (selectedAnswer) => dispatch(setSelectedAnswer(selectedAnswer)),
+// });
+
+const mapDispatchToProps = {
+  propQuestions: getQuestions,
+  propSetNext: setNext,
+  propSelectedAnswer: setSelectedAnswer,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(trivia);

@@ -39,6 +39,7 @@ class loginScreen extends React.Component {
   async handleClick() {
     const { propGetToken, propSetNameAndEmail } = this.props;
     const { name, email } = this.state;
+    // bem legal esse nome com o nome das props
     await propGetToken();
     await propSetNameAndEmail(name, email);
     this.setState({
