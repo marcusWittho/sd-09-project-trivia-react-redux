@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { arrayOf } from 'prop-types';
 import { getQuestions } from '../services/api';
 import { setQuestions } from '../actions';
@@ -45,6 +46,9 @@ class QuestionPage extends React.Component {
   }
 
   render() {
+    const { questions } = this.props;
+    const { index } = this.state;
+    if (index === questions.length - 1) return <Redirect to="/feedback" />;
     return (
       <div>
         <Header />

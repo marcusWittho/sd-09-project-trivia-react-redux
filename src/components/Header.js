@@ -8,7 +8,6 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.getGravatarInfo = this.getGravatarInfo.bind(this);
-    this.getScore = this.getScore.bind(this);
     this.state = { avatar: '' };
   }
 
@@ -23,17 +22,8 @@ class Header extends React.Component {
     this.setState({ avatar });
   }
 
-  getScore() {
-    let score = 0;
-    const timer = 0;
-    const dificult = 0;
-    const baseScore = 10;
-    score = baseScore + (timer * dificult);
-    return score;
-  }
-
   render() {
-    const { name } = this.props;
+    const { name, totalScore } = this.props;
     const { avatar } = this.state;
     return (
       <header>
@@ -44,7 +34,7 @@ class Header extends React.Component {
         </h3>
         <h3>
           Score:
-          <span data-testid="header-score">{ this.getScore() }</span>
+          <span data-testid="header-score">{ totalScore }</span>
         </h3>
       </header>
     );
@@ -53,6 +43,7 @@ class Header extends React.Component {
 
 Header.propTypes = { name: string, email: string }.isRequired;
 
-const mapStateToProps = ({ user: { name, email } }) => ({ name, email });
+const mapStateToProps = ({ user: { name, email, totalScore } }) => (
+  { name, email, totalScore });
 
 export default connect(mapStateToProps)(Header);
