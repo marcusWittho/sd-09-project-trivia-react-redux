@@ -9,6 +9,7 @@ class InfoGames extends Component {
       questions: [],
       indice: 0,
       isLoading: true,
+      userAnswer: '',
     };
     this.requestAPI = this.requestAPI.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
@@ -29,7 +30,7 @@ class InfoGames extends Component {
   }
 
   renderQuestions() {
-    const { questions, indice } = this.state;
+    const { questions, indice, userAnswer } = this.state;
     const crrQuestion = questions[indice];
     const alternativesOld = crrQuestion.incorrect_answers
       .concat(crrQuestion.correct_answer);
@@ -46,9 +47,8 @@ class InfoGames extends Component {
           <button
             key={ Math.random() }
             type="button"
-            onClick={
-              () => this.setState((prevState) => ({ indice: prevState.indice + 1 }))
-            }
+            onClick={ ({ target }) => this.setState({ userAnswer: target.value }) }
+            className={ crrQuestion.correct_answer ? 'ok' : 'fail' }
           >
             {alternative === crrQuestion.correct_answer ? (
               <p data-testid="correct-answer">{alternative}</p>
@@ -62,6 +62,14 @@ class InfoGames extends Component {
             ) }
           </button>
         ))}
+        <button
+          type="button"
+          onClick={
+            () => this.setState((prevState) => ({ indice: prevState.indice + 1 }))
+          }
+        >
+          Próximo
+        </button>
       </div>
     );
   }
