@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateIndex } from '../redux/actions';
+import Timer from './timer';
 
 class BooleanAnswers extends Component {
   constructor(props) {
@@ -103,6 +104,7 @@ class BooleanAnswers extends Component {
         })}
         { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
           : null}
+        <Timer />
       </div>
     );
   }
