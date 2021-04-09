@@ -16,7 +16,7 @@ const saveUserData = (name, email, token) => ({
 const saveGameData = (questions) => ({
   type: SAVE_GAME_DATA,
   questions,
-})
+});
 
 const receiveErrorTokenAPI = () => ({ type: RECEIVE_ERROR_TOKEN_API });
 
@@ -42,4 +42,4 @@ export const fetchGameData = (token) => async (dispatch) => {
   } catch (error) {
     return dispatch(receiveErrorGameAPI(error));
   }
-}
+};

@@ -16,7 +16,7 @@ function gameReducer(state = INITIAL_STATE, action) {
   case RECEIVE_ERROR_GAME_API:
     return {
       ...state,
-      error: action.error
+      error: action.error,
     };
   default:
     return state;
