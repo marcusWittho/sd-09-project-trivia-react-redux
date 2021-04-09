@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as Api from '../../service/Api';
 import '../../styles/components/Questions.css';
-import { stopTime } from '../../redux/actions/index';
-import { addPlayer } from '../../redux/actions/index';
+import { stopTime, addPlayer } from '../../redux/actions/index';
 
 class Questions extends React.Component {
   constructor(props) {

@@ -48,7 +48,7 @@ class Timer extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchTimesUp: () => dispatch(timesUp()),
-  dispatchSeconds: (seconds) => dispatch(getSeconds(seconds))
+  dispatchSeconds: (seconds) => dispatch(getSeconds(seconds)),
 });
 
 const mapStateToProps = (state) => ({

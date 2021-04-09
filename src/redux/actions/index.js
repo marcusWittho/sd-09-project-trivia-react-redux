@@ -4,7 +4,6 @@ export const STOP_TIME = 'STOP_TIME';
 export const GET_SECONDS = 'GET_SECONDS';
 export const ADD_PLAYER = 'ADD_PLAYER';
 
-
 export const submitUser = (name, email, token) => ({
   type: SUBMIT_USER,
   name,
