@@ -13,14 +13,14 @@ const dispatchExpired = () => ({
   type: SET_EXPIRED,
 });
 
-export const dispatchLoading = () => ({
+const dispatchLoading = () => ({
   type: SET_LOADING,
 });
 
-export const setQuestions = (token, type, category, difficulty) => async (dispatch) => {
+export const setQuestions = (token) => async (dispatch) => {
   dispatch(dispatchLoading());
   const magicNumber = 3;
-  const questions = await getQuestions(token, type, category, difficulty);
+  const questions = await getQuestions(token);
   if (questions.response_code === magicNumber) {
     dispatch(dispatchExpired());
   } else {
