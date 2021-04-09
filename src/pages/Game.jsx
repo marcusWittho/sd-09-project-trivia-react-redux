@@ -48,7 +48,7 @@ class Game extends Component {
       );
     });
     return (
-      <div>
+      <>
         <header>
           <img data-testid="header-profile-picture" src={ image } alt="player avatar" />
           <span data-testid="header-player-name">{player.name}</span>
@@ -57,6 +57,7 @@ class Game extends Component {
         <span>
           <Link to="/feedback">feedback</Link>
         </span>
+
         <div>
           <h2 data-testid="question-category">{questions[i].category}</h2>
           <h3 data-testid="question-text">{questions[i].question}</h3>
@@ -69,6 +70,7 @@ class Game extends Component {
           </span>
         </div>
       </div>
+      </>
     );
   }
 
