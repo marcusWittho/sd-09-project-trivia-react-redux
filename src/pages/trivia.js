@@ -12,10 +12,44 @@ class trivia extends React.Component {
       index: 0,
       loading: true,
       answered: false,
+      time: 30,
+      disabled: false,
     };
+    this.timer = 30;
     this.handleClick = this.handleClick.bind(this);
     this.handleGetToken = this.handleGetToken.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
+    this.countDown = this.countDown.bind(this);
+  }
+
+  componentDidMount() {
+    this.startTimer();
+  }
+
+  componentDidUpdate() {
+    this.startTimer();
+  }
+
+  countDown() {
+    const { time } = this.state;
+    const { propSelectedAnswer } = this.props;
+    const nextTime = time - 1;
+    this.setState({ time: nextTime });
+    if (nextTime === 0) {
+      clearInterval(this.timer);
+      propSelectedAnswer(true);
+      this.setState({ answered: true, disabled: true });
+      this.timer = 30;
+    }
+  }
+
+  startTimer() {
+    const maxTime = 30;
+    const { answered } = this.state;
+    if (this.timer === maxTime && !answered) {
+      const second = 1000;
+      this.timer = setInterval(this.countDown, second);
+    }
   }
 
   handleAnswer() {
@@ -33,28 +67,40 @@ class trivia extends React.Component {
     const { index } = this.state;
     const { propSetNext, propSelectedAnswer } = this.props;
     if (index === maxIndex) {
-      this.setState((previousState) => ({ index: previousState.index, answered: false }));
+      this.setState((previousState) => ({
+        index: previousState.index,
+        answered: false,
+        time: 30,
+        disabled: false,
+      }));
     } else {
       this.setState((previousState) => ({
         index: previousState.index + 1,
         answered: false,
+        time: 30,
+        disabled: false,
       }));
     }
-    await propSelectedAnswer(false);
+    await propSelectedAnswer(null);
     await propSetNext();
   }
 
   render() {
     const { results } = this.props;
-    const { index, loading, answered } = this.state;
+    const { index, loading, answered, time, disabled } = this.state;
     const question = results.find((_question, i) => i === index);
     if (loading) this.handleGetToken();
     return (
       <div className="App">
         <Header />
         <h1>Trivia</h1>
-        {(!loading)
-        && <Question question={ question } handleAnswer={ this.handleAnswer } />}
+        {
+          (!loading) && <Question
+            question={ question }
+            handleAnswer={ this.handleAnswer }
+            disabled={ disabled }
+          />
+        }
         <button
           data-testid="btn-next"
           type="button"
@@ -63,6 +109,9 @@ class trivia extends React.Component {
         >
           Próxima
         </button>
+        <div>
+          { time }
+        </div>
       </div>
     );
   }
@@ -72,10 +121,13 @@ trivia.propTypes = {
   propQuestions: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer: { token, results, next } }) => ({
+const mapStateToProps = ({
+  actionsReducer: { token, results, next, selectedAnswer },
+}) => ({
   token,
   results,
   next,
+  selectedAnswer,
 });
 
 const mapDispatchToProps = (dispatch) => ({

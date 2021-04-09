@@ -19,6 +19,7 @@ class Question extends React.Component {
 
   render() {
     const {
+      disabled,
       selectedAnswer,
       question: {
         correct_answer: correctAnswer,
@@ -35,6 +36,7 @@ class Question extends React.Component {
           type="button"
           className={ selectedAnswer && 'correct' }
           onClick={ this.handleClick }
+          disabled={ disabled }
         >
           {correctAnswer}
         </button>
@@ -55,6 +57,7 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
+  disabled: PropTypes.bool,
   handleAnswer: PropTypes.func,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
