@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Header from '../components/header';
-import { getQuestions, setNext } from '../redux/actions';
+import { getQuestions, setNext, setSelectedAnswer } from '../redux/actions';
 import Question from '../components/question';
 
 class trivia extends React.Component {
@@ -31,7 +31,7 @@ class trivia extends React.Component {
   async handleClick() {
     const maxIndex = 4;
     const { index } = this.state;
-    const { propSetNext } = this.props;
+    const { propSetNext, propSelectedAnswer } = this.props;
     if (index === maxIndex) {
       this.setState((previousState) => ({ index: previousState.index, answered: false }));
     } else {
@@ -40,6 +40,7 @@ class trivia extends React.Component {
         answered: false,
       }));
     }
+    await propSelectedAnswer(false);
     await propSetNext();
   }
 
@@ -80,6 +81,8 @@ const mapStateToProps = ({ actionsReducer: { token, results, next } }) => ({
 const mapDispatchToProps = (dispatch) => ({
   propQuestions: () => dispatch(getQuestions()),
   propSetNext: () => dispatch(setNext()),
+  propSelectedAnswer:
+    (selectedAnswer) => dispatch(setSelectedAnswer(selectedAnswer)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(trivia);

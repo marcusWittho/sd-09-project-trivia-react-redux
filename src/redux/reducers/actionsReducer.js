@@ -3,6 +3,7 @@ import {
   SET_NAME_EMAIL,
   SET_QUESTIONS,
   SET_NEXT,
+  SET_SELECTED_ANSWER,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -12,6 +13,7 @@ const INITIAL_STATE = {
   score: 0,
   results: [],
   next: false,
+  selectedAnswer: null,
 };
 
 function actionsReducer(state = INITIAL_STATE, action) {
@@ -27,6 +29,8 @@ function actionsReducer(state = INITIAL_STATE, action) {
     return { ...state, results: action.results };
   case SET_NEXT:
     return { ...state, next: !state.next };
+  case SET_SELECTED_ANSWER:
+    return { ...state, selectedAnswer: action.selectedAnswer };
   default: return state;
   }
 }

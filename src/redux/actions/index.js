@@ -5,6 +5,7 @@ export const SET_NAME_EMAIL = 'SET_NAME_EMAIL';
 export const SET_GRAVATAR = 'SET_GRAVATAR';
 export const SET_QUESTIONS = 'SET_QUESTIONS';
 export const SET_NEXT = 'SET_NEXT';
+export const SET_SELECTED_ANSWER = 'SET_SELECTED_ANSWER';
 
 const setTokenCode = (token) => ({
   type: SET_TOKEN,
@@ -36,4 +37,9 @@ export const setNameAndEmail = (name, email) => ({
   type: SET_NAME_EMAIL,
   name,
   email,
+});
+
+export const setSelectedAnswer = (selectedAnswer) => ({
+  type: SET_SELECTED_ANSWER,
+  selectedAnswer,
 });
