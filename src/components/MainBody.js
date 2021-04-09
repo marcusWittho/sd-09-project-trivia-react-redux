@@ -13,9 +13,11 @@ class MainBody extends React.Component {
       correctAnswer: '',
       incorrectAnswers: '',
       styleObj: {},
+      timer: 5,
     };
 
     this.showAnswers = this.showAnswers.bind(this);
+    this.tictac = this.tictac.bind(this);
   }
 
   componentDidUpdate() {
@@ -34,10 +36,25 @@ class MainBody extends React.Component {
       correctAnswer: results[0].correct_answer,
       incorrectAnswers: results[0].incorrect_answers,
     });
+    this.timeOut();
   }
 
-  // renderQuestion(question) {
-  // }
+  timeOut() {
+    const { timer } = this.state;
+    const temporizador = setInterval(this.tictac, 1000);
+    if (timer === 1) {
+      clearInterval(temporizador);
+      console.log('cai aqui');
+    }
+  }
+
+  tictac() {
+    const { timer } = this.state;
+    if (timer > 0) {
+      this.setState({ timer: timer - 1 });
+    }
+    console.log(timer);
+  }
 
   showAnswers() {
     this.setState({
