@@ -44,6 +44,13 @@ class GameQuestions extends Component {
           className={ answerClicked ? 'incorrect' : null }
           onClick={ this.handleClick }
           disabled={ time < 1 }
+          style={ {
+            width: '150px',
+            margin: '5px',
+            borderRadius: '5px',
+            padding: '3px',
+            backgroundColor: 'rgb(153, 209, 153)',
+          } }
         >
           {incorrect}
         </button>
@@ -58,6 +65,13 @@ class GameQuestions extends Component {
         className={ answerClicked ? 'correct' : null }
         onClick={ this.handleClick }
         disabled={ time < 1 }
+        style={ {
+          width: '150px',
+          margin: '5px',
+          borderRadius: '5px',
+          padding: '3px',
+          backgroundColor: 'rgb(153, 209, 153)',
+        } }
       >
         {correct}
       </button>
@@ -158,22 +172,26 @@ class GameQuestions extends Component {
     if (redirect) return <Redirect to="/feedback" />;
     this.createStore();
     return (
-      <div>
-        <h2>Pergunta</h2>
-        <h3>
+      <div className="form-group">
+        <h2 className="question">Pergunta</h2>
+        <h3 className="timer">
           Tempo:
           { time }
         </h3>
-        <p data-testid="question-category">
+        <p
+          data-testid="question-category"
+          className="question-category"
+        >
           Categoria:
           {questions && questions[questionNumber].category}
         </p>
         <p
           data-testid="question-text"
+          className="question-text"
         >
           {questions && questions[questionNumber].question}
         </p>
-        <div>
+        <div className="container-questions">
           {questions && this.setAnswer(
             questions[questionNumber].incorrect_answers,
             questions[questionNumber].correct_answer,
@@ -184,8 +202,9 @@ class GameQuestions extends Component {
             type="button"
             onClick={ this.handleNext }
             data-testid="btn-next"
+            className="btn-next"
           >
-            Proxima
+            Próxima
           </button>
         )}
       </div>

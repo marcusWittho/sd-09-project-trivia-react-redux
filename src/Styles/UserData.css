@@ -1,0 +1,24 @@
+.imagem-header {
+  border-radius: 50px;
+  height: 70px;
+  width: 70px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.name {
+  color: white;
+  font-size: 25px;
+
+}
+
+.score {
+  color: white;
+  font-size: 25px;
+}
+

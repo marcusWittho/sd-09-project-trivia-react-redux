@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap') ;
+
+body {
+  background-color: black;
+}
+
+.btn-play {
+  background-color: green;
+  border: 1px solid transparent;
+  border-color: green;
+  border-radius: 0.25rem;
+  color: white;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 2px;
+  text-align: center;
+  width: 150px;
+}
+
+.btn-settings {
+  background-color: green;
+  border: 1px solid transparent;
+  border-color: green;
+  border-radius: 0.25rem;
+  color: white;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  width: 150px;
+}
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  color: green;
+  font-family: Cinzel , serif;
+  font-size: 200px;
+  margin: 0;
+  margin-top: 15%;
+  text-align: center;
+  text-shadow: 5px 2px 2px rgb(255, 255, 255, 0.5);
+}
+
+.input-login {
+  height: 20px;
+  margin: 3px;
+  width: 200px;
+}
+
+.insert-login {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+::placeholder {
+  color: rgb(49, 49, 49);
+  text-align: center;
+}

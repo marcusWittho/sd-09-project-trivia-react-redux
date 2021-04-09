@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap') ;
+
+.settings-title {
+  color: green;
+  font-family: Cinzel , serif;
+  font-size: 100px;
+  margin: 0;
+  text-align: center;
+  text-shadow: 5px 2px 2px green;
+}

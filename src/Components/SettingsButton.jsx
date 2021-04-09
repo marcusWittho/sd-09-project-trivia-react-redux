@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import '../Styles/Login.css';
 
 class SettingsButton extends Component {
   render() {
@@ -8,6 +9,7 @@ class SettingsButton extends Component {
         <button
           data-testid="btn-settings"
           type="button"
+          className="btn-settings"
         >
           Settings
         </button>
