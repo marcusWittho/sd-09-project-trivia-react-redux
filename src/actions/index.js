@@ -1,6 +1,6 @@
 import md5 from 'crypto-js/md5';
 import { LOG_USER, SEND_TOKEN } from './actionTypes';
-import fetchToken from '../services/fetchToken';
+import { fetchToken } from '../services/fetchApis';
 
 const logUserAction = (userInfo) => ({
   type: LOG_USER,
