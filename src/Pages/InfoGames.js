@@ -27,30 +27,32 @@ class InfoGames extends Component {
     });
   }
 
-    render() {
-        const { questions, indice, isLoading } = this.state;
-        const crrQuestion = questions[indice];
-        return(
-          isLoading ? <p>Loading...</p> : 
-          <div>
-          <Header />
-          <h1 data-testid="question-category">
-            {crrQuestion.category}
-          </h1>
-          <h2 data-testid="question-text">{crrQuestion.question}</h2>
-          <button onClick={() => this.setState((prevState) => ({indice: prevState.indice + 1}))}>
-            <p data-testid="correct-answer">{crrQuestion.correct_answer}</p>
-          </button>
-          {crrQuestion.incorrect_answers.map((incorrectAnswer, index) => (
-            <button
-              key={ Math.random() }
-              onClick={() => this.setState((prevState) => ({indice: prevState.indice + 1}))}
-            >
-              <p data-testid={ `wrong-answer-${index}` } key={ Math.random() }>
-                {incorrectAnswer}
-              </p>
-            </button>
-          ))}
+  renderQuestions() {
+    const { questions, indice } = this.state;
+    const crrQuestion = questions[indice];
+    const alternativesOld = crrQuestion.incorrect_answers
+      .concat(crrQuestion.correct_answer);
+    const numberMagic = 0.5;
+    const alternatives = alternativesOld.sort(() => Math.random() - numberMagic);
+    return (
+      <div>
+        <Header />
+        <h1 data-testid="question-category">
+          {crrQuestion.category}
+        </h1>
+        <h2 data-testid="question-text">{crrQuestion.question}</h2>
+        {alternatives.map((alternative, index) => (
+          <button
+            key={ Math.random() }
+            type="button"
+            onClick={
+              () => this.setState((prevState) => ({ indice: prevState.indice + 1 }))
+            }
+            data-testid={ alternative === crrQuestion.correct_answer ? 'correct-answer'
+              : `wrong-answer-${index}` }
+          >
+            {alternative}
+          </button>))}
         </div>
         )
   }
