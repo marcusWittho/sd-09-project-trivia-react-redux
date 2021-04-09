@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 // import questionsAdd from '../redux/actions';
 import Header from '../Components/Header';
 import TriviaCardsBA from '../Components/TriviaCardsBA';
 import TriviaCardsMA from '../Components/TriviaCardsMA';
 import './answers.css';
+import Feedback from './Feedback';
 
 class Trivia extends Component {
   constructor(props) {
@@ -28,6 +30,14 @@ class Trivia extends Component {
   }
 
   render() {
+    const { questIndex, questions } = this.props;
+    const quatro = 4;
+    if (questions && questions.length === 0) {
+      return <Redirect to="/" />;
+    }
+    if (questIndex > quatro) {
+      return <Feedback />;
+    }
     return (
       <div>
         <Header />
