@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import addUserInfo from '../actions';
+import fetchTrivia from '../actions/trivia';
 
 class Login extends React.Component {
   constructor() {
@@ -11,6 +12,7 @@ class Login extends React.Component {
       email: '',
     };
     this.getValue = this.getValue.bind(this);
+    this.proceedToGame = this.proceedToGame.bind(this);
   }
 
   getValue({ target: { name, value } }) {
@@ -19,9 +21,14 @@ class Login extends React.Component {
     });
   }
 
+  proceedToGame() {
+    const { addUserInfo: addUser, getTriviaQuestions } = this.props;
+    addUser(this.state);
+    getTriviaQuestions();
+  }
+
   render() {
     const { name, email } = this.state;
-    const { addUserInfo: addUser } = this.props;
     const disableButton = name === '' || email === '';
 
     return (
@@ -39,7 +46,7 @@ class Login extends React.Component {
           onChange={ this.getValue }
         />
         <input
-          onClick={ () => addUser(this.state) }
+          onClick={ this.proceedToGame }
           data-testid="btn-play"
           type="button"
           disabled={ disableButton }
@@ -52,10 +59,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   addUserInfo: (state) => dispatch(addUserInfo(state)),
+  getTriviaQuestions: () => dispatch(fetchTrivia()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   addUserInfo: PropTypes.func.isRequired,
+  getTriviaQuestions: PropTypes.func.isRequired,
 };
