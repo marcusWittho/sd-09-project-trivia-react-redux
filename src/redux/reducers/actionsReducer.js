@@ -2,6 +2,7 @@ import {
   SET_TOKEN,
   SET_NAME_EMAIL,
   SET_QUESTIONS,
+  SET_NEXT,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
   token: '',
   score: 0,
   results: [],
+  next: false,
 };
 
 function actionsReducer(state = INITIAL_STATE, action) {
@@ -23,6 +25,8 @@ function actionsReducer(state = INITIAL_STATE, action) {
       email: action.email };
   case SET_QUESTIONS:
     return { ...state, results: action.results };
+  case SET_NEXT:
+    return { ...state, next: !state.next };
   default: return state;
   }
 }

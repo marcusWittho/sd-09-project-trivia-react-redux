@@ -1,7 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import { setNext } from '../redux/actions';
+import '../css/questions.css';
 
 class Question extends React.Component {
+  constructor(props) {
+    const { next } = props;
+    super(props);
+    this.state = {
+      selectedAnswer: null,
+      next,
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  async handleClick(e) {
+    const { propSetNext } = this.props;
+    this.setState({ selectedAnswer: e.target });
+    await propSetNext();
+  }
+
   render() {
     const { handleAnswer, question: {
       correct_answer: correctAnswer,
@@ -9,6 +28,7 @@ class Question extends React.Component {
       question,
       category,
     } } = this.props;
+    const { selectedAnswer } = this.state;
     return (
       <div>
         <h2 data-testid="question-category">{category}</h2>
@@ -16,6 +36,7 @@ class Question extends React.Component {
         <button
           data-testid="correct-answer"
           type="button"
+          className={ selectedAnswer && 'correct' }
           onClick={ handleAnswer }
         >
           {correctAnswer}
@@ -25,6 +46,7 @@ class Question extends React.Component {
             data-testid={ `wrong-answer-${i}` }
             type="button"
             key={ element }
+            className={ selectedAnswer && 'incorrect' }
             onClick={ handleAnswer }
           >
             {element}
@@ -45,4 +67,12 @@ Question.propTypes = {
   }),
 }.isRequired;
 
-export default Question;
+const mapStateToProps = ({ actionsReducer: { next } }) => ({
+  next,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  propSetNext: () => dispatch(setNext()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
