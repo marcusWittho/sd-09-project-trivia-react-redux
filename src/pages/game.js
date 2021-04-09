@@ -9,8 +9,10 @@ class Game extends React.Component {
     super(props);
     this.state = {
       currentQuestion: 0,
+      nextButton: false,
     };
     this.clickButton = this.clickButton.bind(this);
+    this.enableNextButton = this.enableNextButton.bind(this);
   }
 
   clickButton() {
@@ -20,6 +22,7 @@ class Game extends React.Component {
       currentQuestion += 1;
       this.setState(() => ({
         currentQuestion,
+        nextButton: false,
       }));
     } else {
       const { history: { push } } = this.props;
@@ -27,8 +30,13 @@ class Game extends React.Component {
     }
   }
 
+  enableNextButton() {
+    const { nextButton } = this.state;
+    if (!nextButton) this.setState({ nextButton: true });
+  }
+
   render() {
-    const { currentQuestion } = this.state;
+    const { currentQuestion, nextButton } = this.state;
     const { questions, loading } = this.props;
     return (
       (loading) ? <p>carregando</p>
@@ -36,13 +44,20 @@ class Game extends React.Component {
           <div>
             <Header />
             <p>Game Page</p>
-            <Question questionData={ questions[currentQuestion] } />
-            <button
-              type="button"
-              onClick={ this.clickButton }
-            >
-              Próxima
-            </button>
+            <Question
+              questionData={ questions[currentQuestion] }
+              key={ currentQuestion }
+              enableNextButton={ this.enableNextButton }
+            />
+            { (nextButton) ? (
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.clickButton }
+              >
+                Próxima
+              </button>
+            ) : null }
           </div>
         )
     );

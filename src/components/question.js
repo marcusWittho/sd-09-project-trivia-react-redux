@@ -84,7 +84,10 @@ class Question extends React.Component {
         difficulty,
         question,
       },
+      enableNextButton,
     } = this.props;
+    const { disabled } = this.state;
+    if (disabled) enableNextButton();
     return (
       <div className="question">
         <p
@@ -114,6 +117,7 @@ Question.propTypes = {
     correctAnswer: PropTypes.string.isRequired,
     incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
+  enableNextButton: PropTypes.func.isRequired,
 };
 
 export default Question;
