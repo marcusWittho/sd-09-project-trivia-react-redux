@@ -17,7 +17,7 @@ class Question extends React.Component {
     };
     this.countScore = this.countScore.bind(this);
   }
-  
+
   // Foi feito para arrumar o erro que dava no console.log
   componentDidUpdate() {
     const { enableNextButton } = this.props;
