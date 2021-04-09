@@ -5,7 +5,7 @@ class Settings extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 data-testid="settings-title">Página de configurações!</h1>
+          <h1 data-testid="settings-title">Page of Settings!</h1>
         </header>
       </div>
     );

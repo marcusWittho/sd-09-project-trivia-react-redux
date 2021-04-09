@@ -71,7 +71,7 @@ export default class LoginForm extends Component {
         </button>
         <Link to="/settings">
           <button type="button" data-testid="btn-settings">
-            Configurar
+            Configurações
           </button>
         </Link>
       </form>
