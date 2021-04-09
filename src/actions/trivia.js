@@ -3,7 +3,7 @@ import {
   GET_TRIVIA,
   FAILED_TRIVIA_REQUEST,
 } from './types';
-import { getTriviaQuestions } from '../services';
+import getTriviaQuestions from '../services/api';
 
 const requestTrivia = () => ({ type: REQUEST_TRIVIA });
 

@@ -32,7 +32,7 @@ const fetchTriviaQuestions = async (token) => {
   return fetchGenericAPI(apiUrl);
 };
 
-export const getTriviaQuestions = async () => {
+const getTriviaQuestions = async () => {
   const tokenIsInStorage = retrieveTokenFromStorage();
   const token = !tokenIsInStorage ? await fetchTriviaToken() : tokenIsInStorage;
   const response = await fetchTriviaQuestions(token);
@@ -40,3 +40,5 @@ export const getTriviaQuestions = async () => {
   if (tokenIsExpired) return fetchTriviaQuestions(await fetchTriviaToken());
   return response;
 };
+
+export default getTriviaQuestions;
