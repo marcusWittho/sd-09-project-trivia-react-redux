@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getToken } from '../services/Api';
 
 export default class LoginForm extends Component {
@@ -61,6 +62,11 @@ export default class LoginForm extends Component {
         >
           JOGAR
         </button>
+        <Link to="/settings">
+          <button type="button" data-testid="btn-settings">
+            Configurar
+          </button>
+        </Link>
       </form>
     );
   }
