@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import * as api from '../services/fetchApi';
-import clickPlay from '../redux/actions/index';
+import { clickPlay } from '../redux/actions/index';
 
 class Login extends React.Component {
   constructor(props) {

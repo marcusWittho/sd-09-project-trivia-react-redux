@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {incrementScore } from '../redux/actions/index';
 import Header from '../components/Header';
 import * as api from '../services/fetchApi';
 
@@ -9,13 +11,40 @@ class InfoGames extends Component {
       questions: [],
       indice: 0,
       isLoading: true,
+      isAnswered: false,
     };
     this.requestAPI = this.requestAPI.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
+    this.checkAnswer = this.checkAnswer.bind(this);
   }
 
   componentDidMount() {
     this.requestAPI();
+    if (localStorage.getItem('state')) {
+      const { dispatchIncrementScore } = this.props;
+      const player = JSON.parse(localStorage.getItem('state'));
+      const { score } = player;
+      dispatchIncrementScore(score);
+    }
+  }
+
+  checkAnswer(correctAnswer, event) {
+    event.preventDefault();
+    const { isAnswered } = this.state;
+    const { dispatchIncrementScore } = this.props;
+    const { target } = event;
+    const { innerText: answer } = target;
+    if (answer === correctAnswer && !isAnswered) {
+      const player = JSON.parse(localStorage.getItem('state'));
+      const { assertions, score } = player;
+      player.score = score + 1;
+      player.assertions = assertions + 1;
+      localStorage.setItem('state', JSON.stringify(player));
+      dispatchIncrementScore(player.score);
+    }
+    this.setState({ isAnswered: true });
+    this.setState((prevState) => ({ indice: prevState.indice + 1 }));
+    this.setState({ isAnswered: false });
   }
 
   requestAPI() {
@@ -47,7 +76,7 @@ class InfoGames extends Component {
             key={ Math.random() }
             type="button"
             onClick={
-              () => this.setState((prevState) => ({ indice: prevState.indice + 1 }))
+              event => this.checkAnswer(crrQuestion.correct_answer, event)
             }
             data-testid={ alternative === crrQuestion.correct_answer ? 'correct-answer'
               : `wrong-answer-${index}` }
@@ -67,4 +96,8 @@ class InfoGames extends Component {
     );
   }
 }
-export default InfoGames;
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchIncrementScore: (localScore) => dispatch(incrementScore(localScore)) });
+
+export default connect(null, mapDispatchToProps)(InfoGames);

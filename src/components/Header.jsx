@@ -12,12 +12,21 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    const { email } = this.props;
+    const { email, username } = this.props;
+    const player = {
+      name: username,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
+    if (!localStorage.getItem('state')) {
+      localStorage.setItem('state', JSON.stringify(player));
+    }
     api.fetchGravatar(email).then((imgUrl) => this.setState({ imgUrl }));
   }
 
   render() {
-    const { username } = this.props;
+    const { username, score } = this.props;
     const { imgUrl } = this.state;
     return (
       <div>
@@ -27,7 +36,7 @@ class Header extends Component {
             { username }
           </span>
         </header>
-        <span data-testid="header-score">Score: 0</span>
+        <p data-testid="header-score">{score}</p>
       </div>
     );
   }
@@ -36,6 +45,7 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   username: state.user.username,
   email: state.user.email,
+  score: state.score.score,
 });
 
 Header.propTypes = {
