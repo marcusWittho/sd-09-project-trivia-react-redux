@@ -64,7 +64,7 @@ class Login extends Component {
   render() {
     const { playerEmailField, playerNameField, button, loginValidation } = this.state;
     const { loginDispatch } = this.props;
-    if (loginValidation) return <Redirect to="/game" />;
+    if (loginValidation) return <Redirect push to="/game" />;
     return (
       <div className="App">
         <header className="App-header">

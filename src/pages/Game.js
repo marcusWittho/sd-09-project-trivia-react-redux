@@ -19,11 +19,13 @@ class Game extends Component {
 
   componentDidMount() {
     const { triviaObject } = this.props;
-    console.log(triviaObject);
     const errorCode = 3;
-    const { response_code: responseCode, results } = triviaObject;
 
-    this.validateResponseFromApi(responseCode, errorCode, results);
+    if (triviaObject) {
+      const { response_code: responseCode, results } = triviaObject;
+
+      this.validateResponseFromApi(responseCode, errorCode, results);
+    }
   }
 
   validateResponseFromApi(responseCode, errorCode, results) {
