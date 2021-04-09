@@ -20,10 +20,13 @@ class feedbackPage extends React.Component {
     return (
       <div>
         <header className="feedback-header">
-          <p className="feedback-player-name" data-testid="eader-player-name">{ name }</p>
+          <p
+            className="feedback-player-name"
+            data-testid="header-player-name"
+          >
+            { name }
+          </p>
           <p data-testid="header-score">
-            Score:
-            {' '}
             { score }
           </p>
           <img
@@ -32,6 +35,7 @@ class feedbackPage extends React.Component {
             data-testid="header-profile-picture"
           />
         </header>
+        <p data-testid="feedback-text">Boua!</p>
       </div>
     );
   }
