@@ -21,6 +21,7 @@ class Questions extends Component {
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+    this.createScore = this.createScore.bind(this);
   }
 
   componentDidMount() {
@@ -47,12 +48,31 @@ class Questions extends Component {
     this.setState({
       questionAnswered: true,
       selectedAnswer: value,
-    }, () => this.isAnswerCorrect());
+    }, () => this.createScore());
   }
 
   isAnswerCorrect() {
     const { selectedAnswer } = this.state;
     return selectedAnswer === 'correct-answer';
+  }
+
+  createScore() {
+    const { currentQuestionIndex, seconds, selectedAnswer  } = this.state;
+    const { questions } = this.props;
+    const questionDifficultyScore = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    let score = 0;
+    if (this.isAnswerCorrect()) {
+      const scoreConstant = 10;
+      const currentQuestionDifficultyScore = questions[currentQuestionIndex].difficulty;
+      score = scoreConstant
+      + (seconds * questionDifficultyScore[currentQuestionDifficultyScore]);
+      return score;
+    }
+    return score;
   }
 
   startTimer() {
