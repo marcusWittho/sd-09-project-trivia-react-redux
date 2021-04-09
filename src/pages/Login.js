@@ -26,7 +26,6 @@ class Login extends Component {
   async fetchToken() {
     const token = await tokenAPI();
     localStorage.setItem('token', token);
-    console.log(token);
   }
 
   async handleClick() {
