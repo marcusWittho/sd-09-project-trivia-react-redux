@@ -13,7 +13,7 @@ class MainBody extends React.Component {
       correctAnswer: '',
       incorrectAnswers: '',
       styleObj: {},
-      timer: 5,
+      timer: 30,
     };
 
     this.showAnswers = this.showAnswers.bind(this);
@@ -69,13 +69,14 @@ class MainBody extends React.Component {
 
   render() {
     const { loading } = this.props;
-    const { category, question, correctAnswer, incorrectAnswers, styleObj } = this.state;
+    const { category, question, correctAnswer, incorrectAnswers, styleObj, timer } = this.state;
     if (loading) {
       return <p>Loading...</p>;
     }
     return (
       // <div></div>
       <div>
+        <h3>{ timer }</h3>
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
         <button
