@@ -7,35 +7,33 @@ class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timer: props.timer,
-      btnState: false,
+      timer: 30,
     };
 
-    this.SetTime = this.SetTime.bind(this);
+    this.setTime = this.setTime.bind(this);
   }
 
   componentDidMount() {
-    this.SetTime();
+    const interval = 1000;
+    this.intervalId = setInterval(this.setTime, interval);
   }
 
-  SetTime() {
-    const interval = 1000;
-    this.timerID = setInterval(() => {
-      const { timer } = this.state;
-      if (timer > 0) {
-        this.setState((state) => ({ timer: state.timer - 1 }));
-      } else if (timer <= 1) {
-        this.setState({ btnState: true });
-        clearInterval(this.timerID);
-      }
-    }, interval);
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  setTime() {
+    const { timer } = this.state;
+    if ((timer) > 0) {
+      this.setState((prevState) => ({ timer: prevState.timer - 1 }));
+    }
   }
 
   render() {
     const { stateOfBtn } = this.props;
-    const { timer, btnState } = this.state;
+    const { timer } = this.state;
     if (timer < 1) {
-      stateOfBtn(btnState);
+      stateOfBtn(true);
     }
     return (
       <p>{timer}</p>
@@ -49,7 +47,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 Timer.propTypes = {
   stateOfBtn: PropTypes.func.isRequired,
-  timer: PropTypes.number.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);

@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import getQuestionsApiAction from '../redux/Actions/getRequestQuestionsApiAction';
 import Header from '../components/Header';
 import NextQuestionButton from '../components/NextQuestionButton';
 import Timer from '../components/Timer';
+import AnswersButton from '../components/AnswersButton';
 import '../styles/styleButonsAnswers.css';
 
 class ScreenGame extends React.Component {
@@ -28,6 +30,7 @@ class ScreenGame extends React.Component {
       timer: 30,
       changeClass: false,
       indexQuestion: 0,
+      redirectToFeedback: false,
     };
 
     this.updateState = this.updateState.bind(this);
@@ -37,6 +40,7 @@ class ScreenGame extends React.Component {
     this.difficultScore = this.difficultScore.bind(this);
     this.submitAnswer = this.submitAnswer.bind(this);
     this.setIndexQuestion = this.setIndexQuestion.bind(this);
+    this.setSettingsRedirect = this.setSettingsRedirect.bind(this);
   }
 
   componentDidMount() {
@@ -47,41 +51,17 @@ class ScreenGame extends React.Component {
     localStorage.setItem('state', JSON.stringify(player));
   }
 
-  componentDidUpdate(props, state) {
-    const { questions } = this.props;
-    const { results } = questions;
+  componentDidUpdate(props) {
     if (props !== this.props) {
-      const { indexQuestion } = state;
-      const { difficulty } = results[indexQuestion];
-      const { category } = results[indexQuestion];
-      const { question } = results[indexQuestion];
-      const correctAnswer = results[indexQuestion].correct_answer;
-      const incorrectAnswer = results[indexQuestion].incorrect_answers
-        .map((answer) => answer);
-      const concatAllAnswers = [...incorrectAnswer, correctAnswer];
-
-      const mixTheAnswers = concatAllAnswers
-        .map((asnwer) => ({ sort: Math.random(), value: asnwer }))
-        .sort((a, b) => a.sort - b.sort)
-        .map((answer) => answer.value);
-
-      const objQuestions = {
-        correct: correctAnswer,
-        allAnswers: mixTheAnswers,
-        category,
-        question,
-        difficulty,
-      };
-
-      this.updateState(objQuestions);
+      this.setIndexQuestion();
       this.addScore();
     }
   }
 
   setIndexQuestion() {
     const { indexQuestion } = this.state;
-    const four = 4;
-    if (indexQuestion < four) {
+    const five = 5;
+    if (indexQuestion < five) {
       this.setState((prevState) => ({
         indexQuestion: prevState.indexQuestion + 1,
         showNextQuestion: false,
@@ -89,17 +69,14 @@ class ScreenGame extends React.Component {
       }));
       const { questions } = this.props;
       const { results } = questions;
-      const { difficulty } = results[indexQuestion];
-      const { category } = results[indexQuestion];
-      const { question } = results[indexQuestion];
+      const { difficulty, category, question } = results[indexQuestion];
       const correctAnswer = results[indexQuestion].correct_answer;
       const incorrectAnswer = results[indexQuestion].incorrect_answers
         .map((answer) => answer);
       const concatAllAnswers = [...incorrectAnswer, correctAnswer];
       const mixTheAnswers = concatAllAnswers
         .map((asnwer) => ({ sort: Math.random(), value: asnwer }))
-        .sort((a, b) => a.sort - b.sort)
-        .map((answer) => answer.value);
+        .sort((a, b) => a.sort - b.sort).map((answer) => answer.value);
       const objQuestions = {
         correct: correctAnswer,
         allAnswers: mixTheAnswers,
@@ -108,6 +85,14 @@ class ScreenGame extends React.Component {
         difficulty,
       };
       this.updateState(objQuestions);
+    }
+  }
+
+  setSettingsRedirect() {
+    const { indexQuestion } = this.state;
+    const four = 4;
+    if (indexQuestion > four) {
+      this.setState({ redirectToFeedback: true });
     }
   }
 
@@ -161,7 +146,6 @@ class ScreenGame extends React.Component {
     this.setState({
       changeClass: true,
     });
-    this.submitAnswer();
   }
 
   changeClassCorrectAnswer() {
@@ -170,7 +154,6 @@ class ScreenGame extends React.Component {
     });
 
     this.addScore();
-    this.submitAnswer();
   }
 
   submitAnswer() {
@@ -180,48 +163,36 @@ class ScreenGame extends React.Component {
   }
 
   render() {
-    const { correct, allAnswers, timer,
+    const { correct, allAnswers, redirectToFeedback,
       category, question, changeClass, showNextQuestion } = this.state;
     const { btnState } = this.props;
+    if (redirectToFeedback) return <Redirect to="feedback" />;
     return (
       <section>
         <Header />
-
         <div>
           <h3 data-testid="question-category">{category}</h3>
           <p data-testid="question-text">{question}</p>
         </div>
-
-        {allAnswers.map((answer, index) => {
-          if (answer === correct) {
-            return (
-              <button
-                key={ Math.random() }
-                type="button"
-                data-testid="correct-answer"
-                onClick={ this.changeClassCorrectAnswer }
-                disabled={ btnState }
-                className={ (changeClass) ? 'correct' : null }
-              >
-                {answer}
-              </button>);
-          }
-          return (
-            <button
-              key={ Math.random() }
-              type="button"
-              data-testid={ `wrong-answer-${index}` }
-              disabled={ btnState }
-              className={ (changeClass) ? 'incorrect' : null }
-              onClick={ this.changeClassAnswer }
-            >
-              {answer}
-            </button>
-          );
-        })}
+        <AnswersButton
+          changeClassCorrectAnswer={ () => {
+            this.changeClassCorrectAnswer(); this.submitAnswer();
+          } }
+          changeClassAnswer={ () => {
+            this.changeClassAnswer(); this.submitAnswer();
+          } }
+          btnState={ btnState }
+          changeClass={ changeClass }
+          correct={ correct }
+          allAnswers={ allAnswers }
+        />
         { showNextQuestion
-          && <NextQuestionButton setIndexQuestion={ this.setIndexQuestion } /> }
-        <Timer timer={ timer } />
+          && <NextQuestionButton
+            setIndexQuestion={
+              () => { this.setIndexQuestion(); this.setSettingsRedirect(); }
+            }
+          /> }
+        <Timer />
       </section>
     );
   }
