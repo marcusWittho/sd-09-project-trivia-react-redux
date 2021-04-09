@@ -25,8 +25,8 @@ export async function fetchToken() {
   }
 }
 
-export async function fetchTrivia(token, quantiti) {
-  const url = `https://opentdb.com/api.php?amount=${quantiti}&token=${token}`;
+export async function fetchTrivia(token, quantity) {
+  const url = `https://opentdb.com/api.php?amount=${quantity}&token=${token}`;
   try {
     const response = await fetch(url);
     const questions = await response.json();
