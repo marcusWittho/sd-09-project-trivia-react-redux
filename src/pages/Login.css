@@ -6,3 +6,15 @@ main {
   justify-content: center;
   width: 100%;
 }
+
+.login-form-container {
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: #0000004d 0 19px 38px , #00000038 0 15px 12px;
+  display: flex;
+  flex-flow: column wrap;
+  height: 40%;
+  justify-content: center;
+  padding: 25px;
+  width: 30%;
+}

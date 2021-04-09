@@ -67,38 +67,39 @@ class Login extends React.Component {
     }
     return (
       <main>
-        <input
-          data-testid="input-player-name"
-          id="input-name"
-          type="text"
-          value={ name }
-          placeholder="Nome"
-          name="name"
-          onChange={ (e) => { this.changeHandler(e); } }
-        />
-        <input
-          data-testid="input-gravatar-email"
-          id="input-email"
-          type="email"
-          value={ email }
-          placeholder="Email"
-          name="email"
-          onChange={ (e) => { this.changeHandler(e); } }
-        />
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ this.enableButton() }
-          onClick={ () => {
-            doFormLogin({ name, email });
-            this.getAndSaveQuestions();
-          } }
-        >
-          Jogar
-        </button>
-        <Link to="/settings" data-testid="btn-settings">
-          <button type="button">Configurações do jogo</button>
-        </Link>
+        <section className="login-form-container">
+          <input
+            data-testid="input-player-name"
+            id="input-name"
+            type="text"
+            value={ name }
+            placeholder="Nome"
+            name="name"
+            onChange={ (e) => { this.changeHandler(e); } }
+          />
+          <input
+            data-testid="input-gravatar-email"
+            id="input-email"
+            type="email"
+            value={ email }
+            placeholder="Email"
+            name="email"
+            onChange={ (e) => { this.changeHandler(e); } }
+          />
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ this.enableButton() }
+            onClick={ () => {
+              doFormLogin({ name, email }); this.getAndSaveQuestions();
+            } }
+          >
+            Jogar
+          </button>
+          <Link to="/settings" data-testid="btn-settings">
+            <button type="button">Configurações do jogo</button>
+          </Link>
+        </section>
       </main>
     );
   }

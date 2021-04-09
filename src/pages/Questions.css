@@ -29,6 +29,7 @@
 
 button:active {
   border: none;
+  outline: none;
 }
 
 .next-enabled {
