@@ -1,0 +1,79 @@
+.app-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: Helvetica , sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  height: 100vh;
+  justify-content: center;
+}
+
+.App-logo {
+  height: 90px;
+  margin-bottom: 10px;
+  margin-left: 750px;
+  opacity: 0.7;
+  width: 140px;
+}
+
+.form-container {
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  color: rgb(29, 31, 29);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+}
+
+.form-container input {
+  border: 0.8px solid rgb(98, 94, 94);
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  display: block;
+  margin: 7px;
+  text-align: center;
+}
+
+.play-button {
+  background: #050505;
+  border: none;
+  border-radius: 5px;
+  color: rgb(238, 222, 222);
+  font-weight: 700;
+  margin-top: 10px;
+  opacity: 0.8;
+  padding: 8px;
+  transition: 0.3s;
+}
+
+.play-button:disabled {
+  opacity: 0.3;
+}
+
+.play-button:hover:enabled {
+  color: lime;
+  opacity: 1;
+}
+
+.configurations-button {
+  align-self: flex-end;
+  background: black;
+  background-image: url('https://iconsplace.com/wp-content/uploads/_icons/40e0d0/256/png/settings-icon-17-256.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 25px;
+  border: none;
+  border-radius: 3px;
+  height: 25px;
+  opacity: 0.9;
+  transition: 0.3s;
+  width: 25px;
+}
+
+.configurations-button:hover {
+  opacity: 1;
+}
