@@ -116,18 +116,21 @@ class Play extends React.Component {
     const easy = 1;
     const magicNumber = 10;
     const previousStorage = JSON.parse(localStorage.getItem('state'));
-    const { player: { score } } = previousStorage;
+    const { player: { score, assertions } } = previousStorage;
     switch (questionLevel) {
     case questionLevel === 'hard':
       previousStorage.player.score = score + (magicNumber + (timeQuestion * hard));
+      previousStorage.player.assertions = assertions + 1;
       localStorage.setItem('state', JSON.stringify(previousStorage));
       break;
     case questionLevel === 'medium':
       previousStorage.player.score = score + (magicNumber + (timeQuestion * medium));
+      previousStorage.player.assertions = assertions + 1;
       localStorage.setItem('state', JSON.stringify(previousStorage));
       break;
     default:
       previousStorage.player.score = score + (magicNumber + (timeQuestion * easy));
+      previousStorage.player.assertions = assertions + 1;
       localStorage.setItem('state', JSON.stringify(previousStorage));
       break;
     }
