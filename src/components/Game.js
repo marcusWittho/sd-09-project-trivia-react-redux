@@ -39,6 +39,12 @@ class Game extends React.Component {
   }
 
   changeQuest() {
+    const buttonC = document.querySelector('.button-correct');
+    buttonC.style.border = '';
+
+    const buttonIC = document.querySelectorAll('.button-incorrect');
+    buttonIC.forEach((button) => { button.style.border = ''; });
+
     this.setState((prevState) => ({
       index: prevState.index + 1,
       disabledQuest: false,
