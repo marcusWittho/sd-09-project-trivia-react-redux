@@ -73,11 +73,12 @@ class Game extends React.Component {
   }
 
   render() {
-    const { isFetching } = this.props;
+    const { isFetching, questions } = this.props;
+    const questionCanBeRendered = !isFetching && questions.length > 0;
     return (
       <>
         <Header />
-        { !isFetching && this.renderQuestion() }
+        { questionCanBeRendered && this.renderQuestion() }
       </>
     );
   }
