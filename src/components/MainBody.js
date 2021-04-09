@@ -41,7 +41,8 @@ class MainBody extends React.Component {
   }
 
   timeOut() {
-    this.temporizador = setInterval(this.tictac, 1000);
+    const ONE_SECOND = 1000;
+    this.temporizador = setInterval(this.tictac, ONE_SECOND);
   }
 
   tictac() {
