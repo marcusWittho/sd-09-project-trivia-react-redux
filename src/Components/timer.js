@@ -18,11 +18,16 @@ class Timer extends Component {
     this.checkCounter();
   }
 
+  // quando o tempo chegar a 0 desabilita os botões de answer
   checkCounter() {
     const { count } = this.state;
     if (count === 0) clearInterval(this.myInterval);
   }
 
+  // clearInterval(this.myInterval) >>>> precisa ser chamado no botão answer quando clicado
+  // o tempo restante será usado para fazer a conta do score
+
+  // essa funcção precisa ser chamada no botão next
   timerCaller() {
     const interval = 1000;
     this.myInterval = setInterval(() => {
