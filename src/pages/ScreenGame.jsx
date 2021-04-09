@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import getQuestionsApiAction from '../redux/Actions/getRequestQuestionsApiAction';
 import Header from '../components/Header';
 import NextQuestionButton from '../components/NextQuestionButton';
@@ -11,7 +12,6 @@ class ScreenGame extends React.Component {
   constructor(props) {
     super(props);
     const { userName, userEmail } = props;
-
     this.state = {
       correct: '',
       allAnswers: [],
@@ -28,8 +28,8 @@ class ScreenGame extends React.Component {
       timer: 30,
       changeClass: false,
       indexQuestion: 0,
+      redirect: false,
     };
-
     this.updateState = this.updateState.bind(this);
     this.changeClassAnswer = this.changeClassAnswer.bind(this);
     this.changeClassCorrectAnswer = this.changeClassCorrectAnswer.bind(this);
@@ -37,6 +37,7 @@ class ScreenGame extends React.Component {
     this.difficultScore = this.difficultScore.bind(this);
     this.submitAnswer = this.submitAnswer.bind(this);
     this.setIndexQuestion = this.setIndexQuestion.bind(this);
+    this.attQuestions = this.attQuestions.bind(this);
   }
 
   componentDidMount() {
@@ -47,33 +48,9 @@ class ScreenGame extends React.Component {
     localStorage.setItem('state', JSON.stringify(player));
   }
 
-  componentDidUpdate(props, state) {
-    const { questions } = this.props;
-    const { results } = questions;
+  componentDidUpdate(props) {
     if (props !== this.props) {
-      const { indexQuestion } = state;
-      const { difficulty } = results[indexQuestion];
-      const { category } = results[indexQuestion];
-      const { question } = results[indexQuestion];
-      const correctAnswer = results[indexQuestion].correct_answer;
-      const incorrectAnswer = results[indexQuestion].incorrect_answers
-        .map((answer) => answer);
-      const concatAllAnswers = [...incorrectAnswer, correctAnswer];
-
-      const mixTheAnswers = concatAllAnswers
-        .map((asnwer) => ({ sort: Math.random(), value: asnwer }))
-        .sort((a, b) => a.sort - b.sort)
-        .map((answer) => answer.value);
-
-      const objQuestions = {
-        correct: correctAnswer,
-        allAnswers: mixTheAnswers,
-        category,
-        question,
-        difficulty,
-      };
-
-      this.updateState(objQuestions);
+      this.attQuestions();
       this.addScore();
     }
   }
@@ -87,27 +64,11 @@ class ScreenGame extends React.Component {
         showNextQuestion: false,
         changeClass: false,
       }));
-      const { questions } = this.props;
-      const { results } = questions;
-      const { difficulty } = results[indexQuestion];
-      const { category } = results[indexQuestion];
-      const { question } = results[indexQuestion];
-      const correctAnswer = results[indexQuestion].correct_answer;
-      const incorrectAnswer = results[indexQuestion].incorrect_answers
-        .map((answer) => answer);
-      const concatAllAnswers = [...incorrectAnswer, correctAnswer];
-      const mixTheAnswers = concatAllAnswers
-        .map((asnwer) => ({ sort: Math.random(), value: asnwer }))
-        .sort((a, b) => a.sort - b.sort)
-        .map((answer) => answer.value);
-      const objQuestions = {
-        correct: correctAnswer,
-        allAnswers: mixTheAnswers,
-        category,
-        question,
-        difficulty,
-      };
-      this.updateState(objQuestions);
+      this.attQuestions();
+    } else {
+      this.setState({
+        redirect: true,
+      });
     }
   }
 
@@ -120,6 +81,31 @@ class ScreenGame extends React.Component {
       question,
       difficulty,
     });
+  }
+
+  attQuestions() {
+    const { indexQuestion } = this.state;
+    const { questions } = this.props;
+    const { results } = questions;
+    const { difficulty } = results[indexQuestion];
+    const { category } = results[indexQuestion];
+    const { question } = results[indexQuestion];
+    const correctAnswer = results[indexQuestion].correct_answer;
+    const incorrectAnswer = results[indexQuestion].incorrect_answers
+      .map((answer) => answer);
+    const concatAllAnswers = [...incorrectAnswer, correctAnswer];
+    const mixTheAnswers = concatAllAnswers
+      .map((asnwer) => ({ sort: Math.random(), value: asnwer }))
+      .sort((a, b) => a.sort - b.sort)
+      .map((answer) => answer.value);
+    const objQuestions = {
+      correct: correctAnswer,
+      allAnswers: mixTheAnswers,
+      category,
+      question,
+      difficulty,
+    };
+    this.updateState(objQuestions);
   }
 
   difficultScore(difficulty) {
@@ -181,8 +167,9 @@ class ScreenGame extends React.Component {
 
   render() {
     const { correct, allAnswers, timer,
-      category, question, changeClass, showNextQuestion } = this.state;
+      category, question, changeClass, showNextQuestion, redirect } = this.state;
     const { btnState } = this.props;
+    if (redirect) { return <Redirect to="/feedback" />; }
     return (
       <section>
         <Header />
