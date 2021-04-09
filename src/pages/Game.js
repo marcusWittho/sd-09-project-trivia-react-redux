@@ -1,22 +1,7 @@
 import React from 'react';
-// import { connect } from 'react-redux';
-
-const THISPROPS = {
-  questions: [
-    {
-      category: 'Entertainment: Video Games',
-      question: 'What is the first weapon you acquire in Half-Life?',
-      correct_answer: 'A crowbar',
-      incorrect_answers: ['A pistol', 'The H.E.V suit', 'Your fists'],
-    },
-    {
-      category: 'Entertainment: Test Question',
-      question: 'What is the first weapon you acquire in Counter-Strike?',
-      correct_answer: 'True',
-      incorrect_answers: ['False'],
-    },
-  ],
-};
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   setupRandomAnswers(correctAnswer, incorrectAnswers) {
@@ -42,7 +27,7 @@ class Game extends React.Component {
   }
 
   renderQuestions() {
-    const { questions } = THISPROPS;
+    const { questions } = this.props;
     return questions.map(
       (
         {
@@ -63,12 +48,30 @@ class Game extends React.Component {
   }
 
   render() {
-    return this.renderQuestions();
+    return (
+      <>
+        <Header />
+        { this.renderQuestions() }
+      </>
+    );
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   questions: state.trivia.questions,
-// });
+const mapStateToProps = (state) => ({
+  questions: state.trivia.questions,
+});
 
-export default Game;
+export default connect(mapStateToProps)(Game);
+
+Game.propTypes = {
+  questions: PropTypes.arrayOf(
+    PropTypes.shape({
+      category: PropTypes.string,
+      type: PropTypes.string,
+      difficulty: PropTypes.string,
+      question: PropTypes.string,
+      correct_answer: PropTypes.string,
+      incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+    }),
+  ).isRequired,
+};
