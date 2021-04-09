@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
-import { string, number } from 'prop-types';
+import { string } from 'prop-types';
 import { connect } from 'react-redux';
 import SettingsButton from './SettingsButton';
 
 class Header extends Component {
   constructor(props) {
     super(props);
+    this.state = { playerScore: 0 };
 
     this.getGravatar = this.getGravatar.bind(this);
+    this.getState = this.getState.bind(this);
+  }
+
+  componentDidMount() {
+    this.getState();
   }
 
   getGravatar(email) {
@@ -17,8 +23,20 @@ class Header extends Component {
     return emailHash;
   }
 
+  getState() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    if (state) {
+      const { score } = state.player;
+      const scoreNumber = parseInt(score, 10);
+      this.setState({
+        playerScore: scoreNumber,
+      });
+    }
+  }
+
   render() {
-    const { userName, userEmail, score } = this.props;
+    const { userName, userEmail } = this.props;
+    const { playerScore } = this.state;
     return (
       <header>
         <img
@@ -27,7 +45,7 @@ class Header extends Component {
           alt="Imagem do Jogador"
         />
         <h3 data-testid="header-player-name">{ userName }</h3>
-        <p data-testid="header-score">{score}</p>
+        <p data-testid="header-score">{playerScore}</p>
         <SettingsButton />
       </header>
     );
@@ -42,7 +60,6 @@ const mapStateToProps = (state) => ({
 Header.propTypes = {
   userName: string.isRequired,
   userEmail: string.isRequired,
-  score: number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
