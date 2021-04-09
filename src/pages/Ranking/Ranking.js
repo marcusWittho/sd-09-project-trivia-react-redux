@@ -27,9 +27,9 @@ class Ranking extends React.Component {
 
   render() {
     const { ranking } = this.state;
-    // const { player } = this.props;
-    // const { validLogin } = player;
-    // if (!validLogin) return <Redirect to="/" />;
+    const { player } = this.props;
+    const { validLogin } = player;
+    if (!validLogin) return <Redirect to="/" />;
     return (
       <section>
         <div className="ranking-container">
