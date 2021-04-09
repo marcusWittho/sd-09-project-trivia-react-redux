@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import CryptoJS from 'crypto-js';
 import { getGravatar } from '../services/api';
 
@@ -36,7 +37,7 @@ class Header extends React.Component {
     const { avatar } = this.state;
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ avatar } alt={ `${name}-avatar` }  />
+        <img data-testid="header-profile-picture" src={ avatar } alt="user-avatar" />
         <h3 data-testid="header-player-name">{ name }</h3>
         <h3>
           Placar:
@@ -46,6 +47,11 @@ class Header extends React.Component {
     );
   }
 }
+
+Header.propTypes = {
+  name: PropTypes.string,
+  email: PropTypes.string,
+}.isRequired;
 
 const mapStateToProps = ({ user }) => ({
   name: user.name,

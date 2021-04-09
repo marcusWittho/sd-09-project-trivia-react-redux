@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class QuestionBool extends React.Component {
   constructor(props) {
@@ -58,5 +59,11 @@ class QuestionBool extends React.Component {
     );
   }
 }
+
+QuestionBool.propTypes = {
+  question: PropTypes.string,
+  disabled: PropTypes.bool,
+  nextQuestion: PropTypes.func,
+}.isRequired;
 
 export default QuestionBool;
