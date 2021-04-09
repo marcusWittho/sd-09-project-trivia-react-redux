@@ -12,11 +12,13 @@ class MainBody extends React.Component {
       question: '',
       correctAnswer: '',
       incorrectAnswers: '',
+      styleObj: {},
     };
+
+    this.showAnswers = this.showAnswers.bind(this);
   }
 
   componentDidUpdate() {
-    const { questions, loading } = this.props;
     const { getQuestions } = this.state;
     if (getQuestions) {
       this.setQuestionsToEstate();
@@ -38,9 +40,22 @@ class MainBody extends React.Component {
     
   }
 
+  showAnswers() {
+    this.setState({
+      styleObj: {
+        correct: {
+          border: '3px solid',
+          borderColor: 'rgb(6, 240, 15)' },
+        incorrect: {
+          border: '3px solid',
+          borderColor: 'rgb(255, 0, 0)' },
+      },
+    });
+  }
+
   render() {
     const { loading } = this.props;
-    const { category, question, correctAnswer, incorrectAnswers } = this.state;
+    const { category, question, correctAnswer, incorrectAnswers, styleObj } = this.state;
     if (loading) {
       return <p>Loading...</p>;
     }
@@ -50,14 +65,17 @@ class MainBody extends React.Component {
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
         <button
+          style={ styleObj.correct }
+          onClick={ this.showAnswers }
           type="button"
           data-testid="correct-answer"
         >
           { correctAnswer }
         </button>
-        {/* { console.log(incorrectAnswers)} */}
         {incorrectAnswers && incorrectAnswers.map((incorrectAnswer) => (
           <button
+            style={ styleObj.incorrect }
+            onClick={ this.showAnswers }
             type="button"
             key={ incorrectAnswer }
             data-testid="wrong-answer"
