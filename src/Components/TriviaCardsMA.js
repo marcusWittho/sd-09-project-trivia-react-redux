@@ -12,18 +12,17 @@ class MultipleAnswers extends Component {
       wrongAnswerClass: '',
       nextButton: true,
       correctAnswer: 'correct-answer',
-
     };
     this.validateAnswers = this.validateAnswers.bind(this);
-    this.createChoices = this.createChoices.bind(this);
+    // this.createChoices = this.createChoices.bind(this);
     this.updateQuestIndex = this.updateQuestIndex.bind(this);
     this.answerCheck = this.answerCheck.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
-  componentDidMount() {
-    // this.createChoices();
-  }
+  // componentDidMount() {
+  //   this.createChoices();
+  // }
 
   updateQuestIndex() {
     const { questIndex, dispatchIndex } = this.props;
@@ -32,18 +31,18 @@ class MultipleAnswers extends Component {
     dispatchIndex(newIndex);
   }
 
-  createChoices() {
-    // const { question } = this.props;
-    // const choice = question.incorrect_answers;
-    // const choices = 4;
-    // if (choice.length < choices) {
-    //   choice.splice(Math.floor(Math.random() * choices), 0,
-    //     question.correct_answer);
-    //   this.setState({ choice });
-    // } else {
-    //   this.setState({ choice });
-    // }
-  }
+  // createChoices() {
+  //   const { question } = this.props;
+  //   const choice = question.incorrect_answers;
+  //   const choices = 4;
+  //   if (choice.length < choices) {
+  //     choice.splice(Math.floor(Math.random() * choices), 0,
+  //       question.correct_answer);
+  //     this.setState({ choice });
+  //   } else {
+  //     this.setState({ choice });
+  //   }
+  // }
 
   validateAnswers(answer, index) {
     const { question } = this.props;
@@ -74,9 +73,8 @@ class MultipleAnswers extends Component {
   render() {
     const { rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer } = this.state;
     const { question } = this.props;
-    // linha que adcionei 
-    let choice = [...question.incorrect_answers, question.correct_answer];
-    // --
+    // precisa jogar esse choice pra dentro de uma função para deixar as questões com respostas randomicas
+    const choice = [...question.incorrect_answers, question.correct_answer];
     let index = 0;
     return (
       <div>
