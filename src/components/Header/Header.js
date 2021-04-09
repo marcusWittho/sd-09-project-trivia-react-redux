@@ -9,21 +9,25 @@ class Header extends Component {
     const { player } = this.props;
     return (
       <header className="header">
-        <img
-          src={ player.gravatarEmail }
-          alt={ `Avatar ${player.name}` }
-          data-testid="header-profile-picture"
-        />
-        <p data-testid="header-player-name">{ player.name }</p>
-        <p>
-          Pontuação:
-          <span data-testid="header-score">{ player.score }</span>
-        </p>
-        <Link exact to="/">
-          <button type="button" data-testid="btn-go-home">
-            Inicio
-          </button>
-        </Link>
+        <div className="data-player-conatiner">
+          <img
+            src={ player.gravatarEmail }
+            alt={ `Avatar ${player.name}` }
+            data-testid="header-profile-picture"
+          />
+          <p data-testid="header-player-name">{ player.name }</p>
+        </div>
+        <div className="score-container">
+          <p>
+            Score:&nbsp;
+            <span data-testid="header-score">{ player.score }</span>
+          </p>
+          <Link exact to="/">
+            <button type="button" data-testid="btn-go-home" className="btn-go-home">
+              Sair
+            </button>
+          </Link>
+        </div>
       </header>
     );
   }
