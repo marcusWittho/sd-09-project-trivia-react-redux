@@ -206,30 +206,14 @@ class Play extends React.Component {
     const { questionIndex, timeQuestion, nextQuestion, redirectFeedBack } = this.state;
     if (isFetching) return <div>Loading...</div>;
     if (redirectFeedBack) return <Redirect to="/feedback" />;
-    let currentQuestion;
-    let category2;
-    let question2;
-    if (questions) {
-      currentQuestion = questions[questionIndex];
-    }
-    if (currentQuestion) {
-      category2 = currentQuestion.category;
-      question2 = currentQuestion.question;
-    }
+    const currentQuestion = questions[questionIndex];
+    const { category, question } = currentQuestion;
     return (
       <main>
         <Header />
         <section>
-          <p
-            data-testid="question-category"
-          >
-            { category2 }
-          </p>
-          <p
-            data-testid="question-text"
-          >
-            { question2 }
-          </p>
+          <p data-testid="question-category">{ category }</p>
+          <p data-testid="question-text">{ question }</p>
         </section>
         { this.questionGenerator() }
         { nextQuestion && this.nextQuestionButtonGenerator() }

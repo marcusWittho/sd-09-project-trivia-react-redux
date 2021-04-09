@@ -9,13 +9,22 @@ class Header extends React.Component {
 
     this.state = {
       gravatar: '',
+      playerScore: 0,
     };
 
     this.fetchGravatar = this.fetchGravatar.bind(this);
+    this.getLocalStorage = this.getLocalStorage.bind(this);
   }
 
   componentDidMount() {
     this.fetchGravatar();
+    this.getLocalStorage();
+  }
+
+  getLocalStorage() {
+    const getStorageInfos = JSON.parse(localStorage.getItem('state'));
+    const { player: { score } } = getStorageInfos;
+    this.setState({ playerScore: score });
   }
 
   fetchGravatar() {
@@ -30,7 +39,7 @@ class Header extends React.Component {
 
   render() {
     const { name } = this.props;
-    const { gravatar } = this.state;
+    const { gravatar, playerScore } = this.state;
     return (
       <div>
         <img
@@ -39,7 +48,7 @@ class Header extends React.Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{playerScore}</p>
       </div>
     );
   }
