@@ -5,14 +5,17 @@ import {
   QUESTION_ADD,
   RUN_TIMER,
   STOP_TIMER,
-  UPDATE_SCORE } from '../actions/action';
+  UPDATE_SCORE,
+  UPDATE_IMG,
+  UPDATE_ASSERTIONS } from '../actions/action';
 
 const INITIAL_STATE = {
   player: {
     name: '',
-    assertions: '',
+    assertions: 0,
     score: 0,
     gravatarEmail: '',
+    gravatarImg: '',
   },
   token: '',
   questions: [],
@@ -44,6 +47,16 @@ function userInfoReducer(state = INITIAL_STATE.player, action) {
     return ({
       ...state,
       score: state.score + action.value,
+    });
+  case UPDATE_IMG:
+    return ({
+      ...state,
+      gravatarImg: action.value,
+    });
+  case UPDATE_ASSERTIONS:
+    return ({
+      ...state,
+      assertions: state.assertions + 1,
     });
   default: return state;
   }

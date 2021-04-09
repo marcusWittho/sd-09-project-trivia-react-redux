@@ -4,6 +4,8 @@ export const QUESTION_ADD = 'QUESTION_ADD';
 export const RUN_TIMER = 'RUN_TIMER';
 export const STOP_TIMER = 'STOP_TIMER';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
+export const UPDATE_IMG = 'UPDATE_IMG';
+export const UPDATE_ASSERTIONS = 'UPDATE_ASSERTIONS';
 
 export const loginAction = (token) => ({ type: TYPE_LOGIN, value: token });
 
@@ -20,3 +22,7 @@ export const runTimer = (value) => ({ type: RUN_TIMER, value });
 export const stopTimer = (value) => ({ type: STOP_TIMER, value });
 
 export const updateScore = (value) => ({ type: UPDATE_SCORE, value });
+
+export const updateImg = (value) => ({ type: UPDATE_IMG, value });
+
+export const updateAssertions = () => ({ type: UPDATE_ASSERTIONS });

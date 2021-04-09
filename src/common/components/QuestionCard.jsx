@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from './Timer';
-import { runTimer, updateScore, stopTimer } from '../../actions/action';
+import { runTimer, updateScore, stopTimer, updateAssertions } from '../../actions/action';
 
 import './QuestionCard.css';
 
@@ -33,6 +33,7 @@ class QuestionCard extends React.Component {
       timer,
       disableOptions,
       stopTimerAction,
+      updateAssertionsAction,
     } = this.props;
     // this.setState({ runTimer: false });
 
@@ -45,6 +46,7 @@ class QuestionCard extends React.Component {
     const hard = 3;
     showStyle();
     if (name === 'correct') {
+      updateAssertionsAction();
       console.log(renderQuestion.difficulty);
       switch (renderQuestion.difficulty) {
       case 'easy':
@@ -134,6 +136,7 @@ QuestionCard.propTypes = {
   disableOptions: PropTypes.func.isRequired,
   timer: PropTypes.number.isRequired,
   stopTimerAction: PropTypes.func.isRequired,
+  updateAssertionsAction: PropTypes.func.isRequired,
   questionCounter: PropTypes.number.isRequired,
   playerState: PropTypes.shape({
     score: PropTypes.number,
@@ -151,6 +154,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendTimer: (time) => dispatch(runTimer(time)),
   stopTimerAction: (value) => dispatch(stopTimer(value)),
   changeScore: (score) => dispatch(updateScore(score)),
+  updateAssertionsAction: () => dispatch(updateAssertions()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);
