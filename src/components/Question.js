@@ -43,7 +43,7 @@ class Question extends React.Component {
     case 'medium':
       return 2;
     case 'hard':
-      return 3;
+      return difficulty.length - 1;
     default:
       break;
     }
