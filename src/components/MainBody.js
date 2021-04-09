@@ -14,6 +14,7 @@ class MainBody extends React.Component {
       incorrectAnswers: '',
       styleObj: {},
       timer: 30,
+      disableBtn: false,
     };
 
     this.showAnswers = this.showAnswers.bind(this);
@@ -48,10 +49,10 @@ class MainBody extends React.Component {
     if (timer > 0) {
       this.setState({ timer: timer - 1 });
     }
-    if (timer === 1) {
+    if (timer === 0) {
       clearInterval(this.temporizador);
+      this.setState({ disableBtn: true });
     }
-    console.log(timer);
   }
 
   showAnswers() {
@@ -69,7 +70,15 @@ class MainBody extends React.Component {
 
   render() {
     const { loading } = this.props;
-    const { category, question, correctAnswer, incorrectAnswers, styleObj, timer } = this.state;
+    const {
+      category,
+      question,
+      correctAnswer,
+      incorrectAnswers,
+      styleObj,
+      timer,
+      disableBtn,
+    } = this.state;
     if (loading) {
       return <p>Loading...</p>;
     }
@@ -84,6 +93,7 @@ class MainBody extends React.Component {
           onClick={ this.showAnswers }
           type="button"
           data-testid="correct-answer"
+          disabled={ disableBtn }
         >
           { correctAnswer }
         </button>
@@ -94,6 +104,7 @@ class MainBody extends React.Component {
             type="button"
             key={ incorrectAnswer }
             data-testid="wrong-answer"
+            disabled={ disableBtn }
           >
             { incorrectAnswer }
           </button>
