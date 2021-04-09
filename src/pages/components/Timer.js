@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { timesUp } from '../../redux/actions';
+import { getSeconds, timesUp } from '../../redux/actions';
 
+let timer;
 class Timer extends Component {
   constructor() {
     super();
@@ -16,27 +17,30 @@ class Timer extends Component {
     this.gameTimer();
   }
 
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate() {
     const { seconds } = this.state;
-    const { dispatchTimesUp } = this.props;
-    if ((seconds > 0) && (prevState.seconds !== seconds)) {
+    const { dispatchTimesUp, stopTime } = this.props;
+    if ((seconds > 0) && (!(stopTime))) {
       this.gameTimer();
-    } else if ((seconds === 0) && (prevState.seconds !== seconds)) {
+    } else if (((seconds === 0) || (stopTime))) {
+      clearTimeout(timer);
       dispatchTimesUp();
     }
   }
 
   gameTimer() {
     const { seconds } = this.state;
-    const oneSecond = 1000;
-    setTimeout(() => this.setState({ seconds: seconds - 1 }), oneSecond);
+    const { dispatchSeconds } = this.props;
+    const ONE_SECOND = 1000;
+    timer = setTimeout(() => this.setState({ seconds: seconds - 1 }), ONE_SECOND);
+    dispatchSeconds(seconds);
   }
 
   render() {
     const { seconds } = this.state;
     return (
       <div>
-        <p>{ seconds }</p>
+        <p>{seconds}</p>
       </div>
     );
   }
@@ -44,10 +48,15 @@ class Timer extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchTimesUp: () => dispatch(timesUp()),
+  dispatchSeconds: (seconds) => dispatch(getSeconds(seconds)),
 });
 
+const mapStateToProps = (state) => ({
+  stopTime: state.timer.stopTime,
+});
 Timer.propTypes = {
   dispatchTimesUp: PropTypes.func,
+  dispatchSeconds: PropTypes.func,
+  stopTime: PropTypes.bool,
 }.isRequired;
-
-export default connect(null, mapDispatchToProps)(Timer);
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);
