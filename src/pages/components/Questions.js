@@ -82,8 +82,8 @@ class Questions extends React.Component {
     playerObj.score = totalScore;
     playerObj.assertions = totalAssertions;
     const object = { player: playerObj };
-    localStorage.setItem('state', JSON.stringify(object));
     dispatchPlayer(playerObj);
+    localStorage.setItem('state', JSON.stringify(object));
   }
 
   handleClick({ target }) {
@@ -94,7 +94,6 @@ class Questions extends React.Component {
     }
     this.setState({ isSelected: true });
     dispatchStopTime();
-    this.disableAlternatives();
   }
 
   disableAlternatives() {

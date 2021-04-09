@@ -28,12 +28,12 @@ class Timer extends Component {
     }
   }
 
-  async gameTimer() {
+  gameTimer() {
     const { seconds } = this.state;
     const { dispatchSeconds } = this.props;
     const ONE_SECOND = 1000;
     timer = setTimeout(() => this.setState({ seconds: seconds - 1 }), ONE_SECOND);
-    await dispatchSeconds(seconds);
+    dispatchSeconds(seconds);
   }
 
   render() {

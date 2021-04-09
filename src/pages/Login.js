@@ -40,7 +40,6 @@ class Login extends Component {
     this.setState({
       loggedIn: true,
     });
-    const resultApi = await Api.fetchToken();
     const object = {
       player: {
         name,
@@ -50,6 +49,7 @@ class Login extends Component {
       },
     };
     localStorage.setItem('state', JSON.stringify(object));
+    const resultApi = await Api.fetchToken();
     localStorage.setItem('token', resultApi);
     dispatchUser(name, email, resultApi);
     dispatchPlayer(object.player);
