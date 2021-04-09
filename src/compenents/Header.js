@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CryptoJS from 'crypto-js';
+import { connect } from 'react-redux';
+import { userAvatar } from '../redux/actions/index';
 
 class Header extends React.Component {
   gravatarHash() {
-    const { email } = this.props;
+    const { email, sendImage } = this.props;
     const hash = CryptoJS.MD5(email).toString();
+    sendImage(`https://www.gravatar.com/avatar/${hash}`);
     return hash;
   }
 
@@ -26,6 +29,11 @@ class Header extends React.Component {
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  sendImage: PropTypes.string.isRequired,
 };
 
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+  sendImage: (image) => dispatch(userAvatar(image)),
+});
+
+export default connect(null, mapDispatchToProps)(Header);

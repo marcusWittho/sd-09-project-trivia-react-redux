@@ -1,8 +1,14 @@
-import { USER_REGISTER } from '../actions/actionstype';
+import {
+  USER_REGISTER,
+  USER_AVATAR,
+  USER_SCORE,
+} from '../actions/actionstype';
 
 const INITIAL_STATE = {
   user: '',
   email: '',
+  image: '',
+  score: 0,
 };
 
 function userRegisterReducer(state = INITIAL_STATE, action) {
@@ -12,6 +18,16 @@ function userRegisterReducer(state = INITIAL_STATE, action) {
       ...state,
       user: action.user,
       email: action.email,
+    };
+  case USER_AVATAR:
+    return {
+      ...state,
+      image: action.image,
+    };
+  case USER_SCORE:
+    return {
+      ...state,
+      score: action.score,
     };
   default:
     return state;

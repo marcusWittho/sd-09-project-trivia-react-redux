@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import options from './questionsShape';
 import '../CSS-Components/Choices.css';
@@ -10,6 +11,7 @@ class CardQuestion extends React.Component {
     this.state = {
       orderQuest: 0,
       hidden: true,
+      result: false,
     };
     this.paintingButton = this.paintingButton.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -38,12 +40,16 @@ class CardQuestion extends React.Component {
       this.setState({
         orderQuest: orderQuest + 1,
       });
+    } else {
+      this.setState({
+        result: true,
+      });
     }
   }
 
   render() {
     const { questions } = this.props;
-    const { orderQuest, hidden } = this.state;
+    const { orderQuest, hidden, result } = this.state;
 
     const {
       category,
@@ -67,6 +73,7 @@ class CardQuestion extends React.Component {
         >
           Próxima
         </button>
+        { result ? <Redirect to="/result" /> : '' }
       </div>
     );
   }

@@ -36,7 +36,7 @@ const options = (correct, incorrects, paintingButton) => {
   const keyToMathRandom = 0.5;
   let allChoises = [];
 
-  if (incorrects.length === 2) {
+  if (incorrects.length === 1) {
     allChoises = trueOrFalse.sort(() => keyToMathRandom - Math.random());
   } else {
     allChoises = multipleChoise.sort(() => keyToMathRandom - Math.random());

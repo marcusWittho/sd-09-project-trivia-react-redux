@@ -1,4 +1,7 @@
 export const USER_REGISTER = 'USER_REGISTER';
+export const USER_AVATAR = 'USER_AVATAR';
+export const USER_SCORE = 'USER_SCORE';
+
 export const FETCH_TOKEN = 'FETCH_TOKEN';
 export const RETURN_TOKEN = 'RETURN_TOKEN';
 export const ERROR_TOKEN = 'ERROR_TOKEN';
