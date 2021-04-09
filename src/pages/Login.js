@@ -13,6 +13,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.clickButton = this.clickButton.bind(this);
+    this.buttonSetting = this.buttonSetting.bind(this);
 
     this.state = {
       name: '',
@@ -44,11 +45,16 @@ class Login extends React.Component {
   }
 
   clickButton() {
-    const { setQuestions, setPlayerAction } = this.props;
-    setQuestions();
-
     const { name, email } = this.state;
     const gravatarEmail = md5(email).toString();
+    const {
+      setQuestions,
+      setPlayerAction,
+      getDifficulty,
+      getCategory,
+      getType } = this.props;
+
+    setQuestions(getDifficulty, getCategory, getType);
 
     const player = {
       name,
@@ -58,6 +64,19 @@ class Login extends React.Component {
     };
 
     setPlayerAction(player);
+  }
+
+  buttonSetting() {
+    return (
+      <Link to="/settings">
+        <button
+          type="button"
+          data-testid="btn-settings"
+        >
+          Configurações
+        </button>
+      </Link>
+    );
   }
 
   render() {
@@ -99,14 +118,22 @@ class Login extends React.Component {
             Jogar
           </button>
         </Link>
+        { this.buttonSetting() }
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  getDifficulty: state.settingsReducer.difficulty,
+  getCategory: state.settingsReducer.category,
+  getType: state.settingsReducer.type,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   setValue: (name, value) => dispatch(loginAction(name, value)),
-  setQuestions: () => dispatch(getThunkToken()),
+  setQuestions: (diffic, categ, type) => (
+    dispatch(getThunkToken(diffic, categ, type))),
   setPlayerAction: (player) => dispatch(playerAction(player)),
 });
 
@@ -114,6 +141,10 @@ Login.propTypes = {
   setValue: PropTypes.func,
   setQuestions: PropTypes.func,
   setPlayerAction: PropTypes.func,
+  getCategories: PropTypes.func,
+  getDifficulty: PropTypes.string,
+  getCategory: PropTypes.string,
+  getType: PropTypes.string,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

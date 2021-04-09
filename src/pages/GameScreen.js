@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Game from './Game';
-import Ranking from './Ranking';
-import Feedback from './Feedback';
-import Header from './Header';
+import Game from '../components/Game';
+import Ranking from '../components/Ranking';
+import Feedback from '../components/Feedback';
+import Header from '../components/Header';
 
 class GameScreen extends React.Component {
   render() {
