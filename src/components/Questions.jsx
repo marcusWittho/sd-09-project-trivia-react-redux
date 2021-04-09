@@ -74,7 +74,7 @@ Questions.propTypes = {
 }.isRequired;
 
 const mapStateToProps = (state) => ({
-  questions: state.questions.questions.results,
+  questions: state.getQuestions.questions.results,
 });
 
 const mapDispatchToProps = (dispatch) => ({

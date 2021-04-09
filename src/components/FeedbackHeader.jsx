@@ -5,20 +5,22 @@ import PropTypes from 'prop-types';
 class FeedbackHeader extends Component {
   render() {
     const { currentScoreState } = this.props;
+    const userToken = localStorage.getItem('token');
+    const { name } = JSON.parse(localStorage.getItem('state'));
     return (
       <header className="feedback-header">
         <div className="header-left">
           <img
             data-testid="header-profile-picture"
             alt=""
-            src=""
+            src={ `https://www.gravatar.com/avatar/${userToken}` }
             className="header-profile-picture"
           />
           <span
             data-testid="header-player-name"
             className="header-player-name"
           >
-            Nome da pessoa
+            {name}
           </span>
         </div>
         <span

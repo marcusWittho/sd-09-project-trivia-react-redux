@@ -22,9 +22,16 @@ export default class LoginForm extends Component {
 
   async handleClick() {
     const { history } = this.props;
+    const { name, email } = this.state;
     history.push('/game');
     const token = await getToken();
     localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify({
+      name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    }));
   }
 
   render() {

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   questions: [],
 };
 
-const questions = (
+const getQuestions = (
   state = INITIAL_STATE, { type, questions },
 ) => {
   switch (type) {
@@ -15,4 +15,4 @@ const questions = (
   }
 };
 
-export default questions;
+export default getQuestions;
