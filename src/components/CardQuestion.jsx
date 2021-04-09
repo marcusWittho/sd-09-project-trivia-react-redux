@@ -1,11 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import './CardQuestion.css';
 
 class CardQuestion extends React.Component {
+  constructor(state) {
+    super(state);
+    this.state = {
+      isSelected: false,
+    };
+    this.selectAnswer = this.selectAnswer.bind(this);
+  }
+
+  selectAnswer() {
+    this.setState({ isSelected: true });
+  }
+
   render() {
     const { getQuestions: { questions: { results } } } = this.props;
-
+    const { isSelected } = this.state;
     // Constantes criadas para avaliacao do requisito 6. Deleta-las posteriormente.
     const index = 0;
     const currentQuestion = results[index];
@@ -19,6 +32,7 @@ class CardQuestion extends React.Component {
         <button
           data-testid="correct-answer"
           type="button"
+          className={ isSelected ? 'correctAnswer' : '' }
           onClick={ this.selectAnswer }
         >
           {currentQuestion.correct_answer}
@@ -28,6 +42,7 @@ class CardQuestion extends React.Component {
           <button
             data-testid={ `wrong-answer-${answerIndex}` }
             key={ answerIndex }
+            className={ isSelected ? 'wrongAnswer' : '' }
             type="button"
             onClick={ this.selectAnswer }
           >
