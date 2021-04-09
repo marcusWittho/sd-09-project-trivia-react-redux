@@ -20,7 +20,6 @@ class InfoGames extends Component {
  
   async requestAPI() {
     const token = JSON.parse(localStorage.getItem('token'));
-    // const token = "e163d5ecd0ce97add89d9f0f8f29b9b1014c6896041ce1a35f516f2f1bdf83a4";
     const responsRequest = await api.fetchTrivia(token, 5);
     this.setState({
       questions: responsRequest.results,
