@@ -36,9 +36,8 @@ class MainBody extends React.Component {
     });
   }
 
-  renderQuestion(question) {
-    
-  }
+  // renderQuestion(question) {
+  // }
 
   showAnswers() {
     this.setState({
