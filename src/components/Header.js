@@ -12,7 +12,7 @@ class Header extends React.Component {
   getGravatar() {
     const { email } = this.props;
     const hash = md5(email).toString();
-    const urlImage = `https://www.gravatar.com/avatar/${md5(hash).toString()}?s=200`;
+    const urlImage = `https://www.gravatar.com/avatar/${hash}?s=200`;
     return urlImage;
   }
 
