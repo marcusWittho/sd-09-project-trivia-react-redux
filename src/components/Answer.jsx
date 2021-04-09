@@ -5,8 +5,9 @@ import './Answer.css';
 class Answer extends Component {
   render() {
     const { description } = this.props;
+    const { question } = description;
     return (
-      <button className="answer-btn">{ description }</button>
+      <button className="answer-btn">{ question }</button>
     );
   }
 }

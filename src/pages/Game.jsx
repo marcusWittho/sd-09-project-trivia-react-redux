@@ -20,9 +20,11 @@ class Game extends Component {
   }
 
   render() {
-    console.log(getQuestions());
-    const answers = ['xablau 1', 'xablau 2'];
-    const answerOptions = answers.map((answer) => <Answer description={answer} />);
+    const { questions } = this.props;
+    // const answers = ['xablau 1', 'xablau 2'];
+    const answerOptions = questions.map((answer) =>
+      <Answer key="answer.toString()" description={answer} />
+    );
     return (
       <>
         <Header />
@@ -44,6 +46,7 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   token: state.loginReducer.token,
+  questions: state.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
