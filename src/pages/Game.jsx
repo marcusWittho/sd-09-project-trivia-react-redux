@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-// import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
-// import getQuestions from '../services/triviaAPI_questions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { fetchGameData } from '../actions/index';
+import getQuestions from '../services/triviaAPI_questions';
 import Answer from '../components/Answer';
 
 import './Game.css';
@@ -12,8 +13,14 @@ class Game extends Component {
     super(props);
 
   } */
+
+  componentDidMount() {
+    const { getGameData, token } = this.props;
+    getGameData(token);
+  }
+
   render() {
-    // getQuestions();
+    console.log(getQuestions());
     const answers = ['xablau 1', 'xablau 2'];
     const answerOptions = answers.map((answer) => <Answer description={answer} />);
     return (
@@ -36,11 +43,15 @@ class Game extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  token: state.loginReducer.token,
+});
 
-})
+const mapDispatchToProps = (dispatch) => ({
+  getGameData: (token) => dispatch(fetchGameData(token)),
+});
 
-export default Game;
-// export default connect(mapStateToProps)(Game);
+// export default Game;
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 
 // Pergunta de múltipla escolha
