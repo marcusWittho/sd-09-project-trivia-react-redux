@@ -15,7 +15,12 @@ function shuffleArray(array) {
 
 class EachQuestion extends Component {
   render() {
-    const { questions, questionIndex, questionAnswered, answerQuestion } = this.props;
+    const {
+      questions,
+      questionIndex,
+      questionAnswered,
+      answerQuestion,
+      timer } = this.props;
     const shuffledAlternatives = shuffleArray(questions[questionIndex].incorrect_answers);
     return (
       <main>
@@ -33,6 +38,8 @@ class EachQuestion extends Component {
           type="button"
           style={ (questionAnswered) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
           onClick={ answerQuestion }
+          value="correct-answer"
+          disabled={ timer === 0 }
         >
           {questions[questionIndex].correct_answer}
         </button>
@@ -43,6 +50,8 @@ class EachQuestion extends Component {
             key={ `${index}` }
             style={ (questionAnswered) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
             onClick={ answerQuestion }
+            value="wrong-answer"
+            disabled={ timer === 0 }
           >
             {alternative}
           </button>
