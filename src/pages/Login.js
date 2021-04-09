@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import addUserInfo from '../actions';
+import ButtonSettings from '../components/ButtonSettings';
 
 class Login extends React.Component {
   constructor() {
@@ -38,13 +40,18 @@ class Login extends React.Component {
           type="email"
           onChange={ this.getValue }
         />
-        <input
-          onClick={ () => addUser(this.state) }
-          data-testid="btn-play"
-          type="button"
-          disabled={ disableButton }
-          value="Jogar"
-        />
+
+        <Link to="/game">
+          <button
+            onClick={ () => addUser(this.state) }
+            data-testid="btn-play"
+            type="button"
+            disabled={ disableButton }
+          >
+            Jogar
+          </button>
+        </Link>
+        <ButtonSettings />
       </section>
     );
   }
