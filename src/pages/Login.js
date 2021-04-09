@@ -4,7 +4,7 @@ import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as Api from '../service/Api';
-import { submitUser } from '../redux/actions';
+import { submitUser, addPlayer } from '../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -35,20 +35,24 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { dispatchUser } = this.props;
+    const { dispatchUser, dispatchPlayer } = this.props;
     const { name, email } = this.state;
     this.setState({
       loggedIn: true,
     });
     const resultApi = await Api.fetchToken();
-    const player = {
-      name,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: email,
+    const object = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
     };
-    localStorage.setItem('player', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify(object));
+    localStorage.setItem('token', resultApi);
     dispatchUser(name, email, resultApi);
+    dispatchPlayer(object.player);
   }
 
   render() {
@@ -99,6 +103,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchUser: (name, email, token) => dispatch(submitUser(name, email, token)),
+  dispatchPlayer: (object) => dispatch(addPlayer(object)),
 });
 
 Login.propTypes = {

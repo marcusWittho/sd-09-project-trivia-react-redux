@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { getSeconds, timesUp } from '../../redux/actions';
 
 let timer;
-
 class Timer extends Component {
   constructor() {
     super();
@@ -41,7 +40,7 @@ class Timer extends Component {
     const { seconds } = this.state;
     return (
       <div>
-        <p>{ seconds }</p>
+        <p>{seconds}</p>
       </div>
     );
   }
@@ -55,11 +54,9 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   stopTime: state.timer.stopTime,
 });
-
 Timer.propTypes = {
   dispatchTimesUp: PropTypes.func,
   dispatchSeconds: PropTypes.func,
   stopTime: PropTypes.bool,
 }.isRequired;
-
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);

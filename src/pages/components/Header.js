@@ -8,10 +8,8 @@ class Header extends React.Component {
     super(props);
     this.state = {
       gravatarUrl: '',
-      score: 0,
     };
     this.convertEmail = this.convertEmail.bind(this);
-    this.startState = this.startState.bind(this);
   }
 
   componentDidMount() {
@@ -20,29 +18,14 @@ class Header extends React.Component {
     this.convertEmail(url);
   }
 
-  componentDidUpdate(_, prevState) {
-    const { score } = this.state;
-    if (prevState.score !== score) {
-      this.startState();
-    }
-  }
-
-  startState() {
-    const player = JSON.parse(localStorage.getItem('player'));
-    console.log('atualizei');
-    const { score } = player;
-    this.setState({
-      score,
-    });
-  }
-
   convertEmail(url) {
     this.setState({ gravatarUrl: url });
   }
 
   render() {
-    const { name } = this.props;
-    const { gravatarUrl, score } = this.state;
+    const { name, player } = this.props;
+    const { score } = player;
+    const { gravatarUrl } = this.state;
     return (
       <div>
         <img
@@ -60,6 +43,7 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   name: state.loginUser.name,
   email: state.loginUser.email,
+  player: state.player,
 });
 
 Header.propTypes = {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import * as Api from '../../service/Api';
 import '../../styles/components/Questions.css';
 import { stopTime } from '../../redux/actions/index';
+import { addPlayer } from '../../redux/actions/index';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -70,20 +71,19 @@ class Questions extends React.Component {
   }
 
   UpdateScore() {
-    const { seconds } = this.props;
-    const NUMBER_THIRTY = 30;
-    const secondsLeft = NUMBER_THIRTY - seconds;
+    const { seconds, dispatchPlayer, player: playerObj } = this.props;
     const NUMBER_TEN = 10;
-    const player = JSON.parse(localStorage.getItem('player'));
-    const { score, assertions } = player;
+    const { score, assertions } = playerObj;
     let totalScore = score;
     let totalAssertions = assertions;
     const difficulty = this.getDifficulty();
-    totalScore = NUMBER_TEN + (secondsLeft * difficulty);
+    totalScore = NUMBER_TEN + (seconds * difficulty);
     totalAssertions += 1;
-    player.score = totalScore;
-    player.assertions = totalAssertions;
-    localStorage.setItem('player', JSON.stringify(player));
+    playerObj.score = totalScore;
+    playerObj.assertions = totalAssertions;
+    const object = { player: playerObj };
+    localStorage.setItem('state', JSON.stringify(object));
+    dispatchPlayer(playerObj);
   }
 
   handleClick({ target }) {
@@ -154,10 +154,12 @@ const mapStateToProps = (state) => ({
   token: state.loginUser.token,
   timesUp: state.timer.timesUp,
   seconds: state.timer.seconds,
+  player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchStopTime: () => dispatch(stopTime()),
+  dispatchPlayer: (object) => dispatch(addPlayer(object)),
 });
 
 Questions.propTypes = {
