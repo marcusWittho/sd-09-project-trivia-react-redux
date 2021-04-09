@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Answers extends Component {
   constructor(props) {
@@ -20,14 +21,14 @@ class Answers extends Component {
     const maxIndex = 4;
     const { answerIndex } = this.state;
     if (answerIndex === maxIndex) {
-      event.target.innerText = 'Finalizar';
+      event.target.classList.add('btn-next');
     } else {
       this.setState({ answerIndex: answerIndex + 1, color: false });
     }
   }
 
-  nextButton(color) {
-    return color && (
+  nextButton(color, answerIndex) {
+    const nextButton = (
       <button
         data-testid="btn-next"
         type="button"
@@ -36,6 +37,18 @@ class Answers extends Component {
         Proxima
       </button>
     );
+    const finishButton = (
+      <Link to="/feedback">
+        <button
+          data-testid="btn-next"
+          type="button"
+        >
+          Finalizar
+        </button>
+      </Link>
+    );
+    if (answerIndex === Number('4') && color) return finishButton;
+    if (color) return nextButton;
   }
 
   changeColorAnswer() {
@@ -93,7 +106,7 @@ class Answers extends Component {
       <div>
         {this.renderQuestionsAndCategories(answerIndex, questions)}
         {this.renderAnswers(answerIndex, questions, color)}
-        {this.nextButton(color)}
+        {this.nextButton(color, answerIndex)}
       </div>
     );
   }

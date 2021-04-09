@@ -3,7 +3,7 @@ import { REQUEST_GRAVATAR_IMG } from '../services';
 
 class Header extends Component {
   getPlayerInfo(key) {
-    const player = JSON.parse(localStorage.getItem('player'));
+    const { player } = JSON.parse(localStorage.getItem('state'));
     const playerProperty = player[key];
     return playerProperty;
   }
