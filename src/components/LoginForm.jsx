@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { getToken } from '../services/Api';
 
 export default class LoginForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       name: '',
@@ -23,7 +23,6 @@ export default class LoginForm extends Component {
   async handleClick() {
     const { history } = this.props;
     const { name, email } = this.state;
-    history.push('/game');
     const token = await getToken();
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify({
@@ -32,6 +31,7 @@ export default class LoginForm extends Component {
       score: 0,
       gravatarEmail: email,
     }));
+    history.push('/game');
   }
 
   render() {
