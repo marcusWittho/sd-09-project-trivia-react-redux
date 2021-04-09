@@ -10,6 +10,7 @@ class GameScreen extends Component {
     this.state = {
       name: '',
       gravatarEmail: '',
+      scoreboard: 0,
       questions: [],
       numberOFQuestion: 0,
       loading: true,
@@ -33,7 +34,6 @@ class GameScreen extends Component {
 
   recoveringLocalStorage() {
     const storage = JSON.parse(localStorage.getItem('state'));
-    console.log(storage);
     this.setState({
       name: storage.player.name,
       gravatarEmail: storage.player.gravatarEmail,
@@ -98,7 +98,7 @@ class GameScreen extends Component {
   }
 
   header() {
-    const { name, gravatarEmail } = this.state;
+    const { name, gravatarEmail, scoreboard } = this.state;
     return (
       <header>
         <img
@@ -110,7 +110,7 @@ class GameScreen extends Component {
           Jogador:
           {name}
         </p>
-        <p data-testid="header-score">Placar: 0</p>
+        <p data-testid="header-score">{`Placar: ${scoreboard}`}</p>
       </header>
     );
   }
