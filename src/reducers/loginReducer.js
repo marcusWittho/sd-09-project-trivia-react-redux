@@ -20,6 +20,11 @@ const loginReducer = (state = INITIAL_STATE, action) => {
       ...state,
       token: action.token,
     };
+  case 'SEND_QUESTIONS':
+    return {
+      ...state,
+      questions: action.questions,
+    };
   default:
     return state;
   }
