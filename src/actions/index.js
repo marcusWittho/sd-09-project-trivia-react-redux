@@ -4,7 +4,8 @@ import {
   QUESTIONS_FAILURE,
   LOGIN_EMAIL,
   LOGIN_NAME,
-
+  TIMER,
+  IS_DISABLED,
 } from './actionsTypes';
 import fetchTrivia from '../services/triviaApi';
 
@@ -39,4 +40,14 @@ export const loginEmail = (email) => ({
 export const loginName = (name) => ({
   type: LOGIN_NAME,
   name,
+});
+
+export const timer = (time) => ({
+  type: TIMER,
+  time,
+});
+
+export const isDisabled = (bool) => ({
+  type: IS_DISABLED,
+  isDisabled: bool,
 });

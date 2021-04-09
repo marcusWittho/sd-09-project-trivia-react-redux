@@ -3,3 +3,5 @@ export const QUESTIONS_FAILURE = 'QUESTIONS_FAILURE';
 export const LOGIN_EMAIL = 'LOGIN_EMAIL';
 export const LOGIN_NAME = 'LOGIN_NAME';
 export const FETCHING_QUESTIONS = 'FETCHING_QUESTIONS';
+export const TIMER = 'TIMER';
+export const IS_DISABLED = 'IS_DISABLED';
