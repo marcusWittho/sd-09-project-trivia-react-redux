@@ -2,8 +2,9 @@ import React from 'react';
 import { func } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { apiMock, getAnswer, getToken } from '../services/triviaApi';
-import { dataGame, handleToken } from '../redux/actions';
+import md5 from 'crypto-js/md5';
+import { getAnswer, getToken } from '../services/triviaApi';
+import { dataGame, handleToken, handleUserName, handleUserEmail } from '../redux/actions';
 import './css/login.css';
 
 class Login extends React.Component {
@@ -14,33 +15,36 @@ class Login extends React.Component {
       email: '',
       disableButton: true,
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.fetchAnswer = this.fetchAnswer.bind(this);
-    this.fetchToken = this.fetchToken.bind(this);
+    this.updateGlobalStates = this.updateGlobalStates.bind(this);
   }
 
-  componentDidMount() {
+  /* componentDidMount() {
     this.fetchAnswer();
-  }
+  } */
 
-  async fetchToken() {
-    const { propHandleToken } = this.props;
+  async updateGlobalStates() {
+    const { propHandleToken, propHandleUser, propHandleEmail } = this.props;
+    const { user, email } = this.state;
     const token = await getToken();
     propHandleToken(token.token);
     localStorage.setItem('token', token.token);
+    propHandleUser(user);
+    propHandleEmail(md5(email).toString());
+    this.fetchAnswer();
   }
 
   async fetchAnswer() {
-    const answer = await getAnswer('5', getToken);
-    const mock = await apiMock();
+    const localToken = localStorage.getItem('token');
+    const numQuestion = 5;
+    const answer = await getAnswer(numQuestion, localToken);
+    const msg = 'Sessão expirada';
     const { propDataGame } = this.props;
     const status = 3;
-    if (answer.response_code === status) return propDataGame(mock.results);
+    if (answer.response_code === status) return propDataGame(msg);
     propDataGame(answer.results);
-    console.log(answer.response_code);
-    console.log(answer.results);
-    console.log(answer.results[3]);
-    console.log(answer.results[3].type);
   }
 
   handleChange({ target: { value, name } }) {
@@ -79,12 +83,12 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-          <Link to="/Game">
+          <Link to="/question">
             <button
               type="button"
               data-testid="btn-play"
               disabled={ disableButton }
-              onClick={ this.fetchToken }
+              onClick={ this.updateGlobalStates }
             >
               Jogar
             </button>
@@ -106,6 +110,8 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   propDataGame: (data) => dispatch(dataGame(data)),
   propHandleToken: (data) => dispatch(handleToken(data)),
+  propHandleUser: (user) => dispatch(handleUserName(user)),
+  propHandleEmail: (email) => dispatch(handleUserEmail(email)),
 });
 
 Login.propTypes = {
