@@ -27,14 +27,15 @@ export function fetchNewGameToken() {
   };
 }
 
-const receiveQuestions = (gameQuestions) => ({
-  type: GAME_QUESTIONS,
-  gameQuestions,
-});
-
 const loadingQuestions = () => ({
   type: LOADING_QUESTIONS,
   payload: true,
+});
+
+const receiveQuestions = (gameQuestions) => ({
+  type: GAME_QUESTIONS,
+  payload: false,
+  gameQuestions,
 });
 
 export function fetchGameQuestions(token) {
