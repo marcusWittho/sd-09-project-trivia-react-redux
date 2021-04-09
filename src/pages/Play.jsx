@@ -29,12 +29,6 @@ class Play extends React.Component {
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
-  componentDidUpdate() {
-    const { isFetching } = this.props;
-    const { isButtonsRandomized } = this.state;
-    if (!isFetching && !isButtonsRandomized) this.handleAnswers();
-  }
-
   toggle() {
     const { addClass } = this.state;
     this.setState({ addClass: !addClass });
@@ -109,8 +103,12 @@ class Play extends React.Component {
   }
 
   questionGenerator() {
-    const { randomized, addClass } = this.state;
+    const { addClass, randomized, isButtonsRandomized } = this.state;
     const { isDisabled } = this.props;
+    if (!isButtonsRandomized) {
+      const randomizedAnswers = this.handleAnswers();
+      this.setState({ randomized: randomizedAnswers });
+    }
     return (
       <section>
         {
@@ -172,16 +170,19 @@ class Play extends React.Component {
     const answersButtons = [correct, ...wrongAnswer];
     const randomizedAnswers = answersButtons.sort(() => fakeNumber - Math.random());
     this.setState({
-      randomized: randomizedAnswers,
+      // randomized: randomizedAnswers,
       isButtonsRandomized: true,
     });
+    return randomizedAnswers;
   }
 
   render() {
     const { questions, isFetching } = this.props;
-    const { questionIndex, nextQuestion, redirectFeedBack } = this.state;
-    if (isFetching) return <div>Loading...</div>;
+    const { questionIndex, nextQuestion } = this.state;
+    const { redirectFeedBack } = this.state;
     if (redirectFeedBack) return <Redirect to="/feedback" />;
+    if (isFetching) return <div>Loading...</div>;
+    // if (!isButtonsRandomized) this.handleAnswers();
     const currentQuestion = questions[questionIndex];
     const { category, question } = currentQuestion;
     return (
@@ -211,11 +212,15 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Play.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object),
   isFetching: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
   counter: PropTypes.number.isRequired,
   sendTime: PropTypes.func.isRequired,
+};
+
+Play.defaultProps = {
+  questions: [],
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Play);

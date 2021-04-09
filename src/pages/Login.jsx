@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import fetchToken from '../services/tokenGenerator';
 import { loginEmail, loginName, questionsThunk } from '../actions';
@@ -13,13 +13,11 @@ class Login extends React.Component {
       email: '',
       name: '',
       redirect: false,
-      redirectToConfig: false,
     };
     this.formGenerator = this.formGenerator.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputsValidator = this.inputsValidator.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    console.log('login', 'constructor');
   }
 
   handleChange({ target }) {
@@ -99,20 +97,20 @@ class Login extends React.Component {
         >
           Jogar
         </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => this.setState({ redirectToConfig: true }) }
-        >
-          Configurações
-        </button>
+        <Link to="/config">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
+        </Link>
       </div>
     );
   }
 
   render() {
-    const { redirect, redirectToConfig } = this.state;
-    if (redirectToConfig) return <Redirect to="/config" />;
+    const { redirect } = this.state;
     if (redirect) return <Redirect to="/play" />;
     return (
       <div>
