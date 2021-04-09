@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
 import UserData from '../Component/UserData';
-import SettingsButton from '../Components/SettingsButton';
 
 class Feedback extends Component {
   orderScore(a, b) {
@@ -69,7 +68,7 @@ class Feedback extends Component {
             Ver Ranking
           </button>
         </Link>
-        <SettingsButton />
+
       </div>
     );
   }

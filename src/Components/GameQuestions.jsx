@@ -149,11 +149,10 @@ class GameQuestions extends Component {
   }
 
   render() {
-    const { fetchQuestions, token, loading,
-      questions, type, difficulty, category } = this.props;
+    const { fetchQuestions, token, loading, questions } = this.props;
     const { questionNumber, time, answerClicked, redirect } = this.state;
     if (loading) {
-      fetchQuestions(token, type, category, difficulty);
+      fetchQuestions(token);
       return <h3>Loading</h3>;
     }
     if (redirect) return <Redirect to="/feedback" />;
@@ -195,9 +194,7 @@ class GameQuestions extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchQuestions: (token, type, category, difficulty) => (
-    dispatch(setQuestions(token, type, category, difficulty))
-  ),
+  fetchQuestions: (token) => dispatch(setQuestions(token)),
 });
 
 const mapStateToProps = (state) => ({
@@ -206,9 +203,6 @@ const mapStateToProps = (state) => ({
   questions: state.questions.questions,
   name: state.setUser.name,
   gravatarEmail: state.setUser.email,
-  type: state.configs.type,
-  difficulty: state.configs.difficulty,
-  category: state.configs.category,
 });
 
 GameQuestions.propTypes = {
