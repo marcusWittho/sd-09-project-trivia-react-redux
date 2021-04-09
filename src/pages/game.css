@@ -5,33 +5,33 @@
 }
 
 .game-card {
+  background-color: white;
+  border-radius: 20px;
   display: flex;
+  height: 550px;
   justify-content: center;
   margin-top: 10%;
-  border-radius: 20px;
   padding: 10px;
-  height: 550px;
   width: 500px;
-  background-color: white;
   z-index: 100;
 }
 
 .card-container {
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .wave-top {
+  margin-top: -207px;
   position: absolute;
   width: 1276px;
-  margin-top: -207px;
 }
 
 .wave-bottom {
+  margin-top: 319px;
   position: absolute;
   width: 1276px;
-  margin-top: 319px;
 }
 
 .question-left {
