@@ -26,11 +26,6 @@ class Question extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
-  componentDidMount() {
-    const playerInformation = localStorage.getItem('state');
-    console.log(JSON.parse(playerInformation));
-  }
-
   handleClick() {
     this.setState((state) => ({
       clicked: !state.clicked,

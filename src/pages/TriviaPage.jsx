@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
 import { fetchQuestions } from '../redux/actions';
-// import Header from '../components/Header';
+import Header from '../components/Header';
 import Question from '../components/Question';
 
 class TriviaPage extends React.Component {
@@ -35,8 +34,7 @@ class TriviaPage extends React.Component {
   }
 
   render() {
-    const { fetching, emailInput, nameInput, score } = this.props;
-    const emailHash = md5(emailInput).toString();
+    const { fetching } = this.props;
     if (fetching) {
       return (
         <h1>Carregando...</h1>
@@ -45,17 +43,7 @@ class TriviaPage extends React.Component {
 
     return (
       <>
-        <header>
-          <img
-            data-testid="header-profile-picture"
-            src={ `https://www.gravatar.com/avatar/${emailHash}` }
-            alt="player-img"
-          />
-          Jogador:
-          <span data-testid="header-player-name">{ nameInput }</span>
-          Placar:
-          <span data-testid="header-score">{ score }</span>
-        </header>
+        <Header />
         <Question />
       </>
     );

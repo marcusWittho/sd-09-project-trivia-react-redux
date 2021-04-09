@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchToken, saveLogin } from '../redux/actions';
+import { fetchToken, saveLogin, resetScore } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -17,6 +17,11 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { reset } = this.props;
+    reset();
   }
 
   handleChange({ target }) {
@@ -113,11 +118,13 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchToken()),
   loginAction: (obj) => dispatch(saveLogin(obj)),
+  reset: () => dispatch(resetScore()),
 });
 
 Login.propTypes = {
   getToken: PropTypes.func.isRequired,
   loginAction: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
