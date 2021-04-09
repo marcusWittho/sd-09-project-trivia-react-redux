@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import addUserInfo from '../actions';
 import ButtonSettings from '../components/ButtonSettings';
 import fetchTrivia from '../actions/trivia';
@@ -24,9 +23,14 @@ class Login extends React.Component {
   }
 
   proceedToGame() {
-    const { addUserInfo: addUser, getTriviaQuestions } = this.props;
+    const {
+      addUserInfo: addUser,
+      getTriviaQuestions,
+      history,
+    } = this.props;
     addUser(this.state);
     getTriviaQuestions();
+    history.push('/game');
   }
 
   render() {
@@ -47,16 +51,14 @@ class Login extends React.Component {
           type="email"
           onChange={ this.getValue }
         />
-        <Link to="/game">
-          <button
-            onClick={ this.proceedToGame }
-            data-testid="btn-play"
-            type="button"
-            disabled={ disableButton }
-          >
-            Jogar
-          </button>
-        </Link>
+        <button
+          onClick={ this.proceedToGame }
+          data-testid="btn-play"
+          type="button"
+          disabled={ disableButton }
+        >
+          Jogar
+        </button>
         <ButtonSettings />
       </section>
     );
@@ -73,4 +75,5 @@ export default connect(null, mapDispatchToProps)(Login);
 Login.propTypes = {
   addUserInfo: PropTypes.func.isRequired,
   getTriviaQuestions: PropTypes.func.isRequired,
+  history: PropTypes.func.isRequired,
 };

@@ -4,10 +4,29 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Game extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      isAnswered: false,
+      questionIndex: 0,
+    };
+
+    this.answerQuestion = this.answerQuestion.bind(this);
+  }
+
   setupRandomAnswers(correctAnswer, incorrectAnswers) {
+    const { isAnswered } = this.state;
     const CONST_RANDOM = 0.5;
     const correctAnswersButtons = (
-      <button key="correct" type="button" data-testid="correct-answer">
+      <button
+        key="correct"
+        type="button"
+        data-testid="correct-answer"
+        { ...isAnswered && { style: { border: '3px solid rgb(6, 240, 15)' } } }
+        onClick={ isAnswered
+          ? () => console.log('Respondido')
+          : this.answerQuestion }
+      >
         {correctAnswer}
       </button>
     );
@@ -17,8 +36,12 @@ class Game extends React.Component {
           type="button"
           key={ index + 1 }
           data-testid={ `wrong-answer-${index}` }
+          { ...isAnswered && { style: { border: '3px solid rgb(255, 0, 0)' } } }
+          onClick={ isAnswered
+            ? () => console.log('Respondido')
+            : this.answerQuestion }
         >
-          {incorrectAnswer}
+          { incorrectAnswer }
         </button>
       ),
     );
@@ -26,32 +49,35 @@ class Game extends React.Component {
     return [...answers.sort(() => Math.random() - CONST_RANDOM)];
   }
 
-  renderQuestions() {
+  answerQuestion() {
+    this.setState({ isAnswered: true });
+  }
+
+  renderQuestion() {
     const { questions } = this.props;
-    return questions.map(
-      (
-        {
-          category,
-          question,
-          correct_answer: correctAnswer,
-          incorrect_answers: incorrectAnswers,
-        },
-        questionNumber,
-      ) => (
-        <div key={ questionNumber }>
-          <p data-testid="question-category">{category}</p>
-          <p data-testid="question-text">{question}</p>
-          {this.setupRandomAnswers(correctAnswer, incorrectAnswers)}
-        </div>
-      ),
+    const { questionIndex } = this.state;
+    const {
+      category,
+      question,
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers,
+    } = questions[questionIndex];
+
+    return (
+      <div>
+        <p data-testid="question-category">{category}</p>
+        <p data-testid="question-text">{question}</p>
+        { this.setupRandomAnswers(correctAnswer, incorrectAnswers) }
+      </div>
     );
   }
 
   render() {
+    const { isFetching } = this.props;
     return (
       <>
         <Header />
-        { this.renderQuestions() }
+        { !isFetching && this.renderQuestion() }
       </>
     );
   }
@@ -59,6 +85,7 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   questions: state.trivia.questions,
+  isFetching: state.trivia.isFetching,
 });
 
 export default connect(mapStateToProps)(Game);
@@ -74,4 +101,5 @@ Game.propTypes = {
       incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     }),
   ).isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
