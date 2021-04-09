@@ -8,11 +8,12 @@ class Game extends Component {
 
     this.state = {
       triviaArray: [],
-      position: 0,
       error: false,
+      position: 0,
     };
 
     this.renderAnswer = this.renderAnswer.bind(this);
+    this.renderQuestion = this.renderQuestion.bind(this);
   }
 
   async componentDidMount() {
@@ -39,12 +40,7 @@ class Game extends Component {
 
   renderCorrectAnswer(correctAnswer) {
     return (
-      <button
-        type="button"
-        key={ correctAnswer }
-        data-testid="correct-answer"
-        onClick={ this.nextQuestion }
-      >
+      <button type="button" key={ correctAnswer } data-testid="correct-answer">
         { correctAnswer }
       </button>
     );
@@ -67,30 +63,35 @@ class Game extends Component {
     return answerArray.sort(() => Math.random() - randomModifier);
   }
 
-  render() {
-    const { error, triviaArray, position } = this.state;
+  renderQuestion() {
+    const { triviaArray, position } = this.state;
+    const {
+      incorrect_answers: incorrectAnswers,
+      correct_answer: correctAnswer,
+    } = triviaArray[position];
+    return (
+      <div>
+        <span data-testid="question-category">
+          Category:
+          {triviaArray[position].category}
+        </span>
+        <span data-testid="question-text">
+          Question:
+          {triviaArray[position].question}
+        </span>
+        {this.renderAnswer(incorrectAnswers, correctAnswer)}
+      </div>
+    );
+  }
 
+  render() {
+    const { error, triviaArray } = this.state;
     return (
       <div>
         <Header />
-        {triviaArray.length > 0 && !error ? (
-          <div>
-            <span data-testid="question-category">
-              Category:
-              {triviaArray[position].category}
-            </span>
-            <span data-testid="question-text">
-              Question:
-              {triviaArray[position].question}
-            </span>
-            {this.renderAnswer(
-              triviaArray[position].incorrect_answers,
-              triviaArray[position].correct_answer,
-            )}
-          </div>
-        ) : (
-          <div>Loading...</div>
-        )}
+        { error || triviaArray.length === 0
+          ? <span>Carregando... </span>
+          : this.renderQuestion() }
       </div>
     );
   }
