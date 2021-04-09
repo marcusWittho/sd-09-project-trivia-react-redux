@@ -13,7 +13,7 @@ class Questions extends Component {
       questionAnswered: false,
       selectedAnswer: '',
       time: {},
-      seconds: 4,
+      seconds: 30,
       hide: true,
     };
     this.dispatchQuestions = this.dispatchQuestions.bind(this);
@@ -122,7 +122,7 @@ class Questions extends Component {
     if (currentQuestionIndex < limit) {
       this.setState((prevState) => ({
         currentQuestionIndex: prevState.currentQuestionIndex + 1,
-        seconds: 4,
+        seconds: 30,
         hide: true,
         questionAnswered: false,
         selectedAnswer: '',
