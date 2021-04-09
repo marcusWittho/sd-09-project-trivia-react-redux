@@ -1,44 +1,23 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { fetchGameData } from '../actions/index';
-import getQuestions from '../services/triviaAPI_questions';
-import Answer from '../components/Answer';
+import Questions from '../components/Questions';
 
 import './Game.css';
 
 class Game extends Component {
-  /* constructor(props) {
-    super(props);
-
-  } */
-
   componentDidMount() {
     const { getGameData, token } = this.props;
     getGameData(token);
   }
 
   render() {
-    const { questions } = this.props;
-    // const answers = ['xablau 1', 'xablau 2'];
-    const answerOptions = questions.map((answer) =>
-      <Answer key="answer.toString()" description={answer} />
-    );
     return (
       <>
         <Header />
-        <div className="container-game">
-          <section className="question-game">
-            {/* campo category */}
-            <h2 data-testid="question-category">Politica</h2>
-            {/* campo question */}
-            <p data-testid="question-text">Texto da pergunta</p>
-          </section>
-          <section className="answers-game">
-            { answerOptions }
-          </section>
-        </div>
+        <Questions />
       </>
     );
   }
@@ -46,7 +25,6 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   token: state.loginReducer.token,
-  questions: state.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

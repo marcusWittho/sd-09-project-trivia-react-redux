@@ -4,10 +4,15 @@ import './Answer.css';
 
 class Answer extends Component {
   render() {
-    const { description } = this.props;
-    const { question } = description;
+    const { item, index } = this.props;
+   
     return (
-      <button className="answer-btn">{ question }</button>
+      <button
+        className="answer-btn"
+        data-testid={ `wrong-answer-${index}` }
+      >
+        { item }
+      </button>
     );
   }
 }
