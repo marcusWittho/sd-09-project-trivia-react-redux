@@ -7,10 +7,10 @@ class Footer extends Component {
       <footer className="in-game-footer">
         <div>
           <span>Made with ❤ by: </span>
-          <span>Cezene</span>
-          <span>Henrique</span>
-          <span>Igor</span>
-          <span>Leonardo</span>
+          <span>@cezene Cezene</span>
+          <span>@henrique3g Henrique</span>
+          <span>@igmriegel Igor</span>
+          <span>@LeonarDev Leonardo</span>
         </div>
       </footer>
     );

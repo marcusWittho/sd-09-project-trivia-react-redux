@@ -1,0 +1,43 @@
+.incorrect-answers {
+  border: 3px solid rgb(255, 0, 0);
+  text-align: center;
+  height: 30px;
+  width: 200px;
+  margin: 10px;
+}
+
+.correct-answers {
+  border: 3px solid rgb(6, 240, 15);
+  text-align: center;
+  height: 30px;
+  width: 200px;
+  margin: 10px;
+}
+
+.answer-button {
+  text-align: center;
+  height: 30px;
+  width: 200px;
+  margin: 10px;
+}
+
+.answer-options {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
+button:active {
+  border: none !important;
+}
+
+.next-enabled {
+  text-align: center;
+  height: 30px;
+  width: 200px;
+  margin: 10px;
+}
+
+.next-hidden {
+  visibility: hidden;
+}

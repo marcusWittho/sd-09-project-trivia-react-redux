@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { timeRunOut } from '../actions/index';
 
 class Timer extends Component {
   constructor(props) {
@@ -26,11 +28,12 @@ class Timer extends Component {
   }
 
   countDown(miliSeconds) {
+    const { resetTimer } = this.props;
     const myTimer = setInterval(() => {
-      console.warn('rodando Countdown');
       const { seconds } = this.state;
       if (seconds === 0) {
         clearInterval(myTimer);
+        resetTimer(true);
         return null;
       }
       this.clockTick();
@@ -50,8 +53,13 @@ class Timer extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  resetTimer: (bool) => dispatch(timeRunOut(bool)),
+});
+
 Timer.propTypes = {
   timeInterval: PropTypes.number.isRequired,
+  resetTimer: PropTypes.func.isRequired,
 };
 
-export default Timer;
+export default connect(null, mapDispatchToProps)(Timer);
