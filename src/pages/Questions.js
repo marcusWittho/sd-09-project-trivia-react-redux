@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getQuestionsToStore, timeRunOut } from '../actions/index';
+import { getQuestionsToStore } from '../actions/index';
 import Timer from '../components/Timer';
 import { getQuestions } from '../services/api';
 import localStorageService from '../services/localStorage';
@@ -13,14 +13,15 @@ class Questions extends Component {
     super(props);
     this.state = {
       questionNum: 0,
-      questionTime: 30,
-      buttonClicked: false,
+      randomizedAnswers: [],
+      showAnswers: false,
     };
-
+    this.timer = React.createRef();
     this.renderQuestion = this.renderQuestion.bind(this);
-    this.randomizedAnswers = this.randomizedAnswers.bind(this);
+    this.randomizedAnswers = this.randomizeAnswers.bind(this);
     this.hadleAnswerClick = this.hadleAnswerClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.handleTimeUp = this.handleTimeUp.bind(this);
   }
 
   async componentDidMount() {
@@ -28,66 +29,79 @@ class Questions extends Component {
     const token = localStorageService.getToken();
     const API_RESULT = await getQuestions(token);
     saveQuestions(API_RESULT);
+    const { questionNum } = this.state;
+    this.randomizeAnswers(API_RESULT[questionNum]);
+    this.timer.current.start();
   }
 
-  randomizedAnswers(question) {
-    const { buttonClicked } = this.state;
-    const { outaTime } = this.props;
+  handleTimeUp() {
+    this.setState({ showAnswers: true });
+  }
+
+  randomizeAnswers(question) {
     const SEED_TO_RANDOM = 0.5;
     const ANSWERS = [
-      ...question.incorrect_answers.map((item, index) => (
-        <button
-          type="button"
-          className={ buttonClicked || outaTime ? 'incorrect-answers' : 'answer-button' }
-          key={ index + 1 }
-          data-testid={ `wrong-answer-${index}` }
-          onClick={ this.hadleAnswerClick }
-          disabled={ outaTime }
-        >
-          {item}
-        </button>)),
-      (
-        <button
-          type="button"
-          className={ buttonClicked || outaTime ? 'correct-answers' : 'answer-button' }
-          key="0"
-          data-testid="correct-answer"
-          onClick={ this.hadleAnswerClick }
-          disabled={ outaTime }
-        >
-          {question.correct_answer}
-        </button>
-      ),
+      ...question.incorrect_answers.map((item) => ({ answer: item, isCorrect: false }
+      )),
+      { answer: question.correct_answer, isCorrect: true },
     ];
     const RANDOMIZED = ANSWERS.sort(() => Math.random() - SEED_TO_RANDOM);
-    return RANDOMIZED;
+    this.setState({ randomizedAnswers: RANDOMIZED });
   }
 
-  hadleAnswerClick() {
-    this.setState({ buttonClicked: true });
+  hadleAnswerClick(isCorrect) {
+    this.setState({ showAnswers: true });
+    this.timer.current.pause();
+    if (isCorrect) {
+      const responseTime = this.timer.current.getTime();
+      localStorageService.addPointsToScore(responseTime, 1);
+    }
   }
 
   nextQuestion() {
-    const { resetTimer } = this.props;
-    this.setState(({ questionNum }) => ({
-      questionNum: questionNum + 1,
-      buttonClicked: false,
+    const { questionNum } = this.state;
+    const { questions } = this.props;
+
+    const currentQuestion = questions[questionNum + 1];
+    this.randomizeAnswers(currentQuestion);
+
+    this.setState((state) => ({
+      questionNum: state.questionNum + 1,
+      showAnswers: false,
     }));
-    resetTimer(false);
+
+    this.timer.current.reset();
+    this.timer.current.start();
+  }
+
+  renderAnswers() {
+    const { randomizedAnswers, showAnswers } = this.state;
+    return randomizedAnswers.map(({ answer, isCorrect }, key) => (
+      <button
+        type="button"
+        className={ `answer-button
+         ${showAnswers && (isCorrect ? 'correct-answers' : 'incorrect-answers')}` }
+        key={ answer }
+        data-testid={ isCorrect ? 'correct-answer' : `wrong-answer-${key}` }
+        onClick={ () => this.hadleAnswerClick(isCorrect) }
+        disabled={ showAnswers }
+      >
+        {answer}
+      </button>
+    ));
   }
 
   renderQuestion(question) {
-    const { buttonClicked } = this.state;
-    const { outaTime } = this.props;
+    const { showAnswers } = this.state;
     return (
       <section>
         <p data-testid="question-category">{ question.category }</p>
         <p data-testid="question-text">{ question.question }</p>
         <div className="answer-options">
-          {this.randomizedAnswers(question)}
+          {this.renderAnswers()}
         </div>
         <button
-          className={ buttonClicked || outaTime ? 'next-enabled' : 'next-hidden' }
+          className={ showAnswers ? 'next-enabled' : 'next-hidden' }
           type="button"
           data-testid="btn-next"
           onClick={ this.nextQuestion }
@@ -99,12 +113,13 @@ class Questions extends Component {
   }
 
   render() {
-    const { questionNum, questionTime } = this.state;
-    const { questions, outaTime } = this.props;
+    const { questionNum } = this.state;
+    const { questions } = this.props;
     const currentQuestion = questions[questionNum];
     return (
       <div>
-        { !outaTime ? <Timer timeInterval={ questionTime } /> : <span>Time is up</span>}
+        <p data-testid="header-score">Score: 0</p>
+        <Timer ref={ this.timer } timeUp={ this.handleTimeUp } />
         { currentQuestion && this.renderQuestion(currentQuestion) }
       </div>
     );
@@ -113,18 +128,14 @@ class Questions extends Component {
 
 const mapStateToProps = (state) => ({
   questions: state.getQuestions.questions,
-  outaTime: state.ranOutaTime.ranOutOfTime,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetTimer: (bool) => dispatch(timeRunOut(bool)),
   saveQuestions: (questions) => dispatch(getQuestionsToStore(questions)),
 });
 
 Questions.propTypes = {
   questions: PropTypes.arrayOf(Object).isRequired,
-  outaTime: PropTypes.bool.isRequired,
-  resetTimer: PropTypes.func.isRequired,
   saveQuestions: PropTypes.func.isRequired,
 };
 
