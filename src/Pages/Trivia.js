@@ -31,9 +31,7 @@ class Trivia extends Component {
     return (
       <div>
         <Header />
-        <div>
-          { this.update() }
-        </div>
+        { this.update() }
       </div>
     );
   }

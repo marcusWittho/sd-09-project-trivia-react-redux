@@ -7,7 +7,7 @@ class MultipleAnswers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      choice: [],
+      // choice: [],
       rightAnswerClass: '',
       wrongAnswerClass: '',
       nextButton: true,
@@ -22,7 +22,7 @@ class MultipleAnswers extends Component {
   }
 
   componentDidMount() {
-    this.createChoices();
+    // this.createChoices();
   }
 
   updateQuestIndex() {
@@ -33,16 +33,16 @@ class MultipleAnswers extends Component {
   }
 
   createChoices() {
-    const { question } = this.props;
-    const choice = question.incorrect_answers;
-    const choices = 4;
-    if (choice.length < choices) {
-      choice.splice(Math.floor(Math.random() * choices), 0,
-        question.correct_answer);
-      this.setState({ choice });
-    } else {
-      this.setState({ choice });
-    }
+    // const { question } = this.props;
+    // const choice = question.incorrect_answers;
+    // const choices = 4;
+    // if (choice.length < choices) {
+    //   choice.splice(Math.floor(Math.random() * choices), 0,
+    //     question.correct_answer);
+    //   this.setState({ choice });
+    // } else {
+    //   this.setState({ choice });
+    // }
   }
 
   validateAnswers(answer, index) {
@@ -63,7 +63,8 @@ class MultipleAnswers extends Component {
 
   nextQuestion() {
     this.updateQuestIndex();
-    this.createChoices();
+    // nos teste ele nao mudou nada que percebi
+    // this.createChoices();
     this.setState({ rightAnswerClass: '',
       wrongAnswerClass: '',
       nextButton: true,
@@ -71,8 +72,11 @@ class MultipleAnswers extends Component {
   }
 
   render() {
-    const { choice, rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer } = this.state;
+    const { rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer } = this.state;
     const { question } = this.props;
+    // linha que adcionei 
+    let choice = [...question.incorrect_answers, question.correct_answer];
+    // --
     let index = 0;
     return (
       <div>
@@ -119,7 +123,7 @@ const mapDispatchToProps = (dispatch) => ({
 MultipleAnswers.propTypes = {
   questIndex: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
-  question: PropTypes.shape({grupo-01-Trivia-main
+  question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     category: PropTypes.string,
