@@ -18,6 +18,12 @@ class Question extends React.Component {
     this.countScore = this.countScore.bind(this);
   }
 
+  componentDidUpdate() {
+    const { enableNextButton } = this.props;
+    const { disabled } = this.state;
+    if (disabled) enableNextButton();
+  }
+
   resetButtons() {
     this.setState((state) => ({
       ...state,
@@ -34,10 +40,10 @@ class Question extends React.Component {
         medium: 2,
         easy: 1,
       };
-      const player = JSON.parse(localStorage.getItem('player'));
-      player.score += base * (1 + multipliers[difficulty]);
-      player.assertions += 1;
-      localStorage.setItem('player', JSON.stringify(player));
+      const state = JSON.parse(localStorage.getItem('state'));
+      state.player.score += base * (1 + multipliers[difficulty]);
+      state.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(state));
     }
   }
 
@@ -84,10 +90,9 @@ class Question extends React.Component {
         difficulty,
         question,
       },
-      enableNextButton,
+      // enableNextButton,
     } = this.props;
-    const { disabled } = this.state;
-    if (disabled) enableNextButton();
+    // const { disabled } = this.state;
     return (
       <div className="question">
         <p

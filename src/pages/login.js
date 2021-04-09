@@ -37,14 +37,17 @@ class Login extends React.Component {
     await getToken();
     const { name, email } = this.state;
     const { getMyQuestions } = this.props;
-    const player = {
-      name,
-      gravatarEmail: email,
-      assertions: 0,
-      score: 0,
+
+    const state = {
+      player: {
+        name,
+        gravatarEmail: email,
+        assertions: 0,
+        score: 0,
+      },
     };
     // coloca o player no localStorage
-    localStorage.setItem('player', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify(state));
     const myURL = gravatarURL(email);
     localStorage.setItem('gravatarURL', myURL);
 
