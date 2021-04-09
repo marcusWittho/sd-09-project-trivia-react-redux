@@ -28,7 +28,6 @@ class Login extends React.Component {
     localStorage.setItem('token', token);
     const { saveQuestions } = this.props;
     const API_RESULT = await getQuestions(token);
-    console.log(API_RESULT);
     saveQuestions(API_RESULT);
     this.setState({ loginReady: true });
   }
