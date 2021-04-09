@@ -1,7 +1,6 @@
 import React from 'react';
 
 class feedback extends React.Component {
-
   mandouBem() {
     return (
       <h1>Mandou bem!</h1>
