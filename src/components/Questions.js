@@ -10,29 +10,28 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
-    if (questions.length === 0) return <div />;
+    const { questions, isLoading } = this.props;
+    if (isLoading === true) return (<h1>Loading...</h1>);
     return (
       <main>
-        <p
-          data-testid="question-category"
-        >
-          Categoria:
-          { questions[1].category }
-        </p>
-        <p data-testid="question-text">{ questions[1].question }</p>
-        <button type="button" data-testid="wrong-answer-0">
-          { questions[1].correct_answer }
-        </button>
-        <button type="button" data-testid="wrong-answer-1">
-          { questions[1].incorrect_answers[0] }
-        </button>
-        <button type="button" data-testid="wrong-answer-2">
-          { questions[1].incorrect_answers[1] }
-        </button>
-        <button type="button" data-testid="wrong-answer-2">
-          { questions[1].incorrect_answers[2] }
-        </button>
+        <div>
+          { questions.map((question) => (
+            <div>
+              <h3 data-testid="question-category">{question.category}</h3>
+              <h3 data-testid="question-text">{question.question}</h3>
+              <button type="button">{question.correct_answer}</button>
+              {(question.incorrect_answers).map((option, index) => (
+                <button
+                  type="button"
+                  key={ index }
+                  data-testid={ `wrong-answer-${index}` }
+                >
+                  { option }
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
       </main>
 
     );
@@ -42,10 +41,12 @@ class Questions extends React.Component {
 Questions.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
+  isLoading: state.game.isLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

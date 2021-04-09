@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
@@ -19,13 +21,26 @@ class Feedback extends Component {
   }
 
   render() {
+    const { userScore } = this.props;
     return (
       <div>
         <Header />
         { this.showMessage() }
+        <p data-testid="feedback-total-score">{ userScore }</p>
+        <p data-testid="feedback-total-question">Voce acertou: perguntas</p>
       </div>
     );
   }
+}
+
+Feedback.propTypes = {
+  userScore: PropTypes.number.isRequired,
 };
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  email: state.user.email,
+  nickname: state.user.nickname,
+  userScore: state.score.currentScore,
+});
+
+export default connect(mapStateToProps)(Feedback);
