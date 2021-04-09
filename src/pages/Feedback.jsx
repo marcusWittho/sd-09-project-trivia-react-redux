@@ -5,7 +5,6 @@ class FeedBack extends Component {
     const state = localStorage.getItem('state');
     const { player } = JSON.parse(state);
     const { assertions } = player;
-    console.log(assertions);
     const condicionNumber = 3;
     return (
       assertions < condicionNumber

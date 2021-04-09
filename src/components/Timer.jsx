@@ -11,6 +11,7 @@ class Timer extends Component {
     };
 
     this.setTime = this.setTime.bind(this);
+    this.checkRestart = this.checkRestart.bind(this);
   }
 
   componentDidMount() {
@@ -25,7 +26,15 @@ class Timer extends Component {
   setTime() {
     const { timer } = this.state;
     if ((timer) > 0) {
+      this.checkRestart();
       this.setState((prevState) => ({ timer: prevState.timer - 1 }));
+    }
+  }
+
+  checkRestart() {
+    const { restartTime, timer } = this.props;
+    if (restartTime === true) {
+      this.setState({ timer: timer + 1 });
     }
   }
 
@@ -47,6 +56,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 Timer.propTypes = {
   stateOfBtn: PropTypes.func.isRequired,
+  timer: PropTypes.number.isRequired,
+  restartTime: PropTypes.bool.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);

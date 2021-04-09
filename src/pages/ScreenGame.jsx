@@ -13,7 +13,6 @@ class ScreenGame extends React.Component {
   constructor(props) {
     super(props);
     const { userName, userEmail } = props;
-
     this.state = {
       correct: '',
       allAnswers: [],
@@ -28,11 +27,11 @@ class ScreenGame extends React.Component {
       category: '',
       question: '',
       timer: 30,
+      restartTime: false,
       changeClass: false,
       indexQuestion: 0,
-      redirectToFeedback: false,
+      redirect: false,
     };
-
     this.updateState = this.updateState.bind(this);
     this.changeClassAnswer = this.changeClassAnswer.bind(this);
     this.changeClassCorrectAnswer = this.changeClassCorrectAnswer.bind(this);
@@ -40,7 +39,8 @@ class ScreenGame extends React.Component {
     this.difficultScore = this.difficultScore.bind(this);
     this.submitAnswer = this.submitAnswer.bind(this);
     this.setIndexQuestion = this.setIndexQuestion.bind(this);
-    this.setSettingsRedirect = this.setSettingsRedirect.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
+    this.currentTime = this.currentTime.bind(this);
   }
 
   componentDidMount() {
@@ -51,11 +51,23 @@ class ScreenGame extends React.Component {
     localStorage.setItem('state', JSON.stringify(player));
   }
 
-  componentDidUpdate(props) {
+  componentDidUpdate(props, state) {
+    const interval = 2000;
+    const { restartTime } = this.state;
     if (props !== this.props) {
       this.setIndexQuestion();
       this.addScore();
+      this.currentTime();
     }
+    this.intervalID = setInterval(() => {
+      if (state.restartTime !== restartTime) {
+        this.currentTime();
+      }
+    }, interval);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
   }
 
   setIndexQuestion() {
@@ -85,14 +97,10 @@ class ScreenGame extends React.Component {
         difficulty,
       };
       this.updateState(objQuestions);
-    }
-  }
-
-  setSettingsRedirect() {
-    const { indexQuestion } = this.state;
-    const four = 4;
-    if (indexQuestion > four) {
-      this.setState({ redirectToFeedback: true });
+    } else {
+      this.setState({
+        redirect: true,
+      });
     }
   }
 
@@ -152,7 +160,6 @@ class ScreenGame extends React.Component {
     this.setState({
       changeClass: true,
     });
-
     this.addScore();
   }
 
@@ -162,11 +169,19 @@ class ScreenGame extends React.Component {
     });
   }
 
+  resetTimer() {
+    this.setState({ restartTime: true });
+  }
+
+  currentTime() {
+    this.setState({ restartTime: false });
+  }
+
   render() {
-    const { correct, allAnswers, redirectToFeedback,
-      category, question, changeClass, showNextQuestion } = this.state;
+    const { correct, allAnswers, timer, category,
+      question, changeClass, showNextQuestion, redirect, restartTime } = this.state;
     const { btnState } = this.props;
-    if (redirectToFeedback) return <Redirect to="feedback" />;
+    if (redirect) { return <Redirect to="/feedback" />; }
     return (
       <section>
         <Header />
@@ -189,10 +204,10 @@ class ScreenGame extends React.Component {
         { showNextQuestion
           && <NextQuestionButton
             setIndexQuestion={
-              () => { this.setIndexQuestion(); this.setSettingsRedirect(); }
+              () => { this.setIndexQuestion(); this.resetTimer(); }
             }
           /> }
-        <Timer />
+        <Timer restartTime={ restartTime } timer={ timer } />
       </section>
     );
   }
