@@ -4,7 +4,28 @@ import { Redirect, Link } from 'react-router-dom';
 import { bool, shape } from 'prop-types';
 
 class Ranking extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getRanking = this.getRanking.bind(this);
+
+    this.state = {
+      ranking: [],
+    };
+  }
+
+  componentDidMount() {
+    this.getRanking();
+  }
+
+  getRanking() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.sort((a, b) => ((b.score !== a.score) && b.score - a.score));
+    this.setState({ ranking });
+  }
+
   render() {
+    const { ranking } = this.state;
     const { player } = this.props;
     const { validLogin } = player;
     if (!validLogin) return <Redirect to="/" />;
@@ -17,6 +38,26 @@ class Ranking extends React.Component {
               Inicio
             </button>
           </Link>
+          <ul>
+            { ranking.map((value, index) => (
+              <li key={ index }>
+                {console.log(value)}
+                <img src={ value.picture } alt={ `Avata de ${value.name}` } />
+                <div>
+                  <p>
+                    <strong>Nome:</strong>
+                    &nbsp;
+                    <span data-testid={ `player-name-${index}` }>{ value.name }</span>
+                  </p>
+                  <p>
+                    <strong>Pontuação:</strong>
+                    &nbsp;
+                    <span data-testid={ `player-score-${index}` }>{ value.score }</span>
+                  </p>
+                </div>
+              </li>
+            )) }
+          </ul>
         </div>
       </section>
     );

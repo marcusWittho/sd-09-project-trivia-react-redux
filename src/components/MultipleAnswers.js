@@ -61,8 +61,8 @@ class MultipleAnswers extends React.Component {
     stateShowButton(true);
   }
 
-  selectDataTest(option, index) {
-    const { question } = this.props;
+  selectDataTest(question, option, index) {
+    // const { question } = this.props;
     if (question.correct_answer !== option) {
       return `wrong-answer-${index}`;
     }
@@ -73,8 +73,10 @@ class MultipleAnswers extends React.Component {
     const { addOptionAnswers } = this.props;
     const optionAnswers = question.incorrect_answers;
     const maxNumber = 4;
-    optionAnswers
-      .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
+    if (optionAnswers.length < maxNumber) {
+      optionAnswers
+        .splice(Math.floor(Math.random() * maxNumber), 0, question.correct_answer);
+    }
     addOptionAnswers(optionAnswers);
   }
 
@@ -94,7 +96,7 @@ class MultipleAnswers extends React.Component {
           <p data-testid="question-text">{ question.question }</p>
         </div>
         {optionAnswers.map((option) => {
-          const dataTestId = this.selectDataTest(option, index);
+          const dataTestId = this.selectDataTest(question, option, index);
           if (dataTestId !== correctAnswer) index += 1;
           return (
             <button
