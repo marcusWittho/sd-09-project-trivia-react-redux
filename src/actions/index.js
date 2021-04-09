@@ -1,3 +1,4 @@
 const LOGIN = 'LOGIN';
+const TRIVIA_REQUEST = 'TRIVIA_REQUEST';
 
-export default LOGIN;
+export { LOGIN, TRIVIA_REQUEST };

@@ -9,7 +9,7 @@ export default function App() {
   return (
     <Switch>
       <Route exact path="/" component={ Login } />
-      <Route exact path="/jogo" component={ Game } />
+      <Route path="/game" component={ Game } />
       <Route path="/settings" component={ Settings } />
     </Switch>
   );

@@ -1,4 +1,4 @@
-import LOGIN from '.';
+import { LOGIN } from '.';
 
 const loginAction = (name, gravatarEmail) => ({
   type: LOGIN,
