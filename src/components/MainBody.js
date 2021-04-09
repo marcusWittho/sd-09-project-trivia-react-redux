@@ -40,18 +40,16 @@ class MainBody extends React.Component {
   }
 
   timeOut() {
-    const { timer } = this.state;
-    const temporizador = setInterval(this.tictac, 1000);
-    if (timer === 1) {
-      clearInterval(temporizador);
-      console.log('cai aqui');
-    }
+    this.temporizador = setInterval(this.tictac, 1000);
   }
 
   tictac() {
     const { timer } = this.state;
     if (timer > 0) {
       this.setState({ timer: timer - 1 });
+    }
+    if (timer === 1) {
+      clearInterval(this.temporizador);
     }
     console.log(timer);
   }
