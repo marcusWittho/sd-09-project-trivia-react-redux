@@ -5,27 +5,23 @@ class button extends React.Component {
   constructor(props) {
     super(props);
     this.redirect = this.redirect.bind(this);
-    this.state = {
-      redirect: false,
-    };
+    this.state = { shouldRedirect: false };
   }
 
   redirect() {
-    this.setState({
-      redirect: true,
-    });
+    this.setState({ shouldRedirect: true });
   }
 
   render() {
-    const { redirect } = this.state;
-    if (redirect) return <Redirect to="/settings" />;
+    const { shouldRedirect } = this.state;
+    if (shouldRedirect) return <Redirect to="/settings" />;
     return (
       <button
         data-testid="btn-settings"
         type="button"
         onClick={ this.redirect }
       >
-        Configurações
+        Settings
       </button>
     );
   }

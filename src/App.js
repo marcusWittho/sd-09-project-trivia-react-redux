@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Login, Settings, QuestionPage } from './pages';
+import { Login, Settings, QuestionPage, Ranking } from './pages';
 // import logo from './trivia.png';
 import './App.css';
 
@@ -17,6 +17,7 @@ export default function App() {
         <Route exact path="/" component={ Login } />
         <Route path="/settings" component={ Settings } />
         <Route path="/question" component={ QuestionPage } />
+        <Route path="/ranking" component={ Ranking } />
       </Switch>
     </div>
   );
