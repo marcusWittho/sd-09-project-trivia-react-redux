@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { doLogin } from '../actions/index';
 import { getToken } from '../services/api';
+import localStorageService from '../services/localStorage';
 import './Login.css';
 
 class Login extends React.Component {
@@ -24,6 +25,8 @@ class Login extends React.Component {
 
   async getAndSaveToken() {
     const token = await getToken();
+    const { email, name } = this.state;
+    localStorageService.savePlayer(name, email);
     localStorage.setItem('token', token);
     this.setState({ loginReady: true });
   }
