@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginAction, userInfoAction } from '../actions/action';
+import { loginAction, userInfoAction, updateImg } from '../actions/action';
 
 class Login extends React.Component {
   constructor(props) {
@@ -33,6 +33,13 @@ class Login extends React.Component {
     localStorage.setItem('token', JSON.stringify(dataToken.token));
     sendToken(dataToken.token);
     sendUserInfo(userName, userEmail);
+    this.fetchGravatar(dataToken.token);
+  }
+
+  async fetchGravatar(token) {
+    const { sendImg } = this.props;
+    const fetchApi = await fetch(`https://www.gravatar.com/avatar/${token}`);
+    sendImg(fetchApi.url);
   }
 
   render() {
@@ -88,11 +95,13 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   sendToken: (e) => dispatch(loginAction(e)),
   sendUserInfo: (name, email) => dispatch(userInfoAction(name, email)),
+  sendImg: (value) => dispatch(updateImg(value)),
 });
 
 Login.propTypes = {
   sendToken: PropTypes.func.isRequired,
   sendUserInfo: PropTypes.func.isRequired,
+  sendImg: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
