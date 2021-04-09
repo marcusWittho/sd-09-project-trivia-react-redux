@@ -65,10 +65,10 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  addUserInfo: (state) => dispatch(addUserInfo(state)),
-  getTriviaQuestions: () => dispatch(fetchTrivia()),
-});
+const mapDispatchToProps = {
+  addUserInfo,
+  getTriviaQuestions: fetchTrivia,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
 
