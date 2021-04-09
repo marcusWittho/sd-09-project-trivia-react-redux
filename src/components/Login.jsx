@@ -30,7 +30,7 @@ class Login extends React.Component {
   saveToLocalStorage() {
     const { name, email: gravatarEmail } = this.state;
     const player = { name, gravatarEmail };
-    localStorage.setItem('player', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   startGame() {

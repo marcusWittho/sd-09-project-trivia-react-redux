@@ -18,7 +18,7 @@ class Timer extends React.Component {
   componentDidMount() {
     this.timer = setInterval(() => {
       const { counter, timeout } = this.state;
-      const { stopTimer } = this.props;
+      const { stopTimer, setTimer } = this.props;
       if (counter > 0 && !stopTimer) {
         this.setState({ counter: counter - 1 });
       } else if (!stopTimer) {
@@ -30,6 +30,7 @@ class Timer extends React.Component {
         const { disableAnswers } = this.props;
         disableAnswers();
       }
+      setTimer(counter);
     }, ONE_SECOND);
   }
 
