@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
-import { string } from 'prop-types';
+import { string, number } from 'prop-types';
 import { connect } from 'react-redux';
 import SettingsButton from './SettingsButton';
 
@@ -18,7 +18,7 @@ class Header extends Component {
   }
 
   render() {
-    const { userName, userEmail } = this.props;
+    const { userName, userEmail, score } = this.props;
     return (
       <header>
         <img
@@ -27,7 +27,7 @@ class Header extends Component {
           alt="Imagem do Jogador"
         />
         <h3 data-testid="header-player-name">{ userName }</h3>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{score}</p>
         <SettingsButton />
       </header>
     );
@@ -42,6 +42,7 @@ const mapStateToProps = (state) => ({
 Header.propTypes = {
   userName: string.isRequired,
   userEmail: string.isRequired,
+  score: number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

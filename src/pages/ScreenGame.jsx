@@ -31,6 +31,7 @@ class ScreenGame extends React.Component {
       changeClass: false,
       indexQuestion: 0,
       redirect: false,
+      btnDisabled: false,
     };
     this.updateState = this.updateState.bind(this);
     this.changeClassAnswer = this.changeClassAnswer.bind(this);
@@ -41,6 +42,7 @@ class ScreenGame extends React.Component {
     this.setIndexQuestion = this.setIndexQuestion.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.currentTime = this.currentTime.bind(this);
+    this.countdown = this.countdown.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +50,7 @@ class ScreenGame extends React.Component {
     const token = localStorage.getItem('token');
     getQuestions(token);
     const { player } = this.state;
-    localStorage.setItem('state', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   componentDidUpdate(props, state) {
@@ -56,7 +58,6 @@ class ScreenGame extends React.Component {
     const { restartTime } = this.state;
     if (props !== this.props) {
       this.setIndexQuestion();
-      this.addScore();
       this.currentTime();
     }
     this.intervalID = setInterval(() => {
@@ -127,38 +128,43 @@ class ScreenGame extends React.Component {
     }
   }
 
+  countdown(seconds) {
+    this.setState({
+      timer: seconds,
+    });
+  }
+
   addScore() {
-    const getLocalStorage = JSON.parse(localStorage.getItem('state'));
-    const { timer, difficulty, player } = this.state;
+    const { timer, difficulty, player: prevPlayer } = this.state;
     const correctAnswer = 10;
     const difficultyScore = this.difficultScore(difficulty);
-
     const calculateScore = (
-      correctAnswer + (timer * difficultyScore) + getLocalStorage.score
+      correctAnswer + (timer * difficultyScore) + prevPlayer.score
     );
-
     const { userName, userEmail } = this.props;
-    this.setState(({ player: { score, assertions } }) => ({
-      player: {
-        name: userName,
-        assertions: assertions + 1,
-        score: score + calculateScore,
-        gravatarEmail: userEmail,
-      },
-    }));
-
+    const player = {
+      name: userName,
+      assertions: prevPlayer.assertions + 1,
+      score: prevPlayer.score + calculateScore,
+      gravatarEmail: userEmail,
+    };
     localStorage.setItem('state', JSON.stringify({ player }));
+    this.setState({
+      player,
+    });
   }
 
   changeClassAnswer() {
     this.setState({
       changeClass: true,
+      btnDisabled: true,
     });
   }
 
   changeClassCorrectAnswer() {
     this.setState({
       changeClass: true,
+      btnDisabled: true,
     });
     this.addScore();
   }
@@ -170,7 +176,7 @@ class ScreenGame extends React.Component {
   }
 
   resetTimer() {
-    this.setState({ restartTime: true });
+    this.setState({ restartTime: true, btnDisabled: false });
   }
 
   currentTime() {
@@ -179,12 +185,14 @@ class ScreenGame extends React.Component {
 
   render() {
     const { correct, allAnswers, timer, category,
-      question, changeClass, showNextQuestion, redirect, restartTime } = this.state;
+      question, changeClass, showNextQuestion,
+      player, redirect, restartTime, btnDisabled } = this.state;
+    const { score } = player;
     const { btnState } = this.props;
     if (redirect) { return <Redirect to="/feedback" />; }
     return (
       <section>
-        <Header />
+        <Header score={ score } />
         <div>
           <h3 data-testid="question-category">{category}</h3>
           <p data-testid="question-text">{question}</p>
@@ -196,7 +204,7 @@ class ScreenGame extends React.Component {
           changeClassAnswer={ () => {
             this.changeClassAnswer(); this.submitAnswer();
           } }
-          btnState={ btnState }
+          btnState={ btnState || btnDisabled }
           changeClass={ changeClass }
           correct={ correct }
           allAnswers={ allAnswers }
@@ -207,7 +215,7 @@ class ScreenGame extends React.Component {
               () => { this.setIndexQuestion(); this.resetTimer(); }
             }
           /> }
-        <Timer restartTime={ restartTime } timer={ timer } />
+        <Timer countdown={ this.countdown } restartTime={ restartTime } timer={ timer } />
       </section>
     );
   }
