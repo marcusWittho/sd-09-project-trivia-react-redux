@@ -4,6 +4,7 @@ export const SET_TOKEN = 'SET_TOKEN';
 export const SET_NAME_EMAIL = 'SET_NAME_EMAIL';
 export const SET_GRAVATAR = 'SET_GRAVATAR';
 export const SET_QUESTIONS = 'SET_QUESTIONS';
+export const SET_NEXT = 'SET_NEXT';
 
 const setTokenCode = (token) => ({
   type: SET_TOKEN,
@@ -13,6 +14,10 @@ const setTokenCode = (token) => ({
 const setQuestions = (results) => ({
   type: SET_QUESTIONS,
   results,
+});
+
+export const setNext = () => ({
+  type: SET_NEXT,
 });
 
 export const getToken = () => async (dispatch) => {
