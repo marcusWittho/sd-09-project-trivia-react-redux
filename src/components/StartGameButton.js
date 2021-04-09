@@ -13,10 +13,10 @@ class StartGameButton extends React.Component {
   }
 
   async handleClick() {
-    const { setToken } = this.props;
+    const { name, email, setToken } = this.props;
     const token = await getToken();
     localStorage.token = `${token}`;
-    setToken(`${token}`);
+    setToken(name, email, `${token}`);
   }
 
   render() {
@@ -41,8 +41,13 @@ StartGameButton.propTypes = {
   buttonStatus: PropTypes.bool,
 }.isRequired;
 
-const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(login(null, null, token)),
+const mapStateToProps = ({ user }) => ({
+  name: user.name,
+  email: user.email,
 });
 
-export default connect(null, mapDispatchToProps)(StartGameButton);
+const mapDispatchToProps = (dispatch) => ({
+  setToken: (name, email, token) => dispatch(login(name, email, token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartGameButton);
