@@ -1,34 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { setNext } from '../redux/actions';
+import { setNext, setSelectedAnswer } from '../redux/actions';
 import '../css/questions.css';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedAnswer: null,
-
-    };
     this.handleClick = this.handleClick.bind(this);
   }
 
   async handleClick(e) {
-    const { propSetNext, handleAnswer } = this.props;
+    const { propSetNext, handleAnswer, propSelectedAnswer } = this.props;
     handleAnswer();
-    this.setState({ selectedAnswer: e.target });
+    await propSelectedAnswer(e.target);
     await propSetNext();
   }
 
   render() {
-    const { question: {
-      correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers,
-      question,
-      category,
-    } } = this.props;
-    const { selectedAnswer } = this.state;
+    const {
+      disabled,
+      selectedAnswer,
+      question: {
+        correct_answer: correctAnswer,
+        incorrect_answers: incorrectAnswers,
+        question,
+        category,
+      } } = this.props;
     return (
       <div>
         <h2 data-testid="question-category">{category}</h2>
@@ -38,6 +36,7 @@ class Question extends React.Component {
           type="button"
           className={ selectedAnswer && 'correct' }
           onClick={ this.handleClick }
+          disabled={ disabled }
         >
           {correctAnswer}
         </button>
@@ -58,6 +57,7 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
+  disabled: PropTypes.bool,
   handleAnswer: PropTypes.func,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
@@ -67,8 +67,13 @@ Question.propTypes = {
   }),
 }.isRequired;
 
-const mapDispatchToProps = (dispatch) => ({
-  propSetNext: () => dispatch(setNext()),
+const mapStateToProps = ({ actionsReducer: { selectedAnswer } }) => ({
+  selectedAnswer,
 });
 
-export default connect(null, mapDispatchToProps)(Question);
+const mapDispatchToProps = (dispatch) => ({
+  propSetNext: () => dispatch(setNext()),
+  propSelectedAnswer: (selectedAnswer) => dispatch(setSelectedAnswer(selectedAnswer)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
