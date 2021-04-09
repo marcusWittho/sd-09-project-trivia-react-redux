@@ -49,17 +49,10 @@ class InfoGames extends Component {
             onClick={
               () => this.setState((prevState) => ({ indice: prevState.indice + 1 }))
             }
+            data-testid={ alternative === crrQuestion.correct_answer ? 'correct-answer'
+              : `wrong-answer-${index}` }
           >
-            {alternative === crrQuestion.correct_answer ? (
-              <p data-testid="correct-answer">{alternative}</p>
-            ) : (
-              <p
-                data-testid={ `wrong-answer-${index}` }
-                key={ Math.random() }
-              >
-                {alternative}
-              </p>
-            ) }
+            {alternative}
           </button>
         ))}
       </div>
