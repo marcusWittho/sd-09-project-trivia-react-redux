@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
 import Home from './pages/Home';
+import Feedback from './pages/Feedback';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Route exact path="/" component={ Login } />
       <Route path="/settings" component={ Settings } />
       <Route path="/home" component={ Home } />
+      <Route path="/feedback" component={ Feedback } />
     </Switch>
   );
 }
