@@ -3,12 +3,19 @@ import Header from '../components/Header';
 // import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 // import getQuestions from '../services/triviaAPI_questions';
+import Answer from '../components/Answer';
 
 import './Game.css';
 
 class Game extends Component {
+  /* constructor(props) {
+    super(props);
+
+  } */
   render() {
     // getQuestions();
+    const answers = ['xablau 1', 'xablau 2'];
+    const answerOptions = answers.map((answer) => <Answer description={answer} />);
     return (
       <>
         <Header />
@@ -20,7 +27,7 @@ class Game extends Component {
             <p data-testid="question-text">Texto da pergunta</p>
           </section>
           <section className="answers-game">
-
+            { answerOptions }
           </section>
         </div>
       </>

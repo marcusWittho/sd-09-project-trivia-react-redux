@@ -1,0 +1,14 @@
+.answer-btn {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 5px rgb(204, 204, 204);
+  height: 50px;
+  margin-bottom: 10px;
+  background-color: rgb(51, 204, 51);
+}
+
+.answer-btn:hover {
+  background-color: rgb(46, 184, 46);
+}
