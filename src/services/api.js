@@ -4,11 +4,11 @@ function triviaTokenRequest() {
     .then((response) => response.token);
 }
 
-// export function questionsRequest() {
-//  return fetch(`https://opentdb.com/api.php?amount=5&token=${seutokenaqui}`)
-//   .then((response) => response.json())
-//   .then((response) => response.results);
-// }
+export function questionsRequest(token) {
+  return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+    .then((response) => response.json())
+    .then((response) => response.results);
+}
 
 export function gravatarRequest(hash) {
   return fetch(`https://www.gravatar.com/avatar/${hash}`)
