@@ -16,6 +16,7 @@ class InfoGames extends Component {
     this.requestAPI = this.requestAPI.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.checkAnswer = this.checkAnswer.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +44,9 @@ class InfoGames extends Component {
       dispatchIncrementScore(player.score);
     }
     this.setState({ isAnswered: true });
+  }
+
+  nextQuestion() {
     this.setState((prevState) => ({ indice: prevState.indice + 1 }));
     this.setState({ isAnswered: false });
   }
@@ -58,7 +62,7 @@ class InfoGames extends Component {
   }
 
   renderQuestions() {
-    const { questions, indice } = this.state;
+    const { questions, indice, isAnswered } = this.state;
     const crrQuestion = questions[indice];
     const alternativesOld = crrQuestion.incorrect_answers
       .concat(crrQuestion.correct_answer);
@@ -84,6 +88,14 @@ class InfoGames extends Component {
             {alternative}
           </button>
         ))}
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ this.nextQuestion }
+          className={isAnswered ? 'visible' : 'invisible' }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
