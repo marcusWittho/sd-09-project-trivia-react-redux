@@ -22,7 +22,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { question: {
+    const { handleAnswer, question: {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
       question,
@@ -36,21 +36,18 @@ class Question extends React.Component {
         <button
           data-testid="correct-answer"
           type="button"
-          onClick={ this.handleClick }
           className={ selectedAnswer && 'correct' }
-          // disabled={ next }
+          onClick={ handleAnswer }
         >
           {correctAnswer}
         </button>
-        {incorrectAnswers.map((element) => (
+        {incorrectAnswers.map((element, i) => (
           <button
-            // data-testid={ `wrong-answer-${i}` }
-            data-testid="wrong-answer"
+            data-testid={ `wrong-answer-${i}` }
             type="button"
             key={ element }
-            onClick={ this.handleClick }
             className={ selectedAnswer && 'incorrect' }
-            // disabled={ next }
+            onClick={ handleAnswer }
           >
             {element}
           </button>
@@ -61,6 +58,7 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
+  handleAnswer: PropTypes.func,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),

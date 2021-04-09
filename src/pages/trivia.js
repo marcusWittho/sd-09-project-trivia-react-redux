@@ -11,9 +11,15 @@ class trivia extends React.Component {
     this.state = {
       index: 0,
       loading: true,
+      answered: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleGetToken = this.handleGetToken.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
+  }
+
+  handleAnswer() {
+    this.setState({ answered: true });
   }
 
   handleGetToken() {
@@ -27,32 +33,35 @@ class trivia extends React.Component {
     const { index } = this.state;
     const { propSetNext } = this.props;
     if (index === maxIndex) {
-      this.setState((previousState) => ({ index: previousState.index }));
+      this.setState((previousState) => ({ index: previousState.index, answered: false }));
     } else {
-      this.setState((previousState) => ({ index: previousState.index + 1 }));
+      this.setState((previousState) => ({
+        index: previousState.index + 1,
+        answered: false,
+      }));
     }
     await propSetNext();
   }
 
   render() {
-    const { results, next } = this.props;
-    const { index, loading } = this.state;
+    const { results } = this.props;
+    const { index, loading, answered } = this.state;
     const question = results.find((_question, i) => i === index);
     if (loading) this.handleGetToken();
     return (
       <div className="App">
         <Header />
         <h1>Trivia</h1>
-        {(!loading) && <Question question={ question } />}
-        {(next) && (
-          <button
-            data-testid="btn-next"
-            type="button"
-            onClick={ this.handleClick }
-          >
-            Próxima
-          </button>
-        )}
+        {(!loading)
+        && <Question question={ question } handleAnswer={ this.handleAnswer } />}
+        <button
+          data-testid="btn-next"
+          type="button"
+          onClick={ this.handleClick }
+          hidden={ !answered }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
