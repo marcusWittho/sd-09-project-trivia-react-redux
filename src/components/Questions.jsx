@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { addQuestions } from '../Redux/actions';
 import { getQuestions } from '../services/Api';
 import EachQuestion from './EachQuestion';
+import NextQuestionButton from './NextQuestionButton';
 
 class Questions extends Component {
   constructor(props) {
@@ -135,6 +136,7 @@ class Questions extends Component {
         <span>
           {time.s}
         </span>
+        { time.s === 0 || questionAnswered ? <NextQuestionButton /> : '' }
       </div>
     );
   }
