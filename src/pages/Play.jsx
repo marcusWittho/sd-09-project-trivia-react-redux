@@ -180,22 +180,22 @@ class Play extends React.Component {
     if (!isButtonsRandomized) {
       this.handleAnswers();
     }
-    const currentQuestion = questions[questionIndex];
-    const { category, question } = currentQuestion;
-    return (
-      <main>
-        <Header />
-        { (category !== undefined && question !== undefined) ? (
+    if (questions !== undefined) {
+      const currentQuestion = questions[questionIndex];
+      const { category, question } = currentQuestion;
+      return (
+        <main>
+          <Header />
           <section>
             <p data-testid="question-category">{ category }</p>
             <p data-testid="question-text">{ question }</p>
           </section>
-        ) : '' }
-        { this.questionGenerator() }
-        { nextQuestion && this.nextQuestionButtonGenerator() }
-        <Timer />
-      </main>
-    );
+          { this.questionGenerator() }
+          { nextQuestion && this.nextQuestionButtonGenerator() }
+          <Timer />
+        </main>
+      );
+    }
   }
 }
 
