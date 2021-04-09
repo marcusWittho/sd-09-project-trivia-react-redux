@@ -6,12 +6,17 @@ import Header from '../../components/Header/Header';
 import actionNewGame from '../../redux/actions/actionNewGame';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
+import './Feedback.css';
+import winImg from '../../utils/img/win.png';
+import lostImg from '../../utils/img/face-cry.png';
 
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
+    this.feedbackImg = this.feedbackImg.bind(this);
+    this.renderBtnContainer = this.renderBtnContainer.bind(this);
     this.state = {
       isNewGame: false,
     };
@@ -37,6 +42,12 @@ class Feedback extends React.Component {
     localStorage.setItem('ranking', JSON.stringify(rankingArray));
   }
 
+  feedbackImg(assertions) {
+    return assertions > 2
+      ? <img src={ winImg } alt="You win! Good Job" />
+      : <img src={ lostImg } alt="You lost! Could be better" />;
+  }
+
   handleClick() {
     const { startNewGame, resetTimer, cleanOptionAnswers } = this.props;
     startNewGame();
@@ -45,6 +56,29 @@ class Feedback extends React.Component {
     this.setState({
       isNewGame: true,
     });
+  }
+
+  renderBtnContainer() {
+    return (
+      <nav className="btn-container">
+        <Link
+          to="/ranking"
+          data-testid="btn-ranking"
+          className="btn-ranking btn-default"
+          onClick={ this.handleClick }
+        >
+          Ver Ranking
+        </Link>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ this.handleClick }
+          className="btn-play-again btn-default"
+        >
+          Jogar Novamente
+        </button>
+      </nav>
+    );
   }
 
   render() {
@@ -56,32 +90,29 @@ class Feedback extends React.Component {
     return (
       <div>
         <Header />
-        <p data-testid="feedback-text">
-          { assertions > 2 ? 'Mandou bem!' : 'Podia ser melhor...' }
-        </p>
-        <p>
-          Você acertou
-          <span data-testid="feedback-total-question">
-            { assertions }
-          </span>
-          questões!
-        </p>
-        <p>
-          Um total de
-          <span data-testid="feedback-total-score">
-            { score }
-          </span>
-        </p>
-        <Link to="/ranking" data-testid="btn-ranking">
-          <button type="button"> Ver Ranking </button>
-        </Link>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ this.handleClick }
-        >
-          Jogar Novamente
-        </button>
+        <main className="main-container">
+          <section className="feedback-container">
+            { this.feedbackImg(assertions) }
+            <p data-testid="feedback-text" className="feedback-text">
+              { assertions > 2 ? 'Mandou bem!' : 'Podia ser melhor...' }
+            </p>
+            <p className="text-default">
+              Você acertou&nbsp;
+              <span data-testid="feedback-total-question">
+                { assertions }
+              </span>
+              &nbsp;questões!
+            </p>
+            <p className="text-default">
+              Um total de&nbsp;
+              <span data-testid="feedback-total-score">
+                { score }
+              </span>
+              &nbsp;pontos!
+            </p>
+            { this.renderBtnContainer() }
+          </section>
+        </main>
       </div>
     );
   }
