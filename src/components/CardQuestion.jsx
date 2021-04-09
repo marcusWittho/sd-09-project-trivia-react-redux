@@ -7,6 +7,7 @@ class CardQuestion extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
+      qCounter: 0,
       isSelected: false,
       time: {},
       seconds: 30,
@@ -15,6 +16,7 @@ class CardQuestion extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
+    this.questionCounter = this.questionCounter.bind(this);
   }
 
   componentDidMount() {
@@ -54,12 +56,27 @@ class CardQuestion extends React.Component {
     }
   }
 
+  questionCounter() {
+    this.setState((state) => ({
+      qCounter: state.qCounter + 1,
+      isSelected: false,
+    }));
+  }
+
   render() {
     const { getQuestions: { questions: { results } } } = this.props;
-    const { isSelected, time } = this.state;
+    const { isSelected, time, qCounter } = this.state;
     // Constantes criadas para avaliacao do requisito 6. Deleta-las posteriormente.
-    const index = 0;
+    const index = qCounter;
     const currentQuestion = results[index];
+    const nextBtn = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ this.questionCounter }
+      >
+        Próxima
+      </button>);
     // return results.map((currentQuestion, index) => (
     return ( // Return de apenas 1 pergunta para avaliacao do requisito 6. Deletar este return quando houver o botao de proxima pergunta.
       <div key={ index }>
@@ -89,6 +106,7 @@ class CardQuestion extends React.Component {
             {incorrectAnswer}
           </button>
         ))}
+        {isSelected ? nextBtn : null}
       </div>
     ); // Deletar essa linha quando usar o map da linha 12.
     // ));
