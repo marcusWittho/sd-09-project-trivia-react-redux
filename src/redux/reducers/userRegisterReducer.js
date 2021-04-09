@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   email: '',
   image: '',
   score: 0,
+  scoreAcumulado: 0,
 };
 
 function userRegisterReducer(state = INITIAL_STATE, action) {
