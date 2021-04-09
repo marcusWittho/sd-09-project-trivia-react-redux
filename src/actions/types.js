@@ -1,3 +1,4 @@
 export const ADD_USER_INFO = 'ADD_USER_INFO';
-
-export const ADD_USER_INFO2 = 'sdfsd';
+export const REQUEST_TRIVIA = 'REQUEST_TRIVIA';
+export const GET_TRIVIA = 'GET_TRIVIA';
+export const FAILED_TRIVIA_REQUEST = 'FAILED_TRIVIA_REQUEST';
