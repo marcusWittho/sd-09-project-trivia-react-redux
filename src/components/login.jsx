@@ -32,7 +32,7 @@ class Login extends React.Component {
 
     localStorage.setItem('state', JSON.stringify(state));
     getUserGravatar();
-    console.log(getPlayerToken());
+    getPlayerToken();
     this.setState({ redirect: true });
   }
 

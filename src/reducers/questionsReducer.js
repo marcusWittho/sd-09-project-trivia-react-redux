@@ -5,7 +5,7 @@ import {
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
-  questions: [],
+  questions: {},
   error: '',
   isFetching: false,
 };
@@ -20,7 +20,7 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
   case REQUEST_QUESTIONS_SUCCESS:
     return {
       ...state,
-      questions: [...state.questions, action.questions],
+      questions: action.questions,
       isFetching: false,
     };
   case REQUEST_QUESTIONS_FAILURE:
