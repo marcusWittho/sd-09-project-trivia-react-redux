@@ -1,12 +1,16 @@
 const requestTrivia = async (token) => {
-  const amount = 5;
+  try {
+    const amount = 5;
 
-  const response = await fetch(
-    `https://opentdb.com/api.php?amount=${amount}&token=${token}`,
-  );
-  const triviaObject = await response.json();
+    const response = await fetch(
+      `https://opentdb.com/api.php?amount=${amount}&token=${token}`,
+    );
+    const triviaObject = await response.json();
 
-  return triviaObject;
+    return triviaObject;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default requestTrivia;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import requestTrivia from '../services/triviaAPI';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Game extends Component {
@@ -16,11 +17,11 @@ class Game extends Component {
     this.renderQuestion = this.renderQuestion.bind(this);
   }
 
-  async componentDidMount() {
-    const token = localStorage.getItem('token');
-    const triviaResponse = await requestTrivia(token);
+  componentDidMount() {
+    const { triviaObject } = this.props;
+    console.log(triviaObject);
     const errorCode = 3;
-    const { response_code: responseCode, results } = triviaResponse;
+    const { response_code: responseCode, results } = triviaObject;
 
     this.validateResponseFromApi(responseCode, errorCode, results);
   }
@@ -84,6 +85,7 @@ class Game extends Component {
 
   render() {
     const { error, triviaArray } = this.state;
+
     return (
       <div>
         <Header />
@@ -95,4 +97,15 @@ class Game extends Component {
   }
 }
 
-export default Game;
+Game.propTypes = {
+  triviaObject: PropTypes.shape({
+    response_code: PropTypes.number,
+    results: PropTypes.arrayOf(Object),
+  }),
+}.isRequired;
+
+const mapStateToProps = (state) => ({
+  triviaObject: state.trivia.triviaObject,
+});
+
+export default connect(mapStateToProps)(Game);

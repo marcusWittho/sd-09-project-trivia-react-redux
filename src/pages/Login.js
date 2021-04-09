@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import loginAction from '../actions/loginAction';
+import getTrivia from '../actions/triviaAction';
 import logo from '../trivia.png';
 import requestToken from '../services/tokenAPI';
 import ConfigButton from '../components/configButton';
@@ -17,19 +18,22 @@ class Login extends Component {
       playerNameField: '',
       playerEmailField: '',
       button: true,
+      loginValidation: false,
     };
 
-    this.saveToken = this.saveToken.bind(this);
+    this.getTrivia = this.getTrivia.bind(this);
   }
 
-  inputsControl({ target }) {
-    const { name, value } = target;
-    this.setState(
-      {
-        [name]: value,
-      },
-      () => this.validateInputs(),
-    );
+  async getTrivia() {
+    const { triviaDispatch } = this.props;
+    const token = await requestToken();
+
+    localStorage.setItem('token', token);
+    await triviaDispatch(token);
+
+    this.setState({
+      loginValidation: true,
+    });
   }
 
   validateInputs() {
@@ -47,16 +51,20 @@ class Login extends Component {
     }
   }
 
-  async saveToken() {
-    const token = await requestToken();
-
-    localStorage.setItem('token', token);
+  inputsControl({ target }) {
+    const { name, value } = target;
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => this.validateInputs(),
+    );
   }
 
   render() {
-    const { playerEmailField, playerNameField, button } = this.state;
+    const { playerEmailField, playerNameField, button, loginValidation } = this.state;
     const { loginDispatch } = this.props;
-
+    if (loginValidation) return <Redirect to="/game" />;
     return (
       <div className="App">
         <header className="App-header">
@@ -84,19 +92,17 @@ class Login extends Component {
                 data-testid="input-gravatar-email"
               />
             </label>
-            <Link to="/jogo">
-              <button
-                type="button"
-                data-testid="btn-play"
-                disabled={ button }
-                onClick={ () => {
-                  loginDispatch(playerNameField, playerEmailField);
-                  this.saveToken();
-                } }
-              >
-                Jogar
-              </button>
-            </Link>
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ button }
+              onClick={ () => {
+                loginDispatch(playerNameField, playerEmailField);
+                this.getTrivia();
+              } }
+            >
+              Jogar
+            </button>
           </section>
         </header>
       </div>
@@ -110,6 +116,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   loginDispatch: (name, email) => dispatch(loginAction(name, email)),
+  triviaDispatch: (token) => dispatch(getTrivia(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
