@@ -11,13 +11,28 @@ class Questions extends Component {
     this.state = {
       currentQuestionIndex: 0,
       questionAnswered: false,
+      selectedAnswer: '',
+      time: {},
+      seconds: 30,
     };
     this.dispatchQuestions = this.dispatchQuestions.bind(this);
     this.answerQuestion = this.answerQuestion.bind(this);
+    this.isAnswerCorrect = this.isAnswerCorrect.bind(this);
+    this.timer = 0;
+    this.startTimer = this.startTimer.bind(this);
+    this.countDown = this.countDown.bind(this);
   }
 
   componentDidMount() {
     this.dispatchQuestions();
+    this.startTimer();
+  }
+
+  secondsToTime(secs) {
+    const obj = {
+      s: secs,
+    };
+    return obj;
   }
 
   async dispatchQuestions() {
@@ -27,13 +42,52 @@ class Questions extends Component {
     sendQuestionsToRedux(questions);
   }
 
-  answerQuestion() {
-    this.setState({ questionAnswered: true });
+  answerQuestion({ target }) {
+    const { value } = target;
+    this.setState({
+      questionAnswered: true,
+      selectedAnswer: value,
+    }, () => this.isAnswerCorrect());
   }
+
+  isAnswerCorrect() {
+    const { selectedAnswer } = this.state;
+    return selectedAnswer === 'correct-answer';
+  }
+
+  startTimer() {
+    const { seconds } = this.state;
+    const interval = 1000;
+    if (this.timer === 0 && seconds > 0) {
+      this.timer = setInterval(this.countDown, interval);
+    }
+  }
+
+  countDown() {
+    const { seconds, questionAnswered } = this.state;
+    if (seconds >= 1) {
+      const sec = seconds - 1;
+      this.setState({
+        time: this.secondsToTime(sec),
+        seconds: sec,
+      });
+    }
+    if (seconds === 0 && !questionAnswered) {
+      clearInterval(this.timer);
+      const e = {
+        target: {
+          value: 'not-answered',
+        },
+      };
+      this.answerQuestion(e);
+    }
+  }
+
+  // * Source of the Timer`s Algorithm https://stackoverflow.com/questions/40885923/countdown-timer-in-react
 
   render() {
     const { questions } = this.props;
-    const { currentQuestionIndex, questionAnswered } = this.state;
+    const { currentQuestionIndex, questionAnswered, time } = this.state;
     if (!questions) {
       return (
         <div>
@@ -42,12 +96,18 @@ class Questions extends Component {
       );
     }
     return (
-      <EachQuestion
-        questions={ questions }
-        questionIndex={ currentQuestionIndex }
-        questionAnswered={ questionAnswered }
-        answerQuestion={ this.answerQuestion }
-      />
+      <div>
+        <EachQuestion
+          questions={ questions }
+          questionIndex={ currentQuestionIndex }
+          questionAnswered={ questionAnswered }
+          answerQuestion={ this.answerQuestion }
+          timer={ time.s }
+        />
+        <span>
+          {time.s}
+        </span>
+      </div>
     );
   }
 }
