@@ -33,11 +33,11 @@ class trivia extends React.Component {
     this.setState({ time: nextTime });
     if (nextTime === 0) {
       clearInterval(this.timer);
-      this.timer = 30;
       if (!answered) {
         propSelectedAnswer(true);
         this.setState({ answered: true, disabled: true });
       }
+      this.timer = 30;
     }
   }
 
