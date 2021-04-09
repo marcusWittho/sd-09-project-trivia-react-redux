@@ -34,6 +34,7 @@ class Questions extends Component {
     const obj = {
       s: secs,
     };
+
     return obj;
   }
 
