@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Header from '../components/Header';
 
 class FeedBack extends Component {
   render() {
@@ -7,9 +9,20 @@ class FeedBack extends Component {
     const { assertions } = player;
     const condicionNumber = 3;
     return (
-      assertions < condicionNumber
-        ? <p data-testid="feedback-text">Podia ser melhor...</p>
-        : <p data-testid="feedback-text">Mandou bem!</p>
+      <section>
+        <Header />
+        { assertions < condicionNumber
+          ? <p data-testid="feedback-text">Podia ser melhor...</p>
+          : <p data-testid="feedback-text">Mandou bem!</p> }
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar Novamente
+          </button>
+        </Link>
+      </section>
     );
   }
 }
