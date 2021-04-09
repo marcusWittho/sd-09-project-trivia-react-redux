@@ -30,7 +30,37 @@ class Questions extends Component {
     const { currentQuestionIndex } = this.state;
     if (!questions) {
       return (
-        <div>Loading...</div>
+        <main>
+          Loading Game...
+          <p data-testid="question-category">
+            Categoria: ...
+          </p>
+          <p data-testid="question-text">Pergunta...</p>
+          <button
+            data-testid="correct-answer"
+            type="button"
+          >
+            Alternativa 1...
+          </button>
+          <button
+            data-testid="wrong-answer-0"
+            type="button"
+          >
+            Alternativa 2...
+          </button>
+          <button
+            data-testid="wrong-answer-1"
+            type="button"
+          >
+            Alternativa 3...
+          </button>
+          <button
+            data-testid="wrong-answer-2"
+            type="button"
+          >
+            Alternativa 3...
+          </button>
+        </main>
       );
     }
     return (
