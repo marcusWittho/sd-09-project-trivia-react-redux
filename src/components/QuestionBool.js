@@ -4,11 +4,18 @@ class QuestionBool extends React.Component {
   constructor(props) {
     super(props);
     this.addClassName = this.addClassName.bind(this);
+    this.clickNext = this.clickNext.bind(this);
     this.state = { addClass: false };
   }
 
-  addClassName({ target }) {
+  addClassName() {
     this.setState({ addClass: true });
+  }
+
+  clickNext() {
+    const { nextQuestion } = this.props;
+    this.setState({ addClass: false });
+    nextQuestion();
   }
 
   render() {
@@ -36,6 +43,17 @@ class QuestionBool extends React.Component {
         >
           { question.incorrect_answers[0] }
         </button>
+        <div>
+          { addClass ? (
+            <button
+              data-testid="btn-next"
+              type="button"
+              onClick={ this.clickNext }
+            >
+              Next
+            </button>)
+            : null }
+        </div>
       </div>
     );
   }

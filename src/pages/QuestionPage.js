@@ -10,6 +10,7 @@ class QuestionPage extends React.Component {
     super(props);
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.createQuestion = this.createQuestion.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
     this.state = { index: 0,
       timeLeft: 30,
       disabledOptions: false };
@@ -33,6 +34,16 @@ class QuestionPage extends React.Component {
     }, interval);
   }
 
+  nextQuestion() {
+    const { index } = this.state;
+    const { questions } = this.props;
+    if (index < questions.length) {
+      this.setState({
+        index: index + 1,
+      });
+    }
+  }
+
   async fetchQuestions() {
     const { updateQuestions } = this.props;
     const data = await getQuestions();
@@ -49,11 +60,13 @@ class QuestionPage extends React.Component {
         return (<QuestionMultiple
           disabled={ disabledOptions }
           question={ questions[index] }
+          nextQuestion={ this.nextQuestion }
         />);
       case 'boolean':
         return (<QuestionBool
           disabled={ disabledOptions }
           question={ questions[index] }
+          nextQuestion={ this.nextQuestion }
         />);
       default:
         break;
