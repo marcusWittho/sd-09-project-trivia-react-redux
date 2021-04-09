@@ -17,22 +17,30 @@ class Questions extends React.Component {
       questionIndex: 0,
       isSelected: false,
       disableAlternatives: false,
+      nextQuestion: false,
     };
     this.getQuestions = this.getQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.disableAlternatives = this.disableAlternatives.bind(this);
     this.getDifficulty = this.getDifficulty.bind(this);
     this.UpdateScore = this.UpdateScore.bind(this);
+    this.enableNextButton = this.enableNextButton.bind(this);
+    this.renderButton = this.renderButton.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
     this.getQuestions();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { timesUp } = this.props;
+    const { questionIndex } = this.state;
     if (prevProps.timesUp !== timesUp) {
       this.disableAlternatives();
+    }
+    if (prevState.questionIndex !== questionIndex) {
+      this.enableNextButton();
     }
   }
 
@@ -69,6 +77,12 @@ class Questions extends React.Component {
     return difficultNumber;
   }
 
+  enableNextButton() {
+    this.setState({
+      nextQuestion: true,
+    });
+  }
+
   UpdateScore() {
     const { seconds, dispatchPlayer, player: playerObj } = this.props;
     const NUMBER_TEN = 10;
@@ -90,13 +104,46 @@ class Questions extends React.Component {
     const { dispatchStopTime } = this.props;
     if (value === 'correct-answer') {
       this.UpdateScore();
+      this.setState((state) => (
+        {
+          questionIndex: state.questionIndex + 1,
+        }
+      ));
+    } else {
+      this.setState((state) => (
+        {
+          questionIndex: state.questionIndex + 1,
+        }
+      ));
     }
     this.setState({ isSelected: true });
     dispatchStopTime();
   }
 
+  nextQuestion() {
+    this.setState(() => (
+      {
+        isSelected: false,
+        disableAlternatives: false,
+        nextQuestion: false,
+      }
+    ), () => this.getQuestions());
+  }
+
   disableAlternatives() {
     this.setState({ disableAlternatives: true });
+  }
+
+  renderButton() {
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ this.nextQuestion }
+      >
+        próxima
+      </button>
+    );
   }
 
   render() {
@@ -107,6 +154,7 @@ class Questions extends React.Component {
       correctAnswer,
       isSelected,
       disableAlternatives,
+      nextQuestion,
     } = this.state;
     const number = -1;
     let indexQuestion = number;
@@ -143,6 +191,7 @@ class Questions extends React.Component {
               { alternative }
             </button>);
         })}
+        { nextQuestion && this.renderButton() }
       </div>
     );
   }
