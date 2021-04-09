@@ -24,3 +24,14 @@ export async function fetchToken() {
     console.log(error);
   }
 }
+
+export async function fetchTrivia(token, quantiti) {
+  const url = `https://opentdb.com/api.php?amount=${quantiti}&token=${token}`;
+  try {
+    const response = await fetch(url);
+    const questions = await response.json();
+    return questions;
+  } catch (error) {
+    console.log(error);
+  }
+}

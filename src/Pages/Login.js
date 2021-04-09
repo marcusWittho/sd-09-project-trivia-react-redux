@@ -39,11 +39,11 @@ class Login extends React.Component {
     const { username, email } = this.state;
     const { dispatchClickPlay } = this.props;
 
-    api.fetchToken().then(({ token }) => localStorage
-      .setItem('token', JSON.stringify(token)));
-
-    dispatchClickPlay({ username, email });
-    this.setState({ loggedIn: true });
+    api.fetchToken().then(({ token }) => {
+      localStorage.setItem('token', JSON.stringify(token));
+      dispatchClickPlay({ username, email });
+      this.setState({ loggedIn: true });
+    });
   }
 
   render() {
