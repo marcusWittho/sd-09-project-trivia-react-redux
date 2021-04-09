@@ -1,24 +1,24 @@
 .incorrect-answers {
-  border: 3px solid rgb(255, 0, 0);
-  text-align: center;
+  border: 3px solid red;
   height: 30px;
-  width: 200px;
   margin: 10px;
+  text-align: center;
+  width: 200px;
 }
 
 .correct-answers {
   border: 3px solid rgb(6, 240, 15);
-  text-align: center;
   height: 30px;
-  width: 200px;
   margin: 10px;
+  text-align: center;
+  width: 200px;
 }
 
 .answer-button {
-  text-align: center;
   height: 30px;
-  width: 200px;
   margin: 10px;
+  text-align: center;
+  width: 200px;
 }
 
 .answer-options {
@@ -28,14 +28,14 @@
 }
 
 button:active {
-  border: none !important;
+  border: none;
 }
 
 .next-enabled {
-  text-align: center;
   height: 30px;
-  width: 200px;
   margin: 10px;
+  text-align: center;
+  width: 200px;
 }
 
 .next-hidden {
