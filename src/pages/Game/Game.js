@@ -38,7 +38,7 @@ class Game extends React.Component {
     localStorage.setItem('state', JSON.stringify({ player: playerData }));
   }
 
-  // Fazer a verificação, se a questão foi marcada então passe para a próxima
+  // Fazer a verificação, se a questão foi marcada então passe para a próxima.
   handleNextQuestion() {
     const {
       ResetCounter,
