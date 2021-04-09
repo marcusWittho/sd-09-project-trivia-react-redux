@@ -7,6 +7,7 @@ import { getQuestions } from '../redux/action';
 class GameScreen extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       name: '',
       gravatarEmail: '',
@@ -16,7 +17,9 @@ class GameScreen extends Component {
       timer: 30,
       disabled: false,
       colorQuestion: false,
+      nextButton: 'none',
     };
+
     this.nextQuestion = this.nextQuestion.bind(this);
     this.loadingQuestions = this.loadingQuestions.bind(this);
     this.decreaseTime = this.decreaseTime.bind(this);
@@ -52,11 +55,13 @@ class GameScreen extends Component {
         if (numberOFQuestion === countQuestions) {
           this.setState({
             timer: 0,
+            nextButton: 'inline',
           });
         }
         this.setState({
           disabled: true,
           timer: 0,
+          nextButton: 'inline',
         });
       }
     }, counter);
@@ -71,10 +76,14 @@ class GameScreen extends Component {
         numberOFQuestion: count + 1,
         timer: 30,
         disabled: false,
+        colorQuestion: false,
+        nextButton: 'none',
       });
     } else {
       this.setState({
         numberOFQuestion: count + 0,
+        colorQuestion: false,
+        nextButton: 'none',
       });
     }
   }
@@ -93,9 +102,11 @@ class GameScreen extends Component {
     );
   }
 
-  clickQuestion(difficulty) {
-    this.setState({ colorQuestion: true });
-    console.log(difficulty);
+  clickQuestion() {
+    this.setState({
+      colorQuestion: true,
+      nextButton: 'inline',
+    });
   }
 
   header() {
@@ -117,8 +128,8 @@ class GameScreen extends Component {
   }
 
   render() {
-    const { questions,
-      numberOFQuestion, loading, timer, disabled, colorQuestion } = this.state;
+    const { questions, numberOFQuestion, nextButton,
+      loading, timer, disabled, colorQuestion } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
     if (loading) return <h1>Loading...</h1>;
@@ -133,7 +144,7 @@ class GameScreen extends Component {
           type="button"
           disabled={ disabled }
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-          onClick={ () => this.clickQuestion(orderQuestions.difficulty) }
+          onClick={ this.clickQuestion }
         >
           {orderQuestions.correct_answer}
         </button>
@@ -155,6 +166,7 @@ class GameScreen extends Component {
         <button
           data-testid="btn-next"
           type="button"
+          style={ { display: `${nextButton}` } }
           onClick={ this.nextQuestion }
         >
           Próxima
