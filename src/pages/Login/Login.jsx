@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
+import * as S from './styled';
 
-import { fetchAPI } from '../redux/action';
+import { fetchAPI } from '../../redux/action';
 
 class Login extends Component {
   constructor(props) {
@@ -56,33 +57,10 @@ class Login extends Component {
     ));
   }
 
-  formFunction() {
+  FormButtons() {
     const { getToken } = this.props;
     return (
-      <form>
-        <h1>Login</h1>
-        <label htmlFor="name">
-          Nome
-          <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Nome"
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Email
-          <input
-            id="email"
-            name="gravatarEmail"
-            type="text"
-            placeholder="Email"
-            data-testid="input-gravatar-email"
-            onChange={ this.handleChange }
-          />
-        </label>
+      <S.ButtonsContainer>
         <button
           data-testid="btn-play"
           type="button"
@@ -101,7 +79,40 @@ class Login extends Component {
         >
           Configurações
         </button>
-      </form>
+      </S.ButtonsContainer>
+    );
+  }
+
+  formFunction() {
+    return (
+      <S.Container>
+        <S.Form>
+          <h1>Login</h1>
+          <label htmlFor="name">
+            Nome
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Digite seu nome"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            Email
+            <input
+              id="email"
+              name="gravatarEmail"
+              type="text"
+              placeholder="email@email.com"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+            />
+          </label>
+          { this.FormButtons() }
+        </S.Form>
+      </S.Container>
     );
   }
 

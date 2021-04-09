@@ -1,24 +1,21 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
-import './App.css';
-
-import logo from './trivia.png';
-import Login from './pages/Login';
-import Game from './pages/Game';
+import Login from './pages/Login/Login';
+import Game from './pages/Game/Game';
 import Settings from './pages/Settings';
+import MainContainer from './components/Layout/styled';
+import Layout from './components/Layout/Layout';
 
-export default function App() {
-  return (
-    <main className="App">
-      <section className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <Switch>
-          <Route exact path="/" component={ Login } />
-          <Route path="/game" component={ Game } />
-          <Route path="/settings" component={ Settings } />
-        </Switch>
-      </section>
-    </main>
-  );
-}
+const App = () => (
+  <MainContainer>
+    <Layout>
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Route path="/game" component={ Game } />
+        <Route path="/settings" component={ Settings } />
+      </Switch>
+    </Layout>
+  </MainContainer>
+);
+
+export default App;

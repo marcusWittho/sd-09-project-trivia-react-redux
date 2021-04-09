@@ -5,7 +5,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
-import './index.css';
 import store from './redux/store';
 
 ReactDOM.render(
