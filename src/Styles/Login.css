@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap') ;
 
+
 body {
   background-color: #1C1C1C;
 }
@@ -13,8 +14,7 @@ body {
 
 .btn-play , .btn-settings {
   background-color: green;
-  border: 1px solid transparent;
-  border-color: green;
+  border: 1px solid black;
   border-radius: 5px;
   color: white;
   font-size: 1rem;
@@ -59,6 +59,28 @@ body {
 ::placeholder {
   color: rgb(49, 49, 49);
   text-align: center;
+}
+
+.btn-play:hover, .btn-settings:hover {
+  background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+  color: #fff;
+  font-weight: 600;
+  background-size: 400% 400%;
+  position: relative;
+  animation: fluid 5s ease-in-out infinite;
+}
+
+@keyframes fluid {
+  0%{
+    background-position: 0 50% ;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+  100%{
+    background-position: 0 50%;
+  }
+
 }
 
 @media screen and ( min-width : 770px ) {
