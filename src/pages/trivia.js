@@ -22,24 +22,22 @@ class trivia extends React.Component {
     this.countDown = this.countDown.bind(this);
   }
 
-  componentDidMount() {
-    this.startTimer();
-  }
-
   componentDidUpdate() {
     this.startTimer();
   }
 
   countDown() {
-    const { time } = this.state;
+    const { time, answered } = this.state;
     const { propSelectedAnswer } = this.props;
     const nextTime = time - 1;
     this.setState({ time: nextTime });
     if (nextTime === 0) {
       clearInterval(this.timer);
-      propSelectedAnswer(true);
-      this.setState({ answered: true, disabled: true });
       this.timer = 30;
+      if (!answered) {
+        propSelectedAnswer(true);
+        this.setState({ answered: true, disabled: true });
+      }
     }
   }
 
