@@ -29,7 +29,7 @@ class Login extends React.Component {
 
   saveToLocalStorage() {
     const { name, email: gravatarEmail } = this.state;
-    const player = { name, gravatarEmail };
+    const player = { name, gravatarEmail, assertions: 0, score: 0 };
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 

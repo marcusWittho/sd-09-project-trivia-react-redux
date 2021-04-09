@@ -240,7 +240,7 @@ describe('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', 
     cy.get(HEADER_SCORE_SELECTOR);
   });
 
-  afterEach(() => {
+  afterEach(() => { 
     const storage = Object.keys(localStorage).length;
     expect(storage).to.be.lessThan(4);
   });
