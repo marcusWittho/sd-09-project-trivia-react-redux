@@ -77,6 +77,7 @@ class CardQuestion extends React.Component {
       >
         Próxima
       </button>);
+    const nothing = <div />;
     // return results.map((currentQuestion, index) => (
     return ( // Return de apenas 1 pergunta para avaliacao do requisito 6. Deletar este return quando houver o botao de proxima pergunta.
       <div key={ index }>
@@ -106,7 +107,7 @@ class CardQuestion extends React.Component {
             {incorrectAnswer}
           </button>
         ))}
-        {isSelected ? nextBtn : null}
+        {isSelected ? nextBtn : nothing}
       </div>
     ); // Deletar essa linha quando usar o map da linha 12.
     // ));
