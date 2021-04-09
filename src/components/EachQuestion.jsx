@@ -15,7 +15,12 @@ function shuffleArray(array) {
 
 class EachQuestion extends Component {
   render() {
-    const { questions, questionIndex, questionAnswered, answerQuestion, timer } = this.props;
+    const {
+      questions,
+      questionIndex,
+      questionAnswered,
+      answerQuestion,
+      timer } = this.props;
     const shuffledAlternatives = shuffleArray(questions[questionIndex].incorrect_answers);
     return (
       <main>
