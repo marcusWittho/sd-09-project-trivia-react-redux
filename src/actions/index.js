@@ -1,13 +1,23 @@
 import fetchTrivaToken from '../service/triviaApi';
+import fetchQuestionsApi from '../service/questionsApi';
 
-export const requestTriviaToken = (token) => ({
-  type: 'RESQUEST_TOKEN',
-  token,
+export const requestQuestionsApi = (questions) => ({
+  type: 'REQUEST_QUESTIONS',
+  questions,
 });
 
-export const fetchTrivaApi = () => (dispach) => {
-  fetchTrivaToken()
-    .then((triviaApiResponse) => dispach(requestTriviaToken(triviaApiResponse)));
+export const fetchQuestions = (token) => (dispach) => {
+  localStorage.setItem('token', token);
+  fetchQuestionsApi(token)
+    .then((questionsApiResponse) => dispach(requestQuestionsApi(questionsApiResponse)));
+};
+
+export const loading = () => ({ type: 'LOADING' });
+
+export const fetchTrivaApi = () => async (dispach) => {
+  dispach(loading());
+  const triviaApiResponse = await fetchTrivaToken();
+  return dispach(fetchQuestions(triviaApiResponse.token));
 };
 
 export const requestUserInfo = (email, name, hash) => ({

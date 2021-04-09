@@ -3,6 +3,8 @@ const INITIAL_STATE = {
   email: '',
   name: '',
   hash: '',
+  questions: [],
+  loading: true,
 };
 
 const loginReducer = (state = INITIAL_STATE, action) => {
@@ -16,6 +18,14 @@ const loginReducer = (state = INITIAL_STATE, action) => {
       name: action.name,
       hash: action.hash,
     };
+  case 'REQUEST_QUESTIONS':
+    return {
+      ...state,
+      questions: action.questions,
+      loading: false,
+    };
+  case 'LOADING':
+    return { ...state, loading: true };
   default:
     return state;
   }
