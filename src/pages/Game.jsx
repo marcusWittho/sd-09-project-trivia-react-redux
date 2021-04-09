@@ -55,10 +55,10 @@ class Game extends React.Component {
     return this.setState({ applyStyle: false });
   }
 
-  disableOptions() {
+  disableOptions(toggle) {
     const answerButtons = document.querySelectorAll('button');
     answerButtons.forEach((button) => {
-      if (!button.id) {
+      if (!button.id && toggle === true) {
         button.disabled = true;
       } else button.disabled = false;
     });
@@ -69,14 +69,14 @@ class Game extends React.Component {
     return (
       <section>
         <Header />
-        { APIquestions.length !== 0
-          ? <QuestionCard
+        { APIquestions.length !== 0 ? (
+          <QuestionCard
             updateQuestion={ this.updateQuestion }
             renderQuestion={ APIquestions[currentQuestion] }
             applyStyle={ applyStyle }
             showStyle={ this.showStyle }
             disableOptions={ this.disableOptions }
-          />
+          />)
           : <h1>Carregando...</h1> }
       </section>
     );

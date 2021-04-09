@@ -4,6 +4,7 @@ import {
   USER_INFO,
   QUESTION_ADD,
   RUN_TIMER,
+  STOP_TIMER,
   UPDATE_SCORE } from '../actions/action';
 
 const INITIAL_STATE = {
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
   token: '',
   questions: [],
   timer: 10,
+  stopTimer: false,
 };
 
 function loginReducer(state = INITIAL_STATE, action) {
@@ -66,10 +68,23 @@ function timerReducer(state = INITIAL_STATE.timer, action) {
   }
 }
 
-// function scoreReducer(state = INITIAL_STATE.player.score, action) {
+function stopTimerReducer(state = INITIAL_STATE.stopTimer, action) {
+  switch (action.type) {
+  case STOP_TIMER:
+    return action.value;
+  default: return state;
+  }
+}
+// function scoreReducer(state = INITIAL_STATE, action) {
 //   switch (action.type) {
 //   case UPDATE_SCORE:
-//     return state + action.value;
+//     return {
+//       ...state,
+//       player: {
+//         ...state.player,
+//         score: state.player.score + action.value,
+//       },
+//     };
 //   default: return state;
 //   }
 // }
@@ -79,6 +94,7 @@ const rootReducer = combineReducers({
   userInfoReducer,
   addQuestions,
   timerReducer,
+  stopTimerReducer,
   // scoreReducer,
 });
 

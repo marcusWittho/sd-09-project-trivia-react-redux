@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { runTimer } from '../../actions/action';
+import { runTimer, stopTimer } from '../../actions/action';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -19,10 +19,21 @@ class Timer extends React.Component {
   }
 
   runTimer() {
-    const { timer, sendTimer, disableOptions } = this.props;
-    return timer > 0
-      ? sendTimer(timer - 1)
-      : disableOptions();
+    const {
+      timer,
+      sendTimer,
+      disableOptions,
+      stopTimerAction,
+      stopTimerToggle } = this.props;
+
+    if (stopTimerToggle === true) {
+      stopTimerAction(true);
+      clearInterval();
+    } else {
+      return timer > 0
+        ? sendTimer(timer - 1)
+        : disableOptions(true);
+    }
   }
 
   render() {
@@ -39,16 +50,20 @@ class Timer extends React.Component {
 
 const mapStateToProps = (state) => ({
   timer: state.timerReducer,
+  stopTimerToggle: state.stopTimerReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   sendTimer: (time) => dispatch(runTimer(time)),
+  stopTimerAction: (value) => dispatch(stopTimer(value)),
 });
 
 Timer.propTypes = {
   timer: PropTypes.number.isRequired,
   sendTimer: PropTypes.func.isRequired,
   disableOptions: PropTypes.func.isRequired,
+  stopTimerAction: PropTypes.func.isRequired,
+  stopTimerToggle: PropTypes.bool.isRequired,
   // updateQuestion: PropTypes.func.isRequired,
 };
 
