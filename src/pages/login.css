@@ -3,13 +3,13 @@
 }
 
 input[type=text] {
-  width: 25%;
-  padding: 12px 20px;
-  margin: 18px 5px;
-  display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
   border-radius: 5px;
+  display: inline-block;
+  margin: 18px 5px;
+  padding: 12px 20px;
+  width: 25%;
 }
 
 input::placeholder {
