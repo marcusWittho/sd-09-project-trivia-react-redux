@@ -103,8 +103,12 @@ class Play extends React.Component {
   }
 
   questionGenerator() {
-    const { randomized, addClass } = this.state;
+    const { addClass, randomized, isButtonsRandomized } = this.state;
     const { isDisabled } = this.props;
+    if (!isButtonsRandomized) {
+      const randomizedAnswers = this.handleAnswers();
+      this.setState({ randomized: randomizedAnswers });
+    }
     return (
       <section>
         {
@@ -166,36 +170,33 @@ class Play extends React.Component {
     const answersButtons = [correct, ...wrongAnswer];
     const randomizedAnswers = answersButtons.sort(() => fakeNumber - Math.random());
     this.setState({
-      randomized: randomizedAnswers,
+      // randomized: randomizedAnswers,
       isButtonsRandomized: true,
     });
+    return randomizedAnswers;
   }
 
   render() {
     const { questions, isFetching } = this.props;
     const { questionIndex, nextQuestion } = this.state;
-    const { redirectFeedBack, isButtonsRandomized } = this.state;
+    const { redirectFeedBack } = this.state;
     if (redirectFeedBack) return <Redirect to="/feedback" />;
     if (isFetching) return <div>Loading...</div>;
-    if (!isButtonsRandomized) {
-      this.handleAnswers();
-    }
-    if (questions !== undefined) {
-      const currentQuestion = questions[questionIndex];
-      const { category, question } = currentQuestion;
-      return (
-        <main>
-          <Header />
-          <section>
-            <p data-testid="question-category">{ category }</p>
-            <p data-testid="question-text">{ question }</p>
-          </section>
-          { this.questionGenerator() }
-          { nextQuestion && this.nextQuestionButtonGenerator() }
-          <Timer />
-        </main>
-      );
-    }
+    // if (!isButtonsRandomized) this.handleAnswers();
+    const currentQuestion = questions[questionIndex];
+    const { category, question } = currentQuestion;
+    return (
+      <main>
+        <Header />
+        <section>
+          <p data-testid="question-category">{ category }</p>
+          <p data-testid="question-text">{ question }</p>
+        </section>
+        { this.questionGenerator() }
+        { nextQuestion && this.nextQuestionButtonGenerator() }
+        <Timer />
+      </main>
+    );
   }
 }
 
