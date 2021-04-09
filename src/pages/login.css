@@ -1,0 +1,23 @@
+.inputs-section {
+  width: 90%;
+}
+
+input[type=text] {
+  width: 25%;
+  padding: 12px 20px;
+  margin: 18px 5px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+input::placeholder {
+  font-size: 20px;
+}
+
+.play-button {
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 12px 20px;
+}
