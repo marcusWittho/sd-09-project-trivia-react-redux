@@ -21,6 +21,18 @@ button:hover {
   box-shadow: 1px 1px 5px black;
 }
 
+header {
+  background-image: linear-gradient(45deg, darkgray, lightgray, darkgray);
+  display: flex;
+  flex-flow: row;
+  height: 10vh;
+  justify-content: space-around;
+  padding: 0.5em 0;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
 input {
   border: 1px solid grey;
   margin: 0 1em;
@@ -33,27 +45,16 @@ input:hover {
   box-shadow: 1px 1px 5px white;
 }
 
-.App-logo {
+.avatar {
+  border-radius: 25%;
+}
+
+.trivia-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
-.red-border {
-  border: 1px solid red;
-}
-
-.green-border {
-  border: 1px solid green;
-}
-
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  }
-}
-
-.App-header {
+.welcome-screen {
   align-items: center;
   background-color: #282c34;
   color: white;
@@ -64,8 +65,11 @@ input:hover {
   min-height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+@media ( prefers-reduced-motion : no-preference ) {
+
+  .trivia-logo {
+    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
 }
 
 @keyframes shake {

@@ -1,11 +1,26 @@
 .correct-answer {
-  background-color: whitesmoke;
+  background-image: radial-gradient(forestgreen, rgb(6, 240, 15));
   border: 3px solid rgb(6, 240, 15);
   box-shadow: 1px 1px 5px rgb(6, 240, 15);
+  color: whitesmoke;
+}
+
+.question-container {
+  background-image: radial-gradient(lightgray, darkgray);
+  border-radius: 2em;
+  height: 50vh;
+  left: 50%;
+  padding: 40px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
 }
 
 .wrong-answer {
-  background-color: whitesmoke;
+  background-image: radial-gradient(darkred, red);
   border: 3px solid red;
   box-shadow: 1px 1px 5px red;
+  color: whitesmoke;
 }

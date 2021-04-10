@@ -3,13 +3,11 @@ import logo from '../trivia.png';
 
 export default function WelcomeScreen() {
   return (
-    <div className="App">
-      <section className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </section>
-    </div>
+    <section className="welcome-screen">
+      <img src={ logo } className="trivia-logo" alt="logo" />
+      <p>
+        SUA VEZ
+      </p>
+    </section>
   );
 }

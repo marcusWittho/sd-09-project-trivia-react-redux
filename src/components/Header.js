@@ -37,7 +37,12 @@ class Header extends React.Component {
     const { avatar } = this.state;
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ avatar } alt="user-avatar" />
+        <img
+          data-testid="header-profile-picture"
+          className="avatar"
+          src={ avatar }
+          alt="user-avatar"
+        />
         <h3>
           Player:
           <span data-testid="header-player-name">{ name }</span>
