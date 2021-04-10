@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class GamePlayHeader extends React.Component {
   render() {
-    const { avatar, name } = this.props;
+    const { avatar, player } = this.props;
     return (
       <header className="header-player">
         <img
@@ -19,13 +19,14 @@ class GamePlayHeader extends React.Component {
             data-testid="header-player-name"
           >
             Player:
-            { name }
+            { player.name }
           </div>
           <div
             data-testid="header-score"
             className="header-title"
           >
-            Points: 0
+            Points:
+            { player.score }
           </div>
         </div>
       </header>
@@ -35,12 +36,12 @@ class GamePlayHeader extends React.Component {
 
 const mapStatetoProps = (state) => ({
   avatar: state.triviaReducer.avatar,
-  name: state.triviaReducer.name,
+  player: state.triviaReducer.player,
 });
 
 GamePlayHeader.propTypes = {
   avatar: PropTypes.string,
-  name: PropTypes.string,
+  pleyer: PropTypes.shape(),
 }.isRequired;
 
 export default connect(mapStatetoProps)(GamePlayHeader);
