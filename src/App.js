@@ -3,8 +3,9 @@ import { Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Settings from './components/Settings';
 import Feedback from './components/Feedback';
-import './App.css';
 import GamePlay from './components/GamePlay';
+import Ranking from './components/Ranking';
+import './App.css';
 
 class App extends React.Component {
   render() {
@@ -14,6 +15,7 @@ class App extends React.Component {
         <Route path="/settings" component={ Settings } />
         <Route path="/feedback" component={ Feedback } />
         <Route path="/gameplay" component={ GamePlay } />
+        <Route path="/ranking" component={ Ranking } />
       </Switch>
     );
   }
