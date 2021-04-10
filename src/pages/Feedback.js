@@ -9,6 +9,7 @@ class FeedBack extends React.Component {
   constructor(props) {
     super(props);
     this.getFeedback = this.getFeedback.bind(this);
+    this.localStorage = this.localStorage.bind(this);
   }
 
   getFeedback() {
@@ -16,6 +17,27 @@ class FeedBack extends React.Component {
     const minScore = 3;
     if (correct >= minScore) return 'Mandou bem!';
     return 'Podia ser melhor...';
+  }
+
+  localStorage() {
+    const { correct } = this.props;
+    const player = JSON.parse(localStorage.getItem('state'));
+    const token = localStorage.getItem('token');
+    let ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (ranking === null) ranking = [];
+    const rankingNew = [...ranking, {
+      assertions: correct,
+      name: player.player.name,
+      score: player.player.score,
+      picture: token,
+    }];
+    rankingNew.sort((a, b) => {
+      const one = 1;
+      if (a.score < b.score) return one;
+      if (a.score > b.score) return -one;
+      return 0;
+    });
+    localStorage.setItem('ranking', JSON.stringify(rankingNew));
   }
 
   render() {
@@ -26,12 +48,16 @@ class FeedBack extends React.Component {
         <p data-testid="feedback-text">{ this.getFeedback() }</p>
         <p data-testid="feedback-total-score">{ score }</p>
         <p data-testid="feedback-total-question">{ correct }</p>
-        <Link to="/">
-          <button data-testid="btn-play-again" type="button">
+        <Link to="/" onClick={ this.localStorage }>
+          <button
+            data-testid="btn-play-again"
+            type="button"
+            onClick={ this.handleClick }
+          >
             Play Again
           </button>
         </Link>
-        <Link to="ranking">
+        <Link to="ranking" onClick={ this.localStorage }>
           <button data-testid="btn-ranking" type="button">
             Ranking
           </button>

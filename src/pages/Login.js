@@ -15,6 +15,16 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.state = { userName: '', email: '' };
   }
+  
+  componentDidMount() {
+    const { clearAssertions } = this.props;
+    clearAssertions();
+  }
+
+  componentDidUpdate() {
+    this.submitLogin();
+  }
+
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
@@ -24,8 +34,8 @@ class Login extends React.Component {
     const { userName, email } = this.state;
     return !((userName !== '') && (email !== ''));
   }
-
-  submitLogin() {
+  
+   submitLogin() {
     const { submit } = this.props;
     const { userName, email } = this.state;
     submit(userName, email);
@@ -91,6 +101,7 @@ Login.propTypes = { submit: func }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   submit: (name, email) => dispatch(login(name, email)),
+  clearAssertions: () => dispatch(setAssertions()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
