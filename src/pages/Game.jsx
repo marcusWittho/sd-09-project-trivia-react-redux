@@ -11,7 +11,6 @@ class Game extends Component {
     super(props);
 
     this.state = {
-      difficulty: '',
       loading: true,
       questions: [],
       isButtonVisible: false,
@@ -46,8 +45,7 @@ class Game extends Component {
     return 'correct-answer';
   }
 
-  verifyAnswer(event) {
-    const { difficulty } = this.state;
+  verifyAnswer(event, difficulty) {
     const { timer } = this.props;
     const difficultyValues = {
       easy: 1,
@@ -56,7 +54,7 @@ class Game extends Component {
     };
     const baseScore = 10;
 
-    if (event.target.className === this.correctAnswer()) {
+    if (Object.values(event.target.classList).includes(this.correctAnswer())) {
       const stateKey = JSON.parse(localStorage.getItem('state'));
       const updatedStateKey = {
         player: {
@@ -73,8 +71,6 @@ class Game extends Component {
   }
 
   handleClick(event) {
-    this.verifyAnswer(event);
-
     const { questions, i } = this.state;
     const buttons = event.target.parentNode.children;
     Object.values(buttons).forEach((button) => {
@@ -85,11 +81,13 @@ class Game extends Component {
         button.classList.add(`${button.className}-style`);
       }
     });
+
     this.setState({
       isButtonVisible: true,
       shouldDisable: true,
-      difficulty: questions[i].difficulty,
     });
+
+    this.verifyAnswer(event, questions[i].difficulty);
   }
 
   retunAnswers(negative, answers) {
@@ -138,15 +136,12 @@ class Game extends Component {
     answers,
     timer,
   }) {
-    const { difficulty } = this.state;
-
     return (
       <>
         <header>
           <img data-testid="header-profile-picture" src={ image } alt="player avatar" />
           <span data-testid="header-player-name">{player.name}</span>
           <span data-testid="header-score">{player.score}</span>
-          <span>{ difficulty }</span>
           <div>
             { !isButtonVisible ? <Timer /> : 'Confira sua resposta!'}
           </div>
