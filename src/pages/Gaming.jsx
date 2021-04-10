@@ -23,17 +23,18 @@ class Gaming extends React.Component {
   componentDidMount() {
     this.getArrayOfQuestions();
     this.verifyAll();
+    this.getAnswers();
   }
 
   async getArrayOfQuestions() {
     const { questionDispatch } = this.props;
     await questionDispatch();
-    this.getAnswers();
   }
 
   getAnswers() {
     const { questionsState: { results } } = this.props;
     const { questionNumber } = this.state;
+    console.log(results)
     if (results) {
       const {
         incorrect_answers: incorrectAnswers,
@@ -60,12 +61,12 @@ class Gaming extends React.Component {
   verifyAll() {
     const { questionsState } = this.props;
     const numberResponse = 3;
+    if (!questionsState && !localStorage.getItem('token')) {
+      this.setState({ redirect: true });
+    }
     if (questionsState) {
       const { response_code: responseCode } = questionsState;
       if (responseCode === numberResponse) this.setState({ redirect: true });
-    }
-    if (!localStorage.getItem('token')) {
-      this.setState({ redirect: true });
     }
   }
 
@@ -81,6 +82,7 @@ class Gaming extends React.Component {
         <Header />
         { !results ? <p>loading</p> : (
           <div>
+            {console.log(results)}
             <p data-testid="question-category">
               {results[questionNumber].category}
             </p>
