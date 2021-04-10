@@ -7,7 +7,10 @@ class Ranking extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.state = { shouldRedirect: false,  ranking: [] }
+    this.state = {
+      shouldRedirect: false,
+      // ranking: [],
+    }
   }
 
   handleClick() {
@@ -15,7 +18,7 @@ class Ranking extends React.Component {
   }
 
   render() {
-    const { shouldRedirect,  } = this.state;
+    const { shouldRedirect } = this.state;
     const ranking = JSON.parse(localStorage.ranking);
     if (shouldRedirect) return <Redirect to="/" />;
     return (
@@ -41,6 +44,6 @@ class Ranking extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({ user })
+const mapStateToProps = ({ user }) => ({ user });
 
 export default connect(mapStateToProps)(Ranking);

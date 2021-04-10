@@ -25,7 +25,7 @@ class FeedBack extends React.Component {
     const token = localStorage.getItem('token');
     let ranking = JSON.parse(localStorage.getItem('ranking'));
     if (ranking === null) ranking = [];
-    let rankingNew = [...ranking, {
+    const rankingNew = [...ranking, {
       assertions: correct,
       name: player.player.name,
       score: player.player.score,
@@ -36,7 +36,7 @@ class FeedBack extends React.Component {
       if (a.score > b.score) return -1;
       return 0;
     });
-    localStorage.setItem("ranking", JSON.stringify(rankingNew));
+    localStorage.setItem('ranking', JSON.stringify(rankingNew));
   }
 
   render() {
@@ -49,10 +49,10 @@ class FeedBack extends React.Component {
         <p data-testid="feedback-total-question">{ correct }</p>
         <Link to="/" onClick={ this.localStorage }>
           <button
-           data-testid="btn-play-again"
-           type="button"
-           onClick={ this.handleClick }
-           >
+            data-testid="btn-play-again"
+            type="button"
+            onClick={ this.handleClick }
+          >
             Play Again
           </button>
         </Link>
