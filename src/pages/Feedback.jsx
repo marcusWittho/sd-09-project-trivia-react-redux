@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class FeedBack extends Component {
@@ -11,9 +12,17 @@ class FeedBack extends Component {
     return (
       <section>
         <Header />
-        {numberOfAssertions < condicionNumber
+        { numberOfAssertions < condicionNumber
           ? <p data-testid="feedback-text">Podia ser melhor...</p>
-          : <p data-testid="feedback-text">Mandou bem!</p>}
+          : <p data-testid="feedback-text">Mandou bem!</p> }
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar Novamente
+          </button>
+        </Link>
       </section>
     );
   }
