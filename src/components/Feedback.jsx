@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import FeedbackHeader from './FeedbackHeader';
 
 class Feedback extends React.Component {
@@ -10,26 +12,24 @@ class Feedback extends React.Component {
   }
 
   getFeedbackMessage() {
-    // const { score } = this.props;
-    const score = 3;
-    const goodScore = 3;
-    return score < goodScore
+    const { assertions } = this.props;
+    const averageAssertions = 3;
+    return assertions < averageAssertions
       ? 'Podia ser melhor...'
       : 'Mandou bem!';
   }
 
   render() {
+    const { score, assertions } = this.props;
     const feedbackText = this.getFeedbackMessage();
-    const questions = 2;
-    const points = 20;
     return (
       <div>
         <FeedbackHeader />
         <h1 data-testid="feedback-text">{ feedbackText }</h1>
         <h3 data-testid="feedback-total-question">
-          { `Você acertou ${questions} questões!` }
+          { `Você acertou ${assertions} questões!` }
         </h3>
-        <h3 data-testid="feedback-total-score">{ `Um total de ${points} pontos` }</h3>
+        <h3 data-testid="feedback-total-score">{ `Um total de ${score} pontos` }</h3>
         <Link to="/ranking">
           <button type="button" data-testid="btn-ranking">
             Ver ranking
@@ -45,4 +45,14 @@ class Feedback extends React.Component {
   }
 }
 
-export default Feedback;
+Feedback.propTypes = {
+  score: PropTypes.number,
+  assertions: PropTypes.number,
+}.isRequired;
+
+const mapStateToProps = (state) => ({
+  assertions: state.triviaReducer.player.assertions,
+  score: state.triviaReducer.player.score,
+});
+
+export default connect(mapStateToProps)(Feedback);

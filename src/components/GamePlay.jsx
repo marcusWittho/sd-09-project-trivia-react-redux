@@ -20,7 +20,6 @@ class GamePlay extends React.Component {
   componentDidUpdate() {
     const { token, setQuestions, questions } = this.props;
     if ((token && !questions.results) || (questions.response_code === ERROR_CODE)) {
-      console.log(token);
       setQuestions(token);
     }
   }
