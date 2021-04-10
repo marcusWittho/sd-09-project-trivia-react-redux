@@ -16,7 +16,13 @@ class Timer extends Component {
 
   componentDidMount() {
     const interval = 1000;
-    this.intervalId = setInterval(this.setTime, interval);
+    this.intervalId = setInterval(() => (this.setTime()), interval);
+  }
+
+  componentDidUpdate(props) {
+    if (props !== this.props) {
+      this.checkRestart();
+    }
   }
 
   componentWillUnmount() {
@@ -26,7 +32,6 @@ class Timer extends Component {
   setTime() {
     const { timer } = this.state;
     if ((timer) > 0) {
-      this.checkRestart();
       this.setState((prevState) => ({ timer: prevState.timer - 1 }));
       const { countdown } = this.props;
       countdown(timer);
@@ -34,9 +39,10 @@ class Timer extends Component {
   }
 
   checkRestart() {
-    const { restartTime, timer } = this.props;
-    if (restartTime === true) {
-      this.setState({ timer: timer + 1 });
+    const { restartTime } = this.props;
+    const timer = 30;
+    if (restartTime) {
+      this.setState({ timer });
     }
   }
 
@@ -58,7 +64,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 Timer.propTypes = {
   stateOfBtn: PropTypes.func.isRequired,
-  timer: PropTypes.number.isRequired,
   restartTime: PropTypes.bool.isRequired,
   countdown: PropTypes.func.isRequired,
 };
