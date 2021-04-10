@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class FeedBack extends Component {
@@ -21,6 +22,15 @@ class FeedBack extends Component {
           <span data-testid="feedback-total-score">{player.score}</span>
           pontos
         </div>
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar Novamente
+          </button>
+        </Link>
+
       </section>
     );
   }
