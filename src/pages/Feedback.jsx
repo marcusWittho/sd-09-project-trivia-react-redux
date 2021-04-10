@@ -6,6 +6,7 @@ export default class Feedback extends React.Component {
     return (
       <div>
         <FeedbackHeader />
+        <p data-testid="feedback-text">Texto de Feedback</p>
       </div>
     );
   }
