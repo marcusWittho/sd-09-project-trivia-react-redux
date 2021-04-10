@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import md5 from 'crypto-js/md5';
+import { AiFillSetting } from 'react-icons/ai';
 import fetchAPIToken from '../../services/apiToken';
 import actionPlayerId from '../../redux/actions/actionPlayerId';
 import actionAddQuestions from '../../redux/actions/actionAddQuestion';
@@ -70,8 +71,10 @@ class Login extends React.Component {
     const { isDisable } = this.state;
     return (
       <div className="body-login">
-        <Link className="link" to="/settings" data-testid="btn-settings">Settings</Link>
         <div className="wrapper">
+          <Link className="link" to="/settings" data-testid="btn-settings">
+            <AiFillSetting />
+          </Link>
           <img src={ Logo } alt="logo trivia game" />
           <div className="login-container">
             <input
