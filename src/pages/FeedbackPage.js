@@ -26,11 +26,11 @@ class FeedBack extends React.Component {
     const numberToCompare = 3;
     if (correctAnswers < numberToCompare) {
       return (
-        <p data-testid="feedback-text">Podia ser melhor...</p>
+        <p>Podia ser melhor...</p>
       );
     }
     return (
-      <p data-testid="feedback-text">Mandou bem!</p>
+      <p>Mandou bem!</p>
     );
   }
 
