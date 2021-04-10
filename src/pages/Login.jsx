@@ -36,11 +36,11 @@ class Login extends Component {
 
   handleClick() {
     const { email, name } = this.state;
-    const { getGravatar, fetchToken } = this.props;
+    const { getGravatar, fetchToken, config } = this.props;
     const hashEmail = md5(email).toString();
     getGravatar(hashEmail, name);
     this.savePlayerLocalStorage(hashEmail, name);
-    fetchToken();
+    fetchToken(config);
   }
 
   savePlayerLocalStorage(hashEmail, name) {
@@ -90,9 +90,13 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  config: state.trivia.config,
+});
+
 const mapDispatchToPropos = (dispatch) => ({
   getGravatar: (hashEmail, name) => dispatch(gravatarHash(hashEmail, name)),
-  fetchToken: () => dispatch(fetchThunkToken()),
+  fetchToken: (URL) => dispatch(fetchThunkToken(URL)),
 });
 
 Login.propTypes = {
@@ -100,4 +104,4 @@ Login.propTypes = {
   fetchToken: PropTypes.func,
 }.isRequered;
 
-export default connect(null, mapDispatchToPropos)(Login);
+export default connect(mapStateToProps, mapDispatchToPropos)(Login);

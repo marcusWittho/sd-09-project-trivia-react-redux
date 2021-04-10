@@ -3,6 +3,7 @@ export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const TIME_OVER = 'TIME_OVER';
 export const TIME_STARTER = 'TIME_STARTER';
+export const SET_CONFIG = 'SET_CONFIG';
 
 export const gravatarHash = (hashEmail, name) => ({
   type: GET_GRAVATAR,
@@ -18,22 +19,22 @@ function getQuestions(questions) {
   return { type: GET_QUESTIONS, questions };
 }
 
-function fetchQuestions(token) {
+function fetchQuestions(URL, token) {
   localStorage.setItem('token', token);
   return async (dispatch) => {
-    const requestResponse = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const requestResponse = await fetch(`${URL}&token=${token}`);
     const response = await requestResponse.json();
     dispatch(getQuestions(response.results));
     return requestResponse;
   };
 }
 
-export function fetchThunkToken() {
+export function fetchThunkToken(URL) {
   return async (dispatch) => {
     dispatch(requestQuestions());
     const fetchToken = await fetch('https://opentdb.com/api_token.php?command=request');
     const tokenObj = await fetchToken.json();
-    return dispatch(fetchQuestions(tokenObj.token));
+    return dispatch(fetchQuestions(URL, tokenObj.token));
   };
 }
 
@@ -43,4 +44,9 @@ export const timeOver = () => ({
 
 export const timeStarter = () => ({
   type: TIME_STARTER,
+});
+
+export const setConfig = (config) => ({
+  type: SET_CONFIG,
+  config,
 });
