@@ -22,6 +22,14 @@ class FeedBack extends Component {
           <span data-testid="feedback-total-score">{player.score}</span>
           pontos
         </div>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
         <Link to="/">
           <button
             type="button"
@@ -30,7 +38,6 @@ class FeedBack extends Component {
             Jogar Novamente
           </button>
         </Link>
-
       </section>
     );
   }
