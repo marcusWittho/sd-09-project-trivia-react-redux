@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { asyncToken, loginAction } from '../../actions';
-import logo from '../../trivia.png';
+import logo from '../../assets/trivia.png';
 import { createRanking } from '../../services/localStorage';
 import { getGravatar } from '../../serviceAPI';
 import './styles.css';
@@ -48,28 +48,33 @@ class Home extends React.Component {
     const { username, email } = this.state;
     return (
       <div className="container-page-login">
+        <Link to="/settings" className="link-btn">
+          <button
+            className="config-btn"
+            type="button"
+            data-testid="btn-settings"
+          >
+            <i className="fas fa-cogs" />
+          </button>
+        </Link>
         <img src={ logo } alt="Trivia Logo" className="image-trivia" />
         <form className="form-login">
-          <label htmlFor="player-name">
-            <input
-              placeholder="Username"
-              id="player-name"
-              name="username"
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-              value={ username }
-            />
-          </label>
-          <label htmlFor="gravatar-email">
-            <input
-              placeholder="Email"
-              id="gravatar-email"
-              name="email"
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-              value={ email }
-            />
-          </label>
+          <input
+            placeholder="Username"
+            id="player-name"
+            name="username"
+            data-testid="input-player-name"
+            onChange={ this.handleChange }
+            value={ username }
+          />
+          <input
+            placeholder="Email"
+            id="gravatar-email"
+            name="email"
+            data-testid="input-gravatar-email"
+            onChange={ this.handleChange }
+            value={ email }
+          />
           <Link to="/play" className="link-btn">
             <button
               className="play-btn"
@@ -79,15 +84,6 @@ class Home extends React.Component {
               onClick={ () => this.handleClick() }
             >
               Jogar
-            </button>
-          </Link>
-          <Link to="/settings" className="link-btn">
-            <button
-              className="config-btn"
-              type="button"
-              data-testid="btn-settings"
-            >
-              Configurações
             </button>
           </Link>
         </form>

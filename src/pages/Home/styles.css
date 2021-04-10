@@ -6,7 +6,27 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding-top: 200px;
+  padding-top: 150px;
+}
+
+.config-btn {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  transition: all ease-in-out 300ms;
+}
+
+.fa-cogs {
+  color: white;
+  font-size: 42px;
+  transition: all ease-in-out 300ms;
+}
+
+.fa-cogs:hover {
+  color: rgb(24, 160, 139);
+  cursor: pointer;
 }
 
 .image-trivia {
@@ -25,8 +45,9 @@ input {
   border: none;
   border-radius: 10px;
   font-size: 16px;
-  margin: 10px 0;
-  padding: 10px 16px;
+  margin: 10px auto;
+  padding: 12px 16px;
+  width: 250px;
 }
 
 input::placeholder {
@@ -42,7 +63,7 @@ input::placeholder {
   font-size: 16px;
   font-weight: 600;
   margin: 10px 0;
-  padding: 10px 16px;
+  padding: 12px 16px;
   transition: background-color ease-in-out 300ms;
   width: 100%;
 }
@@ -52,25 +73,16 @@ input::placeholder {
 }
 
 .play-btn:disabled {
-  background: rgba(236, 236, 236, 0.637);
+  background: rgba(24, 160, 139, 0.685);
   cursor: default;
 }
 
-.config-btn {
-  background: none;
-  border: 2px solid white;
-  border-radius: 10px;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 10px;
-  padding: 10px 16px;
-  transition: all ease-in-out 300ms;
-  width: 100%;
-}
+@media (max-width: 425px) {
+  .image-trivia {
+    width: 250px;
+  }
 
-.config-btn:hover {
-  background: white;
-  color: rgb(103, 40, 175);
-  cursor: pointer;
+  .fa-cogs {
+    font-size: 26px;
+  }
 }
