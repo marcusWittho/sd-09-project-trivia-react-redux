@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Header from '../components/header';
@@ -14,6 +15,7 @@ class trivia extends React.Component {
       answered: false,
       time: 30,
       disabled: false,
+      redirect: false,
     };
     this.timer = 30;
     this.handleClick = this.handleClick.bind(this);
@@ -70,6 +72,7 @@ class trivia extends React.Component {
         answered: false,
         time: 30,
         disabled: false,
+        redirect: true,
       }));
     } else {
       this.setState((previousState) => ({
@@ -85,9 +88,10 @@ class trivia extends React.Component {
 
   render() {
     const { results } = this.props;
-    const { index, loading, answered, time, disabled } = this.state;
+    const { index, loading, answered, time, disabled, redirect } = this.state;
     const question = results.find((_question, i) => i === index);
     if (loading) this.handleGetToken();
+    if (redirect) return <Redirect to="/feedback" />;
     return (
       <div className="App">
         <Header />
