@@ -1,11 +1,17 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
+import { Redirect } from 'react-router';
 
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      loginScreen: false,
+    };
+
     this.feedbackMessage = this.feedbackMessage.bind(this);
+    this.playAgain = this.playAgain.bind(this);
   }
 
   feedbackMessage() {
@@ -23,9 +29,19 @@ class Feedback extends React.Component {
     return response;
   }
 
+  playAgain() {
+    this.setState({
+      loginScreen: true,
+    });
+  }
+
   render() {
     const state = JSON.parse(localStorage.getItem('state'));
     const { player: { name, gravatarEmail, score } } = state;
+    const { loginScreen } = this.state;
+
+    if (loginScreen) return <Redirect to="/" />;
+
     return (
       <div>
         <header>
@@ -44,6 +60,14 @@ class Feedback extends React.Component {
 
           { this.feedbackMessage() }
         </header>
+
+        <button
+          data-testid="btn-play-again"
+          type="button"
+          onClick={ this.playAgain }
+        >
+          Jogar novamente
+        </button>
       </div>
     );
   }
