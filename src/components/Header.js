@@ -16,10 +16,10 @@ class Header extends React.Component {
   }
 
   componentDidUpdate() {
-    const { score, name, email } = this.props;
+    const { score, name, email, correct } = this.props;
     localStorage.state = JSON.stringify({ player: {
       score,
-      assertion: [],
+      assertions: correct,
       name,
       gravatarEmail: email,
     } });
@@ -53,7 +53,7 @@ class Header extends React.Component {
 
 Header.propTypes = { name: string, email: string }.isRequired;
 
-const mapStateToProps = ({ user: { name, email, score } }) => (
-  { name, email, score });
+const mapStateToProps = ({ user: { name, email, score, correct } }) => (
+  { name, email, score, correct });
 
 export default connect(mapStateToProps)(Header);
