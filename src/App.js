@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Login from './pages/Login';
 import Settings from './pages/Settings';
 import Game from './pages/Game';
@@ -12,10 +13,11 @@ import { updateTimerAction } from './actions';
 class App extends React.Component {
   componentDidMount() {
     const { updateTimer } = this.props;
+    const timeInterval = 1000;
 
     setInterval(() => {
       updateTimer();
-    }, 1000);
+    }, timeInterval);
   }
 
   render() {
@@ -34,5 +36,9 @@ class App extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   updateTimer: () => dispatch(updateTimerAction()),
 });
+
+App.propTypes = {
+  updateTimer: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(App);
