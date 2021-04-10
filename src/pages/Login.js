@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { userRegister, fechingTokenToApi } from '../redux/actions';
-import logo from '../trivia.png';
 import '../App.css';
+import Rodape from '../compenents/Rodape';
+import score from '../compenents/Score';
 
 class Login extends React.Component {
   constructor(props) {
@@ -21,6 +22,22 @@ class Login extends React.Component {
     this.login = this.login.bind(this);
     this.redirectToSettings = this.redirectToSettings.bind(this);
   }
+
+  /*  ######################################################
+  Utilizei essa função (gravar) para criar o local Storage.
+   O mesmo pode ser criado em outro lugar  */
+  gravar() {
+    const state = {
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+  // ##########################################################
 
   handleChange({ target }) {
     const { name, value } = target;
@@ -56,12 +73,28 @@ class Login extends React.Component {
     });
   }
 
+  /*  ######################################################
+  Utilizei essa função (testeScore) para chamar a função do Score.
+   Faz sentido chamá-la no click da escolha da questão?
+   lembrando que os três parametros para chamar a função são:
+   difficuty - localizada na API;
+   timer - valor restante do timer no momento da resposta;
+   id - id que identifica se a resposta foi correta ou falsa.  */
+  testeScore() {
+    const timer = 17;
+    score('medium', timer, 'correct-answer');
+  }
+
+  // ##########################################################
+
   render() {
+    this.gravar(); /* chamei a função de criar o local Storage apenas para teste */
     const { name, email, login, button, settings } = this.state;
     return (
+      <>
       <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <form>
+        <h3 className="Trivia">Trivia</h3>
+        <form className="Form">
           <label htmlFor="inputName">
             Nome
             <input
@@ -102,7 +135,15 @@ class Login extends React.Component {
           { login ? <Redirect to="/game" /> : '' }
           { settings ? <Redirect to="/settings" /> : '' }
         </form>
+        <button /* criei este botão para testar a soma do score */
+            onClick={ this.testeScore }
+            type="button"
+          >
+            score
+          </button>
       </header>
+      <Rodape />  {/* Chamei o rodapé */}
+      </>
     );
   }
 }

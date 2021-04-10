@@ -24,13 +24,41 @@
 
 .App-header {
   align-items: center;
-  background-color: #282c34;
+  background-image: url(https://image.freepik.com/fotos-gratis/simbolos-de-interrogacao-cor_1205-337.jpg?1);
   color: white;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   justify-content: center;
   min-height: 100vh;
+}
+
+.Img-rodape {
+  border-radius: 50%;
+  max-width:100px;
+  max-height:100px;
+  width: auto;
+  height: auto;
+}
+
+.Form {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  font-size: 50px;
+  padding: 20px;
+}
+
+.Rodape {
+  display: flex;
+  justify-content: center;
+}
+
+.Trivia {
+  font-size: 100px;
+  background-color: black;
+  border: 5px double red;
+  padding: 20px;
 }
 
 .App-link {
