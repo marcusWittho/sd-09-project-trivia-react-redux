@@ -4,17 +4,24 @@ import Header from '../components/Header';
 
 class FeedBack extends Component {
   render() {
-    const state = localStorage.getItem('state');
-    const { player } = JSON.parse(state);
-    const { assertions } = player;
-    const numberOfAssertions = parseInt(assertions, 10);
+    const { player } = JSON.parse(localStorage.getItem('state'));
     const condicionNumber = 3;
+    const feedbackText = player.assertions < condicionNumber
+      ? 'Podia ser melhor...' : 'Mandou bem!';
     return (
       <section>
         <Header />
-        { numberOfAssertions < condicionNumber
-          ? <p data-testid="feedback-text">Podia ser melhor...</p>
-          : <p data-testid="feedback-text">Mandou bem!</p> }
+        <p data-testid="feedback-text">{feedbackText}</p>
+        <div>
+          Você acertou
+          <span data-testid="feedback-total-question">{player.assertions}</span>
+          questões!
+        </div>
+        <div>
+          Um total de
+          <span data-testid="feedback-total-score">{player.score}</span>
+          pontos
+        </div>
         <Link to="/">
           <button
             type="button"
@@ -23,6 +30,7 @@ class FeedBack extends Component {
             Jogar Novamente
           </button>
         </Link>
+
       </section>
     );
   }
