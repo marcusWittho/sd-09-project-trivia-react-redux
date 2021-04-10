@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from '../actions';
-import { StartGameButton, SettingsButton } from '../components';
+import { getToken } from '../services/api';
 import './Login.css';
 
 class Login extends React.Component {
@@ -12,17 +12,8 @@ class Login extends React.Component {
     this.submitLogin = this.submitLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.buttonStatus = this.buttonStatus.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.state = { userName: '', email: '' };
-  }
-
-  componentDidUpdate() {
-    this.submitLogin();
-  }
-
-  submitLogin() {
-    const { submit } = this.props;
-    const { userName, email } = this.state;
-    submit(userName, email);
   }
 
   handleChange({ target: { name, value } }) {
@@ -32,6 +23,18 @@ class Login extends React.Component {
   buttonStatus() {
     const { userName, email } = this.state;
     return !((userName !== '') && (email !== ''));
+  }
+
+  submitLogin() {
+    const { submit } = this.props;
+    const { userName, email } = this.state;
+    submit(userName, email);
+  }
+
+  async handleClick() {
+    this.submitLogin();
+    const token = await getToken();
+    localStorage.token = `${token}`;
   }
 
   render() {
@@ -60,10 +63,25 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <Link to="/question">
-          <StartGameButton buttonStatus={ this.buttonStatus() } />
+        <Link to="/trivia">
+          <button
+            type="button"
+            data-testid="btn-play"
+            onClick={ this.handleClick }
+            disabled={ this.buttonStatus() }
+          >
+            Start Game
+          </button>
         </Link>
-        <SettingsButton />
+        <Link to="/settings">
+          <button
+            data-testid="btn-settings"
+            type="button"
+            onClick={ this.redirect }
+          >
+            Settings
+          </button>
+        </Link>
       </form>
     );
   }
