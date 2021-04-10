@@ -77,7 +77,8 @@ input::placeholder {
   cursor: default;
 }
 
-@media (max-width: 425px) {
+@media ( max-width : 425px ) {
+
   .image-trivia {
     width: 250px;
   }
