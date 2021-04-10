@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router';
 import getQuestionsApiAction from '../redux/Actions/getRequestQuestionsApiAction';
 import Header from '../components/Header';
@@ -22,7 +23,7 @@ class ScreenGame extends React.Component {
         name: userName,
         assertions: 0,
         score: 0,
-        gravatarEmail: userEmail,
+        gravatarEmail: `https://www.gravatar.com/avatar/${md5(userEmail).toString()}`,
       },
       category: '',
       question: '',
