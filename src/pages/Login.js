@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
+import { WelcomeScreen } from '../components';
 import { login, setAssertions } from '../actions';
 import { getToken } from '../services/api';
 import './Login.css';
@@ -49,49 +50,48 @@ class Login extends React.Component {
   render() {
     const { userName, email } = this.state;
     return (
-      <form>
-        <label htmlFor="name-input">
-          Name:
-          <input
-            data-testid="input-player-name"
-            id="name-input"
-            name="userName"
-            value={ userName }
-            type="text"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email-input">
-          Email:
-          <input
-            data-testid="input-gravatar-email"
-            id="email-input"
-            name="email"
-            value={ email }
-            type="text"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <Link to="/trivia">
-          <button
-            type="button"
-            data-testid="btn-play"
-            onClick={ this.handleClick }
-            disabled={ this.buttonStatus() }
-          >
-            Start Game
-          </button>
-        </Link>
-        <Link to="/settings">
-          <button
-            data-testid="btn-settings"
-            type="button"
-            onClick={ this.redirect }
-          >
-            Settings
-          </button>
-        </Link>
-      </form>
+      <section className="login-header">
+        <form>
+          <label htmlFor="name-input">
+            Name:
+            <input
+              data-testid="input-player-name"
+              id="name-input"
+              name="userName"
+              value={ userName }
+              type="text"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email-input">
+            Email:
+            <input
+              data-testid="input-gravatar-email"
+              id="email-input"
+              name="email"
+              value={ email }
+              type="text"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <Link to="/trivia">
+            <button
+              type="button"
+              data-testid="btn-play"
+              onClick={ this.handleClick }
+              disabled={ this.buttonStatus() }
+            >
+              Start Game
+            </button>
+          </Link>
+          <Link to="/settings">
+            <button data-testid="btn-settings" type="button" onClick={ this.redirect }>
+              Settings
+            </button>
+          </Link>
+        </form>
+        <WelcomeScreen />
+      </section>
     );
   }
 }

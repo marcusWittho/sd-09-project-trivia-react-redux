@@ -83,7 +83,7 @@ class Question extends React.Component {
           name="correct-answer"
           type="button"
           disabled={ disabledOptions }
-          className={ addClass ? 'correct-answer' : null }
+          className={ addClass ? 'correct-answer' : 'answer' }
           onClick={ this.handleAnswerClick }
         >
           { question.correct_answer }
@@ -95,7 +95,7 @@ class Question extends React.Component {
             type="button"
             key={ `wrong-answer-${index}` }
             disabled={ disabledOptions }
-            className={ addClass ? 'wrong-answer' : null }
+            className={ addClass ? 'wrong-answer' : 'answer' }
             onClick={ this.handleAnswerClick }
           >
             { wrong }
