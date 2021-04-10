@@ -9,7 +9,8 @@ class Answers extends Component {
     this.state = {
       answerIndex: 0,
       color: false,
-
+      time: 7,
+      disabled: false,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -17,6 +18,44 @@ class Answers extends Component {
     this.renderQuestionsAndCategories = this.renderQuestionsAndCategories.bind(this);
     this.changeColorAnswer = this.changeColorAnswer.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.timeOut = this.timeOut.bind(this);
+  }
+
+  componentDidMount() {
+    const { time } = this.state;
+    this.myInterval = setInterval(() => {
+      if (time > 0) {
+        this.setState((state) => ({
+          time: state.time - 1,
+        }));
+      }
+    }, Number('1000'));
+  }
+
+  componentDidUpdate() {
+    const { time, disabled } = this.state;
+    if (time < 1) {
+      clearInterval(this.myInterval);
+      this.timeOut(disabled);
+    }
+  }
+
+  timeOut(disabled) {
+    if (!disabled) {
+      this.setState({ disabled: true });
+    }
+  }
+
+  saveScore(score) {
+    const previousState = JSON.parse(localStorage.getItem('state'));
+    const { player } = previousState;
+    const playerScore = player.score;
+    const state = { ...previousState, player: { ...player, score: playerScore + score } };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  increaseScore() {
+
   }
 
   nextQuestion(event) {
@@ -25,11 +64,16 @@ class Answers extends Component {
     if (answerIndex === maxIndex) {
       event.target.classList.add('btn-next');
     } else {
-      this.setState({ answerIndex: answerIndex + 1, color: false });
+      this.setState({
+        answerIndex: answerIndex + 1,
+        color: false,
+        time: 7,
+        disabled: false,
+      }, () => this.componentDidMount());
     }
   }
 
-  nextButton(color, answerIndex) {
+  nextButton(color, answerIndex, disabled) {
     const nextButton = (
       <button
         data-testid="btn-next"
@@ -50,13 +94,14 @@ class Answers extends Component {
       </Link>
     );
     if (answerIndex === Number('4') && color) return finishButton;
-    if (color) return nextButton;
+    if (color || disabled) return nextButton;
   }
 
   changeColorAnswer() {
+    this.saveScore(Number('5'));
     this.setState({
       color: true,
-    });
+    }, () => clearInterval(this.myInterval));
   }
 
   renderQuestionsAndCategories(answerIndex, questions) {
@@ -70,7 +115,7 @@ class Answers extends Component {
       </section>);
   }
 
-  renderAnswers(answerIndex, questions, color) {
+  renderAnswers(answerIndex, questions, color, disabled) {
     const courrentQuestion = questions.results[answerIndex];
     const multipleAnswers = [
       ...courrentQuestion.incorrect_answers,
@@ -78,12 +123,13 @@ class Answers extends Component {
     ];
     const { type } = questions.results[answerIndex];
     const answer = type === 'multiple' ? multipleAnswers : ['True', 'False'];
-    const beetween = 0.5;
-    const sortanswerToF = answer.sort(() => Math.random() - beetween);
+    // const beetween = 0.5;
+    // const sortanswerToF = answer.sort(() => Math.random() - beetween);
     return (
       <section>
-        {sortanswerToF.map((selected, index) => (
+        {answer.map((selected, index) => (
           <button
+            disabled={ disabled }
             onClick={ this.changeColorAnswer }
             id="tof-button"
             key={ index }
@@ -102,13 +148,21 @@ class Answers extends Component {
 
   render() {
     const { loading, questions } = this.props;
-    const { color, answerIndex } = this.state;
+    const { color, answerIndex, time, disabled } = this.state;
     if (loading) return <h1>Carregando...</h1>;
     return (
       <div>
         {this.renderQuestionsAndCategories(answerIndex, questions)}
-        {this.renderAnswers(answerIndex, questions, color)}
-        {this.nextButton(color, answerIndex)}
+        {this.renderAnswers(answerIndex, questions, color, disabled)}
+        {this.nextButton(color, answerIndex, disabled)}
+        { time < 1
+          ? <h4>Acabou o Tempo</h4>
+          : (
+            <h4>
+              Tempo:
+              {` ${time}`}
+            </h4>
+          )}
       </div>
     );
   }
