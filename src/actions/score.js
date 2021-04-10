@@ -17,8 +17,8 @@ const localScore = (thisScore) => {
   localStorage.setItem('state', newState);
 };
 
-const calcThisScore = ({ difficulty, timer }) => {
-  const thisScore = CORRECT_CONST + timer * SCORE_BY_CATEGORY[difficulty];
+const calcThisScore = ({ difficulty, THISANSWEREDTIMER }) => {
+  const thisScore = CORRECT_CONST + THISANSWEREDTIMER * SCORE_BY_CATEGORY[difficulty];
   localScore(thisScore);
   return thisScore;
 };
