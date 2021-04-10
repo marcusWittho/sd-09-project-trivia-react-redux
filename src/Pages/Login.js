@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import { setUser } from '../Actions';
 import { setToken } from '../Actions/setLogin';
 import SettingsButton from '../Components/SettingsButton';
+import TriviaLogo216 from '../Components/TriviaLogoSizes/TriviaLogo216';
+import TriviaLogo144 from '../Components/TriviaLogoSizes/TriviaLogo144';
+import TriviaLogo96 from '../Components/TriviaLogoSizes/TriviaLogo96';
 
 class Login extends Component {
   constructor(props) {
@@ -18,12 +21,26 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.sizeScreen = this.sizeScreen.bind(this);
   }
 
   handleChange({ target }) {
     this.setState({
       [target.name]: target.value,
     });
+  }
+
+  sizeScreen() {
+    const base = 765;
+    const top = 1100;
+    console.log(window.screen.width);
+    if (window.screen.width > top) {
+      return <TriviaLogo216 className="logo" />;
+    }
+    if (window.screen.width < top && window.screen.width > base) {
+      return <TriviaLogo144 className="logo" />;
+    }
+    return <TriviaLogo96 className="logo" />;
   }
 
   validateLogin() {
@@ -45,7 +62,7 @@ class Login extends Component {
     return (
       <div className="container">
         <h2 className="title">
-          Trivia
+          { this.sizeScreen() }
         </h2>
         <div className="insert-login">
           <div className="context-input">

@@ -29,17 +29,14 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
+  height: 100vh;
 }
 
-.title {
-  color: green;
-  font-family: Cinzel , serif;
-  font-size: 4.5rem;
+.logo {
   margin: 0;
   margin-top: 15%;
-  text-align: center;
-  text-shadow: 5px 2px 2px rgb(255, 255, 255, 0.5);
+  width: 144px;
 }
 
 .input-login {
@@ -83,7 +80,7 @@ body {
 
 }
 
-@media screen and ( min-width : 770px ) {
+@media screen and ( min-width : 765px ) {
 
   .context-button {
     display: flex;
@@ -97,17 +94,22 @@ body {
     height: 25px;
   }
 
+  .container {
+    justify-content: center;
+  }
+
   .insert-login , .context-button {
     width: 335px;
     align-content: space-between;
   }
+
   .context-button > * > button {
     width: 150px;
     height: 35px;
   }
 
   .title {
-    font-size: 8.5rem;
+    font-size: 4.5rem;
   }
 
 }
