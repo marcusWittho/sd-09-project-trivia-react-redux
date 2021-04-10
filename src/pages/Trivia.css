@@ -1,7 +1,11 @@
 .correct-answer {
+  background-color: whitesmoke;
   border: 3px solid rgb(6, 240, 15);
+  box-shadow: 1px 1px 5px rgb(6, 240, 15);
 }
 
 .wrong-answer {
+  background-color: whitesmoke;
   border: 3px solid red;
+  box-shadow: 1px 1px 5px red;
 }
