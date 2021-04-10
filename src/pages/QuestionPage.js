@@ -48,7 +48,7 @@ class QuestionPage extends React.Component {
   render() {
     const { questions } = this.props;
     const { index } = this.state;
-    if (index === questions.length - 1) return <Redirect to="/feedback" />;
+    if (questions.length > 0 && index === questions.length) return <Redirect to="/feedback" />;
     return (
       <div>
         <Header />

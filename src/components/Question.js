@@ -25,10 +25,9 @@ class Question extends React.Component {
   setTime() {
     const { updateTimer } = this.props;
     const interval = 1000;
-    const timer = setInterval(() => {
+    setInterval(() => {
       let { timeLeft } = this.props;
       if (timeLeft === 1) {
-        clearInterval(timer);
         this.setState({ disabledOptions: true, nextButton: true });
       }
       timeLeft -= 1;
