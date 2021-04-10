@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { number } from 'prop-types';
 import { Header } from '../components';
-import { setAssertions } from '../actions';
 import './Feedback.css';
 
 class FeedBack extends React.Component {
@@ -11,7 +10,6 @@ class FeedBack extends React.Component {
     super(props);
     this.getFeedback = this.getFeedback.bind(this);
     this.localStorage = this.localStorage.bind(this);
-    // this.handleClick = this.handleClick.bind(this);
   }
 
   getFeedback() {
@@ -38,15 +36,8 @@ class FeedBack extends React.Component {
       if (a.score > b.score) return -1;
       return 0;
     });
-    console.log(ranking);
     localStorage.setItem("ranking", JSON.stringify(rankingNew));
-    // clearAssertions();
   }
-
-  // handleClick() {
-  //   const { clearAssertions } = this.props;
-  //   clearAssertions();
-  // }
 
   render() {
     const { score, correct } = this.props;
@@ -56,7 +47,7 @@ class FeedBack extends React.Component {
         <p data-testid="feedback-text">{ this.getFeedback() }</p>
         <p data-testid="feedback-total-score">{ score }</p>
         <p data-testid="feedback-total-question">{ correct }</p>
-        <Link to="/" onClick={this.localStorage}>
+        <Link to="/" onClick={ this.localStorage }>
           <button
            data-testid="btn-play-again"
            type="button"
@@ -65,7 +56,7 @@ class FeedBack extends React.Component {
             Play Again
           </button>
         </Link>
-        <Link to="ranking" onClick={this.localStorage}>
+        <Link to="ranking" onClick={ this.localStorage }>
           <button data-testid="btn-ranking" type="button">
             Ranking
           </button>
@@ -78,9 +69,5 @@ class FeedBack extends React.Component {
 FeedBack.propTypes = { score: number, correct: number }.isRequired;
 
 const mapStateToProps = ({ user: { score, correct } }) => ({ score, correct });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   clearAssertions: () => dispatch(setAssertions),
-// });
 
 export default connect(mapStateToProps)(FeedBack);

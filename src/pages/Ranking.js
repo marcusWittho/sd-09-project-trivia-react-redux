@@ -7,22 +7,11 @@ class Ranking extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    //this.compare = this.compare.bind(this)
     this.state = {
       shouldRedirect: false,
       ranking: []
     }
   }
-
-  // componentDidMount() {
-  //   const ranking = JSON.parse(localStorage.getItem('ranking'));
-  //   ranking.sort((a, b) => {
-  //     if (a.score < b.score) return 1;
-  //     if (a.score > b.score) return -1;
-  //     return 0;
-  //   });
-  //   this.setState({ ranking: ranking })
-  // }
 
   handleClick() {
     this.setState({ shouldRedirect: true });
@@ -55,9 +44,6 @@ class Ranking extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-})
-
+const mapStateToProps = ({ user }) => ({ user })
 
 export default connect(mapStateToProps)(Ranking);
