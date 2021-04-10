@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { bool, shape } from 'prop-types';
+import './ranking.css';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -31,33 +32,34 @@ class Ranking extends React.Component {
     if (!validLogin) return <Redirect to="/" />;
     return (
       <section>
-        <div>
-          <h1 data-testid="ranking-title">Hanking</h1>
-          <Link exact to="/">
-            <button type="button" data-testid="btn-go-home">
-              Inicio
-            </button>
-          </Link>
-          <ul>
+        <div className="ranking-container">
+          <header>
+            <h1 data-testid="ranking-title">Ranking</h1>
+            <Link exact to="/">
+              <button type="button" data-testid="btn-go-home">
+                Home
+              </button>
+            </Link>
+          </header>
+          <ol>
             { ranking.map((value, index) => (
-              <li key={ index }>
+              <li key={ index } className="player-list">
                 {console.log(value)}
-                <img src={ value.picture } alt={ `Avata de ${value.name}` } />
                 <div>
+                  <img src={ value.picture } alt={ `Avata de ${value.name}` } />
                   <p>
-                    <strong>Nome:</strong>
-                    &nbsp;
+                    {`${index + 1}º `}
                     <span data-testid={ `player-name-${index}` }>{ value.name }</span>
                   </p>
-                  <p>
-                    <strong>Pontuação:</strong>
-                    &nbsp;
-                    <span data-testid={ `player-score-${index}` }>{ value.score }</span>
-                  </p>
                 </div>
+                <p className="player-score">
+                  <strong>Score:</strong>
+                  &nbsp;
+                  <span data-testid={ `player-score-${index}` }>{ value.score }</span>
+                </p>
               </li>
             )) }
-          </ul>
+          </ol>
         </div>
       </section>
     );
