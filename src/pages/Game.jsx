@@ -54,6 +54,7 @@ class Game extends Component {
       medium: 2,
       hard: 3,
     };
+    const baseScore = 10;
 
     if (event.target.className === this.correctAnswer()) {
       const stateKey = JSON.parse(localStorage.getItem('state'));
@@ -61,7 +62,9 @@ class Game extends Component {
         player: {
           ...stateKey.player,
           assertions: stateKey.player.assertions + 1,
-          score: stateKey.player.score + (10 + (timer * difficultyValues[difficulty]))
+          score: stateKey.player.score + (
+            baseScore + (timer * difficultyValues[difficulty]))
+          ,
         },
       };
 
