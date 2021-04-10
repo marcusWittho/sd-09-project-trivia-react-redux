@@ -98,11 +98,15 @@ class GamePage extends React.Component {
 
   handleNext(index) {
     const { restartTime } = this.props;
+    const answers = document.querySelectorAll('#answer');
     this.setState({
       questionNumber: index + 1,
       allowNextButton: 'none',
       time: 30,
       disabledAnswers: false,
+    });
+    answers.forEach((answer) => {
+      answer.style.border = '';
     });
     restartTime();
   }
