@@ -71,6 +71,7 @@ class Login extends React.Component {
       <div className="body-login">
         <Link className="link" to="/settings" data-testid="btn-settings">Settings</Link>
         <div className="wrapper">
+          <h3 className="title">TRIVIA GAME</h3>
           <div className="login-container">
             <input
               type="text"

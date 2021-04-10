@@ -7,6 +7,7 @@
   width: 100vw;
 }
 
+/* Lembrar de tirar essa config - responsável por ocultar o requisito3 */
 .link {
   display: none;
 }
@@ -24,28 +25,38 @@
   border: 0;
   border-radius: 4px;
   color: white;
+  padding: 7px;
 }
 
 .login-container button:disabled {
   background-color: #555;
   color: white;
   cursor: not-allowed;
+  padding: 7px;
+}
+
+.title {
+  border-bottom: 2px solid white;
+  color: white;
+  font-family: 'Audiowide';
+  font-size: 1.5rem;
 }
 
 .wrapper {
   align-items: center;
-  background-color: white;
+  background-color: #0e1a29;
   border-color: #0e1a29;
   display: flex;
   flex-direction: column;
-  height: 10rem;
+  height: 17rem;
   width: 20rem;
 }
 
 .wrapper input {
   background-color: #082336;
+  border-color: #2f80ed;
   border-radius: 5px;
   color: white;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
   padding: 7px;
 }
