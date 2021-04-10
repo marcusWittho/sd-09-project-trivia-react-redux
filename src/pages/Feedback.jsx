@@ -5,11 +5,25 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class Feedback extends Component {
+  componentDidMount() {
+    const { name, picture } = this.props;
+    const { score } = JSON.parse(localStorage.getItem('state')).player;
+
+    if (!localStorage.getItem('ranking')) localStorage.setItem('ranking', '[]');
+
+    const ranking = [
+      ...JSON.parse(localStorage.getItem('ranking')),
+      { name, score, picture },
+    ];
+
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   render() {
     const { email } = this.props;
     const cryptoEmail = md5(email).toString();
     const { player } = JSON.parse(localStorage.getItem('state'));
-    const minimumScore = 3;
+    const minimumAssertions = 3;
 
     return (
       <>
@@ -22,26 +36,32 @@ class Feedback extends Component {
           <section>
             <p data-testid="feedback-text">
               {
-                player.score > minimumScore ? 'Mandou bem!' : 'Podia ser melhor...'
+                player.assertions >= minimumAssertions
+                  ? 'Mandou bem!'
+                  : 'Podia ser melhor...'
               }
             </p>
           </section>
           <section>
-            <p
-              data-testid="feedback-total-score"
-            >
-              { `Pontuação: ${player.score}`}
+            <p>
+              Pontuação:&nbsp;
+              <span data-testid="feedback-total-score">
+                { player.score }
+              </span>
             </p>
-
-            <p
-              data-testid="feedback-total-question"
-            >
-              {`Acertos: ${player.assertions}`}
+            <p>
+              Acertos:&nbsp;
+              <span data-testid="feedback-total-question">
+                { player.assertions }
+              </span>
             </p>
           </section>
           <section>
             <Link to="/">
               <button data-testid="btn-play-again" type="button">Jogar novamente</button>
+            </Link>
+            <Link to="/ranking">
+              <button data-testid="btn-ranking" type="button">Ver ranking</button>
             </Link>
           </section>
         </main>
@@ -52,6 +72,8 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.loginReducer.email,
+  name: state.loginReducer.name,
+  picture: state.loginReducer.picture,
 });
 
 Feedback.propTypes = {

@@ -4,15 +4,23 @@ import { Link } from 'react-router-dom';
 class Ranking extends Component {
   render() {
     const orderedRanking = JSON.parse(localStorage.getItem('ranking'))
-      .sort((playerA, playerB) => playerA.score - playerB.score)
+      .sort((playerA, playerB) => playerB.score - playerA.score)
+      // Caso seja necessário tirar as replicações de jogadores com o mesmo nome
+      // .reduce((acc, currentPlayer) => {
+      //   if (!acc.find((player) => player.name === currentPlayer.name)) {
+      //     return [...acc, currentPlayer];
+      //   }
+
+      //   return acc;
+      // }, [])
       .map((player, index) => (
         <li key={ index }>
           <ul>
-            <li data-testid={ `${player.name}-${index}` }>
-              {`Jogador: ${player.name}`}
+            <li data-testid={ `player-name-${index}` }>
+              {player.name}
             </li>
-            <li data-testid={ `${player.score}-${index}` }>
-              {`Potuação: ${player.score}`}
+            <li data-testid={ `player-score-${index}` }>
+              {player.score}
             </li>
           </ul>
         </li>
@@ -20,6 +28,7 @@ class Ranking extends Component {
 
     return (
       <>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <ol>
           { orderedRanking }
         </ol>
