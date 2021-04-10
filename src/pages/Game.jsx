@@ -23,6 +23,7 @@ class Game extends Component {
     this.returnGame = this.returnGame.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleNextQuest = this.handleNextQuest.bind(this);
+    this.verifyAnswer = this.verifyAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -30,16 +31,6 @@ class Game extends Component {
 
     this.fetchQuest();
     resetTimer();
-  }
-
-  verifyButtonVisibility() {
-    const { timer } = this.props;
-
-    if (timer === 0) {
-      this.setState({
-        isButtonVisible: true,
-      });
-    }
   }
 
   async fetchQuest() {
@@ -55,7 +46,32 @@ class Game extends Component {
     return 'correct-answer';
   }
 
+  verifyAnswer(event) {
+    const { difficulty } = this.state;
+    const { timer } = this.props;
+    const difficultyValues = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    if (event.target.className === this.correctAnswer()) {
+      const stateKey = JSON.parse(localStorage.getItem('state'));
+      const updatedStateKey = {
+        player: {
+          ...stateKey.player,
+          assertions: stateKey.player.assertions + 1,
+          score: stateKey.player.score + (10 + (timer * difficultyValues[difficulty]))
+        },
+      };
+
+      localStorage.setItem('state', JSON.stringify(updatedStateKey));
+    }
+  }
+
   handleClick(event) {
+    this.verifyAnswer(event);
+
     const { questions, i } = this.state;
     const buttons = event.target.parentNode.children;
     Object.values(buttons).forEach((button) => {
@@ -170,7 +186,7 @@ class Game extends Component {
           key={ answer }
           type="button"
           data-testid={ testId }
-          disabled={ shouldDisable || timer < 0 }
+          disabled={ shouldDisable || timer <= 0 }
         >
           {answer}
         </button>

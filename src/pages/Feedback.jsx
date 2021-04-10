@@ -9,7 +9,7 @@ class Feedback extends Component {
     const { email } = this.props;
     const cryptoEmail = md5(email).toString();
     const { player } = JSON.parse(localStorage.getItem('state'));
-    const minimumScore = 3;
+    const minimumAssertions = 3;
 
     return (
       <>
@@ -22,7 +22,9 @@ class Feedback extends Component {
           <section>
             <p data-testid="feedback-text">
               {
-                player.score > minimumScore ? 'Mandou bem!' : 'Podia ser melhor...'
+                player.assertions > minimumAssertions
+                  ? 'Mandou bem!'
+                  : 'Podia ser melhor...'
               }
             </p>
           </section>
