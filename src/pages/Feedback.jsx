@@ -3,6 +3,25 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class FeedBack extends Component {
+  componentDidMount() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    const currentGame = [{
+      name: state.player.name,
+      score: state.player.score,
+      picture: state.player.gravatarEmail,
+    }];
+
+    const rankinglist = JSON.parse(localStorage.getItem('ranking'));
+    const ranking = [rankinglist];
+    console.log(ranking);
+    if (ranking) {
+      const newRanking = [...ranking, currentGame];
+      localStorage.setItem('ranking', JSON.stringify({ newRanking }));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify({ currentGame }));
+    }
+  }
+
   render() {
     const state = localStorage.getItem('state');
     const { player } = JSON.parse(state);
