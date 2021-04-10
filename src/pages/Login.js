@@ -75,5 +75,7 @@ export default connect(null, mapDispatchToProps)(Login);
 Login.propTypes = {
   addUserInfo: PropTypes.func.isRequired,
   getTriviaQuestions: PropTypes.func.isRequired,
-  history: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };

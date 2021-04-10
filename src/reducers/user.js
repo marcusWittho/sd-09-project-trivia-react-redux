@@ -1,4 +1,4 @@
-import { ADD_USER_INFO } from '../actions/types';
+import { ADD_USER_INFO, SET_SCORE } from '../actions/types';
 
 const INITIAL_STATE = {
   name: '',
@@ -13,6 +13,8 @@ const addUserInfoReducer = (state = INITIAL_STATE, action) => {
       ...state,
       ...action.payload,
     };
+  case SET_SCORE:
+    return { ...state, score: action.payload };
   default:
     return state;
   }

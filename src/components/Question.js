@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import scoreThisCorrectAnswer from '../actions/score';
 
-export default class Question extends Component {
+// BELOW THERE IS A DEV CONST UNTIL DOING TIMER FUNCTION
+
+const THISANSWEREDTIMER = 15;
+
+class Question extends Component {
   constructor() {
     super();
     this.state = {
@@ -16,17 +22,23 @@ export default class Question extends Component {
   }
 
   setRandomAnswersOrder() {
+    const CONST_RANDOM = 0.5;
     const { question: { incorrect_answers: incorrectAnswers } } = this.props;
     const answersLength = incorrectAnswers.length + 1;
-    const CONST_RANDOM = 0.5;
-    const randonOrderArray = Array.from(
+    const randomOrderArray = Array.from(
       { length: answersLength },
       (_, index) => index,
     ).sort(() => Math.random() - CONST_RANDOM);
-    this.setState({ answersOrder: randonOrderArray });
+    this.setState({ answersOrder: randomOrderArray });
   }
 
-  answerQuestion() {
+  answerQuestion({ target }) {
+    const { question: {
+      correct_answer: correctAnswer,
+      difficulty,
+    }, scoreCorrect } = this.props;
+    const isCorrectAnswer = target.textContent === correctAnswer;
+    if (isCorrectAnswer) scoreCorrect({ difficulty, THISANSWEREDTIMER });
     this.setState({ isAnswered: true });
   }
 
@@ -84,6 +96,10 @@ export default class Question extends Component {
   }
 }
 
+const mapDispatchToProps = ({
+  scoreCorrect: scoreThisCorrectAnswer,
+});
+
 Question.propTypes = {
   question: PropTypes.shape({
     category: PropTypes.string,
@@ -93,4 +109,7 @@ Question.propTypes = {
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  scoreCorrect: PropTypes.func.isRequired,
 };
+
+export default connect(null, mapDispatchToProps)(Question);
