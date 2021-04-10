@@ -23,6 +23,14 @@ class FeedBack extends Component {
         {numberOfAssertions < condicionNumber
           ? <p data-testid="feedback-text">Podia ser melhor...</p>
           : <p data-testid="feedback-text">Mandou bem!</p>}
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar Novamente
+          </button>
+        </Link>
       </section>
     );
   }
