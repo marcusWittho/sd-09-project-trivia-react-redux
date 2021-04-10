@@ -1,4 +1,4 @@
-import { playerLogin } from './player';
+import { playerLogin, rightAnswers, wrongAnswers } from './player';
 import { requestQuestions, requestToken, updateIndex } from './game';
 import fecthTrivia from '../../Services/fetchApi';
 
@@ -7,6 +7,8 @@ export {
   requestQuestions,
   requestToken,
   updateIndex,
+  rightAnswers,
+  wrongAnswers,
 };
 
 export const requestApiToken = () => (

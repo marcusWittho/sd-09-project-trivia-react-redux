@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateIndex } from '../redux/actions';
+import { rightAnswers, updateIndex, wrongAnswers } from '../redux/actions';
 import Timer from './timer';
+import CORRECT from './correct';
 
 class MultipleAnswers extends Component {
   constructor(props) {
@@ -12,8 +13,11 @@ class MultipleAnswers extends Component {
       rightAnswerClass: '',
       wrongAnswerClass: '',
       nextButton: true,
-      correctAnswer: 'correct-answer',
+      correctAnswer: CORRECT,
       btnDisplayed: false,
+      // tratamento pros botoes apos timer
+      btnDisabled: false,
+      show: true,
     };
     this.validateAnswers = this.validateAnswers.bind(this);
     // this.createChoices = this.createChoices.bind(this);
@@ -23,9 +27,22 @@ class MultipleAnswers extends Component {
     this.createNextBtn = this.createNextBtn.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.createChoices();
-  // }
+  componentDidMount() {
+    // this.createChoices();
+    this.endTime();
+  }
+
+  endTime() {
+    const finalTime = 30000;
+    setTimeout(() => {
+      this.setState({
+        nextButton: false,
+        btnDisplayed: true,
+        btnDisabled: true,
+        show: false,
+      });
+    }, finalTime);
+  }
 
   updateQuestIndex() {
     const { questIndex, dispatchIndex } = this.props;
@@ -52,26 +69,38 @@ class MultipleAnswers extends Component {
     if (question.correct_answer !== answer) {
       return `wrong-answer-${index}`;
     }
-    return 'correct-answer';
+    return CORRECT;
   }
 
-  answerCheck() {
+  answerCheck(e) {
+    const { dispatchCorrect, dispatchWrong } = this.props;
+    const { target } = e;
+    const answer = target.innerText;
     this.setState({
       nextButton: false,
       rightAnswerClass: 'rightAnswer',
       wrongAnswerClass: 'wrongAnswer',
       btnDisplayed: true,
+      // desabilita os botoes ao clicar na sua escolha
+      btnDisabled: true,
+      show: false,
     });
+    if (this.validateAnswers(answer) === CORRECT) {
+      dispatchCorrect(1);
+    } else { dispatchWrong(1); }
   }
 
   nextQuestion() {
     this.updateQuestIndex();
-    // nos teste ele nao mudou nada que percebi
     // this.createChoices();
+    this.endTime();
     this.setState({ rightAnswerClass: '',
       wrongAnswerClass: '',
       nextButton: true,
       btnDisplayed: false,
+      // tratamento para o timer
+      btnDisabled: false,
+      show: true,
     });
   }
 
@@ -88,39 +117,55 @@ class MultipleAnswers extends Component {
     );
   }
 
+  renderTimer() {
+    return <Timer />;
+  }
+
   render() {
     const {
-      rightAnswerClass, wrongAnswerClass, nextButton, correctAnswer, btnDisplayed,
+      rightAnswerClass,
+      wrongAnswerClass,
+      nextButton,
+      correctAnswer,
+      btnDisplayed,
+      btnDisabled,
+      show,
     } = this.state;
     const { question } = this.props;
     // precisa jogar esse choice pra dentro de uma função para deixar as questões com respostas randomicas
     const choice = [...question.incorrect_answers, question.correct_answer];
     let index = 0;
     return (
-      <div>
-        <h3 data-testid="question-category">
-          { question.category }
-        </h3>
-        <p data-testid="question-text">{ question.question }</p>
-        {choice.map((answer) => {
-          const dataTestId = this.validateAnswers(answer, index);
-          if (dataTestId !== correctAnswer) index += 1;
-          return (
-            <button
-              className={ dataTestId === correctAnswer ? rightAnswerClass
-                : wrongAnswerClass }
-              type="button"
-              key={ answer }
-              data-testid={ dataTestId }
-              onClick={ this.answerCheck }
-            >
-              { answer }
-            </button>);
-        })}
-        { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
-          : null}
-        <Timer />
-      </div>
+      <>
+        <div>
+          <h3 data-testid="question-category">
+            { question.category }
+          </h3>
+          <p data-testid="question-text">{ question.question }</p>
+          {choice.map((answer) => {
+            const dataTestId = this.validateAnswers(answer, index);
+            if (dataTestId !== correctAnswer) index += 1;
+            return (
+              <button
+                className={ dataTestId === correctAnswer ? rightAnswerClass
+                  : wrongAnswerClass }
+                type="button"
+                key={ answer }
+                disabled={ btnDisabled }
+                data-testid={ dataTestId }
+                onClick={ this.answerCheck }
+              >
+                { answer }
+              </button>);
+          })}
+          { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
+            : null}
+        </div>
+        <div>
+          Timer:
+          { show ? this.renderTimer() : null }
+        </div>
+      </>
     );
   }
 }
@@ -131,11 +176,15 @@ const mapStateToProps = ({ game }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchIndex: (index) => dispatch(updateIndex(index)),
+  dispatchCorrect: (num) => dispatch(rightAnswers(num)),
+  dispatchWrong: (num) => dispatch(wrongAnswers(num)),
 });
 
 MultipleAnswers.propTypes = {
   questIndex: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
+  dispatchCorrect: PropTypes.func.isRequired,
+  dispatchWrong: PropTypes.func.isRequired,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),

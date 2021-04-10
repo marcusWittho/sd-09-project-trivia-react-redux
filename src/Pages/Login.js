@@ -16,6 +16,13 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.play = this.play.bind(this);
+    this.createLocalStorage = this.createLocalStorage.bind(this);
+  }
+
+  createLocalStorage() {
+    const { name, email: gravatarEmail } = this.state;
+    const player = { name, gravatarEmail, assertions: 0, score: 0 };
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   handleChange(event) {
@@ -46,6 +53,7 @@ class Login extends Component {
     const { getToken, getQuestions } = this.props;
     await getQuestions();
     await getToken();
+    this.createLocalStorage();
   }
 
   render() {
