@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import Header from '../components/header';
 
 class feedback extends React.Component {
   mandouBem() {
@@ -18,11 +19,14 @@ class feedback extends React.Component {
     const { assertions } = this.props;
     const score = 3;
     return (
-      <span data-testid="feedback-text">
-        { assertions < score
-          ? this.podiaSerMelhor()
-          : this.mandouBem() }
-      </span>
+      <div>
+        <Header />
+        <span data-testid="feedback-text">
+          { assertions < score
+            ? this.podiaSerMelhor()
+            : this.mandouBem() }
+        </span>
+      </div>
     );
   }
 }
