@@ -2,64 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import Question from '../components/Question';
 
 class Game extends React.Component {
-  setupRandomAnswers(correctAnswer, incorrectAnswers) {
-    const CONST_RANDOM = 0.5;
-    const correctAnswersButtons = (
-      <button key="correct" type="button" data-testid="correct-answer">
-        {correctAnswer}
-      </button>
-    );
-    const incorrectAnswersButtons = incorrectAnswers.map(
-      (incorrectAnswer, index) => (
-        <button
-          type="button"
-          key={ index + 1 }
-          data-testid={ `wrong-answer-${index}` }
-        >
-          {incorrectAnswer}
-        </button>
-      ),
-    );
-    const answers = [correctAnswersButtons, ...incorrectAnswersButtons];
-    return [...answers.sort(() => Math.random() - CONST_RANDOM)];
-  }
-
-  renderQuestions() {
-    const { questions } = this.props;
-    return questions.map(
-      (
-        {
-          category,
-          question,
-          correct_answer: correctAnswer,
-          incorrect_answers: incorrectAnswers,
-        },
-        questionNumber,
-      ) => (
-        <div key={ questionNumber }>
-          <p data-testid="question-category">{category}</p>
-          <p data-testid="question-text">{question}</p>
-          {this.setupRandomAnswers(correctAnswer, incorrectAnswers)}
-        </div>
-      ),
-    );
+  constructor() {
+    super();
+    this.state = {
+      questionIndex: 0,
+    };
   }
 
   render() {
+    const { isFetching, questions } = this.props;
+    const questionCanBeRendered = !isFetching && questions.length > 0;
+    const { questionIndex } = this.state;
+    const question = questions[questionIndex];
+
     return (
       <>
         <Header />
-        { this.renderQuestions() }
+        { questionCanBeRendered && <Question question={ question } /> }
       </>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  questions: state.trivia.questions,
-});
+const mapStateToProps = (
+  { trivia: { questions, isFetching } },
+) => ({ questions, isFetching });
 
 export default connect(mapStateToProps)(Game);
 
@@ -74,4 +44,5 @@ Game.propTypes = {
       incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     }),
   ).isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
