@@ -1,5 +1,16 @@
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
 export const IS_LOADING = 'IS_LOADING';
+export const DECREASE_TIME = 'DECREASE_TIME';
+export const INCREASE_SCORE = 'INCREASE_SCORE';
+export const NEXT_QUESTION = 'NEXT_QUESTION';
+
+export const increaseScore = (assert, difficulty) => ({
+  type: INCREASE_SCORE,
+  payload: {
+    assert,
+    difficulty,
+  },
+});
 
 const addQuestions = (payload) => ({
   type: ADD_QUESTIONS,
@@ -19,3 +30,11 @@ export const fetchQuestions = () => async (dispatch) => {
   const { results } = await data.json();
   dispatch(addQuestions(results));
 };
+
+export const decreaseTime = () => ({
+  type: DECREASE_TIME,
+});
+
+export const nextQuestion = () => ({
+  type: NEXT_QUESTION,
+});

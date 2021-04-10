@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../actions/game';
+import NextButton from './NextButton';
+import { fetchQuestions, increaseScore } from '../actions/game';
 
 import './Questions.css';
 
@@ -9,10 +10,9 @@ class Questions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionIndex: 0,
+      answered: false,
       correctAnswer: '',
       wrongAnswer: '',
-      buttonDisabled: false,
     };
     this.checkAnswer = this.checkAnswer.bind(this);
   }
@@ -20,81 +20,50 @@ class Questions extends React.Component {
   componentDidMount() {
     const { getQuestions } = this.props;
     getQuestions();
-    const disabledTimer = 30000;
-    this.timerToDisableButtons = setInterval(
-      () => this.disableButtons(),
-      disabledTimer,
-    );
   }
 
-  checkAnswer() {
+  checkAnswer({ target }) {
+    const { addScore, questions, questionPos } = this.props;
+    const { value } = target;
+    const { difficulty, correct_answer: correctAnswer } = questions[questionPos];
+    const isCorrect = value === correctAnswer ? 1 : 0;
+    addScore(isCorrect, difficulty);
     this.setState({
       correctAnswer: 'correct',
       wrongAnswer: 'wrong',
+      answered: true,
     });
-  }
-
-  disableButtons() {
-    this.setState({
-      buttonDisabled: true,
-    });
-  }
-
-  categories(questions, questionIndex) {
-    return (
-      <p
-        data-testid="question-category"
-      >
-        Categoria:
-        { questions[questionIndex].category }
-      </p>
-    );
   }
 
   render() {
-    const { questions, isLoading } = this.props;
-    const { questionIndex, correctAnswer, wrongAnswer, buttonDisabled } = this.state;
+    const { questions, isLoading, timer, questionPos } = this.props;
+    const { correctAnswer, wrongAnswer, answered } = this.state;
     if (isLoading) return <h1>Loading...</h1>;
+    const allAnswer = [
+      questions[questionPos].correct_answer,
+      ...questions[questionPos].incorrect_answers];
     return (
       <main>
-        { this.categories(questions, questionIndex) }
-        <p data-testid="question-text">{ questions[0].question }</p>
-        <button
-          type="button"
-          data-testid="correct-answer"
-          className={ correctAnswer }
-          onClick={ this.checkAnswer }
-          disabled={ buttonDisabled }
-        >
-          { questions[questionIndex].correct_answer }
-        </button>
-        <button
-          type="button"
-          data-testid="wrong-answer-0"
-          className={ wrongAnswer }
-          onClick={ this.checkAnswer }
-          disabled={ buttonDisabled }
-        >
-          { questions[questionIndex].incorrect_answers[0] }
-        </button>
-        <button
-          type="button"
-          data-testid="wrong-answer-1"
-          className={ wrongAnswer }
-          onClick={ this.checkAnswer }
-          disabled={ buttonDisabled }
-        >
-          { questions[questionIndex].incorrect_answers[1] }
-        </button>
-        <button
-          type="button"
-          data-testid="wrong-answer-2"
-          className={ wrongAnswer }
-          onClick={ this.checkAnswer }
-          disabled={ buttonDisabled }
-        >
-          { questions[questionIndex].incorrect_answers[2] }
-        </button>
+        <p data-testid="question-category">
+          {' '}
+          Categoria:
+          { questions[questionPos].category }
+        </p>
+        <p data-testid="question-text">{ questions[questionPos].question }</p>
+        {allAnswer.map((answer, index) => (
+          <button
+            key={ index }
+            type="button"
+            value={ answer }
+            data-testid={ index === 0 ? 'correct-answer' : 'wrong-answer' }
+            className={ index === 0 ? correctAnswer : wrongAnswer }
+            onClick={ this.checkAnswer }
+            disabled={ timer === 0 }
+          >
+            { answer }
+          </button>
+        ))}
+        { (answered || timer === 0) && <NextButton /> }
       </main>
     );
   }
@@ -104,15 +73,21 @@ Questions.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool.isRequired,
+  timer: PropTypes.number.isRequired,
+  addScore: PropTypes.func.isRequired,
+  questionPos: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  questionPos: state.game.questionPos,
   questions: state.game.questions,
+  timer: state.game.timer,
   isLoading: state.game.isLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: () => dispatch(fetchQuestions()),
+  addScore: (score, diff) => dispatch(increaseScore(score, diff)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
