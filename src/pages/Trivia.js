@@ -5,9 +5,9 @@ import { arrayOf } from 'prop-types';
 import { getQuestions } from '../services/api';
 import { setQuestions } from '../actions';
 import { Header, Question } from '../components';
-import './QuestionPage.css';
+import './Trivia.css';
 
-class QuestionPage extends React.Component {
+class Trivia extends React.Component {
   constructor(props) {
     super(props);
     this.fetchQuestions = this.fetchQuestions.bind(this);
@@ -58,7 +58,7 @@ class QuestionPage extends React.Component {
   }
 }
 
-QuestionPage.propTypes = { updateQuestions: arrayOf() }.isRequired;
+Trivia.propTypes = { updateQuestions: arrayOf() }.isRequired;
 
 const mapStateToProps = ({ trivia: { questions } }) => ({ questions });
 
@@ -66,4 +66,4 @@ const mapDispatchToProps = (dispatch) => ({
   updateQuestions: (questions) => dispatch(setQuestions(questions)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
