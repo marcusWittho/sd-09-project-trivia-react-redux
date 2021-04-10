@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/header';
 
 class feedback extends React.Component {
@@ -16,16 +17,22 @@ class feedback extends React.Component {
   }
 
   render() {
-    const { assertions } = this.props;
-    const score = 3;
+    const { assertions, score } = this.props;
+    const medium = 3;
     return (
       <div>
         <Header />
         <span data-testid="feedback-text">
-          { assertions < score
+          { assertions < medium
             ? this.podiaSerMelhor()
             : this.mandouBem() }
         </span>
+        <div data-testid="feedback-total-score">
+          {score}
+        </div>
+        <div data-testid="feedback-total-question">
+          {assertions}
+        </div>
       </div>
     );
   }
@@ -35,4 +42,8 @@ feedback.propTypes = {
   assertions: PropTypes.number,
 }.isRequired;
 
-export default feedback;
+const mapStateToProps = ({ actionsReducer: { score } }) => ({
+  score,
+});
+
+export default connect(mapStateToProps, null)(feedback);
