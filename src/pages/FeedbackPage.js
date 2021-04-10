@@ -7,19 +7,19 @@ class FeedBack extends React.Component {
     this.state = {
       correctAnswers: 0,
     };
-    this.getLocalStorage = this.getLocalStorage.bind(this);
+    // this.getLocalStorage = this.getLocalStorage.bind(this);
     this.verifyAssertions = this.verifyAssertions.bind(this);
   }
 
-  componentDidMount() {
-    this.getLocalStorage();
-  }
+  // componentDidMount() {
+  //   this.getLocalStorage();
+  // }
 
-  getLocalStorage() {
-    const getStorageInfos = JSON.parse(localStorage.getItem('state'));
-    const { player: { assertions } } = getStorageInfos;
-    this.setState({ correctAnswers: assertions });
-  }
+  // getLocalStorage() {
+  //   const getStorageInfos = JSON.parse(localStorage.getItem('state'));
+  //   const { player: { assertions } } = getStorageInfos;
+  //   this.setState({ correctAnswers: assertions });
+  // }
 
   verifyAssertions() {
     const { correctAnswers } = this.state;
