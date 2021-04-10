@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { login } from '../actions';
+import { login, setAssertions } from '../actions';
 import { getToken } from '../services/api';
 import './Login.css';
 
