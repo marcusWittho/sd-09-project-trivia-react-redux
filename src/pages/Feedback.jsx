@@ -12,7 +12,7 @@ class FeedBack extends Component {
     return (
       <section>
         <Header />
-        { assertions < condicionNumber
+        { numberOfAssertions < condicionNumber
           ? <p data-testid="feedback-text">Podia ser melhor...</p>
           : <p data-testid="feedback-text">Mandou bem!</p> }
         <Link to="/">
