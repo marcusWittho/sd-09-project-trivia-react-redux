@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 import { getQuestions } from '../redux/action';
 
@@ -9,8 +10,12 @@ class GameScreen extends Component {
     super(props);
 
     this.state = {
-      name: '',
-      gravatarEmail: '',
+      player: {
+        assertions: '',
+        gravatarEmail: '',
+        name: '',
+        score: 0,
+      },
       questions: [],
       numberOFQuestion: 0,
       loading: true,
@@ -18,6 +23,7 @@ class GameScreen extends Component {
       disabled: false,
       colorQuestion: false,
       nextButton: 'none',
+      feedbackScreen: false,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -26,6 +32,7 @@ class GameScreen extends Component {
     this.clickQuestion = this.clickQuestion.bind(this);
     this.recoveringLocalStorage = this.recoveringLocalStorage.bind(this);
     this.header = this.header.bind(this);
+    this.hitCounter = this.hitCounter.bind(this);
   }
 
   componentDidMount() {
@@ -35,12 +42,19 @@ class GameScreen extends Component {
   }
 
   recoveringLocalStorage() {
-    const storage = JSON.parse(localStorage.getItem('state'));
-    console.log(storage);
-    this.setState({
-      name: storage.player.name,
-      gravatarEmail: storage.player.gravatarEmail,
-    });
+    const state = JSON.parse(localStorage.getItem('state'));
+
+    this.setState((previousState) => (
+      {
+        player: {
+          ...previousState.player,
+          assertions: state.player.assertions,
+          gravatarEmail: state.player.gravatarEmail,
+          name: state.player.name,
+          score: state.player.score,
+        },
+      }
+    ));
   }
 
   decreaseTime() {
@@ -84,6 +98,7 @@ class GameScreen extends Component {
         numberOFQuestion: count + 0,
         colorQuestion: false,
         nextButton: 'none',
+        feedbackScreen: true,
       });
     }
   }
@@ -109,8 +124,25 @@ class GameScreen extends Component {
     });
   }
 
+  hitCounter() {
+    const { player: { score } } = this.state;
+    const stateScore = score;
+    const result = stateScore + 1;
+
+    this.setState((previousState) => (
+      {
+        player: {
+          ...previousState.player,
+          score: result,
+        },
+      }
+    ));
+
+    this.clickQuestion();
+  }
+
   header() {
-    const { name, gravatarEmail } = this.state;
+    const { player: { name, gravatarEmail, score } } = this.state;
     return (
       <header>
         <img
@@ -122,17 +154,18 @@ class GameScreen extends Component {
           Jogador:
           {name}
         </p>
-        <p data-testid="header-score">Placar: 0</p>
+        <p data-testid="header-score">{ score }</p>
       </header>
     );
   }
 
   render() {
-    const { questions, numberOFQuestion, nextButton,
+    const { questions, numberOFQuestion, nextButton, feedbackScreen,
       loading, timer, disabled, colorQuestion } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
     if (loading) return <h1>Loading...</h1>;
+    if (feedbackScreen) return <Redirect to="/feedback" />;
 
     return (
       <>
@@ -144,7 +177,7 @@ class GameScreen extends Component {
           type="button"
           disabled={ disabled }
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-          onClick={ this.clickQuestion }
+          onClick={ this.hitCounter }
         >
           {orderQuestions.correct_answer}
         </button>
