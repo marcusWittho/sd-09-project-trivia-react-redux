@@ -54,21 +54,13 @@ class ScreenGame extends React.Component {
   }
 
   componentDidUpdate(props, state) {
-    const interval = 2000;
     const { restartTime } = this.state;
     if (props !== this.props) {
       this.setIndexQuestion();
+    }
+    if (state.restartTime !== restartTime) {
       this.currentTime();
     }
-    this.intervalID = setInterval(() => {
-      if (state.restartTime !== restartTime) {
-        this.currentTime();
-      }
-    }, interval);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalID);
   }
 
   setIndexQuestion() {
