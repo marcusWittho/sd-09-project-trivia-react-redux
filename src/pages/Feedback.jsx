@@ -5,6 +5,20 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class Feedback extends Component {
+  componentDidMount() {
+    const { name, picture } = this.props;
+    const { score } = JSON.parse(localStorage.getItem('state')).player;
+
+    if (!localStorage.getItem('ranking')) localStorage.setItem('ranking', '[]');
+
+    const ranking = [
+      ...JSON.parse(localStorage.getItem('ranking')),
+      { name, score, picture },
+    ];
+
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   render() {
     const { email } = this.props;
     const cryptoEmail = md5(email).toString();
@@ -58,6 +72,8 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.loginReducer.email,
+  name: state.loginReducer.name,
+  picture: state.loginReducer.picture,
 });
 
 Feedback.propTypes = {

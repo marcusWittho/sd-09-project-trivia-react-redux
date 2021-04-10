@@ -30,14 +30,5 @@ export default function getTokenThunk({ name, email }) {
     dispatch(logUserAction({ name, email, picture }));
 
     localStorage.setItem('token', token);
-
-    if (!localStorage.getItem('ranking')) localStorage.setItem('ranking', '[]');
-
-    const ranking = [
-      ...JSON.parse(localStorage.getItem('ranking')),
-      { name, score: 0, picture },
-    ];
-
-    localStorage.setItem('ranking', JSON.stringify(ranking));
   };
 }

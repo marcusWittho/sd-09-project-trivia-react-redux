@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 class Ranking extends Component {
   render() {
     const orderedRanking = JSON.parse(localStorage.getItem('ranking'))
-      .sort((playerA, playerB) => playerA.score - playerB.score)
+      .sort((playerA, playerB) => playerB.score - playerA.score)
       .map((player, index) => (
         <li key={ index }>
           <ul>
-            <li data-testid={ `${player.name}-${index}` }>
-              {`Jogador: ${player.name}`}
+            <li data-testid={ `player-name-${index}` }>
+              {player.name}
             </li>
-            <li data-testid={ `${player.score}-${index}` }>
-              {`Potuação: ${player.score}`}
+            <li data-testid={ `player-score-${index}` }>
+              {player.score}
             </li>
           </ul>
         </li>
