@@ -2,17 +2,17 @@
 
 
 body {
-  background-color: #1C1C1C;
+  background-color: #1c1c1c;
 }
 
-.context-input , .context-button {
+.context-input, .context-button {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   margin-bottom: 10px;
 }
 
-.btn-play , .btn-settings {
+.btn-play, .btn-settings {
   background-color: green;
   border: 1px solid black;
   border-radius: 5px;
@@ -21,16 +21,16 @@ body {
   font-weight: 600;
   line-height: 1.5;
   text-align: center;
-  width: 150px;
   margin: 5px;
+  width: 150px;
 }
 
 .container {
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   height: 100vh;
+  justify-content: space-around;
 }
 
 .logo {
@@ -40,10 +40,10 @@ body {
 }
 
 .input-login {
+  border-radius: 5px;
   height: 20px;
   margin: 3px;
   width: 200px;
-  border-radius: 5px;
 }
 
 .insert-login {
@@ -59,22 +59,26 @@ body {
 }
 
 .btn-play:hover, .btn-settings:hover {
-  background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #008B45, #008B00, #005800);
-  color: #fff;
-  border: 2px solid #1f1f1f;
-  background-size: 400% 400%;
-  position: relative;
   animation: fluid 5s ease-in-out infinite;
+  background: linear-gradient(-45deg,
+    #ee7752, #e73c7e, #23a6d5, #008b45, #008b00, #005800);
+  background-size: 400% 400%;
+  border: 2px solid #1f1f1f;
+  color: white;
+  position: relative;
 }
 
 @keyframes fluid {
-  0%{
-    background-position: 0 50% ;
+
+  0% {
+    background-position: 0 50%;
   }
-  50%{
+
+  50% {
     background-position: 100% 50%;
   }
-  100%{
+
+  100% {
     background-position: 0 50%;
   }
 
@@ -90,26 +94,25 @@ body {
   }
 
   .context-input > * {
-    width: 250px;
     height: 25px;
+    width: 250px;
   }
 
   .container {
     justify-content: center;
   }
 
-  .insert-login , .context-button {
-    width: 335px;
+  .insert-login, .context-button {
     align-content: space-between;
+    width: 335px;
   }
 
   .context-button > * > button {
-    width: 150px;
     height: 35px;
+    width: 150px;
   }
 
   .title {
     font-size: 4.5rem;
   }
-
 }

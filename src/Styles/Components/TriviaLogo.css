@@ -1,44 +1,50 @@
 .triviaLogo {
+  left: 50%;
   position: absolute;
   top: 30%;
-  left: 50%;
   transform: translate(-50%, -50%);
 }
 
-svg path:nth-child(6) {
+svg path:nth-child( 6 ) {
+  animation: (logoMoviment 2.5s ease forwards ,
+    fillingLogo 0.5s ease-in-out forwards 2s);
   stroke-dasharray: 338px;
   stroke-dashoffset: 338px;
-  animation: logoMoviment 2.5s ease forwards, fillingLogo 0.5s ease-in-out forwards 2s;
 }
 
-svg path:nth-child(5) {
+svg path:nth-child( 5 ) {
+  animation: (logoMoviment 2.5s ease forwards 0.3s ,
+    fillingLogo 0.5s ease-in-out forwards 2.1s);
   stroke-dasharray: 450px;
   stroke-dashoffset: 450px;
-  animation: logoMoviment 2.5s ease forwards 0.3s, fillingLogo 0.5s ease-in-out forwards 2.1s;
 }
 
-svg path:nth-child(4) {
+svg path:nth-child( 4 ) {
+  animation: (logoMoviment 2.5s ease forwards 0.6s ,
+    fillingLogo 0.5s ease-in-out forwards 2.2s);
   stroke-dasharray: 259px;
   stroke-dashoffset: 260px;
-  animation: logoMoviment 2.5s ease forwards 0.6s, fillingLogo 0.5s ease-in-out forwards 2.2s;
 }
 
-svg path:nth-child(3) {
+svg path:nth-child( 3 ) {
+  animation: (logoMoviment 2.5s ease forwards 0.9s ,
+    fillingLogo 0.5s ease-in-out forwards 2.3s);
   stroke-dasharray: 395px;
   stroke-dashoffset: 400px;
-  animation: logoMoviment 2.5s ease forwards 0.9s, fillingLogo 0.5s ease-in-out forwards 2.3s;
 }
 
-svg path:nth-child(2) {
+svg path:nth-child( 2 ) {
+  animation: (logoMoviment 2.5s ease forwards 1.2s ,
+    fillingLogo 0.5s ease-in-out forwards 2.4s);
   stroke-dasharray: 262px;
   stroke-dashoffset: 262px;
-  animation: logoMoviment 2.5s ease forwards 1.2s, fillingLogo 0.5s ease-in-out forwards 2.4s;
 }
 
-svg path:nth-child(1) {
+svg path:nth-child( 1 ) {
+  animation: (logoMoviment 2.5s ease forwards 1.5s ,
+    fillingLogo 0.5s ease-in-out forwards 2.5s);
   stroke-dasharray: 382px;
   stroke-dashoffset: 382px;
-  animation: logoMoviment 2.5s ease forwards 1.5s, fillingLogo 0.5s ease-in-out forwards 2.5s;
 }
 
 @media screen and ( min-width : 765px ) {
@@ -54,25 +60,29 @@ svg path:nth-child(1) {
 }
 
 @keyframes fillingLogo {
+
   0% {
     fill: blanchedalmond;
     fill-opacity: 0%;
   }
+
   25% {
     fill: blanchedalmond;
     fill-opacity: 25%;
   }
+
   50% {
     fill: blanchedalmond;
     fill-opacity: 50%;
   }
+
   75% {
     fill: blanchedalmond;
     fill-opacity: 75%;
   }
+
   100% {
     fill: blanchedalmond;
     fill-opacity: 100%;
   }
-
 }
