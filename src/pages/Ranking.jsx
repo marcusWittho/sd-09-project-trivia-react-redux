@@ -5,6 +5,14 @@ class Ranking extends Component {
   render() {
     const orderedRanking = JSON.parse(localStorage.getItem('ranking'))
       .sort((playerA, playerB) => playerB.score - playerA.score)
+      // Caso seja necessário tirar as replicações de jogadores com o mesmo nome
+      // .reduce((acc, currentPlayer) => {
+      //   if (!acc.find((player) => player.name === currentPlayer.name)) {
+      //     return [...acc, currentPlayer];
+      //   }
+
+      //   return acc;
+      // }, [])
       .map((player, index) => (
         <li key={ index }>
           <ul>
