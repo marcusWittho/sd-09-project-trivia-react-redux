@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { number } from 'prop-types';
+import { number, func } from 'prop-types';
 import { Header } from '../components';
+import { clearUserData } from '../actions';
 import './Feedback.css';
 
 class FeedBack extends React.Component {
@@ -20,7 +21,7 @@ class FeedBack extends React.Component {
   }
 
   localStorage() {
-    const { correct } = this.props;
+    const { correct, clearUser } = this.props;
     const player = JSON.parse(localStorage.getItem('state'));
     const token = localStorage.getItem('token');
     let ranking = JSON.parse(localStorage.getItem('ranking'));
@@ -38,6 +39,7 @@ class FeedBack extends React.Component {
       return 0;
     });
     localStorage.setItem('ranking', JSON.stringify(rankingNew));
+    clearUser();
   }
 
   render() {
@@ -67,8 +69,16 @@ class FeedBack extends React.Component {
   }
 }
 
-FeedBack.propTypes = { score: number, correct: number }.isRequired;
+FeedBack.propTypes = {
+  score: number,
+  correct: number,
+  clearUser: func,
+}.isRequired;
 
 const mapStateToProps = ({ user: { score, correct } }) => ({ score, correct });
 
-export default connect(mapStateToProps)(FeedBack);
+const mapDispatchToProps = (dispatch) => ({
+  clearUser: () => dispatch(clearUserData()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedBack);

@@ -3,3 +3,4 @@ export const setQuestions = (questions) => ({ type: 'SET_QUESTIONS', questions }
 export const setTimer = (timeLeft) => ({ type: 'SET_TIMER', timeLeft });
 export const setScore = (score) => ({ type: 'SET_SCORE', score });
 export const setAssertions = () => ({ type: 'SET_ASSERTIONS' });
+export const clearUserData = () => ({ type: 'CLEAR_USER_DATA' });
