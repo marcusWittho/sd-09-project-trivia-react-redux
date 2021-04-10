@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
-import { login } from '../actions';
+import { login, setAssertions } from '../actions';
 import { StartGameButton, SettingsButton } from '../components';
 import './Login.css';
 
@@ -13,6 +13,11 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.buttonStatus = this.buttonStatus.bind(this);
     this.state = { userName: '', email: '' };
+  }
+
+  componentDidMount() {
+    const { clearAssertions } = this.props;
+    clearAssertions();
   }
 
   componentDidUpdate() {
@@ -73,6 +78,7 @@ Login.propTypes = { submit: func }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   submit: (name, email) => dispatch(login(name, email)),
+  clearAssertions: () => dispatch(setAssertions()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
