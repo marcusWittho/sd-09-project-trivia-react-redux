@@ -1,0 +1,15 @@
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrong-answer {
+  border: 3px solid red;
+}
+
+.invisible-element {
+  visibility: hidden;
+}
+
+.visible-element {
+  visibility: visible;
+}
