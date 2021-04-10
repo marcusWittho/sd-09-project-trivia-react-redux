@@ -97,6 +97,7 @@ class trivia extends React.Component {
             question={ question }
             handleAnswer={ this.handleAnswer }
             disabled={ disabled }
+            time={ time }
           />
         }
         <button
