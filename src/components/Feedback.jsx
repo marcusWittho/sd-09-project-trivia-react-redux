@@ -8,10 +8,12 @@ class Feedback extends React.Component {
 
     this.state = {
       loginScreen: false,
+      rankingScreen: false,
     };
 
     this.feedbackMessage = this.feedbackMessage.bind(this);
     this.playAgain = this.playAgain.bind(this);
+    this.rankingPage = this.rankingPage.bind(this);
   }
 
   feedbackMessage() {
@@ -35,12 +37,19 @@ class Feedback extends React.Component {
     });
   }
 
+  rankingPage() {
+    this.setState({
+      rankingScreen: true,
+    });
+  }
+
   render() {
     const state = JSON.parse(localStorage.getItem('state'));
     const { player: { name, gravatarEmail, score } } = state;
-    const { loginScreen } = this.state;
+    const { loginScreen, rankingScreen } = this.state;
 
     if (loginScreen) return <Redirect to="/" />;
+    if (rankingScreen) return <Redirect to="/ranking" />;
 
     return (
       <div>
@@ -67,6 +76,14 @@ class Feedback extends React.Component {
           onClick={ this.playAgain }
         >
           Jogar novamente
+        </button>
+
+        <button
+          data-testid="btn-ranking"
+          type="button"
+          onClick={ this.rankingPage }
+        >
+          Vere Ranking
         </button>
       </div>
     );
