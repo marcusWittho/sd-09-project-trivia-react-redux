@@ -109,13 +109,48 @@ class Game extends Component {
     );
   }
 
-  // eslint-disable-next-line max-lines-per-function
+  mountPage({
+    image,
+    player,
+    isButtonVisible,
+    questions,
+    i,
+    negative,
+    answers,
+    timer,
+  }) {
+    const { difficulty } = this.state;
+
+    return (
+      <>
+        <header>
+          <img data-testid="header-profile-picture" src={ image } alt="player avatar" />
+          <span data-testid="header-player-name">{player.name}</span>
+          <span data-testid="header-score">{player.score}</span>
+          <span>{ difficulty }</span>
+          <div>
+            { !isButtonVisible ? <Timer /> : 'Confira sua resposta!'}
+          </div>
+        </header>
+        <span>
+          <Link to="/feedback">feedback</Link>
+        </span>
+        <div>
+          <h2 data-testid="question-category">{questions[i].category}</h2>
+          <h3 data-testid="question-text">{questions[i].question}</h3>
+        </div>
+        {this.retunAnswers(negative, answers)}
+        { timer <= 0 || isButtonVisible === true ? this.returnNextButton() : null}
+      </>
+    );
+  }
+
   returnGame() {
     const { questions, i, isButtonVisible, shouldDisable } = this.state;
     const limitIndex = 5;
-    if (i === limitIndex) {
-      return <Redirect to="/feedback" />;
-    }
+
+    if (i === limitIndex) return <Redirect to="/feedback" />;
+
     const { image, timer } = this.props;
     const negative = -1;
     const { player } = JSON.parse(localStorage.getItem('state'));
@@ -143,25 +178,16 @@ class Game extends Component {
     });
 
     return (
-      <>
-        <header>
-          <img data-testid="header-profile-picture" src={ image } alt="player avatar" />
-          <span data-testid="header-player-name">{player.name}</span>
-          <span data-testid="header-score">{player.score}</span>
-          <div>
-            { !isButtonVisible ? <Timer /> : 'Confira sua resposta!'}
-          </div>
-        </header>
-        <span>
-          <Link to="/feedback">feedback</Link>
-        </span>
-        <div>
-          <h2 data-testid="question-category">{questions[i].category}</h2>
-          <h3 data-testid="question-text">{questions[i].question}</h3>
-        </div>
-        {this.retunAnswers(negative, answers)}
-        { timer <= 0 || isButtonVisible === true ? this.returnNextButton() : null}
-      </>
+      this.mountPage({
+        image,
+        player,
+        isButtonVisible,
+        questions,
+        i,
+        negative,
+        answers,
+        timer,
+      })
     );
   }
 
@@ -185,8 +211,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Game.propTypes = {
-  image: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
-};
+  image: PropTypes.string,
+  token: PropTypes.string,
+  timer: PropTypes.number,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
