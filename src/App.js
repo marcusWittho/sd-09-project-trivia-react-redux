@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import GamePage from './pages/GamePage';
 import Settings from './pages/Settings';
 import Feedback from './pages/Feedback';
+import RankingPage from './pages/RankingPage';
 
 class App extends React.Component {
   render() {
@@ -12,6 +13,7 @@ class App extends React.Component {
         <Route exact path="/" component={ Login } />
         <Route exact path="/game" component={ GamePage } />
         <Route exact path="/settings" component={ Settings } />
+        <Route exact path="/ranking" component={ RankingPage } />
         <Route exact path="/feedback" component={ Feedback } />
       </Switch>
     );
