@@ -17,6 +17,12 @@ class Header extends Component {
     this.getState();
   }
 
+  componentDidUpdate(props) {
+    if (props !== this.props) {
+      this.getState();
+    }
+  }
+
   getGravatar(email) {
     const hash = md5(email).toString();
     const emailHash = `https://www.gravatar.com/avatar/${hash}`;

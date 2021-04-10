@@ -16,7 +16,13 @@ class Timer extends Component {
 
   componentDidMount() {
     const interval = 1000;
-    this.intervalId = setInterval(this.setTime, interval);
+    this.intervalId = setInterval(() => (this.setTime()), interval);
+  }
+
+  componentDidUpdate(props) {
+    if (props !== this.props) {
+      this.checkRestart();
+    }
   }
 
   componentWillUnmount() {
@@ -24,19 +30,20 @@ class Timer extends Component {
   }
 
   setTime() {
+    const { restartTime } = this.props;
     const { timer } = this.state;
     if ((timer) > 0) {
-      this.checkRestart();
-      this.setState((prevState) => ({ timer: prevState.timer - 1 }));
+      this.setState((prevState) => ({ timer: prevState.timer - 1, restartTimer: restartTime }));
       const { countdown } = this.props;
       countdown(timer);
     }
   }
 
   checkRestart() {
-    const { restartTime, timer } = this.props;
-    if (restartTime === true) {
-      this.setState({ timer: timer + 1 });
+    const { restartTime } = this.props;
+    const timer = 30;
+    if (restartTime) {
+      this.setState({ timer });
     }
   }
 
