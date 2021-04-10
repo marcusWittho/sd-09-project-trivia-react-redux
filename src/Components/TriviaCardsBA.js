@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateIndex } from '../redux/actions';
+import { rightAnswers, updateIndex, wrongAnswers } from '../redux/actions';
 import Timer from './timer';
+import CORRECT from './correct';
 
 class BooleanAnswers extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class BooleanAnswers extends Component {
       rightAnswerClass: '',
       wrongAnswerClass: '',
       nextButton: true,
-      correctAnswer: 'correct-answer',
+      correctAnswer: CORRECT,
       btnDisplayed: false,
       // tratamento pros botoes apos timer
       btnDisabled: false,
@@ -56,10 +57,13 @@ class BooleanAnswers extends Component {
     if (question.correct_answer !== option) {
       return `wrong-answer-${index}`;
     }
-    return 'correct-answer';
+    return CORRECT;
   }
 
-  answerCheck() {
+  answerCheck(e) {
+    const { dispatchCorrect, dispatchWrong } = this.props;
+    const { target } = e;
+    const answer = target.innerText;
     this.setState({
       nextButton: false,
       rightAnswerClass: 'rightAnswer',
@@ -69,6 +73,9 @@ class BooleanAnswers extends Component {
       btnDisabled: true,
       show: false,
     });
+    if (this.validateAnswers(answer) === CORRECT) {
+      dispatchCorrect(1);
+    } else { dispatchWrong(1); }
   }
 
   nextQuestion() {
@@ -157,11 +164,15 @@ const mapStateToProps = ({ game }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchIndex: (index) => dispatch(updateIndex(index)),
+  dispatchCorrect: (num) => dispatch(rightAnswers(num)),
+  dispatchWrong: (num) => dispatch(wrongAnswers(num)),
 });
 
 BooleanAnswers.propTypes = {
   questIndex: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
+  dispatchCorrect: PropTypes.func.isRequired,
+  dispatchWrong: PropTypes.func.isRequired,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
