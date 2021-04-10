@@ -32,8 +32,9 @@ class FeedBack extends React.Component {
       picture: token,
     }];
     rankingNew.sort((a, b) => {
-      if (a.score < b.score) return 1;
-      if (a.score > b.score) return -1;
+      const one = 1;
+      if (a.score < b.score) return one;
+      if (a.score > b.score) return -one;
       return 0;
     });
     localStorage.setItem('ranking', JSON.stringify(rankingNew));

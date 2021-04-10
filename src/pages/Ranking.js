@@ -10,7 +10,7 @@ class Ranking extends React.Component {
     this.state = {
       shouldRedirect: false,
       // ranking: [],
-    }
+    };
   }
 
   handleClick() {
