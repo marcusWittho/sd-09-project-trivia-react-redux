@@ -33,7 +33,7 @@ class Login extends React.Component {
     const { userName, email } = this.state;
     return !((userName !== '') && (email !== ''));
   }
-  
+
   submitLogin() {
     const { submit } = this.props;
     const { userName, email } = this.state;
