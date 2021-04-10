@@ -22,7 +22,7 @@ class Ranking extends React.Component {
     const ranking = JSON.parse(localStorage.ranking);
     if (shouldRedirect) return <Redirect to="/" />;
     return (
-      <div>
+      <div data-testid="ranking-title">
         <ol>
           {ranking.map((player, index) => (
             <li key={ index }>
