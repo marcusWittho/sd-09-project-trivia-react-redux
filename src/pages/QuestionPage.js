@@ -38,17 +38,17 @@ class QuestionPage extends React.Component {
     const { questions } = this.props;
     const { index } = this.state;
     if (questions.length > 0) {
-      return (<Question
-        question={ questions[index] }
-        nextQuestion={ this.nextQuestion }
-      />);
+      return (
+        <Question question={ questions[index] } nextQuestion={ this.nextQuestion } />);
     }
   }
 
   render() {
     const { questions } = this.props;
     const { index } = this.state;
-    if (questions.length > 0 && index === questions.length) return <Redirect to="/feedback" />;
+    if (questions.length > 0 && index === questions.length) {
+      return <Redirect to="/feedback" />;
+    }
     return (
       <div>
         <Header />
@@ -60,7 +60,7 @@ class QuestionPage extends React.Component {
 
 QuestionPage.propTypes = { updateQuestions: arrayOf() }.isRequired;
 
-const mapStateToProps = ({ trivia }) => ({ questions: trivia.questions });
+const mapStateToProps = ({ trivia: { questions } }) => ({ questions });
 
 const mapDispatchToProps = (dispatch) => ({
   updateQuestions: (questions) => dispatch(setQuestions(questions)),
