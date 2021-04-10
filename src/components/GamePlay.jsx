@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchQuestions, fetchToken, ERROR_CODE } from '../redux/actions';
 import Question from './Question';
@@ -27,7 +28,7 @@ class GamePlay extends React.Component {
   showNextQuestion() {
     const { maxQuestions } = this.state;
     let { currentQuestion } = this.state;
-    if (currentQuestion < maxQuestions) {
+    if (currentQuestion <= maxQuestions) {
       currentQuestion += 1;
       this.setState({
         currentQuestion,
@@ -38,7 +39,8 @@ class GamePlay extends React.Component {
   render() {
     const { questions } = this.props;
     const { results } = questions;
-    const { currentQuestion } = this.state;
+    const { currentQuestion, maxQuestions } = this.state;
+    if (currentQuestion > maxQuestions) return <Redirect to="/feedback" />;
     return (
       <div className="main-game-play">
         <GamePlayHeader />
