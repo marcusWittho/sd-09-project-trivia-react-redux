@@ -22,23 +22,24 @@ class Feedback extends Component {
           <section>
             <p data-testid="feedback-text">
               {
-                player.assertions > minimumAssertions
+                player.assertions >= minimumAssertions
                   ? 'Mandou bem!'
                   : 'Podia ser melhor...'
               }
             </p>
           </section>
           <section>
-            <p
-              data-testid="feedback-total-score"
-            >
-              { `Pontuação: ${player.score}`}
+            <p>
+              Pontuação:&nbsp;
+              <span data-testid="feedback-total-score">
+                { player.score }
+              </span>
             </p>
-
-            <p
-              data-testid="feedback-total-question"
-            >
-              {`Acertos: ${player.assertions}`}
+            <p>
+              Acertos:&nbsp;
+              <span data-testid="feedback-total-question">
+                { player.assertions }
+              </span>
             </p>
           </section>
           <section>
