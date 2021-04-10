@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../services/fetchApis';
+import Timer from '../components/Timer';
+import { resetTimerAction } from '../actions';
 
 class Game extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      difficulty: '',
       loading: true,
       questions: [],
       isButtonVisible: false,
@@ -23,7 +26,20 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    const { resetTimer } = this.props;
+
     this.fetchQuest();
+    resetTimer();
+  }
+
+  verifyButtonVisibility() {
+    const { timer } = this.props;
+
+    if (timer === 0) {
+      this.setState({
+        isButtonVisible: true,
+      });
+    }
   }
 
   async fetchQuest() {
@@ -40,6 +56,7 @@ class Game extends Component {
   }
 
   handleClick(event) {
+    const { questions, i } = this.state;
     const buttons = event.target.parentNode.children;
     Object.values(buttons).forEach((button) => {
       if (
@@ -52,6 +69,7 @@ class Game extends Component {
     this.setState({
       isButtonVisible: true,
       shouldDisable: true,
+      difficulty: questions[i].difficulty,
     });
   }
 
@@ -68,11 +86,15 @@ class Game extends Component {
   }
 
   handleNextQuest() {
+    const { resetTimer } = this.props;
+
     this.setState((previousState) => ({
       i: previousState.i + 1,
       isButtonVisible: false,
       shouldDisable: false,
     }));
+
+    resetTimer();
   }
 
   returnNextButton() {
@@ -87,13 +109,14 @@ class Game extends Component {
     );
   }
 
+  // eslint-disable-next-line max-lines-per-function
   returnGame() {
     const { questions, i, isButtonVisible, shouldDisable } = this.state;
     const limitIndex = 5;
     if (i === limitIndex) {
       return <Redirect to="/feedback" />;
     }
-    const { image } = this.props;
+    const { image, timer } = this.props;
     const negative = -1;
     const { player } = JSON.parse(localStorage.getItem('state'));
     const currentQuestion = questions[i];
@@ -104,6 +127,7 @@ class Game extends Component {
     const answers = allQuestions.map((answer, index) => {
       const testId = index === 0 ? this.correctAnswer() : `wrong-answer-${index - 1}`;
       const answerClass = index === 0 ? this.correctAnswer() : 'wrong-answer';
+
       return (
         <button
           onClick={ this.handleClick }
@@ -111,7 +135,7 @@ class Game extends Component {
           key={ answer }
           type="button"
           data-testid={ testId }
-          disabled={ shouldDisable }
+          disabled={ shouldDisable || timer < 0 }
         >
           {answer}
         </button>
@@ -124,6 +148,9 @@ class Game extends Component {
           <img data-testid="header-profile-picture" src={ image } alt="player avatar" />
           <span data-testid="header-player-name">{player.name}</span>
           <span data-testid="header-score">{player.score}</span>
+          <div>
+            { !isButtonVisible ? <Timer /> : 'Confira sua resposta!'}
+          </div>
         </header>
         <span>
           <Link to="/feedback">feedback</Link>
@@ -133,7 +160,7 @@ class Game extends Component {
           <h3 data-testid="question-text">{questions[i].question}</h3>
         </div>
         {this.retunAnswers(negative, answers)}
-        { isButtonVisible ? this.returnNextButton() : null}
+        { timer <= 0 || isButtonVisible === true ? this.returnNextButton() : null}
       </>
     );
   }
@@ -146,10 +173,15 @@ class Game extends Component {
   }
 }
 
-const mapStateToProps = ({ loginReducer }) => ({
-  image: loginReducer.picture,
-  questions: loginReducer.questions,
-  token: loginReducer.token,
+const mapStateToProps = (state) => ({
+  image: state.loginReducer.picture,
+  questions: state.loginReducer.questions,
+  token: state.loginReducer.token,
+  timer: state.timerReducer.timer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  resetTimer: () => dispatch(resetTimerAction()),
 });
 
 Game.propTypes = {
@@ -157,4 +189,4 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

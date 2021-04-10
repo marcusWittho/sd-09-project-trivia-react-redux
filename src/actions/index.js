@@ -1,5 +1,5 @@
 import md5 from 'crypto-js/md5';
-import { LOG_USER, SEND_TOKEN } from './actionTypes';
+import { LOG_USER, SEND_TOKEN, UPDATE_TIMER, RESET_TIMER } from './actionTypes';
 import { fetchToken } from '../services/fetchApis';
 
 const logUserAction = (userInfo) => ({
@@ -10,6 +10,14 @@ const logUserAction = (userInfo) => ({
 const sendTokenAction = (token) => ({
   type: SEND_TOKEN,
   token,
+});
+
+export const updateTimerAction = () => ({
+  type: UPDATE_TIMER,
+});
+
+export const resetTimerAction = () => ({
+  type: RESET_TIMER,
 });
 
 export default function getTokenThunk({ name, email }) {
