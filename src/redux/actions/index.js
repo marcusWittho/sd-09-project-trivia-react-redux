@@ -6,6 +6,7 @@ export const SET_GRAVATAR = 'SET_GRAVATAR';
 export const SET_QUESTIONS = 'SET_QUESTIONS';
 export const SET_NEXT = 'SET_NEXT';
 export const SET_SELECTED_ANSWER = 'SET_SELECTED_ANSWER';
+export const SET_SCORE = 'SET_SCORE';
 
 const setTokenCode = (token) => ({
   type: SET_TOKEN,
@@ -42,4 +43,9 @@ export const setNameAndEmail = (name, email) => ({
 export const setSelectedAnswer = (selectedAnswer) => ({
   type: SET_SELECTED_ANSWER,
   selectedAnswer,
+});
+
+export const setScore = (points) => ({
+  type: SET_SCORE,
+  points,
 });

@@ -4,6 +4,7 @@ import {
   SET_QUESTIONS,
   SET_NEXT,
   SET_SELECTED_ANSWER,
+  SET_SCORE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -31,6 +32,8 @@ function actionsReducer(state = INITIAL_STATE, action) {
     return { ...state, next: !state.next };
   case SET_SELECTED_ANSWER:
     return { ...state, selectedAnswer: action.selectedAnswer };
+  case SET_SCORE:
+    return { ...state, score: action.points };
   default: return state;
   }
 }
