@@ -34,10 +34,10 @@ class Timer extends Component {
 
   render() {
     const { count } = this.state;
+    const timeRelease = count.toString();
+    localStorage.setItem('COUNTDOWN', timeRelease);
     return (
-      <div>
-        <div>{`Timer: ${count}`}</div>
-      </div>
+      <span className="timer">{ count }</span>
     );
   }
 }
