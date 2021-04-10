@@ -33,7 +33,6 @@ class Login extends Component {
   sizeScreen() {
     const base = 765;
     const top = 1100;
-    console.log(window.screen.width);
     if (window.screen.width > top) {
       return <TriviaLogo216 className="logo" />;
     }

@@ -1,16 +1,78 @@
 .triviaLogo {
   position: absolute;
-  top: 25%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.path1 {
-  stroke-dasharray: 100%;
+svg path:nth-child(6) {
+  stroke-dasharray: 338px;
+  stroke-dashoffset: 338px;
+  animation: logoMoviment 2.5s ease forwards, fillingLogo 0.5s ease-in-out forwards 2s;
+}
+
+svg path:nth-child(5) {
+  stroke-dasharray: 450px;
+  stroke-dashoffset: 450px;
+  animation: logoMoviment 2.5s ease forwards 0.3s, fillingLogo 0.5s ease-in-out forwards 2.1s;
+}
+
+svg path:nth-child(4) {
+  stroke-dasharray: 259px;
+  stroke-dashoffset: 260px;
+  animation: logoMoviment 2.5s ease forwards 0.6s, fillingLogo 0.5s ease-in-out forwards 2.2s;
+}
+
+svg path:nth-child(3) {
+  stroke-dasharray: 395px;
+  stroke-dashoffset: 400px;
+  animation: logoMoviment 2.5s ease forwards 0.9s, fillingLogo 0.5s ease-in-out forwards 2.3s;
+}
+
+svg path:nth-child(2) {
+  stroke-dasharray: 262px;
+  stroke-dashoffset: 262px;
+  animation: logoMoviment 2.5s ease forwards 1.2s, fillingLogo 0.5s ease-in-out forwards 2.4s;
+}
+
+svg path:nth-child(1) {
+  stroke-dasharray: 382px;
+  stroke-dashoffset: 382px;
+  animation: logoMoviment 2.5s ease forwards 1.5s, fillingLogo 0.5s ease-in-out forwards 2.5s;
 }
 
 @media screen and ( min-width : 765px ) {
   .triviaLogo {
     position: relative;
   }
+}
+
+@keyframes logoMoviment {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fillingLogo {
+  0% {
+    fill: blanchedalmond;
+    fill-opacity: 0%;
+  }
+  25% {
+    fill: blanchedalmond;
+    fill-opacity: 25%;
+  }
+  50% {
+    fill: blanchedalmond;
+    fill-opacity: 50%;
+  }
+  75% {
+    fill: blanchedalmond;
+    fill-opacity: 75%;
+  }
+  100% {
+    fill: blanchedalmond;
+    fill-opacity: 100%;
+  }
+
 }
