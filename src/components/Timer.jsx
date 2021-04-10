@@ -28,6 +28,8 @@ class Timer extends Component {
     if ((timer) > 0) {
       this.checkRestart();
       this.setState((prevState) => ({ timer: prevState.timer - 1 }));
+      const { countdown } = this.props;
+      countdown(timer);
     }
   }
 
@@ -58,6 +60,7 @@ Timer.propTypes = {
   stateOfBtn: PropTypes.func.isRequired,
   timer: PropTypes.number.isRequired,
   restartTime: PropTypes.bool.isRequired,
+  countdown: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);
