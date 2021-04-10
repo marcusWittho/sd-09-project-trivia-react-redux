@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import md5 from 'crypto-js/md5';
+import { AiFillSetting } from 'react-icons/ai';
 import fetchAPIToken from '../../services/apiToken';
 import actionPlayerId from '../../redux/actions/actionPlayerId';
 import actionAddQuestions from '../../redux/actions/actionAddQuestion';
 import actionValidLogin from '../../redux/actions/actionValidLogin';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import './Login.css';
+import Logo from '../../utils/img/TRIVIA-GAME.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -68,33 +70,38 @@ class Login extends React.Component {
   render() {
     const { isDisable } = this.state;
     return (
-      <div className="wrapper">
-        <Link to="/settings" data-testid="btn-settings">Settings</Link>
-        <div className="login-container">
-          <input
-            type="text"
-            name="name"
-            placeholder="Nome"
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            data-testid="input-gravatar-email"
-            onChange={ this.handleChange }
-          />
-          <Link to="/game">
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ isDisable }
-              onClick={ this.handleClick }
-            >
-              Jogar
-            </button>
+      <div className="body-login">
+        <div className="wrapper">
+          <Link className="link" to="/settings" data-testid="btn-settings">
+            <AiFillSetting />
           </Link>
+          <img src={ Logo } alt="logo trivia game" />
+          <div className="login-container">
+            <input
+              type="text"
+              name="name"
+              placeholder="Nome"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+            />
+            <Link to="/game">
+              <button
+                type="button"
+                data-testid="btn-play"
+                disabled={ isDisable }
+                onClick={ this.handleClick }
+              >
+                Jogar
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     );
