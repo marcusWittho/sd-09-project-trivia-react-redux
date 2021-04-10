@@ -9,6 +9,7 @@ import actionAddQuestions from '../../redux/actions/actionAddQuestion';
 import actionValidLogin from '../../redux/actions/actionValidLogin';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
 import './Login.css';
+import Logo from '../../utils/img/TRIVIA-GAME.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class Login extends React.Component {
       <div className="body-login">
         <Link className="link" to="/settings" data-testid="btn-settings">Settings</Link>
         <div className="wrapper">
-          <h3 className="title">TRIVIA GAME</h3>
+          <img src={ Logo } alt="logo trivia game" />
           <div className="login-container">
             <input
               type="text"

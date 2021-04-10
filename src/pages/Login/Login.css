@@ -49,6 +49,12 @@
   width: 20rem;
 }
 
+.wrapper img {
+  border-bottom: 2px solid white;
+  height: 1rem;
+  padding: 1rem;
+}
+
 .wrapper input {
   background-color: #082336;
   border-color: #2f80ed;
