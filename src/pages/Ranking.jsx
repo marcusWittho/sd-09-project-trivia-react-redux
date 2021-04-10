@@ -20,6 +20,7 @@ class Ranking extends Component {
 
     return (
       <>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <ol>
           { orderedRanking }
         </ol>
