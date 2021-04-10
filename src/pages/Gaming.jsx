@@ -10,6 +10,9 @@ class Gaming extends React.Component {
     super(props);
 
     this.verifyAll = this.verifyAll.bind(this);
+    this.getAnswers = this.getAnswers.bind(this);
+    this.shuffleAnswers = this.shuffleAnswers.bind(this);
+
     this.state = {
       redirect: false,
       questionNumber: 0,
@@ -25,16 +28,33 @@ class Gaming extends React.Component {
   async getArrayOfQuestions() {
     const { questionDispatch } = this.props;
     await questionDispatch();
+    this.getAnswers();
   }
 
   getAnswers() {
     const { questionsState: { results } } = this.props;
-    const atualState = this.state;
-    const newArray = [
-      results.correct_answer,
-      ...results.incorrect_answers,
-    ];
-    this.setState({ answers: newArray });
+    const { questionNumber } = this.state;
+    if (results) {
+      const {
+        incorrect_answers: incorrectAnswers,
+        correct_answer: correctAnswer } = results[questionNumber];
+      const newArray = [{
+        answer: correctAnswer,
+        testid: 'correct-answer' }];
+      incorrectAnswers.map((incorrect, index) => newArray.push({
+        answer: incorrect,
+        testid: `wrong-answer-${index}` }));
+      this.setState({ answers: this.shuffleAnswers(newArray) });
+    }
+  }
+
+  shuffleAnswers(array) {
+    const sizeArray = array.length;
+    for (let i = 0; i < sizeArray; i += 1) {
+      const random = Math.floor(Math.random() * (sizeArray));
+      [array[i], array[random]] = [array[random], array[i]];
+    }
+    return array;
   }
 
   verifyAll() {
@@ -49,26 +69,30 @@ class Gaming extends React.Component {
     }
   }
 
-
   render() {
     const {
       questionsState: { results },
     } = this.props;
-    console.log(results);
-    const { redirect, questionNumber } = this.state;
+    const { redirect, questionNumber, answers } = this.state;
     return redirect ? (
       <Redirect to="/" />
     ) : (
       <>
         <Header />
-        <div>
-          <p data-testid="question-category">
-            {results && results[questionNumber].category}
-          </p>
-          <p data-testid="question-text">
-            {results && results[questionNumber].question}
-          </p>
-        </div>
+        { !results ? <p>loading</p> : (
+          <div>
+            <p data-testid="question-category">
+              {results[questionNumber].category}
+            </p>
+            <p data-testid="question-text">
+              {results[questionNumber].question}
+            </p>
+            {console.log(answers)}
+            {answers.map(({ answer, testid }, index) => (
+              <button type="button" key={ index } data-testid={ testid }>{answer}</button>
+            ))}
+          </div>
+        )}
       </>
     );
   }
