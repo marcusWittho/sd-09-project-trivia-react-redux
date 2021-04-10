@@ -74,7 +74,7 @@ class Question extends React.Component {
     const { question, timeLeft } = this.props;
     const { disabledOptions, addClass, nextButton } = this.state;
     return (
-      <div>
+      <section className="question-container">
         { timeLeft > 0 ? <p>{`Time Left: ${timeLeft}s`}</p> : <p>Time Over!</p> }
         <p data-testid="question-category">{ question.category }</p>
         <p data-testid="question-text">{ question.question }</p>
@@ -110,7 +110,7 @@ class Question extends React.Component {
               Next
             </button>) : null }
         </div>
-      </div>
+      </section>
     );
   }
 }
