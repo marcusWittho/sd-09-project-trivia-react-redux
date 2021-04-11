@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import addUserInfo from '../actions';
 import ButtonSettings from '../components/ButtonSettings';
 import fetchTrivia from '../actions/trivia';
+import { userStorage } from '../services/storage';
 
 class Login extends React.Component {
   constructor() {
@@ -29,6 +30,7 @@ class Login extends React.Component {
       history,
     } = this.props;
     addUser(this.state);
+    userStorage(this.state);
     getTriviaQuestions();
     history.push('/game');
   }
