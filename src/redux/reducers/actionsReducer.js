@@ -19,6 +19,7 @@ const INITIAL_STATE = {
 
 function actionsReducer(state = INITIAL_STATE, action) {
   console.log(action);
+  console.log(state);
   switch (action.type) {
   case SET_TOKEN:
     return { ...state, token: action.token };
