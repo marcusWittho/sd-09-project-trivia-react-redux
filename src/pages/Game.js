@@ -16,13 +16,13 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        <div>
+        <div className="App">
           <div>
             {questions.map((question, index1) => (
               index === index1 ? <Question key={ index1 } question={ question } /> : null
             ))}
           </div>
-
+          <br />
           <button
             data-testid="btn-next"
             type="button"

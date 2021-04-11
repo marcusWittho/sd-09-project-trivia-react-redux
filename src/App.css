@@ -3,7 +3,6 @@
 }
 
 .App-logo {
-  height: 40vmin;
   pointer-events: none;
 }
 
@@ -15,43 +14,52 @@
   border: 1px solid green;
 }
 
-@media ( prefers-reduced-motion : no-preference ) {
+.login {
+  display: flex;
+  margin: 100px;
+  justify-content: center;
+}
 
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  }
+label {
+  display: flex;
+  flex-direction: column;
+  margin-top: 75px;
+  justify-content: center;
+}
+.logo {
+  height: 450px
+}
+
+.btn {
+  margin-left: 60px;
+  padding: 8px;
+  margin-top: 20px;
+  border: 1px solid black;
+  border-radius: 10%;
+  color: black;
+}
+
+.btn-link {
+  text-decoration: none;
+  background-color: white;
 }
 
 .App-header {
   align-items: center;
-  background-color: #282c34;
+  background-color: #54ad50;
   color: white;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: 100vh;
+  min-height: 40px;
+  padding: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.home-btn :link {
+  text-decoration: none;
 }
 
-@keyframes shake {
-
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
+.home-btn {
+  background-color: whitesmoke;
+  padding: 0.5%;
 }

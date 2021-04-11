@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import HomeButton from './HomeButton';
+import '../App.css';
 
 class Header extends React.Component {
+  addPoints() {
+    // const { score } = this.props;
+  }
+
   makeGravatarUrl() {
     const { email } = this.props;
     return `https://www.gravatar.com/avatar/${md5(email).toString()}`;
@@ -13,14 +18,16 @@ class Header extends React.Component {
   render() {
     const { name, score } = this.props;
     return (
-      <header>
+      <header className="App-header">
         <img
           src={ this.makeGravatarUrl() }
           alt="avatar"
+          className="App-logo"
           data-testid="header-profile-picture"
         />
-        <span data-testid="header-player-name">{ name }</span>
-        <span data-testid="header-score">{ score }</span>
+        <span data-testid="header-player-name">{ `Nome: ${name} `}</span>
+        <br />
+        <span data-testid="header-score">{` Pontos: ${score}`}</span>
         <HomeButton />
       </header>
     );
@@ -33,6 +40,7 @@ Header.propTypes = {
   score: PropTypes.number.isRequired,
 };
 
+// usar o dispatch para o updatescore
 const mapStateToProps = (state) => ({
   email: state.player.email,
   name: state.player.name,

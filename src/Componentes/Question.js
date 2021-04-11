@@ -38,7 +38,7 @@ class Question extends React.Component {
         <h2 data-testid="question-text">{question.question}</h2>
 
         {alternatives.map((alternative, index) => (
-          <div key={ index }>
+          <div key={ index } className="question">
             <button
               disabled={ showAwnser }
               className={ showAwnser ? defineAnswer(alternative, question) : null }

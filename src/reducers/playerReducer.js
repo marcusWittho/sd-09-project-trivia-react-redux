@@ -1,5 +1,5 @@
 import { GET_PLAYER_NAME,
-  GET_PLAYER_EMAIL, GET_TOKEN, UPDATE_INDEX } from '../actions/actionTypes';
+  GET_PLAYER_EMAIL, GET_TOKEN, UPDATE_INDEX, COUNT_POINTS } from '../actions/actionTypes';
 
 const INITIAL_PLAYER_STATE = {
   name: '',
@@ -30,6 +30,11 @@ const player = (state = INITIAL_PLAYER_STATE, action) => {
     return {
       ...state,
       index: action.index,
+    };
+  case COUNT_POINTS:
+    return {
+      ...state,
+      score: action.score + 1,
     };
   default:
     return state;
