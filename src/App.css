@@ -7,6 +7,25 @@
   pointer-events: none;
 }
 
+.flex {
+  display: flex;
+}
+
+.input {
+  display: block;
+  margin: 1em auto;
+  padding: 0.5em 20%;
+}
+
+.login {
+  padding: 0 100px;
+}
+
+.login-btn {
+  margin: auto;
+  padding: 1em auto;
+}
+
 .red-border {
   border: 1px solid red;
 }
