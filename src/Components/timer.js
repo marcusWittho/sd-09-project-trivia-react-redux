@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { timeCounter } from '../redux/actions';
 
 class Timer extends Component {
   constructor(props) {
@@ -16,6 +18,9 @@ class Timer extends Component {
 
   componentDidUpdate() {
     this.checkCounter();
+    const { getCounter } = this.props;
+    const counter = localStorage.getItem('COUNTDOWN');
+    getCounter(counter);
   }
 
   // quando o tempo chegar a 0 desabilita os botões de answer
@@ -47,4 +52,8 @@ class Timer extends Component {
   }
 }
 
-export default Timer;
+const mapDispatchToProps = (dispatch) => ({
+  getCounter: (number) => dispatch(timeCounter(number)),
+});
+
+export default connect(null, mapDispatchToProps)(Timer);

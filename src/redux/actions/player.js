@@ -11,6 +11,12 @@ export const playerScore = (score) => ({
   score,
 });
 
+export const TIME_COUNTER = 'TIME_COUNTER';
+export const timeCounter = (counter) => ({
+  type: TIME_COUNTER,
+  counter,
+});
+
 export const CORRECT = 'CORRECT';
 export const rightAnswers = (number) => ({
   type: CORRECT,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { rightAnswers, updateIndex, wrongAnswers } from '../redux/actions';
+import { rightAnswers, updateIndex, wrongAnswers, playerScore } from '../redux/actions';
 import Timer from './timer';
 import CORRECT from './correct';
 
@@ -61,20 +61,29 @@ class BooleanAnswers extends Component {
   }
 
   answerCheck(e) {
-    const { dispatchCorrect, dispatchWrong } = this.props;
+    const { dispatchCorrect, dispatchWrong, question, counter, dispatchScore } = this.props;
     const { target } = e;
     const answer = target.innerText;
+    const correct = 10;
+    const types = { easy: 1, medium: 2, hard: 3 };
     this.setState({
       nextButton: false,
       rightAnswerClass: 'rightAnswer',
       wrongAnswerClass: 'wrongAnswer',
       btnDisplayed: true,
-      // desabilita os botoes ao clicar na sua escolha
       btnDisabled: true,
       show: false,
     });
     if (this.validateAnswers(answer) === CORRECT) {
       dispatchCorrect(1);
+      switch (question.difficulty) {
+      case 'hard':
+        return (dispatchScore(correct + (counter * types.hard)));
+      case 'medium':
+        return (dispatchScore(correct + (counter * types.medium)));
+      default:
+        return (dispatchScore(correct + (counter * types.easy)));
+      }
     } else { dispatchWrong(1); }
   }
 
@@ -86,7 +95,6 @@ class BooleanAnswers extends Component {
       wrongAnswerClass: '',
       nextButton: true,
       btnDisplayed: false,
-      // tratamento para o timer
       btnDisabled: false,
       show: true,
     });
@@ -158,14 +166,16 @@ class BooleanAnswers extends Component {
   }
 }
 
-const mapStateToProps = ({ game }) => ({
+const mapStateToProps = ({ game, player }) => ({
   questIndex: game.index,
+  counter: player.counter,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchIndex: (index) => dispatch(updateIndex(index)),
   dispatchCorrect: (num) => dispatch(rightAnswers(num)),
   dispatchWrong: (num) => dispatch(wrongAnswers(num)),
+  dispatchScore: (score) => dispatch(playerScore(score)),
 });
 
 BooleanAnswers.propTypes = {

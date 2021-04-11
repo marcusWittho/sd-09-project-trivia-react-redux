@@ -20,8 +20,7 @@ class Login extends Component {
   }
 
   createLocalStorage() {
-    const { name, email: gravatarEmail } = this.state;
-    const player = { name, gravatarEmail, assertions: 0, score: 0 };
+    const { player } = this.props;
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
@@ -94,9 +93,9 @@ class Login extends Component {
   }
 }
 
-// const mapStatetoProps = (state) => ({
-//   questions: state.game.questions,
-// });
+const mapStatetoProps = (state) => ({
+  player: state.player.player,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchNameEmail: (email, name) => dispatch(playerLogin(email, name)),
@@ -110,4 +109,4 @@ Login.propTypes = {
   getQuestions: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStatetoProps, mapDispatchToProps)(Login);
