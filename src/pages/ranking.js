@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../components/header';
 
 class Ranking extends Component {
   render() {
@@ -7,6 +8,7 @@ class Ranking extends Component {
     console.log(ranking);
     return (
       <div>
+        <Header />
         <h2 data-testid="ranking-title">
           Ranking
         </h2>

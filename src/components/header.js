@@ -6,7 +6,8 @@ import '../css/header.css';
 
 class Header extends Component {
   render() {
-    const { name, email, score } = this.props;
+    const { name, email } = this.props;
+    const { player } = JSON.parse(localStorage.getItem('state'));
     return (
       <div className="header">
         <div>
@@ -20,7 +21,7 @@ class Header extends Component {
           <h1 data-testid="header-player-name">{ name }</h1>
         </div>
         <div>
-          <p data-testid="header-score">{ score }</p>
+          <p data-testid="header-score">{ player.score }</p>
         </div>
       </div>
     );
@@ -33,8 +34,8 @@ Header.propTypes = {
   score: PropTypes.number,
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer: { name, email, score } }) => ({
-  name, email, score,
+const mapStateToProps = ({ actionsReducer: { name, email } }) => ({
+  name, email,
 });
 
 export default connect(mapStateToProps)(Header);
