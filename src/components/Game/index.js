@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { saveScore } from '../actions';
-import { addPlayerInRanking } from '../services/localStorage';
+import { saveScore } from '../../actions';
+import { addPlayerInRanking } from '../../services/localStorage';
+import './styles.css';
 
 class Game extends React.Component {
   constructor(props) {
@@ -137,22 +138,26 @@ class Game extends React.Component {
       return (
         <Link to="/feedback">
           <button
+            className="btn-finish"
             onClick={ this.setRanking }
             type="button"
             data-testid="btn-next"
           >
             Finalizar
+            <i className="fas fa-check" />
           </button>
         </Link>
       );
     }
     return (
       <button
+        className="btn-next"
         type="button"
         data-testid="btn-next"
         onClick={ this.nextQuestion }
       >
         Próxima
+        <i className="fas fa-arrow-right" />
       </button>
     );
   }
@@ -182,19 +187,26 @@ class Game extends React.Component {
     const { category, question } = asks[answerIndex];
     if (asks[answerIndex].category !== '') {
       return (
-        <div className="ask-container">
-          <p data-testid="question-category">{ category }</p>
-          <p data-testid="question-text">{ question }</p>
-          <div>
+        <div className="container-page-asks">
+          <div className="container-title-ask">
+            <p className="text-category" data-testid="question-category">{ category }</p>
+            <p className="text-question" data-testid="question-text">{ question }</p>
+          </div>
+          <div className="container-asks">
             { this.prepareAnswers(answerIndex).map(((element, index) => (
-              <div key={ index }>
+              <div className="option-ask" key={ index }>
                 { element }
               </div>
             )))}
+            <div className="container-btn">
+              {(answerSelected && answerIndex <= MAX_QUESTIONS)
+              && this.elementButtonNext()}
+            </div>
           </div>
-          {(answerSelected && answerIndex <= MAX_QUESTIONS)
-          && this.elementButtonNext()}
-          <p>{`Timer: ${timer}`}</p>
+          <div className="container-clock">
+            <i className="far fa-clock" />
+            <p className="text-timer">{ timer }</p>
+          </div>
         </div>
       );
     }
