@@ -64,15 +64,13 @@ class Game extends React.Component {
               /> : null
             ))}
           </div>
-
           {isAnswered
-          && <button
-            data-testid="btn-next"
+          && <input
             type="button"
+            data-testid="btn-next"
             onClick={ () => this.nextQuestion() }
-          >
-            Próxima
-          </button>}
+            value="Próxima"
+          />}
         </div>
       </div>
     );
