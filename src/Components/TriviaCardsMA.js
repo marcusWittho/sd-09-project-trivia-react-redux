@@ -84,6 +84,7 @@ class MultipleAnswers extends Component {
   }
 
   answerCheck(e) {
+
     const {
       dispatchCorrect, dispatchWrong, question, counter, dispatchScore,
     } = this.props;
@@ -202,6 +203,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchCorrect: (num) => dispatch(rightAnswers(num)),
   dispatchWrong: (num) => dispatch(wrongAnswers(num)),
   dispatchScore: (score) => dispatch(playerScore(score)),
+
 });
 
 MultipleAnswers.propTypes = {

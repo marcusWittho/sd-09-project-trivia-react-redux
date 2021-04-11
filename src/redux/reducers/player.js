@@ -40,6 +40,14 @@ const player = (state = INITIAL_STATE, action) => {
     return ({ ...state,
       wrongAnswers: parseInt(state.wrongAnswers, 10) + 1,
     });
+  case CORRECT:
+    return ({ ...state,
+      rightAnswers: parseInt(state.rightAnswers, 10) + 1,
+    });
+  case WRONG:
+    return ({ ...state,
+      wrongAnswers: parseInt(state.wrongAnswers, 10) + 1,
+    });
   default:
     return state;
   }
