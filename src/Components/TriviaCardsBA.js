@@ -15,7 +15,6 @@ class BooleanAnswers extends Component {
       nextButton: true,
       correctAnswer: CORRECT,
       btnDisplayed: false,
-      // tratamento pros botoes apos timer
       btnDisabled: false,
       show: true,
     };
@@ -25,11 +24,17 @@ class BooleanAnswers extends Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.createNextBtn = this.createNextBtn.bind(this);
     this.endTime = this.endTime.bind(this);
+    this.updateLocalStorage = this.updateLocalStorage.bind(this);
   }
 
   componentDidUpdate() {
-    // this.updateQuestIndex();
+    this.updateLocalStorage();
     this.endTime();
+  }
+
+  updateLocalStorage() {
+    const { player } = this.props;
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   // por algum motivo no componente boleano nao funciona
@@ -61,7 +66,9 @@ class BooleanAnswers extends Component {
   }
 
   answerCheck(e) {
-    const { dispatchCorrect, dispatchWrong, question, counter, dispatchScore } = this.props;
+    const {
+      dispatchCorrect, dispatchWrong, question, counter, dispatchScore,
+    } = this.props;
     const { target } = e;
     const answer = target.innerText;
     const correct = 10;
@@ -169,6 +176,7 @@ class BooleanAnswers extends Component {
 const mapStateToProps = ({ game, player }) => ({
   questIndex: game.index,
   counter: player.counter,
+  player: player.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -179,15 +187,24 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 BooleanAnswers.propTypes = {
+  counter: PropTypes.number.isRequired,
   questIndex: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
   dispatchCorrect: PropTypes.func.isRequired,
   dispatchWrong: PropTypes.func.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     category: PropTypes.string,
     question: PropTypes.string,
+    difficulty: PropTypes.string,
+  }).isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    gravatarEmail: PropTypes.string,
   }).isRequired,
 };
 

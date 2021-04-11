@@ -21,16 +21,17 @@ const player = (state = INITIAL_STATE, action) => {
     return ({ ...state,
       email: action.email,
       name: action.name,
+      player: { ...state.player, name: state.name, gravatarEmail: state.email },
     });
   case SCORE:
     return ({ ...state,
-      score: action.score,
-      player: { ...state.player, score: state.player.score },
+      player: { ...state.player, score: action.score + state.score },
+      score: action.score + state.score,
     });
   case CORRECT:
     return ({ ...state,
-      rightAnswers: parseInt(state.rightAnswers, 10) + 1,
       player: { ...state.player, assertions: state.rightAnswers + 1 },
+      rightAnswers: parseInt(state.rightAnswers, 10) + 1,
     });
   case TIME_COUNTER:
     return ({ ...state,

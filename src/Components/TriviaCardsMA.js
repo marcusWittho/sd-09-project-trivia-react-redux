@@ -25,12 +25,22 @@ class MultipleAnswers extends Component {
     this.answerCheck = this.answerCheck.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.createNextBtn = this.createNextBtn.bind(this);
+    this.updateLocalStorage = this.updateLocalStorage.bind(this);
   }
 
-  componentDidMount() {
-    // this.createChoices();
+  componentDidUpdate() {
+    this.updateLocalStorage();
     this.endTime();
   }
+
+  updateLocalStorage() {
+    const { player } = this.props;
+    localStorage.setItem('state', JSON.stringify({ player }));
+  }
+  // componentDidMount() {
+  //   // this.createChoices();
+  //   this.endTime();
+  // }
 
   endTime() {
     const finalTime = 30000;
@@ -109,7 +119,6 @@ class MultipleAnswers extends Component {
       wrongAnswerClass: '',
       nextButton: true,
       btnDisplayed: false,
-      // tratamento para o timer
       btnDisabled: false,
       show: true,
     });
@@ -184,6 +193,7 @@ class MultipleAnswers extends Component {
 const mapStateToProps = ({ game, player }) => ({
   questIndex: game.index,
   counter: player.counter,
+  player: player.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -194,15 +204,24 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 MultipleAnswers.propTypes = {
+  counter: PropTypes.number.isRequired,
   questIndex: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
   dispatchCorrect: PropTypes.func.isRequired,
   dispatchWrong: PropTypes.func.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     category: PropTypes.string,
     question: PropTypes.string,
+    difficulty: PropTypes.string,
+  }).isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    gravatarEmail: PropTypes.string,
   }).isRequired,
 };
 
