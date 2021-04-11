@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { timeCounter } from '../redux/actions';
 
@@ -55,5 +56,7 @@ class Timer extends Component {
 const mapDispatchToProps = (dispatch) => ({
   getCounter: (number) => dispatch(timeCounter(number)),
 });
+
+Timer.propTypes = { getCounter: PropTypes.func.isRequired };
 
 export default connect(null, mapDispatchToProps)(Timer);
