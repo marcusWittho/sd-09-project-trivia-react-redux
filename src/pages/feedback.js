@@ -6,13 +6,13 @@ import Header from '../components/header';
 class feedback extends React.Component {
   mandouBem() {
     return (
-      <h1>Mandou bem!</h1>
+      <h1 data-testid="feedback-text">Mandou bem!</h1>
     );
   }
 
   podiaSerMelhor() {
     return (
-      <h1>Podia ser melhor...</h1>
+      <h1 data-testid="feedback-text">Podia ser melhor...</h1>
     );
   }
 
@@ -37,12 +37,11 @@ class feedback extends React.Component {
   render() {
     const { player } = JSON.parse(localStorage.getItem('state'));
     this.saveRanking();
-    // const { assertions } = this.props;
     const score = 3;
     return (
       <div>
         <Header />
-        <span data-testid="feedback-text">
+        <span>
           { player.assertions < score
             ? this.podiaSerMelhor()
             : this.mandouBem() }
@@ -56,18 +55,12 @@ class feedback extends React.Component {
           acertos
         </p>
         <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
-          >
+          <button type="button" data-testid="btn-play-again">
             Jogar novamente
           </button>
         </Link>
         <Link to="/ranking">
-          <button
-            type="button"
-            data-testid="btn-ranking"
-          >
+          <button type="button" data-testid="btn-ranking">
             Ver Ranking
           </button>
         </Link>
