@@ -41,8 +41,13 @@ class Game extends React.Component {
     }, step);
   }
 
+  nextQuestion() {
+    const { index, incremanteIndex } = this.props;
+    incremanteIndex(index + 1);
+  }
+
   render() {
-    const { questions, index, incremanteIndex } = this.props;
+    const { questions, index, isAnswered } = this.props;
     const { timeToAnswer, disableBtn } = this.state;
     return (
       <div>
@@ -55,17 +60,18 @@ class Game extends React.Component {
                 key={ index1 }
                 question={ question }
                 disableBtn={ disableBtn }
+                timer={ timeToAnswer }
               /> : null
             ))}
           </div>
 
-          <button
+          {isAnswered && <button
             data-testid="btn-next"
             type="button"
-            onClick={ () => incremanteIndex(index + 1) }
+            onClick={ () => this.nextQuestion() }
           >
             Próxima
-          </button>
+          </button>}
         </div>
       </div>
     );
@@ -75,6 +81,7 @@ class Game extends React.Component {
 Game.propTypes = {
   token: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  isAnswered: PropTypes.bool.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   storeQuestions: PropTypes.func.isRequired,
   incremanteIndex: PropTypes.func.isRequired,
@@ -89,6 +96,7 @@ const mapStateToProps = (state) => ({
   token: state.player.token,
   index: state.player.index,
   questions: state.data.questions,
+  isAnswered: state.player.isAnswered,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
