@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+body {
+  align-items: center;
+  background-color: #1c1c1c;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+h3 {
+  color: white;
+  left: 50%;
+  position: absolute;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-family: 'Luckiest Guy', cursive;
+  letter-spacing: 2px;
+}
+
+.loading {
+  position: relative;
+  width: 9.375rem;
+  height: 9.375rem;
+  border-radius: 50%;
+  background: linear-gradient(#23a6d5, #ffeb3b, #e73c7e);
+  animation: animate 1s linear infinite;
+}
+
+.loading span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(#23a6d5, #ffeb3b, #e73c7e);
+}
+
+@keyframes animate {
+
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+
+}
+
+.loading span:nth-child( 1 ) {
+  filter: blur( 5px );
+}
+
+.loading span:nth-child( 2 ) {
+  filter: blur( 10px );
+}
+
+.loading span:nth-child( 3 ) {
+  filter: blur( 25px );
+}
+
+.loading span:nth-child( 4 ) {
+  filter: blur( 50px );
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0.4675rem;
+  left: 0.4675rem;
+  right: 0.4675rem;
+  bottom: 0.4675rem;
+  background-color: #1c1c1c;
+  border-radius: 50%;
+}
+
+@media  screen and ( min-width : 1000px ) {
+  h3 {
+    top: 54.5%;
+  }
+}
+
+@media  screen and ( min-width : 1300px ) {
+  h3 {
+    top: 55%;
+  }
+}

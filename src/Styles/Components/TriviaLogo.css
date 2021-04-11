@@ -22,8 +22,8 @@ svg path:nth-child( 5 ) {
 svg path:nth-child( 4 ) {
   animation: logoMoviment 2.5s ease forwards 0.6s ,
     fillingLogo 0.5s ease-in-out forwards 2.2s;
-  stroke-dasharray: 259px;
-  stroke-dashoffset: 260px;
+  stroke-dasharray: 261px;
+  stroke-dashoffset: 261px;
 }
 
 svg path:nth-child( 3 ) {

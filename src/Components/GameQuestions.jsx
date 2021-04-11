@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { setQuestions } from '../Actions/setQuestions';
 import '../Styles/GameQuestionsStyle.css';
+import Loading from './Loading';
 
 class GameQuestions extends Component {
   constructor(props) {
@@ -167,7 +168,7 @@ class GameQuestions extends Component {
     const { questionNumber, time, answerClicked, redirect } = this.state;
     if (loading) {
       fetchQuestions(token);
-      return <h3>Loading</h3>;
+      return <Loading />;
     }
     if (redirect) return <Redirect to="/feedback" />;
     this.createStore();
