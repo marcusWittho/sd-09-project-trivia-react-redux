@@ -59,7 +59,6 @@ class Question extends React.Component {
 
   handleClick({ target }) {
     const { propSetNext, handleAnswer, propSelectedAnswer } = this.props;
-    console.log(target)
     handleAnswer();
     propSelectedAnswer(target);
     propSetNext();
