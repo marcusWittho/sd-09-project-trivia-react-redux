@@ -36,6 +36,7 @@ class MultipleAnswers extends Component {
   updateLocalStorage() {
     const { player } = this.props;
     localStorage.setItem('state', JSON.stringify({ player }));
+    console.log(player);
   }
   // componentDidMount() {
   //   // this.createChoices();

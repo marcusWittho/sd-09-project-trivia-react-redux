@@ -49,10 +49,10 @@ class Login extends Component {
     }
   }
 
-  async play() {
+  play() {
     const { getToken, getQuestions } = this.props;
-    await getQuestions();
-    await getToken();
+    getQuestions();
+    getToken();
     this.createLocalStorage();
   }
 

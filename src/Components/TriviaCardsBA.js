@@ -35,6 +35,7 @@ class BooleanAnswers extends Component {
   updateLocalStorage() {
     const { player } = this.props;
     localStorage.setItem('state', JSON.stringify({ player }));
+    console.log(player);
   }
 
   // por algum motivo no componente boleano nao funciona
