@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { timeCounter } from '../redux/actions';
 
 class Timer extends Component {
   constructor(props) {
@@ -16,13 +19,21 @@ class Timer extends Component {
 
   componentDidUpdate() {
     this.checkCounter();
+    const { getCounter } = this.props;
+    const counter = localStorage.getItem('COUNTDOWN');
+    getCounter(counter);
   }
 
+  // quando o tempo chegar a 0 desabilita os botões de answer
   checkCounter() {
     const { count } = this.state;
     if (count === 0) clearInterval(this.myInterval);
   }
 
+  // clearInterval(this.myInterval) >>>> precisa ser chamado no botão answer quando clicado
+  // o tempo restante será usado para fazer a conta do score
+
+  // essa funcção precisa ser chamada no botão next
   timerCaller() {
     const interval = 1000;
     this.myInterval = setInterval(() => {
@@ -42,4 +53,10 @@ class Timer extends Component {
   }
 }
 
-export default Timer;
+const mapDispatchToProps = (dispatch) => ({
+  getCounter: (number) => dispatch(timeCounter(number)),
+});
+
+Timer.propTypes = { getCounter: PropTypes.func.isRequired };
+
+export default connect(null, mapDispatchToProps)(Timer);

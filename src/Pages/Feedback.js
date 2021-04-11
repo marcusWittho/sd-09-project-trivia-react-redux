@@ -16,11 +16,9 @@ class Feedback extends Component {
     return (
       <div>
         <p data-testid="feedback-total-score">
-          TOTAL SCORE:
           { score }
         </p>
         <p data-testid="feedback-total-question">
-          HITS:
           { rightAnswers }
         </p>
       </div>

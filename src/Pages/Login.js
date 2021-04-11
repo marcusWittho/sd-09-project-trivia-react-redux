@@ -16,6 +16,13 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.play = this.play.bind(this);
+    this.createLocalStorage = this.createLocalStorage.bind(this);
+  }
+
+  createLocalStorage() {
+    const { name, email: gravatarEmail } = this.state;
+    const player = { name, gravatarEmail, assertions: 0, score: 0 };
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   handleChange(event) {
@@ -42,10 +49,11 @@ class Login extends Component {
     }
   }
 
-  async play() {
+  play() {
     const { getToken, getQuestions } = this.props;
-    await getQuestions();
-    await getToken();
+    getQuestions();
+    getToken();
+    this.createLocalStorage();
   }
 
   render() {
@@ -86,9 +94,9 @@ class Login extends Component {
   }
 }
 
-// const mapStatetoProps = (state) => ({
-//   questions: state.game.questions,
-// });
+const mapStatetoProps = (state) => ({
+  player: state.player.player,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchNameEmail: (email, name) => dispatch(playerLogin(email, name)),
@@ -102,4 +110,4 @@ Login.propTypes = {
   getQuestions: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStatetoProps, mapDispatchToProps)(Login);

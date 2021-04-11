@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { rightAnswers, updateIndex, wrongAnswers } from '../redux/actions';
+import { rightAnswers, updateIndex, wrongAnswers, playerScore } from '../redux/actions';
 import Timer from './timer';
 import CORRECT from './correct';
 
@@ -25,12 +25,23 @@ class MultipleAnswers extends Component {
     this.answerCheck = this.answerCheck.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.createNextBtn = this.createNextBtn.bind(this);
+    this.updateLocalStorage = this.updateLocalStorage.bind(this);
   }
 
-  componentDidMount() {
-    // this.createChoices();
+  componentDidUpdate() {
+    this.updateLocalStorage();
     this.endTime();
   }
+
+  updateLocalStorage() {
+    const { player } = this.props;
+    localStorage.setItem('state', JSON.stringify({ player }));
+    console.log(player);
+  }
+  // componentDidMount() {
+  //   // this.createChoices();
+  //   this.endTime();
+  // }
 
   endTime() {
     const finalTime = 30000;
@@ -73,20 +84,31 @@ class MultipleAnswers extends Component {
   }
 
   answerCheck(e) {
-    const { dispatchCorrect, dispatchWrong } = this.props;
+    const {
+      dispatchCorrect, dispatchWrong, question, counter, dispatchScore,
+    } = this.props;
     const { target } = e;
     const answer = target.innerText;
+    const correct = 10;
+    const types = { easy: 1, medium: 2, hard: 3 };
     this.setState({
       nextButton: false,
       rightAnswerClass: 'rightAnswer',
       wrongAnswerClass: 'wrongAnswer',
       btnDisplayed: true,
-      // desabilita os botoes ao clicar na sua escolha
       btnDisabled: true,
       show: false,
     });
     if (this.validateAnswers(answer) === CORRECT) {
       dispatchCorrect(1);
+      switch (question.difficulty) {
+      case 'hard':
+        return (dispatchScore(correct + (counter * types.hard)));
+      case 'medium':
+        return (dispatchScore(correct + (counter * types.medium)));
+      default:
+        return (dispatchScore(correct + (counter * types.easy)));
+      }
     } else { dispatchWrong(1); }
   }
 
@@ -98,7 +120,6 @@ class MultipleAnswers extends Component {
       wrongAnswerClass: '',
       nextButton: true,
       btnDisplayed: false,
-      // tratamento para o timer
       btnDisabled: false,
       show: true,
     });
@@ -170,26 +191,39 @@ class MultipleAnswers extends Component {
   }
 }
 
-const mapStateToProps = ({ game }) => ({
+const mapStateToProps = ({ game, player }) => ({
   questIndex: game.index,
+  counter: player.counter,
+  player: player.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchIndex: (index) => dispatch(updateIndex(index)),
   dispatchCorrect: (num) => dispatch(rightAnswers(num)),
   dispatchWrong: (num) => dispatch(wrongAnswers(num)),
+  dispatchScore: (score) => dispatch(playerScore(score)),
+
 });
 
 MultipleAnswers.propTypes = {
+  counter: PropTypes.number.isRequired,
   questIndex: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
   dispatchCorrect: PropTypes.func.isRequired,
   dispatchWrong: PropTypes.func.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
   question: PropTypes.shape({
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     category: PropTypes.string,
     question: PropTypes.string,
+    difficulty: PropTypes.string,
+  }).isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    gravatarEmail: PropTypes.string,
   }).isRequired,
 };
 
