@@ -38,7 +38,6 @@ class BooleanAnswers extends Component {
     console.log(player);
   }
 
-
   endTime() {
     const finalTime = 30000;
     setTimeout(() => {
@@ -185,7 +184,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchCorrect: (num) => dispatch(rightAnswers(num)),
   dispatchWrong: (num) => dispatch(wrongAnswers(num)),
   dispatchScore: (score) => dispatch(playerScore(score)),
-
+});
 
 BooleanAnswers.propTypes = {
   counter: PropTypes.number.isRequired,

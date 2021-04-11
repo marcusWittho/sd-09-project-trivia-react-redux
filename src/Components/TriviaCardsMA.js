@@ -84,7 +84,6 @@ class MultipleAnswers extends Component {
   }
 
   answerCheck(e) {
-
     const {
       dispatchCorrect, dispatchWrong, question, counter, dispatchScore,
     } = this.props;
