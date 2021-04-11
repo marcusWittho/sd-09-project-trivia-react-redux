@@ -1,4 +1,5 @@
-import { ADD_QUESTIONS, IS_LOADING } from '../actions/game';
+import { ADD_QUESTIONS, IS_LOADING, DECREASE_TIME,
+  INCREASE_SCORE, NEXT_QUESTION } from '../actions/game';
 
 const INITIAL_STATE = {
   assertions: 0,
@@ -9,8 +10,18 @@ const INITIAL_STATE = {
   isLoading: true,
 };
 
+const scoreDifficulty = { easy: 1, medium: 2, hard: 3 };
+const TEN = 10;
+const scoreToBeAdded = (assert, diff, timer) => assert
+  * (TEN + (timer * scoreDifficulty[diff]));
+
 const game = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case INCREASE_SCORE:
+    return { ...state,
+      assertions: state.assertions + action.payload.assert,
+      score: state.score
+      + scoreToBeAdded(action.payload.assert, action.payload.difficulty, state.timer) };
   case ADD_QUESTIONS:
     return { ...state,
       questions: [...state.questions, ...action.payload],
@@ -18,6 +29,10 @@ const game = (state = INITIAL_STATE, action) => {
     };
   case IS_LOADING:
     return { ...state, isLoading: true };
+  case DECREASE_TIME:
+    return { ...state, timer: state.timer - 1 };
+  case NEXT_QUESTION:
+    return { ...state, questionPos: state.questionPos + 1, timer: 30 };
   default:
     return state;
   }
