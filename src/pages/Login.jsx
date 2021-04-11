@@ -12,7 +12,7 @@ class Login extends Component {
       submmit: false,
       player: {
         name: '',
-        assertions: '',
+        assertions: 0,
         score: '',
         gravatarEmail: '',
       },
