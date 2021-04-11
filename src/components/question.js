@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { setNext, setSelectedAnswer, setScore } from '../redux/actions';
 import '../css/questions.css';
 
@@ -15,37 +16,22 @@ class Question extends React.Component {
     this.savePlayerStatus = this.savePlayerStatus.bind(this);
   }
 
-  handleClick({ target }) {
-    const { propSetNext, handleAnswer, propSelectedAnswer } = this.props;
-    handleAnswer();
-    propSelectedAnswer(target);
-    propSetNext();
-    this.savePlayerStatus(target);
-  }
-
-  savePlayerStatus(target) {
-    const { name, score, token, question: { difficulty } } = this.props;
-    const { assertions } = this.state;
-    if (target.className === 'correct') {
-      this.setState({
-        assertions: assertions + 1,
-      });
-      this.calculateScore(difficulty);
-    }
-
+  componentDidMount() {
+    const { name, email } = this.props;
     localStorage.setItem('state', JSON.stringify({
       player: {
         name,
-        assertions,
-        score,
-        gravatarEmail: token,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: `https://www.gravatar.com/avatar/${md5(email).toString()}`,
       },
     }));
   }
 
   calculateScore(level) {
+    const { player } = JSON.parse(localStorage.getItem('state'));
     const { propSetScore, time } = this.props;
-    const { assertions } = this.state;
+    // const { assertions } = this.state;
     const correct = 10;
     const levelStatus = {
       easy: 1,
@@ -66,8 +52,37 @@ class Question extends React.Component {
       pointsLevel = levelStatus.hard;
     }
 
-    const points = (assertions * correct) + (time + pointsLevel);
+    const points = (player.assertions * correct) + (time + pointsLevel);
     propSetScore(points);
+    return points;
+  }
+
+  handleClick({ target }) {
+    const { propSetNext, handleAnswer, propSelectedAnswer } = this.props;
+    handleAnswer();
+    propSelectedAnswer(target);
+    propSetNext();
+    this.savePlayerStatus(target);
+  }
+
+  savePlayerStatus(target) {
+    const { name, token, question: { difficulty } } = this.props;
+    const { assertions, score } = this.state;
+    if (target.value === 'correct') {
+      this.setState({
+        assertions: assertions + 1,
+        score: score + 1,
+      });
+      const { player } = JSON.parse(localStorage.getItem('state'));
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          name,
+          assertions: player.assertions + 1,
+          score: this.calculateScore(difficulty),
+          gravatarEmail: token,
+        },
+      }));
+    }
   }
 
   render() {
@@ -87,6 +102,7 @@ class Question extends React.Component {
         <button
           data-testid="correct-answer"
           type="button"
+          value="correct"
           className={ selectedAnswer && 'correct' }
           onClick={ this.handleClick }
           disabled={ disabled }
@@ -120,11 +136,12 @@ Question.propTypes = {
   }),
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer: { selectedAnswer, name, token, score } }) => ({
+const mapStateToProps = ({ selectedAnswer, actionsReducer }) => ({
   selectedAnswer,
-  name,
-  token,
-  score,
+  name: actionsReducer.name,
+  token: actionsReducer.token,
+  score: actionsReducer.score,
+  email: actionsReducer.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
