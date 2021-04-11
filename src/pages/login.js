@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import logo from '../trivia.png';
 import { getToken, setNameAndEmail } from '../redux/actions';
 
@@ -41,6 +42,14 @@ class loginScreen extends React.Component {
     const { name, email } = this.state;
     await propGetToken();
     await propSetNameAndEmail(name, email);
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: `https://www.gravatar.com/avatar/${md5(email).toString()}`,
+      },
+    }));
     this.setState({
       login: true,
     });
