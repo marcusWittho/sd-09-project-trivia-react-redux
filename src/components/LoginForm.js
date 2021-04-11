@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { addLoginInfo, addToken } from '../actions';
 import { fetchAndSaveToken } from '../services';
 
@@ -78,15 +77,13 @@ class LoginForm extends Component {
           Jogar
         </button>
         {redirect && <Redirect to="/game-page" />}
-        <Link
-          to="/settings"
+        <button
           type="button"
           data-testid="btn-settings"
+          onClick={ () => handleSettings() }
         >
-          <button type="button">
-            configuração
-          </button>
-        </Link>
+          Configuração
+        </button>
       </form>
     );
   }
