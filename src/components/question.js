@@ -59,6 +59,7 @@ class Question extends React.Component {
 
   handleClick({ target }) {
     const { propSetNext, handleAnswer, propSelectedAnswer } = this.props;
+    console.log(target)
     handleAnswer();
     propSelectedAnswer(target);
     propSetNext();
@@ -67,11 +68,10 @@ class Question extends React.Component {
 
   savePlayerStatus(target) {
     const { name, token, question: { difficulty } } = this.props;
-    const { assertions, score } = this.state;
+    const { assertions } = this.state;
     if (target.value === 'correct') {
       this.setState({
         assertions: assertions + 1,
-        score: score + 1,
       });
       const { player } = JSON.parse(localStorage.getItem('state'));
       localStorage.setItem('state', JSON.stringify({
@@ -95,6 +95,7 @@ class Question extends React.Component {
         question,
         category,
       } } = this.props;
+      // console.log(selectedAnswer)
     return (
       <div>
         <h2 data-testid="question-category">{ category }</h2>
@@ -136,8 +137,8 @@ Question.propTypes = {
   }),
 }.isRequired;
 
-const mapStateToProps = ({ selectedAnswer, actionsReducer }) => ({
-  selectedAnswer,
+const mapStateToProps = ({ actionsReducer }) => ({
+  selectedAnswer: actionsReducer.selectedAnswer,
   name: actionsReducer.name,
   token: actionsReducer.token,
   score: actionsReducer.score,
