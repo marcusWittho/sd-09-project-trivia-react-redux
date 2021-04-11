@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import '../Styles/Login.css';
+// import '../Styles/Login.css';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { setUser } from '../Actions';
