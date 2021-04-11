@@ -23,7 +23,9 @@ class Question extends Component {
 
   setRandomAnswersOrder() {
     const CONST_RANDOM = 0.5;
-    const { question: { incorrect_answers: incorrectAnswers } } = this.props;
+    const {
+      question: { incorrect_answers: incorrectAnswers },
+    } = this.props;
     const answersLength = incorrectAnswers.length + 1;
     const randomOrderArray = Array.from(
       { length: answersLength },
@@ -32,33 +34,37 @@ class Question extends Component {
     this.setState({ answersOrder: randomOrderArray });
   }
 
-  answerQuestion({ target }) {
-    const { question: {
-      correct_answer: correctAnswer,
-      difficulty,
-    }, scoreCorrect } = this.props;
-    const isCorrectAnswer = target.textContent === correctAnswer;
-    if (isCorrectAnswer) scoreCorrect({ difficulty, THISANSWEREDTIMER });
+  checkAnswer(answerButton) {
+    const {
+      question: { correct_answer: correctAnswer, difficulty },
+      scoreCorrect: scoreCorrectDispatch,
+    } = this.props;
+    const isCorrectAnswer = answerButton === correctAnswer;
+    if (isCorrectAnswer) scoreCorrectDispatch({ difficulty, THISANSWEREDTIMER });
+  }
+
+  answerQuestion({ target: { textContent: answerButton } }) {
+    this.checkAnswer(answerButton);
     this.setState({ isAnswered: true });
   }
 
   renderAnswers() {
     const { isAnswered, answersOrder } = this.state;
-    const { question: {
-      correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers,
-    } } = this.props;
+    const {
+      question: {
+        correct_answer: correctAnswer,
+        incorrect_answers: incorrectAnswers,
+      },
+    } = this.props;
     const correctAnswersButtons = (
       <button
         key="correct"
         type="button"
         data-testid="correct-answer"
-        { ...isAnswered && { style: { border: '3px solid rgb(6, 240, 15)' } } }
-        onClick={ isAnswered
-          ? () => null
-          : this.answerQuestion }
+        { ...(isAnswered && { style: { border: '3px solid rgb(6, 240, 15)' } }) }
+        onClick={ isAnswered ? () => null : this.answerQuestion }
       >
-        { correctAnswer }
+        {correctAnswer}
       </button>
     );
     const incorrectAnswersButtons = incorrectAnswers.map(
@@ -67,12 +73,10 @@ class Question extends Component {
           type="button"
           key={ index + 1 }
           data-testid={ `wrong-answer-${index}` }
-          { ...isAnswered && { style: { border: '3px solid rgb(255, 0, 0)' } } }
-          onClick={ isAnswered
-            ? () => null
-            : this.answerQuestion }
+          { ...(isAnswered && { style: { border: '3px solid rgb(255, 0, 0)' } }) }
+          onClick={ isAnswered ? () => null : this.answerQuestion }
         >
-          { incorrectAnswer }
+          {incorrectAnswer}
         </button>
       ),
     );
@@ -81,24 +85,23 @@ class Question extends Component {
   }
 
   render() {
-    const { question: {
-      category,
-      question,
-    } } = this.props;
+    const {
+      question: { category, question },
+    } = this.props;
 
     return (
       <div>
-        <p data-testid="question-category">{ category }</p>
-        <p data-testid="question-text">{ question }</p>
-        { this.renderAnswers() }
+        <p data-testid="question-category">{category}</p>
+        <p data-testid="question-text">{question}</p>
+        {this.renderAnswers()}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
   scoreCorrect: scoreThisCorrectAnswer,
-});
+};
 
 Question.propTypes = {
   question: PropTypes.shape({
