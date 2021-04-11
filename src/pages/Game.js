@@ -71,7 +71,8 @@ class Game extends React.Component {
             onClick={ () => this.nextQuestion() }
           >
             Próxima
-          </button>}
+          </button>
+          }
         </div>
       </div>
     );
