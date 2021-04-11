@@ -13,7 +13,7 @@ class FeedbackHeader extends Component {
           <img
             data-testid="header-profile-picture"
             alt={ name }
-            src={ `https://www.gravatar.com/avatar/${userToken}` }
+            src={ userToken }
             className="header-profile-picture"
           />
           <span
