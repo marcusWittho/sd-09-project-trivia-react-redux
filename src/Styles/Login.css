@@ -113,8 +113,6 @@ body {
   }
 
   .title {
-    top: 15%;
     font-size: 4.5rem;
-    position: absolute;
   }
 }
