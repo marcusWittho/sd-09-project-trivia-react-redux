@@ -16,7 +16,14 @@ class Questions extends Component {
             : (
               <main className="container-game">
                 {
-                  questions.map((question, index) => (
+                  /*
+                    Fiz assim pra poder aparecer só uma questão
+                    A pessoa que foi fazer o botão de próxima deve implementar
+                    a lógica de passar entre as questões igual na pokedex
+                    Assim podemos focar no que os requisitos estão de fato pedindo ^^
+                    Ass: Raquel
+                  */
+                  [questions[0]].map((question, index) => (
                     <Question data={ question } key={ index } />
                   ))
                 }
