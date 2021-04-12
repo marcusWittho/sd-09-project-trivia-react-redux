@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { userRegister, fechingTokenToApi } from '../redux/actions';
 import '../App.css';
-import Rodape from '../compenents/Rodape';
+// import Rodape from '../compenents/Rodape';
 import score from '../compenents/Score';
 
 class Login extends React.Component {
@@ -91,7 +91,6 @@ class Login extends React.Component {
     this.gravar(); /* chamei a função de criar o local Storage apenas para teste */
     const { name, email, login, button, settings } = this.state;
     return (
-      <>
       <header className="App-header">
         <h3 className="Trivia">Trivia</h3>
         <form className="Form">
@@ -135,15 +134,7 @@ class Login extends React.Component {
           { login ? <Redirect to="/game" /> : '' }
           { settings ? <Redirect to="/settings" /> : '' }
         </form>
-        <button /* criei este botão para testar a soma do score */
-            onClick={ this.testeScore }
-            type="button"
-          >
-            score
-          </button>
       </header>
-      <Rodape />  {/* Chamei o rodapé */}
-      </>
     );
   }
 }
