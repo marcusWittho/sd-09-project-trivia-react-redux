@@ -56,6 +56,7 @@ class CardQuestion extends React.Component {
     const buttons = document.querySelectorAll('#choiceButton');
     const magicNumber = 4;
     if (orderQuest < magicNumber) {
+      this.updateScore();
       this.setState({
         orderQuest: orderQuest + 1,
         hidden: true,
@@ -65,7 +66,6 @@ class CardQuestion extends React.Component {
         difficulty: questions[orderQuest + 1].difficulty,
         answer: false,
       });
-      this.updateScore();
     } else {
       newScore(score);
       updateAssertions(assertions);
