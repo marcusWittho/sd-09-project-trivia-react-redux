@@ -44,6 +44,10 @@ class Login extends React.Component {
       },
     };
     localStorage.setItem('state', JSON.stringify(state));
+    if (!localStorage.getItem('ranking')) {
+      const newRanking = [];
+      localStorage.setItem('ranking', JSON.stringify(newRanking));
+    }
     this.setState({
       redirect: true,
     });

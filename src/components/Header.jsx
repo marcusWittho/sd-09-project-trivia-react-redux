@@ -6,12 +6,10 @@ import md5 from 'crypto-js/md5';
 class Header extends React.Component {
   constructor() {
     super();
-
     this.state = {
       gravatar: '',
       playerScore: 0,
     };
-
     this.fetchGravatar = this.fetchGravatar.bind(this);
     this.getLocalStorage = this.getLocalStorage.bind(this);
   }
@@ -31,7 +29,6 @@ class Header extends React.Component {
     const { email } = this.props;
     const hash = md5(email).toString();
     const linkGravatar = `https://www.gravatar.com/avatar/${hash}`;
-    console.log(hash);
     this.setState({
       gravatar: linkGravatar,
     });

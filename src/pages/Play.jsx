@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import { timer } from '../actions';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
@@ -27,6 +28,7 @@ class Play extends React.Component {
     this.handleClickFailure = this.handleClickFailure.bind(this);
     this.nextQuestionButtonGenerator = this.nextQuestionButtonGenerator.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.updateRanking = this.updateRanking.bind(this);
   }
 
   toggle() {
@@ -45,11 +47,22 @@ class Play extends React.Component {
     this.setState({ nextQuestion: true });
   }
 
+  updateRanking() {
+    const currentPlayer = JSON.parse(localStorage.getItem('state'));
+    const { gravatarEmail } = currentPlayer;
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const hash = md5(gravatarEmail).toString();
+    currentPlayer.player.gravatarEmail = `https://www.gravatar.com/avatar/${hash}`;
+    ranking.push(currentPlayer.player);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   handleNextQuestion() {
     const { questionIndex } = this.state;
     const { questions, sendTime } = this.props;
     const restartTime = 30;
     if (questionIndex === questions.length - 1) {
+      this.updateRanking();
       this.setState({ redirectFeedBack: true });
     } else {
       this.setState({
@@ -169,10 +182,7 @@ class Play extends React.Component {
     const fakeNumber = 0.5;
     const answersButtons = [correct, ...wrongAnswer];
     const randomizedAnswers = answersButtons.sort(() => fakeNumber - Math.random());
-    this.setState({
-      // randomized: randomizedAnswers,
-      isButtonsRandomized: true,
-    });
+    this.setState({ isButtonsRandomized: true });
     return randomizedAnswers;
   }
 
@@ -182,7 +192,6 @@ class Play extends React.Component {
     const { redirectFeedBack } = this.state;
     if (redirectFeedBack) return <Redirect to="/feedback" />;
     if (isFetching) return <div>Loading...</div>;
-    // if (!isButtonsRandomized) this.handleAnswers();
     const currentQuestion = questions[questionIndex];
     const { category, question } = currentQuestion;
     return (
