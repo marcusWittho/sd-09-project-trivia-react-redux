@@ -4,12 +4,21 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
 import FeedHeader from '../Components/FeedHeader';
+import {
+  rightAnswers,
+  playerLogin,
+  requestApiToken,
+  requestApiQuestions,
+  wrongAnswers,
+  playerScore,
+  updateIndex } from '../redux/actions';
 import './answers.css';
 
 class Feedback extends Component {
   constructor() {
     super();
     this.message = this.message.bind(this);
+    this.setGlobalState = this.setGlobalState.bind(this);
   }
 
   componentDidMount() {
@@ -24,24 +33,36 @@ class Feedback extends Component {
     localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
+  setGlobalState() {
+    const { dispatchCorrect, dispatchWrong, dispatchNameEmail, dispatchIndex,
+      dispatchScore, getToken, getQuestions } = this.props;
+    dispatchCorrect(0);
+    dispatchWrong(0);
+    dispatchNameEmail('', '');
+    dispatchScore(0);
+    getToken();
+    getQuestions();
+    dispatchIndex(0);
+  }
+
   message() {
-    const { rightAnswers, score } = this.props;
+    const { correctAnswers, score } = this.props;
     return (
       <div>
         <p data-testid="feedback-total-score">
           { score }
         </p>
         <p data-testid="feedback-total-question">
-          { rightAnswers }
+          { correctAnswers }
         </p>
       </div>
     );
   }
 
   score() {
-    const { rightAnswers } = this.props;
+    const { correctAnswers } = this.props;
     const tres = 3;
-    if (rightAnswers >= tres) {
+    if (correctAnswers >= tres) {
       return <p data-testid="feedback-text">Mandou bem!</p>;
     }
     return <p data-testid="feedback-text">Podia ser melhor...</p>;
@@ -59,7 +80,7 @@ class Feedback extends Component {
           </button>
         </Link>
         <Link to="/ranking">
-          <button type="button" data-testid="btn-ranking">
+          <button type="button" data-testid="btn-ranking" onClick={ this.setGlobalState }>
             Ver Ranking
           </button>
         </Link>
@@ -69,13 +90,30 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = ({ player }) => ({
-  rightAnswers: player.rightAnswers,
+  correctAnswers: player.rightAnswers,
   score: player.score,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchCorrect: (num) => dispatch(rightAnswers(num)),
+  dispatchWrong: (num) => dispatch(wrongAnswers(num)),
+  dispatchScore: (score) => dispatch(playerScore(score)),
+  dispatchNameEmail: (email, name) => dispatch(playerLogin(email, name)),
+  getToken: () => dispatch(requestApiToken()),
+  getQuestions: () => dispatch(requestApiQuestions()),
+  dispatchIndex: (index) => dispatch(updateIndex(index)),
+});
+
 Feedback.propTypes = {
-  rightAnswers: PropTypes.number.isRequired,
+  correctAnswers: PropTypes.number.isRequired,
+  dispatchIndex: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,
+  dispatchNameEmail: PropTypes.func.isRequired,
+  getToken: PropTypes.func.isRequired,
+  getQuestions: PropTypes.func.isRequired,
+  dispatchCorrect: PropTypes.func.isRequired,
+  dispatchWrong: PropTypes.func.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
