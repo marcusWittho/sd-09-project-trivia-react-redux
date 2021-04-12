@@ -92,7 +92,7 @@ class Feedback extends React.Component {
   }
 
   rankingPage() {
-    this.updateRanking(); // Apagar depois de configurar a página ranking
+    this.updateRanking(); // Apagar depois de configurar a página ranking - test
     this.setState({
       rankingScreen: true,
     });
