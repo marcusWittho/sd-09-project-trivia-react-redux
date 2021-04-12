@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import scoreThisCorrectAnswer from '../actions/score';
 
-// BELOW THERE IS A DEV CONST UNTIL DOING TIMER FUNCTION
-
-const THISANSWEREDTIMER = 15;
+const INITIAL_STATE = {
+  isAnswered: false,
+  answersOrder: [],
+  timer: 30,
+};
 
 class Question extends Component {
   constructor() {
     super();
     this.state = {
-      isAnswered: false,
-      answersOrder: [],
-      timer: 30,
+      ...INITIAL_STATE,
     };
     this.answerQuestion = this.answerQuestion.bind(this);
   }
@@ -24,7 +24,10 @@ class Question extends Component {
   }
 
   componentDidUpdate() {
-    this.timerCountdown();
+    const { isAnswered } = this.state;
+    if (!isAnswered) {
+      this.timerCountdown();
+    }
   }
 
   setRandomAnswersOrder() {
@@ -45,16 +48,21 @@ class Question extends Component {
       question: { correct_answer: correctAnswer, difficulty },
       scoreCorrect: scoreCorrectDispatch,
     } = this.props;
+    const { timer } = this.state;
     const isCorrectAnswer = answerButton === correctAnswer;
-    if (isCorrectAnswer) scoreCorrectDispatch({ difficulty, THISANSWEREDTIMER });
+    if (isCorrectAnswer) scoreCorrectDispatch({ difficulty, timeLeft: timer });
   }
 
   async timerCountdown() {
-    const { timer } = this.state;
+    const { timer, isAnswered } = this.state;
     const TIME_INTERVAL = 1000;
-    if (timer > 0) {
-      setTimeout(() => this.setState({ timer: timer - 1 }), TIME_INTERVAL);
-    }
+    const shouldCountDown = timer > 0 && !isAnswered;
+    setTimeout(
+      () => {
+        if (shouldCountDown) this.setState({ timer: timer - 1 });
+      },
+      TIME_INTERVAL,
+    );
   }
 
   answerQuestion({ target: { textContent: answerButton } }) {
@@ -104,12 +112,28 @@ class Question extends Component {
     return answersOrder.map((displayIndex) => answers[displayIndex]);
   }
 
+  renderNextButton() {
+    const { goToNextQuestion } = this.props;
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => {
+          this.setState({ isAnswered: false, timer: 30 });
+          goToNextQuestion();
+        } }
+      >
+        Next
+      </button>
+    );
+  }
+
   render() {
     const { question: {
       category,
       question,
     } } = this.props;
-    const { timer } = this.state;
+    const { timer, isAnswered } = this.state;
 
     return (
       <div>
@@ -117,6 +141,7 @@ class Question extends Component {
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
         { this.renderAnswers() }
+        { isAnswered && this.renderNextButton() }
       </div>
     );
   }
@@ -136,6 +161,7 @@ Question.propTypes = {
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   scoreCorrect: PropTypes.func.isRequired,
+  goToNextQuestion: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Question);
