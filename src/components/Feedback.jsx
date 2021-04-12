@@ -6,7 +6,6 @@ class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.recoveringLocalStorage = this.recoveringLocalStorage.bind(this);
     this.finalFeedback = this.finalFeedback.bind(this);
     this.feedbackMessage = this.feedbackMessage.bind(this);
     this.playAgain = this.playAgain.bind(this);
@@ -14,34 +13,44 @@ class Feedback extends React.Component {
     this.getFromLocalStorage = this.getFromLocalStorage.bind(this);
     this.updateRanking = this.updateRanking.bind(this);
     this.madeButtons = this.madeButtons.bind(this);
+    this.hitMessage = this.hitMessage.bind(this);
 
     this.state = {
       loginScreen: false,
       rankingScreen: false,
-      name: '',
-      gravatarEmail: '',
-      scoreboard: 0,
     };
-  }
-
-  recoveringLocalStorage() {
-  }
-
-  finalFeedback() {
-    return (
-      <p data-testid="feedback-total-score">Placar final</p>
-      <p data-testid="feedback-total-question">Total de acertos</p>
   }
 
   getFromLocalStorage() {
     const responseLocalStorage = JSON.parse(localStorage.getItem('state'));
-    const { player: { name, assertions, gravatarEmail } } = responseLocalStorage;
+    const { player: { name, assertions, gravatarEmail, score } } = responseLocalStorage;
 
     const ranking = [
-      { name, score: assertions, picture: gravatarEmail },
+      { name, score, assertions, picture: gravatarEmail },
     ];
 
     return ranking;
+  }
+
+  hitMessage(assertions) {
+    if (assertions === 0) {
+      return 'Não acertou nenhuma pergunta';
+    }
+    return `Acertou ${assertions} perguntas`;
+  }
+
+  finalFeedback() {
+    const responseLocalStorage = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions, score } } = responseLocalStorage;
+    return (
+      <div>
+        <span>Placar final</span>
+        <span data-testid="feedback-total-score">{score}</span>
+        <br />
+        <span>Acertou </span>
+        <span data-testid="feedback-total-question">{`${assertions} perguntas` }</span>
+      </div>
+    );
   }
 
   updateRanking() {
@@ -133,7 +142,7 @@ class Feedback extends React.Component {
           </p>
 
           <p data-testid="header-score">{ score }</p>
-
+          { this.finalFeedback() }
           { this.feedbackMessage() }
         </header>
 
