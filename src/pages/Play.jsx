@@ -126,7 +126,7 @@ class Play extends React.Component {
       this.setState({ randomized: randomizedAnswers });
     }
     return (
-      <section>
+      <section className="questions">
         <div>
           <p data-testid="question-category">{ category }</p>
           <p data-testid="question-text">{ question }</p>
@@ -200,7 +200,7 @@ class Play extends React.Component {
     if (redirectFeedBack) return <Redirect to="/feedback" />;
     if (isFetching) return <div>Loading...</div>;
     return (
-      <main>
+      <main className="main-container">
         <Header />
         { !isFetching && questions.length > 0 && this.questionGenerator() }
         { nextQuestion && this.nextQuestionButtonGenerator() }

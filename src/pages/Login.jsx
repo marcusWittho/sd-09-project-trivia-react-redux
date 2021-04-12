@@ -4,6 +4,7 @@ import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import fetchToken from '../services/tokenGenerator';
 import { loginEmail, loginName, questionsThunk } from '../actions';
+import '../styles/Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -70,7 +71,7 @@ class Login extends React.Component {
   formGenerator() {
     const { isDisabled, email, name } = this.state;
     return (
-      <div>
+      <div className="login-inputs-container">
         <label htmlFor="input-player-name">
           Nome:
           <input
@@ -93,22 +94,24 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ isDisabled }
-          onClick={ this.handleClick }
-        >
-          Jogar
-        </button>
-        <Link to="/config">
+        <div>
           <button
             type="button"
-            data-testid="btn-settings"
+            data-testid="btn-play"
+            disabled={ isDisabled }
+            onClick={ this.handleClick }
           >
-            Configurações
+            Jogar
           </button>
-        </Link>
+          <Link to="/config">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
