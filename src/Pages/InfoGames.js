@@ -51,7 +51,14 @@ class InfoGames extends Component {
   }
 
   nextQuestion() {
-    this.setState((prevState) => ({ indice: prevState.indice + 1, isAnswered: false }));
+    this.setState((prevState) => ({ indice: prevState.indice + 1, isAnswered: false }),
+      () => {
+        const { indice } = this.state;
+        const numberOfQuestions = 5;
+        if (indice < numberOfQuestions) {
+          this.randomizeQuestions();
+        }
+      });
   }
 
   requestAPI() {
