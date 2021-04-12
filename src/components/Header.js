@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 
-import logo from '../assets/trivia.png';
-
 class Header extends Component {
   render() {
     const { email, name } = this.props;
@@ -20,7 +18,7 @@ class Header extends Component {
         </div>
         <img
           className="trivia-logo-ingame"
-          src={ logo }
+          src="src/assets/trivia.png"
           alt="Trivia Logo"
         />
         <div className="header-text-container">
