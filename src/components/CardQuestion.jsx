@@ -26,6 +26,11 @@ class CardQuestion extends React.Component {
     this.startTimer();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    return true;
+  }
+
   selectAnswer() {
     this.setState({ isSelected: true, showBtn: true });
   }
@@ -63,7 +68,10 @@ class CardQuestion extends React.Component {
     const { qCounter } = this.state;
     const four = 4;
     if (qCounter === four) {
-      return <Redirect to="/feedback" />;
+      // const next = document.getElementById('next-btn');
+      return (
+        <Redirect to="/feedback" />
+      );
     }
     this.setState((state) => ({
       qCounter: state.qCounter + 1,
@@ -77,6 +85,7 @@ class CardQuestion extends React.Component {
     return (
       <button
         type="button"
+        id="next-btn"
         data-testid="btn-next"
         onClick={ this.questionCounter }
       >
@@ -88,11 +97,11 @@ class CardQuestion extends React.Component {
     const { getQuestions: { questions: { results } } } = this.props;
     const { isSelected, time, qCounter, showBtn } = this.state;
     // Constantes criadas para avaliacao do requisito 6. Deleta-las posteriormente.
-    const index = qCounter;
-    const currentQuestion = results[index];
+    // const index = qCounter;
+    // const currentQuestion = results[index];
     const nothing = <div />;
-    // return results.map((currentQuestion, index) => (
-    return ( // Return de apenas 1 pergunta para avaliacao do requisito 6. Deletar este return quando houver o botao de proxima pergunta.
+    const questions = results.map((currentQuestion, index) => (
+    // Return de apenas 1 pergunta para avaliacao do requisito 6. Deletar este return quando houver o botao de proxima pergunta.
       <div key={ index }>
         <div>
           {time.s}
@@ -122,8 +131,9 @@ class CardQuestion extends React.Component {
         ))}
         {showBtn ? this.nextBtn() : nothing}
       </div>
-    ); // Deletar essa linha quando usar o map da linha 12.
+    )); // Deletar essa linha quando usar o map da linha 12.
     // ));
+    return questions[qCounter];
   }
 }
 CardQuestion.propTypes = {
