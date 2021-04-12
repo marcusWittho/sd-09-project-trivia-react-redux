@@ -18,6 +18,7 @@ function gameplay(state = INITIAL_STATE, action) {
       questionList: action.questionList,
       answersAndPosition: action.answersAndPosition };
   case NEXT_QUESTION:
+    console.log(state.questionIndex + 1);
     return { ...state, questionIndex: state.questionIndex + 1 };
   default:
     return { ...state };
