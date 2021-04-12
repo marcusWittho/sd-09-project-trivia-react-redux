@@ -78,6 +78,20 @@ class InfoGames extends Component {
       ? 'ok' : 'fail';
   }
 
+  feedbackMessege() {
+    const toCompare = 3;
+    const nLimite = 4;
+    const { indice } = this.state;
+    if (indice > nLimite) {
+      if (localStorage.getItem('score') < toCompare) {
+        return <p data-testid="feedback-text">Podia ser melhor...</p>;
+      }
+      if (localStorage.getItem('score') >= toCompare) {
+        return <p data-testid="feedback-text">Mandou bem!</p>;
+      }
+    }
+  }
+
   randomizeQuestions() {
     const { questions, indice } = this.state;
     const crrQuestion = questions[indice];
@@ -132,8 +146,16 @@ class InfoGames extends Component {
   render() {
     const { isLoading, indice } = this.state;
     const nLimite = 4;
+    if (indice > nLimite) {
+      return (
+        <div>
+          <Header />
+          {this.feedbackMessege()}
+        </div>
+      );
+    }
     return (
-      isLoading || indice > nLimite ? <p>Loading...</p> : this.renderQuestions()
+      (isLoading ? <p>Loading...</p> : this.renderQuestions())
     );
   }
 }
