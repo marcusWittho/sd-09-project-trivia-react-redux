@@ -3,6 +3,25 @@ import './ranking.css';
 
 class Ranking extends Component {
   render() {
+    const rankingTeste = [
+      {
+        name: 'Godoffredo',
+        score: 2,
+        picture: 'https://www.gravatar.com/avatar/8d7e21d751e2e1c783c16d3ce048757c',
+      },
+      {
+        name: 'Chiffronezio',
+        score: 5,
+        picture: 'https://www.gravatar.com/avatar/8d7e21d751e2e1c783c16d3ce048757c',
+      },
+    ]
+      
+    // transforma o array em objeto JSON
+    const jsonRankingSet = JSON.stringify(rankingTeste)
+      
+    // seta o objeto JSON no localStorage
+    localStorage.setItem('ranking', jsonRankingSet);
+
     // recupera o objeto JSON do localStorage
     const jsonRanking = localStorage.getItem('ranking');
 
@@ -19,11 +38,11 @@ class Ranking extends Component {
                 <li key={ jogada.name } className="ranking-item">
                   <div>
                     <div data-testid={ `player-name-${index}` }>
-                      <span className="ranking-text">Nome:</span>
+                      <span className="ranking-text">Nome: </span>
                       { jogada.name }
                     </div>
                     <div data-testid={ `player-score-${index}` }>
-                      <span className="ranking-text">Score:</span>
+                      <span className="ranking-text">Score: </span>
                       { jogada.score }
                     </div>
                   </div>
