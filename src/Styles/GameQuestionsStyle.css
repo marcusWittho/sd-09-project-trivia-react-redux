@@ -1,7 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;400;600;800&display=swap');
+
+* {
+  font-family: 'Fira Sans', sans-serif;
+}
+
 .container-questions {
   display: flex;
-  flex-direction: column;
-  margin-left: 40%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .btn-next {
@@ -18,7 +24,6 @@
   text-align: center;
   width: 100px;
 }
-
 
 .correct {
   border: 3px solid rgb(6, 240, 15);
@@ -39,14 +44,15 @@
   border: 3px solid red;
 }
 
-
 .timer {
   color: green;
+  font-family: 'Fira Sans', sans-serif;
 }
 
 .question {
   color: green;
   font-size: 30px;
+  font-family: 'Fira Sans', sans-serif;
 }
 
 .question-category {
