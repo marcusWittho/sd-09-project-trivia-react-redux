@@ -66,7 +66,7 @@ class MainBody extends React.Component {
         }));
       }
       if (questions[0].difficulty === 'hard') {
-        handleScore(points + (timer * 3));
+        handleScore(points + (timer * Number('3')));
         localStorage.setItem('state',
           JSON.stringify({ player:
           { name,
