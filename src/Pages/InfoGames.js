@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { incrementScore } from '../redux/actions/index';
 import Header from '../components/Header';
@@ -14,6 +15,7 @@ class InfoGames extends Component {
       indice: 0,
       isLoading: true,
       isAnswered: false,
+      endGame: false,
     };
     this.requestAPI = this.requestAPI.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
@@ -57,6 +59,8 @@ class InfoGames extends Component {
         const numberOfQuestions = 5;
         if (indice < numberOfQuestions) {
           this.randomizeQuestions();
+        } else {
+          this.setState({ endGame: true });
         }
       });
   }
@@ -76,20 +80,6 @@ class InfoGames extends Component {
   changeAnswer(alternative, crrQuestion) {
     return alternative === crrQuestion.correct_answer
       ? 'ok' : 'fail';
-  }
-
-  feedbackMessege() {
-    const toCompare = 3;
-    const nLimite = 4;
-    const { indice } = this.state;
-    if (indice > nLimite) {
-      if (localStorage.getItem('score') < toCompare) {
-        return <p data-testid="feedback-text">Podia ser melhor...</p>;
-      }
-      if (localStorage.getItem('score') >= toCompare) {
-        return <p data-testid="feedback-text">Mandou bem!</p>;
-      }
-    }
   }
 
   randomizeQuestions() {
@@ -144,18 +134,14 @@ class InfoGames extends Component {
   }
 
   render() {
-    const { isLoading, indice } = this.state;
+    const { isLoading, indice, endGame } = this.state;
     const nLimite = 4;
-    if (indice > nLimite) {
-      return (
-        <div>
-          <Header />
-          {this.feedbackMessege()}
-        </div>
-      );
-    }
+    const end = <Redirect to="/Feedback" />;
     return (
-      (isLoading ? <p>Loading...</p> : this.renderQuestions())
+      <div>
+        {isLoading || indice > nLimite ? <p>Loading...</p> : this.renderQuestions()}
+        {endGame ? end : <span />}
+      </div>
     );
   }
 }
