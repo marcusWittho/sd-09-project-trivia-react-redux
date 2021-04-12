@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Login from './pages/Login/Login';
-import Game from './pages/Game/Game';
+import Login from './pages/Login';
+import Game from './pages/Game';
 import Settings from './pages/Settings';
 import MainContainer from './components/Layout/styled';
-import Layout from './components/Layout/Layout';
+import Layout from './components/Layout';
 
 const App = () => (
   <MainContainer>

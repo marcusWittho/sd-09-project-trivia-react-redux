@@ -32,12 +32,20 @@ export const ButtonsAnswers = styled.section`
     padding: 1rem;
     font-size: 1rem;
   }
+
+   @media screen and (max-width: 800px) {
+    max-width: none;
+  }
 `;
 
 export const FlexConteiner = styled.section`
   display: flex;
   justify-content: space-between;
   height: 100%;
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const QuestionConteiner = styled.section`

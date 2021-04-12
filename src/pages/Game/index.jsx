@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { getQuestions } from '../../redux/action';
+import QuestionsButtons from './components/QuestionsButtons';
 import * as S from './styled';
 
 class GameScreen extends Component {
@@ -147,6 +148,7 @@ class GameScreen extends Component {
             { answer}
           </button>
         ))}
+
       </S.ButtonsAnswers>
     );
   }
@@ -181,6 +183,7 @@ class GameScreen extends Component {
             </S.NextButtonContainer>
             {this.buttonsAnswers() }
           </S.FlexConteiner>
+
         </S.QuestionConteiner>
       </>
     );
