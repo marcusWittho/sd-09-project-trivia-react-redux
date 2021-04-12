@@ -16,19 +16,19 @@ class Ranking extends Component {
           {
             ranking.sort((play1, play2) => play1.score < play2.score ? play2 : play1)
               .map((jogada, index) => (
-              <li key={ jogada.name } className="ranking-item">
-                <div>
-                  <div data-testid={ `player-name-${index}` }>
-                    <span className="ranking-text">Nome:</span>
-                    { jogada.name }
+                <li key={ jogada.name } className="ranking-item">
+                  <div>
+                    <div data-testid={ `player-name-${index}` }>
+                      <span className="ranking-text">Nome:</span>
+                      { jogada.name }
+                    </div>
+                    <div data-testid={ `player-score-${index}` }>
+                      <span className="ranking-text">Score:</span>
+                      { jogada.score }
+                    </div>
                   </div>
-                  <div data-testid={ `player-score-${index}` }>
-                    <span className="ranking-text">Score:</span>
-                    { jogada.score }
-                  </div>
-                </div>
-                <img src={ jogada.picture } alt="foto do jogador" />
-              </li>))
+                  <img src={ jogada.picture } alt="foto do jogador" />
+                </li>))
           }
         </ul>
       </div>
