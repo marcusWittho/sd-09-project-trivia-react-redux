@@ -1,5 +1,8 @@
+import gravatar from './gravatar';
+
 const STATE_KEY = 'state';
 const TOKEN_KEY = 'token';
+const RANKING_KEY = 'ranking';
 
 const getPlayer = () => {
   const playerJSON = localStorage.getItem(STATE_KEY);
@@ -40,9 +43,27 @@ const getToken = () => {
   return token;
 };
 
+const getRanking = () => {
+  const rankingJson = localStorage.getItem(RANKING_KEY);
+  const ranking = JSON.parse(rankingJson);
+  if (!ranking) return [];
+  return ranking;
+};
+
+const addToRanking = (name, score, email) => {
+  const ranking = getRanking();
+  const photoUrl = gravatar.generateGravatarUrl(email);
+  const player = { name, score, picture: photoUrl };
+  ranking.push(player);
+  localStorage.setItem(RANKING_KEY, JSON.stringify(ranking));
+};
+
 export default {
   addPointsToScore,
   savePlayer,
+  getPlayer,
   getToken,
   getScore,
+  getRanking,
+  addToRanking,
 };
