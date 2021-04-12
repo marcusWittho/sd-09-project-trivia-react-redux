@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import '../App.css';
 
 class Gaming extends React.Component {
   constructor(props) {
@@ -44,11 +45,13 @@ class Gaming extends React.Component {
         {
           answer: this.decodeHTMLEntities(correctAnswer),
           testid: 'correct-answer',
+          className: 'green-border',
         },
       ];
       incorrectAnswers.map((incorrect, index) => newArray.push({
         answer: this.decodeHTMLEntities(incorrect),
         testid: `wrong-answer-${index}`,
+        className: 'red-border',
       }));
       this.setState({
         correct: this.decodeHTMLEntities(correctAnswer),
@@ -104,6 +107,7 @@ class Gaming extends React.Component {
   render() {
     const { questionsState, questionNumber } = this.props;
     const { redirect, answers, isDisabled, isFinished } = this.state;
+    console.log(isDisabled);
 
     return redirect || isFinished ? (
       <Redirect to={ redirect ? '/' : '/feedback' } />
@@ -121,13 +125,14 @@ class Gaming extends React.Component {
               {this.decodeHTMLEntities(questionsState[questionNumber].question)}
             </p>
             <ul>
-              {answers.map(({ answer, testid }, index) => (
+              {answers.map(({ answer, testid, className }, index) => (
                 <li key={ `answer-${index}` }>
                   <button
                     type="button"
                     data-testid={ testid }
                     disabled={ isDisabled }
                     onClick={ this.handleClick }
+                    className={ isDisabled ? className : null }
                   >
                     {answer}
                   </button>
