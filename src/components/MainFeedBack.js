@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class MainFeedBack extends React.Component {
   render() {
@@ -10,6 +11,14 @@ class MainFeedBack extends React.Component {
         {assertions.player.assertions < minAssertions
           ? <p data-testid="feedback-text">Podia ser melhor...</p>
           : <p data-testid="feedback-text">Mandou bem!</p>}
+        <Link to="/">
+          <button
+            data-testid="btn-play-again"
+            type="button"
+          >
+            Jogar novamente
+          </button>
+        </Link>
       </>
     );
   }
