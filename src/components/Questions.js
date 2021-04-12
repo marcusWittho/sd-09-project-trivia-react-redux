@@ -2,18 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NextButton from './NextButton';
-import { fetchQuestions, increaseScore } from '../actions/game';
+import { fetchQuestions, increaseScore, clickAnswer } from '../actions/game';
 
 import './Questions.css';
 
 class Questions extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      answered: false,
-      correctAnswer: '',
-      wrongAnswer: '',
-    };
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
@@ -23,21 +18,17 @@ class Questions extends React.Component {
   }
 
   checkAnswer({ target }) {
-    const { addScore, questions, questionPos } = this.props;
+    const { addScore, questions, questionPos, clickAnswered } = this.props;
     const { value } = target;
     const { difficulty, correct_answer: correctAnswer } = questions[questionPos];
     const isCorrect = value === correctAnswer ? 1 : 0;
     addScore(isCorrect, difficulty);
-    this.setState({
-      correctAnswer: 'correct',
-      wrongAnswer: 'wrong',
-      answered: true,
-    });
+    clickAnswered();
   }
 
   render() {
-    const { questions, isLoading, timer, questionPos } = this.props;
-    const { correctAnswer, wrongAnswer, answered } = this.state;
+    const { questions, isLoading, timer, questionPos,
+      answered, correctAnswer, wrongAnswer } = this.props;
     if (isLoading) return <h1>Loading...</h1>;
     const allAnswer = [
       questions[questionPos].correct_answer,
@@ -76,6 +67,10 @@ Questions.propTypes = {
   timer: PropTypes.number.isRequired,
   addScore: PropTypes.func.isRequired,
   questionPos: PropTypes.number.isRequired,
+  clickAnswered: PropTypes.func.isRequired,
+  answered: PropTypes.bool.isRequired,
+  correctAnswer: PropTypes.string.isRequired,
+  wrongAnswer: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -83,11 +78,15 @@ const mapStateToProps = (state) => ({
   questions: state.game.questions,
   timer: state.game.timer,
   isLoading: state.game.isLoading,
+  answered: state.game.answered,
+  correctAnswer: state.game.correctAnswer,
+  wrongAnswer: state.game.wrongAnswer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: () => dispatch(fetchQuestions()),
   addScore: (score, diff) => dispatch(increaseScore(score, diff)),
+  clickAnswered: () => dispatch(clickAnswer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
