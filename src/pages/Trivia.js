@@ -13,6 +13,7 @@ class Trivia extends React.Component {
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.createQuestion = this.createQuestion.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.randomOptions = this.randomOptions.bind(this);
     this.state = { index: 0 };
   }
 
@@ -36,11 +37,29 @@ class Trivia extends React.Component {
 
   createQuestion() {
     const { questions } = this.props;
-    const { index } = this.state;
     if (questions.length > 0) {
       return (
-        <Question question={ questions[index] } nextQuestion={ this.nextQuestion } />);
+        <Question
+          question={ this.randomOptions() }
+          nextQuestion={ this.nextQuestion }
+        />);
     }
+  }
+
+  randomOptions() {
+    const { questions } = this.props;
+    const { index } = this.state;
+    let questionArray = [{ correct: questions[index].correct_answer }];
+    questions[index].incorrect_answers.forEach((incorrect) => {
+      questionArray = [...questionArray, { incorrect }];
+    });
+    let randomAnswers = [];
+    while (questionArray.length !== 0) {
+      const randomIndex = Math.floor(Math.random() * questionArray.length);
+      randomAnswers = [...randomAnswers, questionArray[randomIndex]];
+      questionArray.splice(randomIndex, 1);
+    }
+    return { ...questions[index], randomAnswers };
   }
 
   render() {
