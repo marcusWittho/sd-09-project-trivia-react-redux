@@ -1,0 +1,33 @@
+body {
+	background-color: rgb(99, 13, 136);
+}
+
+.ranking-list {
+	align-items: flex-start;
+  list-style-type: none;
+	justify-content:flex-start;
+	padding: 0;
+}
+
+.ranking-item {
+	border: 1px black solid;
+	border-radius: 15px;
+	display: flex;
+	justify-content: space-between;
+	margin: 20px;
+	padding: 5px 10px 5px 10px;
+	width: 400px;
+}
+
+.card-container {
+	background-color: white;
+	border-radius: 15px;
+	flex-direction: column;
+	margin: auto;
+	margin-top: 150px;
+	width: 50%;
+}
+
+.ranking-text {
+	font-weight: 700;
+}
