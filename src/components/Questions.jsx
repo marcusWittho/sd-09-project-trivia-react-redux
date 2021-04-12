@@ -5,6 +5,7 @@ import Logotipo from './Logotipo';
 import Question from './Question';
 
 class Questions extends Component {
+  
   render() {
     const { questions } = this.props;
 
