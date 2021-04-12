@@ -1,4 +1,5 @@
-import { ADD_USER_INFO } from '../actions/types';
+import { ADD_USER_INFO, ANSWER_CORRECT } from '../actions/types';
+import calcNewScore from '../services/score';
 
 const INITIAL_STATE = {
   name: '',
@@ -6,16 +7,21 @@ const INITIAL_STATE = {
   score: 0,
 };
 
-const addUserInfoReducer = (state = INITIAL_STATE, action) => {
+const userInfoReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ADD_USER_INFO:
     return {
       ...state,
       ...action.payload,
     };
+  case ANSWER_CORRECT:
+    return {
+      ...state,
+      ...calcNewScore(action.payload, state),
+    };
   default:
     return state;
   }
 };
 
-export default addUserInfoReducer;
+export default userInfoReducer;

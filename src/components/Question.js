@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import scoreThisCorrectAnswer from '../actions/score';
 
-export default class Question extends Component {
+// BELOW THERE IS A DEV CONST UNTIL DOING TIMER FUNCTION
+
+const THISANSWEREDTIMER = 15;
+
+class Question extends Component {
   constructor() {
     super();
     this.state = {
@@ -22,14 +28,25 @@ export default class Question extends Component {
   }
 
   setRandomAnswersOrder() {
-    const { question: { incorrect_answers: incorrectAnswers } } = this.props;
-    const answersLength = incorrectAnswers.length + 1;
     const CONST_RANDOM = 0.5;
-    const randonOrderArray = Array.from(
+    const {
+      question: { incorrect_answers: incorrectAnswers },
+    } = this.props;
+    const answersLength = incorrectAnswers.length + 1;
+    const randomOrderArray = Array.from(
       { length: answersLength },
       (_, index) => index,
     ).sort(() => Math.random() - CONST_RANDOM);
-    this.setState({ answersOrder: randonOrderArray });
+    this.setState({ answersOrder: randomOrderArray });
+  }
+
+  checkAnswer(answerButton) {
+    const {
+      question: { correct_answer: correctAnswer, difficulty },
+      scoreCorrect: scoreCorrectDispatch,
+    } = this.props;
+    const isCorrectAnswer = answerButton === correctAnswer;
+    if (isCorrectAnswer) scoreCorrectDispatch({ difficulty, THISANSWEREDTIMER });
   }
 
   async timerCountdown() {
@@ -40,7 +57,8 @@ export default class Question extends Component {
     }
   }
 
-  answerQuestion() {
+  answerQuestion({ target: { textContent: answerButton } }) {
+    this.checkAnswer(answerButton);
     this.setState({ isAnswered: true });
   }
 
@@ -51,6 +69,7 @@ export default class Question extends Component {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
     } } = this.props;
+
     const correctAnswersButtons = (
       <button
         key="correct"
@@ -62,7 +81,7 @@ export default class Question extends Component {
           : this.answerQuestion }
         disabled={ timeout }
       >
-        { correctAnswer }
+        {correctAnswer}
       </button>
     );
     const incorrectAnswersButtons = incorrectAnswers.map(
@@ -77,7 +96,7 @@ export default class Question extends Component {
             : this.answerQuestion }
           disabled={ timeout }
         >
-          { incorrectAnswer }
+          {incorrectAnswer}
         </button>
       ),
     );
@@ -103,6 +122,10 @@ export default class Question extends Component {
   }
 }
 
+const mapDispatchToProps = {
+  scoreCorrect: scoreThisCorrectAnswer,
+};
+
 Question.propTypes = {
   question: PropTypes.shape({
     category: PropTypes.string,
@@ -112,4 +135,7 @@ Question.propTypes = {
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  scoreCorrect: PropTypes.func.isRequired,
 };
+
+export default connect(null, mapDispatchToProps)(Question);
