@@ -1,0 +1,4 @@
+.container-page-play {
+  display: flex;
+  flex-direction: column;
+}

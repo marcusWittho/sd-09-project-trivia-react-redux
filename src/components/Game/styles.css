@@ -1,0 +1,97 @@
+.container-page-asks {
+  display: flex;
+  flex-direction: column;
+  margin: 50px auto;
+  width: 800px;
+}
+
+.container-title-ask {
+  background: white;
+  border-radius: 10px 10px 0 0;
+  padding: 20px;
+}
+
+.text-category {
+  color: rgb(34, 34, 34);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.text-question {
+  color: rgb(54, 54, 54);
+  font-size: 18px;
+}
+
+.container-asks {
+  align-items: center;
+  background: rgb(226, 201, 255);
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.option-ask {
+  width: 400px;
+}
+
+.option-ask button {
+  background: rgb(103, 40, 175);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 16px;
+  transition: all ease-in-out 300ms;
+  width: 100%;
+}
+
+.option-ask button:hover {
+  background: rgb(24, 160, 139);
+  cursor: pointer;
+}
+
+.container-btn {
+  display: flex;
+  justify-content: flex-end;
+  width: 400px;
+}
+
+.btn-next, .btn-finish {
+  background: rgb(24, 160, 139);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0;
+  padding: 12px 18px;
+  transition: all ease-in-out 300ms;
+}
+
+.btn-next:hover, .btn-finish:hover {
+  background: rgb(34, 192, 168);
+  cursor: pointer;
+}
+
+.fa-arrow-right, .fa-check {
+  margin-left: 15px;
+}
+
+.container-clock {
+  align-items: center;
+  display: flex;
+}
+
+.fa-clock {
+  color: white;
+  font-size: 38px;
+  margin-right: 15px;
+}
+
+.text-timer {
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+}

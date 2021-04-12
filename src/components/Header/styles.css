@@ -1,0 +1,44 @@
+.container-page-header {
+  align-items: center;
+  background: rgb(226, 201, 255);
+  border-bottom: 3px solid rgb(24, 160, 139);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.container-page-header-align {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 800px;
+}
+
+.player-info {
+  align-items: center;
+  display: flex;
+}
+
+.image-avatar {
+  border: 3px solid rgb(24, 160, 139);
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 20px;
+  width: 50px;
+}
+
+.header-player-name {
+  font-size: 22px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.header-score {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.fa-star {
+  color: rgb(24, 160, 139);
+}
