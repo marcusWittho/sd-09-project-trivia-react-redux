@@ -136,7 +136,7 @@ class InfoGames extends Component {
   render() {
     const { isLoading, indice, endGame } = this.state;
     const nLimite = 4;
-    const end = <Redirect to="/Feedback" />
+    const end = <Redirect to="/Feedback" />;
     return (
       <div>
         {isLoading || indice > nLimite ? <p>Loading...</p> : this.renderQuestions()}

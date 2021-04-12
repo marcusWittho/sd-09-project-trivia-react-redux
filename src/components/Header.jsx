@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as api from '../services/fetchApi';
 
 class Header extends Component {
@@ -37,6 +38,11 @@ class Header extends Component {
           </span>
         </header>
         <p data-testid="header-score">{score}</p>
+        <Link to="/Ranking">
+          <button data-testid="btn-ranking" type="button">
+            Ver ranking
+          </button>
+        </Link>
       </div>
     );
   }
