@@ -37,7 +37,7 @@ const player = (state = INITIAL_PLAYER_STATE, action) => {
   case UPDATE_SCORE_ASSERTIONS:
     return {
       ...state,
-      score: state.score + action.score,
+      score: action.score,
       assertions: state.assertions + action.assertions,
       isAnswered: true,
     };

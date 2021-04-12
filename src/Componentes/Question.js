@@ -31,6 +31,7 @@ class Question extends React.Component {
 
     this.timer = this.timer.bind(this);
     this.renderNextBtn = this.renderNextBtn.bind(this);
+    this.playerInitialState = this.playerInitialState.bind(this);
 
     const { question } = props;
     this.state = {
@@ -47,24 +48,35 @@ class Question extends React.Component {
 
   componentDidMount() {
     this.timer();
+    this.playerInitialState();
   }
 
-  answerQuestion(alternative, question, timer) {
-    const baseValue = 10;
-    let points = 0;
-    const { incremanteScore, player } = this.props;
-
-    if (defineAnswer(alternative, question) === 'correct-answer') {
-      points = baseValue + (timer * getDifficultyValue(question.difficulty));
-      incremanteScore(points, 1);
-    }
-
-    incremanteScore(points, 0);
+  playerInitialState() {
+    const { player } = this.props;
+    console.log(player);
     localStorage.setItem('state', JSON.stringify({ player: { name: player.name,
       assertions: player.assertions,
       score: player.score,
       gravatarEmail: player.email,
     } }));
+  }
+
+  answerQuestion(alternative, question, timer) {
+    const baseValue = 10;
+
+    const { incremanteScore } = this.props;
+    const difficulty = getDifficultyValue(question.difficulty);
+    console.log(question);
+    const playerOldInfo = JSON.parse(localStorage.getItem('state'));
+    console.log(playerOldInfo);
+
+    if (defineAnswer(alternative, question) === 'correct-answer') {
+      console.log(baseValue + (timer * difficulty));
+      const points = playerOldInfo.player.score + baseValue + (timer * difficulty);
+      playerOldInfo.player.score = points;
+      localStorage.setItem('state', JSON.stringify(playerOldInfo));
+      incremanteScore(points, 1);
+    }
     this.setState({ showAwnser: true });
   }
 
@@ -118,7 +130,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { question, isAnswered } = this.props;
+    const { question } = this.props;
     const { showAwnser, alternatives, timeToAnswer } = this.state;
 
     return (
@@ -140,7 +152,7 @@ class Question extends React.Component {
             </button>
           </div>
         ))}
-        {(isAnswered || timeToAnswer === 0) && this.renderNextBtn()}
+        {(showAwnser || timeToAnswer === 0) && this.renderNextBtn()}
       </div>);
   }
 }
@@ -150,7 +162,6 @@ Question.propTypes = {
   player: PropTypes.objectOf.isRequired,
   incremanteScore: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
-  isAnswered: PropTypes.bool.isRequired,
   incremanteIndex: PropTypes.func.isRequired,
 };
 
