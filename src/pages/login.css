@@ -2,10 +2,10 @@
   width: 90%;
 }
 
-input[type=text] {
+input[ type = 'text' ] {
   border: 1px solid #ccc;
-  box-sizing: border-box;
   border-radius: 5px;
+  box-sizing: border-box;
   display: inline-block;
   margin: 18px 5px;
   padding: 12px 20px;
