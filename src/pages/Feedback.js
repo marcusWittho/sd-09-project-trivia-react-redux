@@ -12,19 +12,35 @@ class Feedback extends Component {
   menssageFeedBack() {
     const numberThree = 3;
     const { assertions } = this.props;
-    console.log(typeof (assertions));
     if (assertions < numberThree) {
-      console.log(assertions);
       return (<p data-testid="feedback-text">Podia ser melhor...</p>);
     }
     return (<p data-testid="feedback-text">Mandou bem!</p>);
   }
 
   render() {
+    const { score, assertions } = this.props;
+    console.log(typeof (assertions));
     return (
       <div>
         <Header />
         {this.menssageFeedBack()}
+        <p>
+          Pontuação final:
+          <span
+            data-testid="feedback-total-score"
+          >
+            {score}
+          </span>
+        </p>
+        <p>
+          Total acertos:
+          <span
+            data-testid="feedback-total-question"
+          >
+            {assertions}
+          </span>
+        </p>
       </div>
     );
   }
@@ -34,12 +50,14 @@ const mapStateToProps = (state) => ({
   name: state.loginUser.name,
   email: state.loginUser.email,
   assertions: state.player.assertions,
+  score: state.player.score,
 });
 
 Feedback.propTypes = {
   email: PropTypes.string,
   name: PropTypes.string,
   assertions: PropTypes.number,
+  score: PropTypes.number,
 }.isRequired;
 
 export default connect(mapStateToProps)(Feedback);
