@@ -34,7 +34,7 @@
   width: 1276px;
 }
 
-.question-left {
+.question-Mark-left {
   height: 85px;
   margin-top: 490px;
   margin-left: 150px;
@@ -42,7 +42,7 @@
   transform: rotate(-40deg);
 }
 
-.question-right {
+.question-Mark-right {
   height: 95px;
   margin-left: 1150px;
   margin-top: -400px;
@@ -52,31 +52,31 @@
 
 .question-category {
   display: block;
-  text-align: center;
   font-size: 170%;
   padding: 35px;
+  text-align: center;
 }
 
 .question {
   display: block;
-  text-align: center;
   font-size: 125%;
   margin-top: 15px;
   padding: 35px;
+  text-align: center;
 }
 
 .answerButton {
   display: block;
-  text-align: center;
   padding: 5px;
+  text-align: center;
 }
 
 .answerButton button {
-  width: 100%;
-  height: 60px;
   border-radius: 20px;
   border: 1px solid rgb(192, 192, 192);
   cursor: pointer;
+  height: 60px;
+  width: 100%;
 }
 
 .answerButton button:hover {

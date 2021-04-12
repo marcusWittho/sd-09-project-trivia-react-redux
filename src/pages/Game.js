@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import './game.css';
 import WaveTop from '../img/wave-top.svg';
 import WaveBottom from '../img/wave-bottom.svg';
-import Question from '../img/questao.png';
+import QuestionMark from '../img/questao.png';
 
 class Game extends Component {
   constructor(props) {
@@ -107,7 +107,7 @@ class Game extends Component {
     return (
       <section className="game-section">
         <Header />
-        <img className="question-left" src={ Question } alt="wave" />
+        <img className="question-Mark-left" src={ QuestionMark } alt="wave" />
         <section className="card-container">
           <img className="wave-top" src={ WaveTop } alt="wave" />
           <div className="game-card">
@@ -117,7 +117,7 @@ class Game extends Component {
           </div>
           <img className="wave-bottom" src={ WaveBottom } alt="wave" />
         </section>
-        <img className="question-right" src={ Question } alt="wave" />
+        <img className="question-Mark-right" src={ QuestionMark } alt="wave" />
       </section>
     );
   }
