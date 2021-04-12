@@ -9,6 +9,8 @@ class Question extends React.Component {
 
     this.createHeader = this.createHeader.bind(this);
     this.inQuestion = this.inQuestion.bind(this);
+    this.testId = this.testId.bind(this);
+    this.multiQuestion = this.multiQuestion.bind(this);
   }
 
   createHeader() {
@@ -22,40 +24,94 @@ class Question extends React.Component {
         />
         <h4 data-testid="header-player-name">{ name }</h4>
         <h4 data-testid="header-score">{ score }</h4>
-        <h2>sss</h2>
       </header>
     );
   }
 
+  testId(element, index) {
+    return ((element)
+      ? 'data-testid="correct_answer"'
+      : `data-testid=wrong-answer-${index}`
+    );
+  }
+
+  multiQuestion({ correct_answer: correctAnswer,
+    incorrect_answers: incorrectAnswers, category, question }, index) {
+    const options = [...incorrectAnswers, correctAnswer];
+    const randon = 0.5;
+    return (
+      <div key={ index } className="mult-answer">
+        <div className="mult-container">
+          <section className="mult-question">
+            <h3 data-testid="question-category">{ category }</h3>
+            <p data-testid="question-text">{ question }</p>
+          </section>
+          <aside className="mult-aside">
+            { [...options].sort(() => randon - Math.random()).map((btn) => (
+              <button
+                type="button"
+                key={ index }
+                data-testId={ btn === correctAnswer
+                  ? 'correct-answer'
+                  : `wrong-answer-${options.indexOf(btn)}` }
+              >
+                { btn }
+              </button>
+            )) }
+          </aside>
+        </div>
+        <button type="button">PRÓXIMO</button>
+      </div>
+    );
+  }
+  // wrong-answer-${index}
+  // {
+  //   "category": "Entertainment: Video Games",
+  //   "type": "multiple",
+  //   "difficulty": "easy",
+  //   "question": "What does Solid Snake use to hide himself with?",
+  //   "correct_answer": "Cardboard Box",
+  //   "incorrect_answers": [
+  //   "Cloaking Device",
+  //   "Metal Crate",
+  //   "Cardboard cut-out"
+  //   ]
+  //   },
+
   inQuestion() {
     const { dataAnswer } = this.props;
+    const { multiQuestion } = this;
     return dataAnswer.map((element, index) => {
       console.log(element);
       console.log(index);
       if (element.type === 'boolean') {
         return (
-          <div key={ index }>
-            <section>
+          <div key={ index } className="boll-answer">
+            <section className="bool-question">
               <h3 data-testid="question-category">{ element.category }</h3>
               <p data-testid="question-text">{ element.question }</p>
             </section>
-            <aside>
-              <button type="button" data-testid="correct-answer" value={ element.correct_answer }>Verdadeiro</button>
-              <button type="button" data-testid="" value={ element.incorrect_answers }>Falso</button>
+            <aside className="bool-aside">
+              <button
+                type="button"
+                data-testid=""
+                value={ element.correct_answer }
+              >
+                Verdadeiro
+              </button>
+              <button
+                type="button"
+                data-testid=""
+                value={ element.incorrect_answers }
+              >
+                Falso
+              </button>
             </aside>
             <button type="button">PRÓXIMO</button>
           </div>
         );
       }
-      return (
-        <div key={ index }>
-          <p>
-            Questão 0
-            { 1 }
-          </p>
-          <p>Multipla Escolha</p>
-        </div>
-      );
+      return multiQuestion(element, index);
     });
   }
 
