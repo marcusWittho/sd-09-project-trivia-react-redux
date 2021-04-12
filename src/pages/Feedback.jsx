@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import Header from '../components/Header';
 import PlayAgainBtn from '../components/PlayAgainBtn';
 
@@ -7,7 +9,9 @@ class Feedback extends React.Component {
     return (
       <div>
         <Header />
-        <PlayAgainBtn />
+        <Link to="/game">
+          <PlayAgainBtn />
+        </Link>
       </div>
     );
   }

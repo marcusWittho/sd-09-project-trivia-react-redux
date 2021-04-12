@@ -7,7 +7,9 @@ class PlayAgainBtn extends React.Component {
         type="button"
         onClick={ this.handleClickBtn }
         data-testid="btn-play-again"
-        >Jogar novamente</button>
+      >
+        Jogar novamente
+      </button>
     );
   }
 }
