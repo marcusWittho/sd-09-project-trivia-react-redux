@@ -10,18 +10,15 @@ class GameScreen extends Component {
     super(props);
 
     this.state = {
-      player: {
-        assertions: '',
-        gravatarEmail: '',
-        name: '',
-        score: 0,
-      },
+      name: '',
+      gravatarEmail: '',
       questions: [],
       numberOFQuestion: 0,
       loading: true,
       timer: 30,
       disabled: false,
       colorQuestion: false,
+      localScore: 0,
       nextButton: 'none',
       feedbackScreen: false,
     };
@@ -32,7 +29,6 @@ class GameScreen extends Component {
     this.clickQuestion = this.clickQuestion.bind(this);
     this.recoveringLocalStorage = this.recoveringLocalStorage.bind(this);
     this.header = this.header.bind(this);
-    this.hitCounter = this.hitCounter.bind(this);
   }
 
   componentDidMount() {
@@ -41,20 +37,49 @@ class GameScreen extends Component {
     this.recoveringLocalStorage();
   }
 
-  recoveringLocalStorage() {
-    const state = JSON.parse(localStorage.getItem('state'));
+  setScoreInStorage(scoreNumber) {
+    const { player } = JSON.parse(localStorage.getItem('state'));
 
-    this.setState((previousState) => (
-      {
-        player: {
-          ...previousState.player,
-          assertions: state.player.assertions,
-          gravatarEmail: state.player.gravatarEmail,
-          name: state.player.name,
-          score: state.player.score,
-        },
-      }
-    ));
+    if (!player.name) return;
+
+    const score = {
+      ...player,
+      score: player.score + scoreNumber,
+      assertions: player.assertions + 1,
+    };
+
+    localStorage.setItem('state', JSON.stringify({ player: score }));
+  }
+
+  recoveringLocalStorage() {
+    const storage = JSON.parse(localStorage.getItem('state'));
+    this.setState({
+      name: storage.player.name,
+      gravatarEmail: storage.player.gravatarEmail,
+    });
+  }
+
+  calcScore(difficulty) {
+    const { timer, localScore } = this.state;
+    const TEN_POINTS = 10;
+    const TREE_POINTS = 3;
+    const TWO_POINTS = 2;
+    const ONE_POINTS = 1;
+
+    if (difficulty === 'hard') {
+      const result = TEN_POINTS + timer * TREE_POINTS;
+      this.setState({ localScore: localScore + result });
+    }
+
+    if (difficulty === 'medium') {
+      const result = TEN_POINTS + timer * TWO_POINTS;
+      this.setState({ localScore: localScore + result });
+    }
+
+    if (difficulty === 'easy') {
+      const result = TEN_POINTS + timer * ONE_POINTS;
+      this.setState({ localScore: localScore + result });
+    }
   }
 
   decreaseTime() {
@@ -69,7 +94,6 @@ class GameScreen extends Component {
         if (numberOFQuestion === countQuestions) {
           this.setState({
             timer: 0,
-            nextButton: 'inline',
           });
         }
         this.setState({
@@ -124,25 +148,8 @@ class GameScreen extends Component {
     });
   }
 
-  hitCounter() {
-    const { player: { score } } = this.state;
-    const stateScore = score;
-    const result = stateScore + 1;
-
-    this.setState((previousState) => (
-      {
-        player: {
-          ...previousState.player,
-          score: result,
-        },
-      }
-    ));
-
-    this.clickQuestion();
-  }
-
   header() {
-    const { player: { name, gravatarEmail, score } } = this.state;
+    const { name, gravatarEmail, localScore } = this.state;
     return (
       <header>
         <img
@@ -154,14 +161,42 @@ class GameScreen extends Component {
           Jogador:
           {name}
         </p>
-        <p data-testid="header-score">{ score }</p>
+        <section>
+          <span data-testid="header-score">
+            Placar:
+            { localScore }
+          </span>
+        </section>
       </header>
     );
   }
 
+  incorrectAlternatives() {
+    const { disabled, colorQuestion, questions, numberOFQuestion } = this.state;
+    const orderQuestions = questions[numberOFQuestion];
+    return (
+      <div>
+        {orderQuestions.incorrect_answers.map((answer, index) => (
+          <button
+            key={ index }
+            data-testid={ `wrong-answer-${index}` }
+            type="button"
+            disabled={ disabled }
+            style={ (colorQuestion) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+            onClick={ this.clickQuestion }
+          >
+            { answer}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
   render() {
-    const { questions, numberOFQuestion, nextButton, feedbackScreen,
-      loading, timer, disabled, colorQuestion } = this.state;
+    const {
+      questions, numberOFQuestion, loading, timer, disabled,
+      colorQuestion, localScore, nextButton, feedbackScreen,
+    } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
     if (loading) return <h1>Loading...</h1>;
@@ -177,25 +212,19 @@ class GameScreen extends Component {
           type="button"
           disabled={ disabled }
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-          onClick={ this.hitCounter }
+          onClick={ () => {
+            this.clickQuestion();
+            this.calcScore(orderQuestions.difficulty);
+            this.setScoreInStorage(localScore);
+          } }
         >
           {orderQuestions.correct_answer}
         </button>
-        <div>
-          {orderQuestions.incorrect_answers.map((answer, index) => (
-            <button
-              key={ index }
-              data-testid={ `wrong-answer-${index}` }
-              type="button"
-              disabled={ disabled }
-              style={ (colorQuestion) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
-              onClick={ this.clickQuestion }
-            >
-              { answer}
-            </button>
-          ))}
-        </div>
+
+        { this.incorrectAlternatives() }
+
         <p>{timer}</p>
+
         <button
           data-testid="btn-next"
           type="button"

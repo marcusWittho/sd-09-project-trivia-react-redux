@@ -13,7 +13,7 @@ class Login extends Component {
       player: {
         name: '',
         assertions: 0,
-        score: 0,
+        score: '',
         gravatarEmail: '',
       },
       // settings: false,

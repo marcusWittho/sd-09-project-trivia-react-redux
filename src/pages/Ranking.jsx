@@ -4,6 +4,13 @@ import md5 from 'crypto-js/md5';
 class Ranking extends Component {
   render() {
     const recoverRanking = JSON.parse(localStorage.getItem('ranking'));
+    recoverRanking.sort((a, b) => {
+      const menosUm = -1;
+      if (a.score > b.score) return menosUm;
+      if (a.score < b.score) return 1;
+      return 0;
+    });
+
     return (
       recoverRanking.map((player, index) => (
         <div data-testid="ranking-title" key={ index }>

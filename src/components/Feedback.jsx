@@ -17,15 +17,6 @@ class Feedback extends React.Component {
     this.mockLocalStorage = this.mockLocalStorage.bind(this);
   }
 
-  // Apagar depois de configurar a página ranking
-  mockLocalStorage() {
-    const ranking = [
-      { name: 'name1', score: 0, picture: 'email1' },
-    ];
-
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-  }
-
   feedbackMessage() {
     const state = JSON.parse(localStorage.getItem('state'));
     const { player: { score } } = state;
@@ -45,6 +36,15 @@ class Feedback extends React.Component {
     this.setState({
       loginScreen: true,
     });
+  }
+
+  // Apagar depois de configurar a página ranking
+  mockLocalStorage() {
+    const ranking = [
+      { name: 'name1', score: 5, picture: 'email1' },
+    ];
+
+    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   rankingPage() {
