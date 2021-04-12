@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Header from '../components/Header'
+import Header from '../components/Header';
 import * as api from '../services/fetchApi';
-
 
 class InfoGames extends Component {
   constructor(props) {
@@ -9,22 +8,24 @@ class InfoGames extends Component {
     this.state = {
       questions: [],
       indice: 0,
-      isLoading: true
-    }
+      isLoading: true,
+    };
     this.requestAPI = this.requestAPI.bind(this);
+    this.renderQuestions = this.renderQuestions.bind(this);
   }
-  
+
   componentDidMount() {
     this.requestAPI();
-  }  
- 
-  async requestAPI() {
+  }
+
+  requestAPI() {
     const token = JSON.parse(localStorage.getItem('token'));
-    const responsRequest = await api.fetchTrivia(token, 5);
-    this.setState({
-      questions: responsRequest.results,
-      isLoading: false,
-    });
+    const quantityQuestions = 5;
+    api.fetchTrivia(token, quantityQuestions).then((responseRequest) => (
+      this.setState({
+        questions: responseRequest.results,
+        isLoading: false,
+      })));
   }
 
   renderQuestions() {
@@ -52,10 +53,18 @@ class InfoGames extends Component {
               : `wrong-answer-${index}` }
           >
             {alternative}
-          </button>))}
-        </div>
-        )
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  render() {
+    const { isLoading, indice } = this.state;
+    const nLimite = 4;
+    return (
+      isLoading || indice > nLimite ? <p>Loading...</p> : this.renderQuestions()
+    );
   }
 }
-
 export default InfoGames;

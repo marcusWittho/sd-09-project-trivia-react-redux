@@ -24,8 +24,6 @@ export async function fetchToken() {
     console.log(error);
   }
 }
-<<<<<<< HEAD
-=======
 
 export async function fetchTrivia(token, quantity) {
   const url = `https://opentdb.com/api.php?amount=${quantity}&token=${token}`;
@@ -37,4 +35,3 @@ export async function fetchTrivia(token, quantity) {
     console.log(error);
   }
 }
->>>>>>> bf06b096ca95aff5b9307c8122627ef298bbafba
