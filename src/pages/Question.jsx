@@ -38,7 +38,7 @@ class Question extends React.Component {
   multiQuestion({ correct_answer: correctAnswer,
     incorrect_answers: incorrectAnswers, category, question }, index) {
     const options = [...incorrectAnswers, correctAnswer];
-    const randon = 0.5;
+    const random = 0.5;
     return (
       <div key={ index } className="mult-answer">
         <div className="mult-container">
@@ -47,7 +47,7 @@ class Question extends React.Component {
             <p data-testid="question-text">{ question }</p>
           </section>
           <aside className="mult-aside">
-            { [...options].sort(() => randon - Math.random()).map((btn) => (
+            { [...options].sort(() => random - Math.random()).map((btn) => (
               <button
                 type="button"
                 key={ index }
