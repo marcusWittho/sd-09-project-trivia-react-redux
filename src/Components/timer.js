@@ -19,21 +19,15 @@ class Timer extends Component {
 
   componentDidUpdate() {
     this.checkCounter();
-    const { getCounter } = this.props;
-    const counter = localStorage.getItem('COUNTDOWN');
+    const { getCounter, counter } = this.props;
     getCounter(counter);
   }
 
-  // quando o tempo chegar a 0 desabilita os botões de answer
   checkCounter() {
     const { count } = this.state;
     if (count === 0) clearInterval(this.myInterval);
   }
 
-  // clearInterval(this.myInterval) >>>> precisa ser chamado no botão answer quando clicado
-  // o tempo restante será usado para fazer a conta do score
-
-  // essa funcção precisa ser chamada no botão next
   timerCaller() {
     const interval = 1000;
     this.myInterval = setInterval(() => {
@@ -45,18 +39,25 @@ class Timer extends Component {
 
   render() {
     const { count } = this.state;
-    const timeRelease = count.toString();
-    localStorage.setItem('COUNTDOWN', timeRelease);
+    const { getCounter } = this.props;
+    getCounter(count);
     return (
       <span className="timer">{ count }</span>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getCounter: (number) => dispatch(timeCounter(number)),
+const mapStatetoProps = (state) => ({
+  counter: state.player.counter,
 });
 
-Timer.propTypes = { getCounter: PropTypes.func.isRequired };
+const mapDispatchToProps = (dispatch) => ({
+  getCounter: (counter) => dispatch(timeCounter(counter)),
+});
 
-export default connect(null, mapDispatchToProps)(Timer);
+Timer.propTypes = {
+  getCounter: PropTypes.func.isRequired,
+  counter: PropTypes.number.isRequired,
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Timer);
