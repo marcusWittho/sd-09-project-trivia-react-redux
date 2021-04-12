@@ -2,13 +2,15 @@ import {
   ADD_NEW_QUESTIONS,
   DECREASE_TIME, QUESTION_REQUEST,
   RESET_TIMER_QUESTION, DISABLE_BUTTON,
-  SHOW_BUTTON, RESET_FUNCTIONS,
+  SHOW_BUTTON,
+  RESET_FUNCTIONS,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
+  questions: [],
   showButtonNextQuestion: false,
   disableButton: false,
-  isFetching: false,
+  isFetching: true,
   timer: 30,
 };
 
@@ -49,6 +51,11 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
       disableButton: false,
       timer: 5,
     };
+  // case 'CLEAR_QUESTIONS':
+  //   return {
+  //     ...state,
+  //     questions: [],
+  //   };
   default:
     return state;
   }

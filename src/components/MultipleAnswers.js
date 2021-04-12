@@ -8,6 +8,8 @@ import ShowButton from '../redux/actions/actionShowButton';
 import actionResetFunction from '../redux/actions/actionResetFunction';
 import actionAddOptionAnswers from '../redux/actions/actionAddOptionAnswers';
 import actionAddAssertions from '../redux/actions/actionAddAssertions';
+import { actionSetClassReducer } from '../redux/actions/actionClassReducer';
+import '../pages/Game/Game.css';
 
 const correctAnswer = 'correct-answer';
 class MultipleAnswers extends React.Component {
@@ -16,13 +18,10 @@ class MultipleAnswers extends React.Component {
 
     this.randomAnswer = this.randomAnswer.bind(this);
     this.selectDataTest = this.selectDataTest.bind(this);
+    // this.initialState = this.initialState.bind(this);
 
     this.handleClcik = this.handleClcik.bind(this);
     this.setScoreInGlobalState = this.setScoreInGlobalState.bind(this);
-    this.state = {
-      correctClass: '',
-      wrongClass: '',
-    };
   }
 
   setScoreInGlobalState() {
@@ -44,6 +43,7 @@ class MultipleAnswers extends React.Component {
       stateDisableButton,
       stateShowButton,
       addAssertions,
+      setClassReducer,
     } = this.props;
     const { id } = target;
     if (id === correctAnswer) {
@@ -53,10 +53,7 @@ class MultipleAnswers extends React.Component {
       const totalAsserts = player.assertions + 1;
       addAssertions(totalAsserts);
     }
-    this.setState({
-      correctClass: 'correct-answer',
-      wrongClass: 'wrong-answer',
-    });
+    setClassReducer();
     stateDisableButton(true);
     stateShowButton(true);
   }
@@ -81,19 +78,21 @@ class MultipleAnswers extends React.Component {
   }
 
   render() {
-    const { correctClass, wrongClass } = this.state;
-    const { question, disableButton, optionAnswers } = this.props;
+    const { question, disableButton, optionAnswers, classAnswers } = this.props;
+    const { correctClass, wrongClass } = classAnswers;
     if (optionAnswers.length === 0) {
       this.randomAnswer(question);
     }
     let index = 0;
     return (
-      <div>
+      <div className="trivia-container">
         <div className="question-container">
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>
-          <p data-testid="question-text">{ question.question }</p>
+          <p data-testid="question-text">
+            { question.question.replace(/&quot;/g, '"').replace(/&#039;/g, '`') }
+          </p>
         </div>
         {optionAnswers.map((option) => {
           const dataTestId = this.selectDataTest(question, option, index);
@@ -116,12 +115,18 @@ class MultipleAnswers extends React.Component {
   }
 }
 
-const mapStateToProps = ({ playerReducer, questionsReducer, answersReducer }) => ({
+const mapStateToProps = ({
+  playerReducer,
+  questionsReducer,
+  answersReducer,
+  classAnswersReducers,
+}) => ({
   time: questionsReducer.timer,
   disableButton: questionsReducer.disableButton,
   player: playerReducer.player,
   optionAnswers: answersReducer.optionAnswers,
   assertions: playerReducer.assertions,
+  classAnswers: classAnswersReducers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -132,6 +137,7 @@ const mapDispatchToProps = (dispatch) => ({
   addScore: (points) => dispatch(actionAddScore(points)),
   addOptionAnswers: (value) => dispatch(actionAddOptionAnswers(value)),
   addAssertions: (assertions) => dispatch(actionAddAssertions(assertions)),
+  setClassReducer: () => dispatch(actionSetClassReducer()),
 });
 
 MultipleAnswers.propTypes = {

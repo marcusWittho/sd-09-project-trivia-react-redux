@@ -13,6 +13,7 @@ import ShowButton from '../../redux/actions/actionShowButton';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
 import Header from '../../components/Header/Header';
 import './Game.css';
+import { actionClearClassReducer } from '../../redux/actions/actionClassReducer';
 
 class Game extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ class Game extends React.Component {
       DisableButton,
       StateShowButton,
       cleanOptionAnswers,
+      clearClassReducer,
     } = this.props;
     const { counter } = this.state;
     ResetCounter();
@@ -58,6 +60,7 @@ class Game extends React.Component {
     if (counter >= '4') {
       this.setState({ redirectFeedback: true });
     }
+    clearClassReducer();
   }
 
   counterTimer() {
@@ -86,23 +89,26 @@ class Game extends React.Component {
     return (
       <section className="game-container">
         <Header />
-        <main className="main-container">
+        <main className="game-main-container">
+          <p>{ `Tempo: ${time}` }</p>
           <div className="answers">
-            <p>{ `Tempo: ${time}` }</p>
-            { (questions) && questions.map((question) => (
-              (question.type === 'multiple')
-                ? <MultipleAnswers question={ question } />
-                : <BooleanAnswers question={ question } />
-            ))[counter] }
-            {(showButton) && (
-              <button
-                type="button"
-                data-testid="btn-next"
-                onClick={ () => this.handleNextQuestion() }
-              >
-                Próxima
-              </button>
-            )}
+            <div className="game-container">
+              { (questions) && questions.map((question) => (
+                (question.type === 'multiple')
+                  ? <MultipleAnswers question={ question } />
+                  : <BooleanAnswers question={ question } />
+              ))[counter] }
+              {(showButton) && (
+                <button
+                  className="next-question-buttton"
+                  type="button"
+                  data-testid="btn-next"
+                  onClick={ () => this.handleNextQuestion() }
+                >
+                  Próxima
+                </button>
+              )}
+            </div>
           </div>
         </main>
       </section>
@@ -126,6 +132,7 @@ const mapDispatchToProps = (dispatch) => ({
   stateDisableButton: (value) => dispatch(actionDisableButton(value)),
   stateShowButton: (value) => dispatch(ShowButton(value)),
   cleanOptionAnswers: () => dispatch(actionCleanOptionAnswers()),
+  clearClassReducer: () => dispatch(actionClearClassReducer()),
 });
 
 Game.propTypes = {

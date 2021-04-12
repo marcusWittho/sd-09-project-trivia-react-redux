@@ -6,9 +6,15 @@ import md5 from 'crypto-js/md5';
 import { AiFillSetting } from 'react-icons/ai';
 import fetchAPIToken from '../../services/apiToken';
 import actionPlayerId from '../../redux/actions/actionPlayerId';
-import actionAddQuestions from '../../redux/actions/actionAddQuestion';
+import
+actionAddQuestions, { questionsRequest } from '../../redux/actions/actionAddQuestion';
 import actionValidLogin from '../../redux/actions/actionValidLogin';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
+import actionClearQuestions from '../../redux/actions/actionClearQuestion';
+import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
+import actionResetPlayer from '../../redux/actions/actionResetPlayer';
+import actionResetFunction from '../../redux/actions/actionResetFunction';
+import { actionClearClassReducer } from '../../redux/actions/actionClassReducer';
 import './Login.css';
 import Logo from '../../utils/img/TRIVIA-GAME.png';
 
@@ -25,6 +31,27 @@ class Login extends React.Component {
       name: '',
       email: '',
     };
+  }
+
+  componentDidMount() {
+    this.clearQuestions();
+  }
+
+  clearQuestions() {
+    const {
+      actionClearQuestions: clearQuestions,
+      actionCleanOptionAnswers: cleanOptionAnswers,
+      actionResetPlayer: resetPlayer,
+      questionsRequest: request,
+      actionResetFunction: resetFunction,
+      actionClearClassReducer: clearClassReducer,
+    } = this.props;
+    request();
+    resetPlayer();
+    clearQuestions();
+    cleanOptionAnswers();
+    resetFunction();
+    clearClassReducer();
   }
 
   checkStatusButton() {
@@ -113,6 +140,12 @@ const mapDispatchToProps = {
   actionAddQuestions,
   actionValidLogin,
   actionResetCounter,
+  actionClearQuestions,
+  actionCleanOptionAnswers,
+  actionResetPlayer,
+  questionsRequest,
+  actionResetFunction,
+  actionClearClassReducer,
 };
 
 Login.propTypes = {
