@@ -1,3 +1,2 @@
 export const CLICK_PLAY = 'CLICK_PLAY';
-
-export const OUTRA_ACTION = 'OUTRA_ACTION';
+export const INCREMENT_SCORE = 'INCREMENT_SCORE';

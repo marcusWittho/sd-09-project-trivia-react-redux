@@ -1,8 +1,11 @@
-import { CLICK_PLAY } from './typeActions';
+import { CLICK_PLAY, INCREMENT_SCORE } from './typeActions';
 
-const clickPlay = (credentials) => ({
+export const clickPlay = (credentials) => ({
   type: CLICK_PLAY,
   credentials,
 });
 
-export default clickPlay;
+export const incrementScore = (localScore) => ({
+  type: INCREMENT_SCORE,
+  localScore,
+});
