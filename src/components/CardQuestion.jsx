@@ -12,7 +12,6 @@ class CardQuestion extends React.Component {
       isSelected: false,
       time: {},
       seconds: 30,
-      showBtn: false,
     };
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
@@ -26,13 +25,10 @@ class CardQuestion extends React.Component {
     this.startTimer();
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-    return true;
-  }
-
   selectAnswer() {
-    this.setState({ isSelected: true, showBtn: true });
+    this.setState({ isSelected: true });
+    const button = document.getElementsByClassName('next-btn');
+    button[0].style.display = 'inline';
   }
 
   secondsToTime(secs) {
@@ -69,7 +65,6 @@ class CardQuestion extends React.Component {
       qCounter: state.qCounter + 1,
       isSelected: false,
       seconds: 30,
-      showBtn: false,
     }));
   }
 
@@ -81,7 +76,7 @@ class CardQuestion extends React.Component {
         <Link to="/feedback">
           <button
             type="button"
-            id="next-btn"
+            className="next-btn"
             data-testid="btn-next"
           >
             Próxima
@@ -91,7 +86,7 @@ class CardQuestion extends React.Component {
     return (
       <button
         type="button"
-        id="next-btn"
+        className="next-btn"
         data-testid="btn-next"
         onClick={ this.questionCounter }
       >
@@ -101,8 +96,7 @@ class CardQuestion extends React.Component {
 
   render() {
     const { getQuestions: { questions: { results } } } = this.props;
-    const { isSelected, time, qCounter, showBtn } = this.state;
-    const nothing = <div />;
+    const { isSelected, time, qCounter } = this.state;
     const questions = results.map((currentQuestion, index) => (
       <div key={ index }>
         <div>
@@ -131,7 +125,7 @@ class CardQuestion extends React.Component {
             {incorrectAnswer}
           </button>
         ))}
-        {showBtn ? this.nextBtn() : nothing}
+        {this.nextBtn()}
       </div>
     ));
     // Retornar uma questão por vez.
