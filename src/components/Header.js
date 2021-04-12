@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 
 import logo from '../assets/trivia.png';
+
 class Header extends Component {
   render() {
     const { email, name } = this.props;
