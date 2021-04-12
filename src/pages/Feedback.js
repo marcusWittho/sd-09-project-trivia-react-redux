@@ -12,9 +12,7 @@ class Feedback extends Component {
   menssageFeedBack() {
     const numberThree = 3;
     const { assertions } = this.props;
-    console.log(typeof (assertions));
     if (assertions < numberThree) {
-      console.log(assertions);
       return (<p data-testid="feedback-text">Podia ser melhor...</p>);
     }
     return (<p data-testid="feedback-text">Mandou bem!</p>);
@@ -22,16 +20,26 @@ class Feedback extends Component {
 
   render() {
     const { score, assertions } = this.props;
-    console.log(typeof (score));
+    console.log(typeof (assertions));
     return (
       <div>
         <Header />
         {this.menssageFeedBack()}
-        <p data-testid="feedback-total-score">{ `Pontuação Final: ${score}` }</p>
-        <p
-          data-testid="feedback-total-question"
-        >
-          { `Número de acertos: ${assertions}` }
+        <p>
+          Pontuação final:
+          <span
+            data-testid="feedback-total-score"
+          >
+            {score}
+          </span>
+        </p>
+        <p>
+          Total acertos:
+          <span
+            data-testid="feedback-total-question"
+          >
+            {assertions}
+          </span>
         </p>
       </div>
     );
@@ -49,6 +57,7 @@ Feedback.propTypes = {
   email: PropTypes.string,
   name: PropTypes.string,
   assertions: PropTypes.number,
+  score: PropTypes.number,
 }.isRequired;
 
 export default connect(mapStateToProps)(Feedback);
