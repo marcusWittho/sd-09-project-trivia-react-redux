@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPlayerToken } from '../actions/index';
+import { fetchPlayerToken, fetchQuestions } from '../actions';
 import { getUserGravatar } from '../services/api';
 
 class Login extends React.Component {
@@ -18,9 +18,9 @@ class Login extends React.Component {
     this.handleLogin = this.handleLogin.bind(this);
   }
 
-  handleLogin() {
+  async handleLogin() {
     const { name, email } = this.state;
-    const { getPlayerToken } = this.props;
+    const { getPlayerToken, getQuestionAndAnswers } = this.props;
     const state = {
       player: {
         name,
@@ -31,8 +31,9 @@ class Login extends React.Component {
     };
 
     localStorage.setItem('state', JSON.stringify(state));
+    await getPlayerToken();
+    await getQuestionAndAnswers();
     getUserGravatar();
-    getPlayerToken();
     this.setState({ redirect: true });
   }
 
@@ -94,6 +95,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getPlayerToken: (token) => dispatch(fetchPlayerToken(token)),
+  getQuestionAndAnswers: () => dispatch(fetchQuestions()),
 });
 
 Login.propTypes = {

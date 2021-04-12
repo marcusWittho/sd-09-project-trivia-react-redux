@@ -1,12 +1,12 @@
 import {
   REQUEST_QUESTIONS,
   REQUEST_QUESTIONS_SUCCESS,
-  REQUEST_QUESTIONS_FAILURE,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
-  questions: {},
-  error: '',
+  questions: [],
+  responseCode: -1,
+  questionNumber: 0,
   isFetching: false,
 };
 
@@ -17,18 +17,15 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
       ...state,
       isFetching: true,
     };
-  case REQUEST_QUESTIONS_SUCCESS:
+  case REQUEST_QUESTIONS_SUCCESS: {
+    const { response_code: responseCode, results } = action.questions;
     return {
       ...state,
-      questions: action.questions,
+      questions: results,
+      responseCode,
       isFetching: false,
     };
-  case REQUEST_QUESTIONS_FAILURE:
-    return {
-      ...state,
-      error: action.error,
-      isFetching: false,
-    };
+  }
   default:
     return state;
   }

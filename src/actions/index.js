@@ -4,10 +4,10 @@ import {
   REQUEST_TOKEN_FAILURE,
   REQUEST_QUESTIONS,
   REQUEST_QUESTIONS_SUCCESS,
-  REQUEST_QUESTIONS_FAILURE,
 } from './actionTypes';
 import { getUserToken, getQuestions } from '../services/api';
 
+// TOKEN
 const requestToken = () => ({ type: REQUEST_TOKEN });
 
 const requestTokenSuccess = (token) => ({
@@ -27,21 +27,17 @@ export function fetchPlayerToken() {
     return getUserToken()
       .then(
         (data) => dispatch(requestTokenSuccess(data.token)),
-        (error) => dispatch(requestTokenFailure(error.message)),
+        (error) => dispatch(requestTokenFailure(error.response_message)),
       );
   };
 }
 
+// QUESTIONS
 const requestQuestions = () => ({ type: REQUEST_QUESTIONS });
 
 const requestQuestionSuccess = (questions) => ({
   type: REQUEST_QUESTIONS_SUCCESS,
   questions,
-});
-
-const requestQuestionFailure = (error) => ({
-  type: REQUEST_QUESTIONS_FAILURE,
-  error,
 });
 
 export function fetchQuestions() {
@@ -51,7 +47,6 @@ export function fetchQuestions() {
     return getQuestions()
       .then(
         (data) => dispatch(requestQuestionSuccess(data)),
-        (error) => dispatch(requestQuestionFailure(error.message)),
       );
   };
 }
