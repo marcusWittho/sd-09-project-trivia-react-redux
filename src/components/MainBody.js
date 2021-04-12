@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { string, objectOf } from 'prop-types';
 import { setScore } from '../actions';
 
@@ -13,10 +14,12 @@ class MainBody extends React.Component {
       assertions: 0,
       points: 10,
       none: 'none',
+      index: 0,
     };
 
     this.showAnswers = this.showAnswers.bind(this);
     this.tictac = this.tictac.bind(this);
+    this.nextClick = this.nextClick.bind(this);
   }
 
   componentDidMount() {
@@ -115,7 +118,17 @@ class MainBody extends React.Component {
   }
 
   showNextButton() {
-    this.setState({ none: '' });
+    this.setState({
+      none: '',
+    });
+  }
+
+  nextClick() {
+    this.setState((previousState) => ({
+      timer: 30,
+      index: previousState.index + 1,
+      styleObj: {},
+    }));
   }
 
   render() {
@@ -124,15 +137,17 @@ class MainBody extends React.Component {
       styleObj,
       timer,
       none,
+      index,
     } = this.state;
+    if (index === Number('5')) return <Redirect to="/feedback" />;
     if (loading) {
       return <p>Loading...</p>;
     }
     return (
       <div>
         <h3>{ timer }</h3>
-        <p data-testid="question-category">{ questions[0].category }</p>
-        <p data-testid="question-text">{ questions[0].question }</p>
+        <p data-testid="question-category">{ questions[index].category }</p>
+        <p data-testid="question-text">{ questions[index].question }</p>
         <button
           style={ styleObj.correct }
           name="resposta-certa"
@@ -141,9 +156,9 @@ class MainBody extends React.Component {
           data-testid="correct-answer"
           disabled={ timer < 1 }
         >
-          { questions[0].correct_answer }
+          { questions[index].correct_answer }
         </button>
-        {questions[0].incorrect_answers.map((incorrectAnswer) => (
+        {questions[index].incorrect_answers.map((incorrectAnswer) => (
           <button
             style={ styleObj.incorrect }
             onClick={ this.showAnswers }
@@ -159,6 +174,7 @@ class MainBody extends React.Component {
           type="button"
           style={ { display: none } }
           data-testid="btn-next"
+          onClick={ () => this.nextClick(index) }
         >
           Proximo
         </button>
