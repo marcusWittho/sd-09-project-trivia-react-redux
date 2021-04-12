@@ -10,8 +10,8 @@ import Header from './Header';
 const maxQuestions = 5;
 
 class Gameplay extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       loading: true,
       correct: '',
@@ -42,6 +42,9 @@ class Gameplay extends Component {
       const { timer } = this.state;
       if (timer >= 1) {
         this.setState((state) => ({ timer: state.timer - 1 }));
+      } else {
+        this.disableButton();
+        this.setState({ renderNextButton: true });
       }
     },
     oneSecond);
@@ -72,6 +75,14 @@ class Gameplay extends Component {
     return standardNumber + (timer * difficultyFactor);
   }
 
+  addAssertionsOnStateLocalStorage(answer) {
+    if (answer === 'correct') {
+      const previousState = JSON.parse(localStorage.getItem('state'));
+      previousState.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(previousState));
+    }
+  }
+
   sumScorePoint(answer) {
     if (answer === 'correct') {
       const previousState = JSON.parse(localStorage.getItem('state'));
@@ -83,6 +94,7 @@ class Gameplay extends Component {
 
   chooseAnswer({ target }) {
     this.disableButton();
+    this.addAssertionsOnStateLocalStorage(target.name);
     this.sumScorePoint(target.name);
     this.setState({
       correct: 'correct',
@@ -131,9 +143,7 @@ class Gameplay extends Component {
     const currentQuestionInfo = questionList.results[questionIndex];
     return (
       <section>
-        <h1 data-testid="question-category">
-          { currentQuestionInfo.category}
-        </h1>
+        <h1 data-testid="question-category">{ currentQuestionInfo.category}</h1>
         <p data-testid="question-text">{currentQuestionInfo.question}</p>
       </section>
     );
