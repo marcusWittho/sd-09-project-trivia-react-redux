@@ -27,7 +27,6 @@ class FeedHeader extends Component {
   render() {
     const { name, score } = this.props;
     const { hash } = this.state;
-    console.log(hash);
     return (
       <div>
         <img

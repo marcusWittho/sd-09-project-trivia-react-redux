@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import FeedHeader from '../Components/FeedHeader';
 import './answers.css';
 
@@ -9,6 +10,18 @@ class Feedback extends Component {
   constructor() {
     super();
     this.message = this.message.bind(this);
+  }
+
+  componentDidMount() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+    const hash = md5(player.gravatarEmail).toString();
+    ranking.push({
+      name: player.name,
+      score: player.score,
+      picture: `https://www.gravatar.com/avatar/${hash}`,
+    });
+    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   message() {

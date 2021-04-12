@@ -9,7 +9,6 @@ class MultipleAnswers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // choice: [],
       rightAnswerClass: '',
       wrongAnswerClass: '',
       nextButton: true,
@@ -20,7 +19,6 @@ class MultipleAnswers extends Component {
       show: true,
     };
     this.validateAnswers = this.validateAnswers.bind(this);
-    // this.createChoices = this.createChoices.bind(this);
     this.updateQuestIndex = this.updateQuestIndex.bind(this);
     this.answerCheck = this.answerCheck.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -36,12 +34,7 @@ class MultipleAnswers extends Component {
   updateLocalStorage() {
     const { player } = this.props;
     localStorage.setItem('state', JSON.stringify({ player }));
-    console.log(player);
   }
-  // componentDidMount() {
-  //   // this.createChoices();
-  //   this.endTime();
-  // }
 
   endTime() {
     const finalTime = 30000;
@@ -61,19 +54,6 @@ class MultipleAnswers extends Component {
     newIndex += 1;
     dispatchIndex(newIndex);
   }
-
-  // createChoices() {
-  //   const { question } = this.props;
-  //   const choice = question.incorrect_answers;
-  //   const choices = 4;
-  //   if (choice.length < choices) {
-  //     choice.splice(Math.floor(Math.random() * choices), 0,
-  //       question.correct_answer);
-  //     this.setState({ choice });
-  //   } else {
-  //     this.setState({ choice });
-  //   }
-  // }
 
   validateAnswers(answer, index) {
     const { question } = this.props;
