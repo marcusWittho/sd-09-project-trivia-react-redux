@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 
 import logo from '../assets/trivia.png';
-import './Header.css';
 
 class Header extends Component {
   render() {
@@ -27,9 +26,9 @@ class Header extends Component {
         <div className="header-text-container">
           <p data-testid="header-player-name">
             Jogador:
+            <br />
+            { name }
           </p>
-          <p>{ name }</p>
-          <p data-testid="header-score">Score: 0</p>
         </div>
       </header>
     );

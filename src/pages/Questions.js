@@ -7,6 +7,8 @@ import { getQuestions } from '../services/api';
 import localStorageService from '../services/localStorage';
 
 import './Questions.css';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 class Questions extends Component {
   constructor(props) {
@@ -117,11 +119,15 @@ class Questions extends Component {
     const { questions } = this.props;
     const currentQuestion = questions[questionNum];
     return (
-      <div>
-        <p data-testid="header-score">Score: 0</p>
-        <Timer ref={ this.timer } timeUp={ this.handleTimeUp } />
-        { currentQuestion && this.renderQuestion(currentQuestion) }
-      </div>
+      <>
+        <Header />
+        <section className="questions-container">
+          <p data-testid="header-score">Score: 0</p>
+          <Timer ref={ this.timer } timeUp={ this.handleTimeUp } />
+          { currentQuestion && this.renderQuestion(currentQuestion) }
+        </section>
+        <Footer />
+      </>
     );
   }
 }
