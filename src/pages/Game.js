@@ -67,12 +67,18 @@ class Game extends Component {
   }
 
   timerTimeout() {
+    const { currentTime } = this.state;
     this.changeButtonColor();
     this.setState({
       buttonStatus: true,
       shuffledArray: [],
-      currentTime: 0,
     });
+
+    if (currentTime !== 0) {
+      this.setState({
+        currentTime: 0,
+      });
+    }
   }
 
   validateResponseFromApi(responseCode, errorCode, results) {
