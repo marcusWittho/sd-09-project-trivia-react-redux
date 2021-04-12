@@ -14,16 +14,46 @@ class Feedback extends React.Component {
     this.feedbackMessage = this.feedbackMessage.bind(this);
     this.playAgain = this.playAgain.bind(this);
     this.rankingPage = this.rankingPage.bind(this);
-    this.mockLocalStorage = this.mockLocalStorage.bind(this);
+    this.getFromLocalStorage = this.getFromLocalStorage.bind(this);
+    this.updateRanking = this.updateRanking.bind(this);
+    this.madeButtons = this.madeButtons.bind(this);
+  }
+
+  getFromLocalStorage() {
+    const responseLocalStorage = JSON.parse(localStorage.getItem('state'));
+    const { player: { name, assertions, gravatarEmail } } = responseLocalStorage;
+
+    const ranking = [
+      { name, score: assertions, picture: gravatarEmail },
+    ];
+
+    return ranking;
+  }
+
+  updateRanking() {
+    const rankingLocalStorage = JSON.parse(localStorage.getItem('ranking'));
+
+    if (rankingLocalStorage) {
+      const ranking = this.getFromLocalStorage();
+      console.log(ranking[0]);
+
+      rankingLocalStorage.push(ranking[0]);
+      console.log('updateRanking', rankingLocalStorage);
+
+      localStorage.setItem('ranking', JSON.stringify(rankingLocalStorage));
+    } else {
+      const ranking = this.getFromLocalStorage();
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
   }
 
   feedbackMessage() {
     const state = JSON.parse(localStorage.getItem('state'));
-    const { player: { score } } = state;
+    const { player: { assertions } } = state;
     const lowScore = 3;
     let response = '';
 
-    if (score < lowScore) {
+    if (assertions < lowScore) {
       response = <h2 data-testid="feedback-text">Podia ser melhor...</h2>;
     } else {
       response = <h2 data-testid="feedback-text">Mandou bem!</h2>;
@@ -38,20 +68,33 @@ class Feedback extends React.Component {
     });
   }
 
-  // Apagar depois de configurar a página ranking
-  mockLocalStorage() {
-    const ranking = [
-      { name: 'name1', score: 5, picture: 'email1' },
-    ];
-
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-  }
-
   rankingPage() {
-    this.mockLocalStorage(); // Apagar depois de configurar a página ranking
+    this.updateRanking(); // Apagar depois de configurar a página ranking
     this.setState({
       rankingScreen: true,
     });
+  }
+
+  madeButtons() {
+    return (
+      <>
+        <button
+          data-testid="btn-play-again"
+          type="button"
+          onClick={ this.playAgain }
+        >
+          Jogar novamente
+        </button>
+
+        <button
+          data-testid="btn-ranking"
+          type="button"
+          onClick={ this.rankingPage }
+        >
+          Ver Ranking
+        </button>
+      </>
+    );
   }
 
   render() {
@@ -81,21 +124,8 @@ class Feedback extends React.Component {
           { this.feedbackMessage() }
         </header>
 
-        <button
-          data-testid="btn-play-again"
-          type="button"
-          onClick={ this.playAgain }
-        >
-          Jogar novamente
-        </button>
+        { this.madeButtons() }
 
-        <button
-          data-testid="btn-ranking"
-          type="button"
-          onClick={ this.rankingPage }
-        >
-          Ver Ranking
-        </button>
       </div>
     );
   }

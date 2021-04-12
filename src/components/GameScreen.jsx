@@ -18,7 +18,7 @@ class GameScreen extends Component {
       timer: 30,
       disabled: false,
       colorQuestion: false,
-      localScore: 0,
+      score: 0,
       nextButton: 'none',
       feedbackScreen: false,
     };
@@ -60,7 +60,7 @@ class GameScreen extends Component {
   }
 
   calcScore(difficulty) {
-    const { timer, localScore } = this.state;
+    const { timer, score } = this.state;
     const TEN_POINTS = 10;
     const TREE_POINTS = 3;
     const TWO_POINTS = 2;
@@ -68,17 +68,17 @@ class GameScreen extends Component {
 
     if (difficulty === 'hard') {
       const result = TEN_POINTS + timer * TREE_POINTS;
-      this.setState({ localScore: localScore + result });
+      this.setState({ score: score + result });
     }
 
     if (difficulty === 'medium') {
       const result = TEN_POINTS + timer * TWO_POINTS;
-      this.setState({ localScore: localScore + result });
+      this.setState({ score: score + result });
     }
 
     if (difficulty === 'easy') {
       const result = TEN_POINTS + timer * ONE_POINTS;
-      this.setState({ localScore: localScore + result });
+      this.setState({ score: score + result });
     }
   }
 
@@ -149,7 +149,7 @@ class GameScreen extends Component {
   }
 
   header() {
-    const { name, gravatarEmail, localScore } = this.state;
+    const { name, gravatarEmail, score } = this.state;
     return (
       <header>
         <img
@@ -159,13 +159,10 @@ class GameScreen extends Component {
         />
         <p data-testid="header-player-name">
           Jogador:
-          {name}
+          { name }
         </p>
         <section>
-          <span data-testid="header-score">
-            Placar:
-            { localScore }
-          </span>
+          <p data-testid="header-score">{ score }</p>
         </section>
       </header>
     );
@@ -195,7 +192,7 @@ class GameScreen extends Component {
   render() {
     const {
       questions, numberOFQuestion, loading, timer, disabled,
-      colorQuestion, localScore, nextButton, feedbackScreen,
+      colorQuestion, score, nextButton, feedbackScreen,
     } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
@@ -213,9 +210,9 @@ class GameScreen extends Component {
           disabled={ disabled }
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
           onClick={ () => {
+            this.setScoreInStorage(score);
             this.clickQuestion();
             this.calcScore(orderQuestions.difficulty);
-            this.setScoreInStorage(localScore);
           } }
         >
           {orderQuestions.correct_answer}

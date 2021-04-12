@@ -1,8 +1,29 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
+import { Redirect } from 'react-router';
 
 class Ranking extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      loginScreen: false,
+    };
+
+    this.playAgain = this.playAgain.bind(this);
+  }
+
+  playAgain() {
+    this.setState({
+      loginScreen: true,
+    });
+  }
+
   render() {
+    const { loginScreen } = this.state;
+
+    if (loginScreen) return <Redirect to="/" />;
+
     const recoverRanking = JSON.parse(localStorage.getItem('ranking'));
     recoverRanking.sort((a, b) => {
       const menosUm = -1;
@@ -20,6 +41,14 @@ class Ranking extends Component {
           />
           <p data-testid={ `player-name-${index}` }>{ player.name }</p>
           <p data-testid={ `player-score-${index}` }>{ player.score }</p>
+
+          <button
+            data-testid="btn-go-home"
+            type="button"
+            onClick={ this.playAgain }
+          >
+            Login Page
+          </button>
         </div>
       ))
     );
