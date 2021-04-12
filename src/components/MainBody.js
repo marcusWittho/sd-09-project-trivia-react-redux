@@ -12,7 +12,7 @@ class MainBody extends React.Component {
       score: 0,
       assertions: 0,
       points: 10,
-
+      none: 'none',
     };
 
     this.showAnswers = this.showAnswers.bind(this);
@@ -111,6 +111,11 @@ class MainBody extends React.Component {
       },
     });
     this.setNewScore(target);
+    this.showNextButton();
+  }
+
+  showNextButton() {
+    this.setState({ none: '' });
   }
 
   render() {
@@ -118,6 +123,7 @@ class MainBody extends React.Component {
     const {
       styleObj,
       timer,
+      none,
     } = this.state;
     if (loading) {
       return <p>Loading...</p>;
@@ -149,6 +155,13 @@ class MainBody extends React.Component {
             { incorrectAnswer }
           </button>
         ))}
+        <button
+          type="button"
+          style={ { display: none } }
+          data-testid="btn-next"
+        >
+          Proximo
+        </button>
       </div>
     );
   }
