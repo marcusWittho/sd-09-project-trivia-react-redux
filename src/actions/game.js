@@ -1,15 +1,21 @@
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
 export const IS_LOADING = 'IS_LOADING';
+export const IS_ANSWERED = 'IS_ANSWERED';
 export const DECREASE_TIME = 'DECREASE_TIME';
 export const INCREASE_SCORE = 'INCREASE_SCORE';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 
-export const increaseScore = (assert, difficulty) => ({
+export const increaseScore = (assert, difficulty, score) => ({
   type: INCREASE_SCORE,
   payload: {
     assert,
     difficulty,
+    score,
   },
+});
+
+export const isAnswered = () => ({
+  type: IS_ANSWERED,
 });
 
 const addQuestions = (payload) => ({

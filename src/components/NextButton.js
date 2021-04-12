@@ -10,8 +10,11 @@ class NextButton extends React.Component {
   }
 
   click() {
+    const { getQuestionIndex } = this.props;
     const { next } = this.props;
     next();
+    getQuestionIndex();
+    console.log(getQuestionIndex())
   }
 
   render() {

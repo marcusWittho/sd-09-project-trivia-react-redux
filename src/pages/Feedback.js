@@ -10,9 +10,11 @@ class Feedback extends Component {
   }
 
   showMessage() {
-    const score = 3;
-    const coudBeBetter = 3;
-    if (score < coudBeBetter) {
+    // localStorage.setItem('state', JSON.stringify({ player: { correctQuestions: correctQuestions } }))
+    const rightQuestions = localStorage.getItem('correctQuestions');
+    console.log(rightQuestions)
+    const couldBeBetter = 3;
+    if (rightQuestions < couldBeBetter) {
       const message = 'Podia ser melhor...';
       return (<p data-testid="feedback-text">{message}</p>);
     }
