@@ -130,5 +130,4 @@ Login.propTypes = {
   fetchUserToken: PropTypes.func.isRequired,
 };
 
-// Agora vai
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
