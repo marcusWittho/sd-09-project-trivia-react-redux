@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { fetchQuestions, updateIndex } from '../actions';
 import Header from '../Componentes/Header';
 import Question from '../Componentes/Question';
@@ -13,9 +14,11 @@ class Game extends React.Component {
       timeToAnswer: 30,
       step: 1000,
       disableBtn: false,
+      lastQuestionsIndex: 4,
     };
 
     this.timer = this.timer.bind(this);
+    this.renderNextBtn = this.renderNextBtn.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +49,38 @@ class Game extends React.Component {
     incremanteIndex(index + 1);
   }
 
+  renderNextBtn() {
+    const { index, incremanteIndex } = this.props;
+    const { lastQuestionsIndex } = this.state;
+    const renderBtn = () => {
+      if (index < lastQuestionsIndex) {
+        return (
+          <button
+            data-testid="btn-next"
+            type="button"
+            onClick={ () => incremanteIndex(index + 1) }
+          >
+            Próxima
+          </button>
+        );
+      }
+      return (
+        <Link to="/feedback">
+          <button
+            data-testid="btn-next"
+            type="button"
+            onClick={ () => incremanteIndex(index + 1) }
+          >
+            Próxima
+          </button>
+        </Link>
+      );
+    };
+
+    const nextBtn = renderBtn();
+    return nextBtn;
+  }
+
   render() {
     const { questions, index, isAnswered } = this.props;
     const { timeToAnswer, disableBtn } = this.state;
@@ -64,13 +99,14 @@ class Game extends React.Component {
               /> : null
             ))}
           </div>
-          {isAnswered
+          {isAnswered && this.renderNextBtn()}
+          {/* {isAnswered
           && <input
             type="button"
             data-testid="btn-next"
             onClick={ () => this.nextQuestion() }
             value="Próxima"
-          />}
+          />} */}
         </div>
       </div>
     );
