@@ -18,7 +18,8 @@ class Trivia extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchQuestions();
+    const { category, difficulty, type } = this.props;
+    this.fetchQuestions(category, difficulty, type);
   }
 
   nextQuestion() {
@@ -29,9 +30,9 @@ class Trivia extends React.Component {
     }
   }
 
-  async fetchQuestions() {
+  async fetchQuestions(category, difficulty, type) {
     const { updateQuestions } = this.props;
-    const data = await getQuestions();
+    const data = await getQuestions(category, difficulty, type);
     updateQuestions(data);
   }
 
@@ -79,7 +80,12 @@ class Trivia extends React.Component {
 
 Trivia.propTypes = { updateQuestions: arrayOf() }.isRequired;
 
-const mapStateToProps = ({ trivia: { questions } }) => ({ questions });
+const mapStateToProps = ({ trivia, settings }) => ({
+  questions: trivia.questions,
+  category: settings.category,
+  difficulty: settings.difficulty,
+  type: settings.type,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   updateQuestions: (questions) => dispatch(setQuestions(questions)),
