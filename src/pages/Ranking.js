@@ -14,18 +14,10 @@ class Ranking extends Component {
         score: 5,
         picture: 'https://www.gravatar.com/avatar/8d7e21d751e2e1c783c16d3ce048757c',
       },
-    ]
-      
-    // transforma o array em objeto JSON
-    const jsonRankingSet = JSON.stringify(rankingTeste)
-      
-    // seta o objeto JSON no localStorage
+    ];
+    const jsonRankingSet = JSON.stringify(rankingTeste);
     localStorage.setItem('ranking', jsonRankingSet);
-
-    // recupera o objeto JSON do localStorage
     const jsonRanking = localStorage.getItem('ranking');
-
-    // converte o objeto JSON pra um array
     const ranking = JSON.parse(jsonRanking);
 
     return (
