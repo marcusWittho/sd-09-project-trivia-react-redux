@@ -6,6 +6,7 @@ class HomeButton extends Component {
     return (
       <button
         type="button"
+        className="home-btn"
         data-testid="btn-go-home"
       >
         <Link to="/">

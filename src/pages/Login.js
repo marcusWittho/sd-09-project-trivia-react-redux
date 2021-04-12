@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Logo from './Logo.png';
 import triviaTokenRequest from '../services/api';
 import { updatePlayerName, updatePlayerEmail, updateToken } from '../actions/index';
 
@@ -49,46 +50,49 @@ class Login extends React.Component {
   render() {
     const { buttonDisabled } = this.state;
     return (
-      <div>
-        <label htmlFor="name">
-          Nome:
-          <input
-            data-testid="input-player-name"
-            id="name"
-            type="text"
-            name="name"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            data-testid="input-gravatar-email"
-            id="email"
-            type="text"
-            name="email"
-            onChange={ this.handleChange }
-          />
-        </label>
+      <div className="login">
+        <img src={ Logo } alt="logo" className="logo" />
+        <div className="inputs-login">
+          <label htmlFor="name">
+            Nome:
+            <input
+              data-testid="input-player-name"
+              id="name"
+              type="text"
+              name="name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            Email:
+            <input
+              data-testid="input-gravatar-email"
+              id="email"
+              type="text"
+              name="email"
+              onChange={ this.handleChange }
+            />
+          </label>
 
-        <Link to="/game">
-          <button
-            data-testid="btn-play"
-            type="button"
-            onClick={ this.handleClick }
-            disabled={ buttonDisabled }
-          >
-            Jogar
-          </button>
-        </Link>
-        <Link to="/settings">
-          <button
-            data-testid="btn-settings"
-            type="button"
-          >
-            Configurações
-          </button>
-        </Link>
+          <Link to="/game" className="btn-link">
+            <button
+              data-testid="btn-play"
+              type="button"
+              onClick={ this.handleClick }
+              disabled={ buttonDisabled }
+            >
+              Jogar
+            </button>
+          </Link>
+          <Link to="/settings" className="btn-link">
+            <button
+              data-testid="btn-settings"
+              type="button"
+            >
+              Configurações
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }

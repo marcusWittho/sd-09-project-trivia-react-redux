@@ -85,7 +85,7 @@ class Game extends React.Component {
     const { questions, index, isAnswered } = this.props;
     const { timeToAnswer, disableBtn } = this.state;
     return (
-      <div>
+      <div className="App">
         <Header />
         <p>{`Timer: ${timeToAnswer}`}</p>
         <div>
