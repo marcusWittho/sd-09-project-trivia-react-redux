@@ -38,10 +38,6 @@ class MainBody extends React.Component {
     const { timer, score, assertions, points } = this.state;
     if (target.name === 'resposta-certa') {
       if (questions[0].difficulty === 'easy') {
-        this.setState((previousState) => ({
-          score: previousState.score + (points + (timer * 1)),
-          assertions: previousState.assertions + 1,
-        }));
         handleScore(points + (timer * 1));
         localStorage.setItem('state',
           JSON.stringify({ player:
@@ -50,12 +46,12 @@ class MainBody extends React.Component {
             score: score + points + (timer * 1),
             email,
           } }));
-      }
-      if (questions[0].difficulty === 'medium') {
         this.setState((previousState) => ({
-          score: previousState.score + (points + (timer * 2)),
+          score: previousState.score + (points + (timer * 1)),
           assertions: previousState.assertions + 1,
         }));
+      }
+      if (questions[0].difficulty === 'medium') {
         handleScore(points + (timer * 1));
         localStorage.setItem('state',
           JSON.stringify({ player:
@@ -64,12 +60,12 @@ class MainBody extends React.Component {
             score: score + points + (timer * 2),
             email,
           } }));
-      }
-      if (questions[0].difficulty === 'hard') {
         this.setState((previousState) => ({
-          score: previousState.score + (points + (timer * Number('3'))),
+          score: previousState.score + (points + (timer * 2)),
           assertions: previousState.assertions + 1,
         }));
+      }
+      if (questions[0].difficulty === 'hard') {
         handleScore(points + (timer * 1));
         localStorage.setItem('state',
           JSON.stringify({ player:
@@ -78,6 +74,10 @@ class MainBody extends React.Component {
             score: score + points + (timer * Number('3')),
             email,
           } }));
+        this.setState((previousState) => ({
+          score: previousState.score + (points + (timer * Number('3'))),
+          assertions: previousState.assertions + 1,
+        }));
       }
     }
   }
