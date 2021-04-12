@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import * as Api from '../../service/Api';
 import '../../styles/components/Questions.css';
-import { stopTime, addPlayer } from '../../redux/actions/index';
+import { stopTime, addPlayer, restartTimer } from '../../redux/actions/index';
+
+const NUMBER = -1;
 
 class Questions extends React.Component {
   constructor(props) {
@@ -18,6 +21,7 @@ class Questions extends React.Component {
       isSelected: false,
       disableAlternatives: false,
       nextQuestion: false,
+      redirectToFeedback: false,
     };
     this.getQuestions = this.getQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -33,13 +37,10 @@ class Questions extends React.Component {
     this.getQuestions();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { timesUp } = this.props;
-    const { questionIndex } = this.state;
-    if (prevProps.timesUp !== timesUp) {
+    if ((prevProps.timesUp !== timesUp) && (timesUp)) {
       this.disableAlternatives();
-    }
-    if (prevState.questionIndex !== questionIndex) {
       this.enableNextButton();
     }
   }
@@ -100,16 +101,18 @@ class Questions extends React.Component {
   }
 
   handleClick({ target }) {
+    const QUESTIONS_LIMIT = 5;
     const { value } = target;
+    const { questionIndex } = this.state;
     const { dispatchStopTime } = this.props;
-    if (value === 'correct-answer') {
+    if ((value === 'correct-answer') && (questionIndex < QUESTIONS_LIMIT)) {
       this.UpdateScore();
       this.setState((state) => (
         {
           questionIndex: state.questionIndex + 1,
         }
       ));
-    } else {
+    } else if (questionIndex < QUESTIONS_LIMIT) {
       this.setState((state) => (
         {
           questionIndex: state.questionIndex + 1,
@@ -118,16 +121,28 @@ class Questions extends React.Component {
     }
     this.setState({ isSelected: true });
     dispatchStopTime();
+    this.enableNextButton();
   }
 
   nextQuestion() {
-    this.setState(() => (
-      {
-        isSelected: false,
-        disableAlternatives: false,
-        nextQuestion: false,
-      }
-    ), () => this.getQuestions());
+    const QUESTIONS_LIMIT = 5;
+    const { dispatchRestartTimer } = this.props;
+    const { questionIndex } = this.state;
+    if (questionIndex === QUESTIONS_LIMIT) {
+      console.log('test');
+      this.setState({
+        redirectToFeedback: true,
+      });
+    } else {
+      this.setState(() => (
+        {
+          isSelected: false,
+          disableAlternatives: false,
+          nextQuestion: false,
+        }
+      ), () => this.getQuestions());
+      dispatchRestartTimer();
+    }
   }
 
   disableAlternatives() {
@@ -155,9 +170,9 @@ class Questions extends React.Component {
       isSelected,
       disableAlternatives,
       nextQuestion,
+      redirectToFeedback,
     } = this.state;
-    const number = -1;
-    let indexQuestion = number;
+    let indexQuestion = NUMBER;
     return (
       <div>
         <h4 data-testid="question-category">{ category }</h4>
@@ -192,6 +207,7 @@ class Questions extends React.Component {
             </button>);
         })}
         { nextQuestion && this.renderButton() }
+        { (redirectToFeedback) && <Redirect to="/feedback" /> }
       </div>
     );
   }
@@ -207,6 +223,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchStopTime: () => dispatch(stopTime()),
   dispatchPlayer: (object) => dispatch(addPlayer(object)),
+  dispatchRestartTimer: () => dispatch(restartTimer()),
 });
 
 Questions.propTypes = {

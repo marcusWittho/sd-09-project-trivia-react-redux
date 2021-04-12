@@ -1,9 +1,16 @@
-import { STOP_TIME, TIMES_UP, GET_SECONDS } from '../actions';
+import {
+  STOP_TIME,
+  TIMES_UP,
+  GET_SECONDS,
+  RESTART_TIMER,
+  REMOVE_RESTART_TIMER,
+} from '../actions';
 
 const INITIAL_STATE = {
   timesUp: false,
   stopTime: false,
   seconds: 0,
+  restartTimer: false,
 };
 
 const timer = (state = INITIAL_STATE, action) => {
@@ -14,6 +21,10 @@ const timer = (state = INITIAL_STATE, action) => {
     return { ...state, stopTime: true };
   case GET_SECONDS:
     return { ...state, seconds: action.seconds };
+  case RESTART_TIMER:
+    return { ...state, restartTimer: true, stopTime: false, timesUp: false };
+  case REMOVE_RESTART_TIMER:
+    return { ...state, restartTimer: false };
   default:
     return state;
   }
