@@ -9,6 +9,7 @@ class HeaderFeedBack extends React.Component {
       <header data-testid="feedback-text">
         <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt="gravatar" />
         <p data-testid="header-player-name">{ name }</p>
+        <p data-testid="header-score">{ score }</p>
         <p data-testid="feedback-total-score">{ score }</p>
       </header>
     );

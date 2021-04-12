@@ -34,8 +34,8 @@ class MainBody extends React.Component {
   }
 
   setNewScore(target) {
-    const { handleScore, name, email, questions } = this.props;
-    const { timer, score, assertions, points } = this.state;
+    const { handleScore, name, email, questions, scoreRedux } = this.props;
+    const { timer, assertions, points } = this.state;
     if (target.name === 'resposta-certa') {
       if (questions[0].difficulty === 'easy') {
         handleScore(points + (timer * 1));
@@ -43,7 +43,7 @@ class MainBody extends React.Component {
           JSON.stringify({ player:
           { name,
             assertions: assertions + 1,
-            score: score + points + (timer * 1),
+            score: scoreRedux + points + (timer * 1),
             email,
           } }));
         this.setState((previousState) => ({
@@ -52,12 +52,12 @@ class MainBody extends React.Component {
         }));
       }
       if (questions[0].difficulty === 'medium') {
-        handleScore(points + (timer * 1));
+        handleScore(points + (timer * 2));
         localStorage.setItem('state',
           JSON.stringify({ player:
           { name,
             assertions: assertions + 1,
-            score: score + points + (timer * 2),
+            score: scoreRedux + points + (timer * 2),
             email,
           } }));
         this.setState((previousState) => ({
@@ -66,12 +66,12 @@ class MainBody extends React.Component {
         }));
       }
       if (questions[0].difficulty === 'hard') {
-        handleScore(points + (timer * 1));
+        handleScore(points + (timer * Number('3')));
         localStorage.setItem('state',
           JSON.stringify({ player:
           { name,
             assertions: assertions + 1,
-            score: score + points + (timer * Number('3')),
+            score: scoreRedux + points + (timer * Number('3')),
             email,
           } }));
         this.setState((previousState) => ({
@@ -188,6 +188,7 @@ const mapStateToProps = (state) => ({
   loading: state.loginReducer.loading,
   email: state.loginReducer.email,
   name: state.loginReducer.name,
+  scoreRedux: state.mainReducer.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
