@@ -30,12 +30,12 @@ class Game extends Component {
     }
   }
 
-  changeButtonColor({ target }) {
-    if (target.id === 'correct-awnser') {
-      target.style.border = '3px solid rgb(6, 240, 15)';
-    } else {
-      target.style.border = '3px solid rgb(255, 0, 0)';
-    }
+  changeButtonColor() {
+    const correctAnswer = document.getElementById('correct-awnser');
+    const wrongAnswers = document.querySelectorAll('.wrong-answer');
+    
+    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    wrongAnswers.forEach((answer) => answer.style.border = '3px solid rgb(255, 0, 0)');
   }
 
   validateResponseFromApi(responseCode, errorCode, results) {
@@ -71,7 +71,7 @@ class Game extends Component {
         type="button"
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
-        id="wrong-answer"
+        className="wrong-answer"
         onClick={ this.changeButtonColor }
       >
         { answer }
