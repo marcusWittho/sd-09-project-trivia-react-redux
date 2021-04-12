@@ -80,3 +80,5 @@ Question.propTypes = {
     incorrect_answers: arrayOf(string),
   }),
 }.isRequired;
+
+// botao feito por let
