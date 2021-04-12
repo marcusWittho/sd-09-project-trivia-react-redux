@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
@@ -10,7 +11,6 @@ class Feedback extends Component {
   }
 
   showMessage() {
-    // localStorage.setItem('state', JSON.stringify({ player: { correctQuestions: correctQuestions } }))
     const rightQuestions = localStorage.getItem('correctQuestions');
     console.log(rightQuestions);
     const couldBeBetter = 3;
@@ -24,12 +24,16 @@ class Feedback extends Component {
 
   render() {
     const { userScore } = this.props;
+    console.log(userScore);
     return (
       <div>
         <Header />
         { this.showMessage() }
         <p data-testid="feedback-total-score">{ userScore }</p>
         <p data-testid="feedback-total-question">Voce acertou: perguntas</p>
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">Jogar novamente</button>
+        </Link>
       </div>
     );
   }
@@ -42,7 +46,7 @@ Feedback.propTypes = {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   nickname: state.user.nickname,
-  userScore: state.score.currentScore,
+  userScore: state.game.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
