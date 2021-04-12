@@ -23,8 +23,7 @@ const game = (state = INITIAL_STATE, action) => {
     return { ...state,
       assertions: state.assertions + action.payload.assert,
       score: state.score
-      + scoreToBeAdded(action.payload.assert, action.payload.difficulty, state.timer) 
-      
+      + scoreToBeAdded(action.payload.assert, action.payload.difficulty, state.timer),
     };
   case ADD_QUESTIONS:
     return { ...state,

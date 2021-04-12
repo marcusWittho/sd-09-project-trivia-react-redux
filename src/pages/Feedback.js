@@ -12,7 +12,7 @@ class Feedback extends Component {
   showMessage() {
     // localStorage.setItem('state', JSON.stringify({ player: { correctQuestions: correctQuestions } }))
     const rightQuestions = localStorage.getItem('correctQuestions');
-    console.log(rightQuestions)
+    console.log(rightQuestions);
     const couldBeBetter = 3;
     if (rightQuestions < couldBeBetter) {
       const message = 'Podia ser melhor...';

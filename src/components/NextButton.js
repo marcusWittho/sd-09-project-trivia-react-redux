@@ -10,11 +10,11 @@ class NextButton extends React.Component {
   }
 
   click() {
-    const { getQuestionIndex } = this.props;
+    const { getIndex } = this.props;
     const { next } = this.props;
     next();
-    getQuestionIndex();
-    console.log(getQuestionIndex())
+    getIndex();
+    console.log(getIndex());
   }
 
   render() {
@@ -26,6 +26,7 @@ class NextButton extends React.Component {
 
 NextButton.propTypes = {
   next: PropTypes.func.isRequired,
+  getIndex: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

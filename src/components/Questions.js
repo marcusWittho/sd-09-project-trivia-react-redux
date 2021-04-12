@@ -17,7 +17,7 @@ class Questions extends React.Component {
       redirect: false,
     };
     this.checkAnswer = this.checkAnswer.bind(this);
-    this.getQuestionIndex = this.getQuestionIndex.bind(this);
+    this.getIndex = this.getIndex.bind(this);
   }
 
   componentDidMount() {
@@ -25,13 +25,13 @@ class Questions extends React.Component {
     getQuestions();
   }
 
-  getQuestionIndex() {
+  getIndex() {
     const { questionIndex } = this.state;
     const lastIndex = 4;
-    if(questionIndex < lastIndex) {
+    if (questionIndex < lastIndex) {
       this.setState({
         questionIndex: questionIndex + 1,
-      })
+      });
     } else {
       this.setState({
         redirect: true,
@@ -44,16 +44,17 @@ class Questions extends React.Component {
     const { value, key } = target;
     const { difficulty, correct_answer: correctAnswer } = questions[questionPos];
     const isCorrect = value === correctAnswer ? 1 : 0;
-    let correctQuestions = 0;
+    const correctQuestions = 0;
     addScore(isCorrect, difficulty);
     this.setState({
       correctAnswer: 'correct',
       wrongAnswer: 'wrong',
     });
     dispatchAnswered();
-    if(key === 0) {
-      correctQuestions += 1;
-      localStorage.setItem('state', JSON.stringify({ player: { correctQuestions: correctQuestions } }))
+    if (key === 0) {
+      localStorage.setItem('state', JSON.stringify({
+        player: { correctQuestions: correctQuestions + 1 },
+      }));
     }
   }
 
@@ -61,7 +62,7 @@ class Questions extends React.Component {
     const { questions, isLoading, timer, questionPos, answered } = this.props;
     const { correctAnswer, wrongAnswer, redirect } = this.state;
     if (isLoading) return <h1>Loading...</h1>;
-    else if (redirect) { return <Redirect to="/feedback" />};
+    if (redirect) return <Redirect to="/feedback" />;
     const allAnswer = [
       questions[questionPos].correct_answer,
       ...questions[questionPos].incorrect_answers];
@@ -87,7 +88,7 @@ class Questions extends React.Component {
             { answer }
           </button>
         ))}
-        { (answered || timer === 0) && <NextButton getQuestionIndex={this.getQuestionIndex} /> }
+        { (answered || timer === 0) && <NextButton getIndex={ this.getIndex } /> }
       </main>
     );
   }
@@ -101,6 +102,7 @@ Questions.propTypes = {
   timer: PropTypes.number.isRequired,
   addScore: PropTypes.func.isRequired,
   questionPos: PropTypes.number.isRequired,
+  dispatchAnswered: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
