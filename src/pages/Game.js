@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import Question from '../components/Question';
 
@@ -10,18 +11,35 @@ class Game extends React.Component {
     this.state = {
       questionIndex: 0,
     };
+    this.goToNextQuestion = this.goToNextQuestion.bind(this);
+  }
+
+  goToNextQuestion() {
+    this.setState(({ questionIndex }) => ({
+      questionIndex: questionIndex + 1,
+    }));
   }
 
   render() {
     const { isFetching, questions } = this.props;
     const questionCanBeRendered = !isFetching && questions.length > 0;
     const { questionIndex } = this.state;
+    const goToFeedback = questionIndex > ('4' - 0);
     const question = questions[questionIndex];
+
+    if (goToFeedback) {
+      return (
+        <Redirect to="/feedback" />
+      );
+    }
 
     return (
       <>
         <Header />
-        { questionCanBeRendered && <Question question={ question } /> }
+        { questionCanBeRendered && <Question
+          question={ question }
+          goToNextQuestion={ this.goToNextQuestion }
+        /> }
       </>
     );
   }

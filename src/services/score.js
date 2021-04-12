@@ -9,11 +9,11 @@ const SCORE_BY_CATEGORY = {
 };
 
 const calcNewScore = (
-  { difficulty, THISANSWEREDTIMER },
+  { difficulty, timeLeft },
   { score: stateScore },
 ) => {
   const thisScore = MIN_CORRECT_ANSWER_SCORE
-                    + (THISANSWEREDTIMER * SCORE_BY_CATEGORY[difficulty]);
+                    + (timeLeft * SCORE_BY_CATEGORY[difficulty]);
   const newScore = stateScore + thisScore;
 
   scoreStorage(newScore);

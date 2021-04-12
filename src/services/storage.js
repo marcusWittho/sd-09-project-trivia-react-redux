@@ -13,7 +13,7 @@ export const userStorage = ({ name, email }) => {
 export const scoreStorage = (newScore) => {
   const { player } = JSON.parse(localStorage.getItem('state'));
   const newLocalStorageState = JSON.stringify({
-    player: { ...player, score: newScore },
+    player: { ...player, score: newScore, assertions: player.assertions + 1 },
   });
   localStorage.setItem('state', newLocalStorageState);
 };
