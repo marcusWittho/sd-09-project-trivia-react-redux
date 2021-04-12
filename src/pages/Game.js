@@ -10,13 +10,19 @@ class Game extends Component {
 
     this.state = {
       triviaArray: [],
+      shuffledArray: [],
+      buttonStatus: false,
       error: false,
       position: 0,
+      score: 0,
+      currentTime: 30,
     };
 
     this.renderAnswer = this.renderAnswer.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
     this.changeButtonColor = this.changeButtonColor.bind(this);
+    this.timerUpdate = this.timerUpdate.bind(this);
+    this.timerTimeout = this.timerTimeout.bind(this);
   }
 
   componentDidMount() {
@@ -28,16 +34,40 @@ class Game extends Component {
 
       this.validateResponseFromApi(responseCode, errorCode, results);
     }
+
+    this.timerUpdate();
   }
 
-  changeButtonColor() {
-    const correctAnswer = document.getElementById('correct-awnser');
-    const wrongAnswers = document.querySelectorAll('.wrong-answer');
+  timerUpdate() {
+    const timer = setInterval(() => {
+      const { currentTime } = this.state;
+      if(currentTime > 0) {
+        this.setState(({ currentTime }) => ({
+          currentTime: currentTime - 1
+        }))
+      } else {
+        clearInterval(timer);
+        this.timerTimeout();
+      }
+    }, 1000) 
+}
 
-    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
-    for (let i = 0; i < wrongAnswers.length; i += 1) {
-      wrongAnswers[i].style.border = '3px solid rgb(255, 0, 0)';
-    }
+  changeButtonColor() {
+    const correctAnswerButton = document.getElementById('correct-awnser');
+    const wrongAnswersButtons = document.querySelectorAll('.wrong-answer');
+
+    correctAnswerButton.style.border = '3px solid rgb(6, 240, 15)';
+    wrongAnswersButtons.forEach((button) => {
+      button.style.border = '3px solid rgb(255, 0, 0)';
+    });
+  }
+
+  timerTimeout() {
+      this.changeButtonColor();
+      this.setState({
+        buttonStatus: true,
+        shuffledArray: [],
+      })
   }
 
   validateResponseFromApi(responseCode, errorCode, results) {
@@ -54,12 +84,14 @@ class Game extends Component {
   }
 
   renderCorrectAnswer(correctAnswer) {
+    const { buttonStatus } = this.state;
     return (
       <button
         type="button"
         key={ correctAnswer }
         data-testid="correct-answer"
         id="correct-awnser"
+        disabled={ buttonStatus }
         onClick={ this.changeButtonColor }
       >
         {correctAnswer}
@@ -68,11 +100,13 @@ class Game extends Component {
   }
 
   renderIncorrectAnswers(incorrectAnswers) {
+    const { buttonStatus } = this.state;
     return incorrectAnswers.map((answer, index) => (
       <button
         type="button"
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
+        disabled={ buttonStatus }
         className="wrong-answer"
         onClick={ this.changeButtonColor }
       >
@@ -85,9 +119,21 @@ class Game extends Component {
     const incorrectButtons = this.renderIncorrectAnswers(incorrectAnswers);
     const correctButton = this.renderCorrectAnswer(correctAnswer);
     const answerArray = [...incorrectButtons, correctButton];
+    const { shuffledArray } = this.state;
     const randomModifier = 0.5;
 
-    return answerArray.sort(() => Math.random() - randomModifier);
+    if (shuffledArray.length === 0) {
+      const shuffledArray = answerArray.sort(() => Math.random() - randomModifier);
+    
+      this.setState({
+        shuffledArray,
+      })
+
+      return shuffledArray;
+    } else {
+      return shuffledArray;
+    }
+  
   }
 
   renderQuestion() {
@@ -110,14 +156,17 @@ class Game extends Component {
   }
 
   render() {
-    const { error, triviaArray } = this.state;
+    const { error, triviaArray, currentTime } = this.state;
     if (!triviaArray) return <Redirect to="/" />;
     return (
       <div>
         <Header />
         { error || triviaArray.length === 0
           ? <span>Carregando... </span>
-          : this.renderQuestion() }
+          : <div>
+            { this.renderQuestion() } 
+            <span>Time: { currentTime }</span>
+          </div> }
       </div>
     );
   }
