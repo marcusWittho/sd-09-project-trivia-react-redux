@@ -4,31 +4,50 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { fetchQuestions } from '../services';
 import '../CSS/gameplay.css';
-import Timer from './Timer';
 import { nextQuestion, sendQuestionsAnswersInfo } from '../actions';
+import Header from './Header';
 
 const maxQuestions = 5;
 
 class Gameplay extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       loading: true,
       correct: '',
       incorrect: '',
       renderNextButton: false,
+      timer: 30,
+      isButtonDisabled: false,
     };
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.randomAnswersOrder = this.randomAnswersOrder.bind(this);
     this.chooseAnswer = this.chooseAnswer.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
+    this.countdownTimer = this.countdownTimer.bind(this);
+    this.disableButton = this.disableButton.bind(this);
   }
 
   async componentDidMount() {
     const { tokenState } = this.props;
     const questionList = await fetchQuestions(tokenState);
     this.randomAnswersOrder(questionList);
+    this.countdownTimer();
+  }
+
+  countdownTimer() {
+    const oneSecond = 1000;
+    setInterval(() => {
+      const { timer } = this.state;
+      if (timer >= 1) {
+        this.setState((state) => ({ timer: state.timer - 1 }));
+      } else {
+        this.disableButton();
+        this.setState({ renderNextButton: true });
+      }
+    },
+    oneSecond);
   }
 
   difficultyNumber(difficulty) {
@@ -49,10 +68,19 @@ class Gameplay extends Component {
 
   calculateAnswerPoint() {
     const standardNumber = 10;
-    const { timer, questionList, questionIndex } = this.props;
+    const { timer } = this.state;
+    const { questionList, questionIndex } = this.props;
     const { difficulty } = questionList.results[questionIndex];
     const difficultyFactor = this.difficultyNumber(difficulty);
     return standardNumber + (timer * difficultyFactor);
+  }
+
+  addAssertionsOnStateLocalStorage(answer) {
+    if (answer === 'correct') {
+      const previousState = JSON.parse(localStorage.getItem('state'));
+      previousState.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(previousState));
+    }
   }
 
   sumScorePoint(answer) {
@@ -65,12 +93,23 @@ class Gameplay extends Component {
   }
 
   chooseAnswer({ target }) {
+    this.disableButton();
+    this.addAssertionsOnStateLocalStorage(target.name);
     this.sumScorePoint(target.name);
     this.setState({
       correct: 'correct',
       incorrect: 'incorrect',
       renderNextButton: true,
     });
+  }
+
+  prepareNextQuestion(nextQuestionDispatch, questionList) {
+    this.setState({ isButtonDisabled: false });
+    nextQuestionDispatch();
+    const { questionIndex } = this.props;
+    console.log('teste prepare', questionIndex);
+    this.randomAnswersOrder(questionList);
+    this.setState({ timer: 30 });
   }
 
   randomAnswersOrder(questionList) {
@@ -93,6 +132,11 @@ class Gameplay extends Component {
       correct: '',
       incorrect: '',
     });
+    console.log(questionIndex);
+  }
+
+  disableButton() {
+    this.setState({ isButtonDisabled: true });
   }
 
   renderQuestion() {
@@ -100,18 +144,15 @@ class Gameplay extends Component {
     const currentQuestionInfo = questionList.results[questionIndex];
     return (
       <section>
-        <h1 data-testid="question-category">
-          { currentQuestionInfo.category}
-        </h1>
+        <h1 data-testid="question-category">{ currentQuestionInfo.category}</h1>
         <p data-testid="question-text">{currentQuestionInfo.question}</p>
       </section>
     );
   }
 
   renderAnswers() {
-    const { answersAndPosition, timer } = this.props;
-    const { newAnswersList, randomIndex } = answersAndPosition;
-    const { correct, incorrect } = this.state;
+    const { answersAndPosition: { newAnswersList, randomIndex } } = this.props;
+    const { correct, incorrect, isButtonDisabled } = this.state;
     return (
       <section>
         { newAnswersList.map((answer, index) => {
@@ -121,7 +162,7 @@ class Gameplay extends Component {
                 data-testid="correct-answer"
                 onClick={ this.chooseAnswer }
                 name="correct"
-                disabled={ timer < 0 }
+                disabled={ isButtonDisabled }
                 className={ correct }
                 type="button"
               >
@@ -134,7 +175,7 @@ class Gameplay extends Component {
               onClick={ this.chooseAnswer }
               name="incorrect"
               className={ incorrect }
-              disabled={ timer < 0 }
+              disabled={ isButtonDisabled }
               key={ index }
               type="button"
             >
@@ -147,11 +188,11 @@ class Gameplay extends Component {
   }
 
   renderNextButton() {
-    const { nextQuestionDispatch } = this.props;
+    const { nextQuestionDispatch, questionList } = this.props;
     return (
       <button
         type="button"
-        onClick={ nextQuestionDispatch }
+        onClick={ () => this.prepareNextQuestion(nextQuestionDispatch, questionList) }
         data-testid="btn-next"
       >
         Próxima
@@ -160,17 +201,20 @@ class Gameplay extends Component {
   }
 
   render() {
-    const { loading, renderNextButton } = this.state;
+    const { loading, renderNextButton, timer } = this.state;
     const { questionIndex } = this.props;
     const shouldQuestionBeRender = !loading && (questionIndex < maxQuestions);
     return (
-      <main>
-        { questionIndex === maxQuestions && <Redirect to="/feedback" /> }
-        { shouldQuestionBeRender && this.renderQuestion()}
-        { shouldQuestionBeRender && this.renderAnswers()}
-        { !loading && <Timer />}
-        { renderNextButton && this.renderNextButton()}
-      </main>
+      <>
+        <Header />
+        <main>
+          { questionIndex === maxQuestions && <Redirect to="/feedback" /> }
+          { shouldQuestionBeRender && this.renderQuestion()}
+          { shouldQuestionBeRender && this.renderAnswers()}
+          {!loading && <h2>{ timer }</h2>}
+          { renderNextButton && this.renderNextButton()}
+        </main>
+      </>
     );
   }
 }
@@ -200,7 +244,6 @@ Gameplay.propTypes = {
     randomIndex: PropTypes.shape().isRequired,
   }).isRequired,
   sendQuestionsAnswersInfoDispatch: PropTypes.func.isRequired,
-  timer: PropTypes.number.isRequired,
   nextQuestionDispatch: PropTypes.func.isRequired,
 };
 
