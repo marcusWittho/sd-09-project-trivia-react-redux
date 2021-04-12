@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -39,6 +40,11 @@ class Ranking extends React.Component {
             </li>
           ))}
         </ul>
+        <Link to="/">
+          <button type="button" data-testid="btn-go-home">
+            Inicio
+          </button>
+        </Link>
       </div>
     );
   }
