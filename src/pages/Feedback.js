@@ -11,11 +11,11 @@ class Feedback extends Component {
   }
 
   showMessage() {
-    const rightQuestions = localStorage.getItem('correctQuestions');
-    console.log(rightQuestions);
+    const storageState = JSON.parse(localStorage.getItem('state'));
+    const rightQuestions = storageState.player.assertions;
     const couldBeBetter = 3;
     if (rightQuestions < couldBeBetter) {
-      const message = 'Podia ser melhor...';
+      const message = `Podia ser melhor... ${rightQuestions}`;
       return (<p data-testid="feedback-text">{message}</p>);
     }
     const message = 'Mandou bem!';
@@ -24,7 +24,6 @@ class Feedback extends Component {
 
   render() {
     const { userScore } = this.props;
-    console.log(userScore);
     return (
       <div>
         <Header />

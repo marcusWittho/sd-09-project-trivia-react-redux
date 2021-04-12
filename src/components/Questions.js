@@ -56,6 +56,9 @@ class Questions extends React.Component {
     const { questions, isLoading, timer, questionPos,
       answered, correctAnswer, wrongAnswer } = this.props;
     const { redirect } = this.state;
+    /* const storageState = JSON.parse(localStorage.getItem('state'));
+    const rightQuestions = storageState.player.assertions;
+    console.log(`Assertions: ${rightQuestions}`); */
     if (isLoading) return <h1>Loading...</h1>;
     if (redirect) return <Redirect to="/feedback" />;
     const allAnswer = [
