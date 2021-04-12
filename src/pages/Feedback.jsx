@@ -9,7 +9,7 @@ class Feedback extends React.Component {
     return (
       <div>
         <Header />
-        <Link to="/game">
+        <Link to="/">
           <PlayAgainBtn />
         </Link>
       </div>
