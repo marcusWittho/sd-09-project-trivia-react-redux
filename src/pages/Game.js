@@ -3,6 +3,10 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import './game.css';
+import WaveTop from '../img/wave-top.svg';
+import WaveBottom from '../img/wave-bottom.svg';
+import QuestionMark from '../img/questao.png';
 
 class Game extends Component {
   constructor(props) {
@@ -14,7 +18,6 @@ class Game extends Component {
       buttonStatus: false,
       error: false,
       position: 0,
-      score: 0,
       currentTime: 30,
     };
 
@@ -39,18 +42,19 @@ class Game extends Component {
   }
 
   timerUpdate() {
+    const intervalTime = 1000;
     const timer = setInterval(() => {
       const { currentTime } = this.state;
-      if(currentTime > 0) {
-        this.setState(({ currentTime }) => ({
-          currentTime: currentTime - 1
-        }))
+      if (currentTime > 0) {
+        this.setState({
+          currentTime: currentTime - 1,
+        });
       } else {
         clearInterval(timer);
         this.timerTimeout();
       }
-    }, 1000) 
-}
+    }, intervalTime);
+  }
 
   changeButtonColor() {
     const correctAnswerButton = document.getElementById('correct-awnser');
@@ -63,11 +67,12 @@ class Game extends Component {
   }
 
   timerTimeout() {
-      this.changeButtonColor();
-      this.setState({
-        buttonStatus: true,
-        shuffledArray: [],
-      })
+    this.changeButtonColor();
+    this.setState({
+      buttonStatus: true,
+      shuffledArray: [],
+      currentTime: 0,
+    });
   }
 
   validateResponseFromApi(responseCode, errorCode, results) {
@@ -92,9 +97,12 @@ class Game extends Component {
         data-testid="correct-answer"
         id="correct-awnser"
         disabled={ buttonStatus }
-        onClick={ this.changeButtonColor }
+        onClick={ () => {
+          this.changeButtonColor();
+          this.timerTimeout();
+        } }
       >
-        {correctAnswer}
+        { correctAnswer }
       </button>
     );
   }
@@ -108,9 +116,12 @@ class Game extends Component {
         data-testid={ `wrong-answer-${index}` }
         disabled={ buttonStatus }
         className="wrong-answer"
-        onClick={ this.changeButtonColor }
+        onClick={ () => {
+          this.changeButtonColor();
+          this.timerTimeout();
+        } }
       >
-        { answer }
+        {answer}
       </button>
     ));
   }
@@ -123,17 +134,17 @@ class Game extends Component {
     const randomModifier = 0.5;
 
     if (shuffledArray.length === 0) {
-      const shuffledArray = answerArray.sort(() => Math.random() - randomModifier);
-    
-      this.setState({
-        shuffledArray,
-      })
+      answerArray.sort(
+        () => Math.random() - randomModifier,
+      );
 
-      return shuffledArray;
-    } else {
-      return shuffledArray;
+      this.setState({
+        shuffledArray: answerArray,
+      });
+
+      return answerArray;
     }
-  
+    return shuffledArray;
   }
 
   renderQuestion() {
@@ -144,13 +155,15 @@ class Game extends Component {
     } = triviaArray[position];
     return (
       <div>
-        <span data-testid="question-category">
-          {triviaArray[position].category}
+        <span className="question-category" data-testid="question-category">
+          { triviaArray[position].category }
         </span>
-        <span data-testid="question-text">
-          {triviaArray[position].question}
+        <span className="question" data-testid="question-text">
+          { triviaArray[position].question }
         </span>
-        {this.renderAnswer(incorrectAnswers, correctAnswer)}
+        <div className="answerButton">
+          { this.renderAnswer(incorrectAnswers, correctAnswer) }
+        </div>
       </div>
     );
   }
@@ -159,15 +172,28 @@ class Game extends Component {
     const { error, triviaArray, currentTime } = this.state;
     if (!triviaArray) return <Redirect to="/" />;
     return (
-      <div>
+      <section className="game-section">
         <Header />
-        { error || triviaArray.length === 0
-          ? <span>Carregando... </span>
-          : <div>
-            { this.renderQuestion() } 
-            <span>Time: { currentTime }</span>
-          </div> }
-      </div>
+        <img className="question-Mark-left" src={ QuestionMark } alt="wave" />
+        <section className="card-container">
+          <img className="wave-top" src={ WaveTop } alt="wave" />
+          <div className="game-card">
+            { error || triviaArray.length === 0 ? (
+              <span>Carregando... </span>
+            ) : (
+              <div>
+                {this.renderQuestion()}
+                <span>
+                  Time:
+                  {currentTime}
+                </span>
+              </div>
+            ) }
+          </div>
+          <img className="wave-bottom" src={ WaveBottom } alt="wave" />
+        </section>
+        <img className="question-Mark-right" src={ QuestionMark } alt="wave" />
+      </section>
     );
   }
 }

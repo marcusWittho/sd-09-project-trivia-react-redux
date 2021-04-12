@@ -7,6 +7,7 @@ import getTrivia from '../actions/triviaAction';
 import logo from '../trivia.png';
 import requestToken from '../services/tokenAPI';
 import ConfigButton from '../components/configButton';
+import './login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -71,25 +72,25 @@ class Login extends Component {
           <ConfigButton />
           <img src={ logo } className="App-logo" alt="logo" />
           <p>SUA VEZ</p>
-          <section>
+          <section className="inputs-section">
             <label htmlFor="name">
-              Nome
               <input
                 type="text"
                 name="playerNameField"
                 value={ playerNameField }
                 onChange={ this.inputsControl }
                 data-testid="input-player-name"
+                placeholder="Nome"
               />
             </label>
             <label htmlFor="email">
-              Email
               <input
                 type="text"
                 name="playerEmailField"
                 value={ playerEmailField }
                 onChange={ this.inputsControl }
                 data-testid="input-gravatar-email"
+                placeholder="Email"
               />
             </label>
             <button
@@ -100,6 +101,7 @@ class Login extends Component {
                 loginDispatch(playerNameField, playerEmailField);
                 this.getTrivia();
               } }
+              className="play-button"
             >
               Jogar
             </button>

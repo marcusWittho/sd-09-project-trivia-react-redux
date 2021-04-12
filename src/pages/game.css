@@ -1,0 +1,87 @@
+.game-section {
+  background-color: rgb(99, 13, 136);
+  height: 100%;
+  padding-bottom: 110px;
+}
+
+.game-card {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  height: 550px;
+  justify-content: center;
+  margin-top: 10%;
+  padding: 10px;
+  width: 500px;
+  z-index: 100;
+}
+
+.card-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.wave-top {
+  margin-top: -207px;
+  position: absolute;
+  width: 1276px;
+}
+
+.wave-bottom {
+  margin-top: 319px;
+  position: absolute;
+  width: 1276px;
+}
+
+.question-Mark-left {
+  height: 85px;
+  margin-left: 150px;
+  margin-top: 490px;
+  position: absolute;
+  transform: rotate(-40deg);
+}
+
+.question-Mark-right {
+  height: 95px;
+  margin-left: 1150px;
+  margin-top: -400px;
+  position: absolute;
+  transform: rotate(40deg);
+}
+
+.question-category {
+  display: block;
+  font-size: 170%;
+  padding: 15px;
+  text-align: center;
+}
+
+.question {
+  display: block;
+  font-size: 125%;
+  margin-top: 5px;
+  padding: 35px;
+  text-align: center;
+}
+
+.answerButton {
+  display: block;
+  padding: 5px;
+  text-align: center;
+}
+
+.answerButton button {
+  border: 1px solid silver;
+  border-radius: 20px;
+  cursor: pointer;
+  height: 60px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.answerButton button:hover {
+  background-color: rgb(151, 50, 245);
+  color: white;
+  transition: 0.3s;
+}
