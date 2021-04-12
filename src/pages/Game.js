@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
@@ -15,6 +16,7 @@ class Game extends Component {
 
     this.renderAnswer = this.renderAnswer.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
+    this.changeButtonColor = this.changeButtonColor.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +27,14 @@ class Game extends Component {
       const { response_code: responseCode, results } = triviaObject;
 
       this.validateResponseFromApi(responseCode, errorCode, results);
+    }
+  }
+
+  changeButtonColor({ target }) {
+    if (target.id === 'correct-awnser') {
+      target.style.border = "3px solid rgb(6, 240, 15)";
+    } else {
+      target.style.border = "3px solid rgb(255, 0, 0)";
     }
   }
 
@@ -43,15 +53,15 @@ class Game extends Component {
 
   renderCorrectAnswer(correctAnswer) {
     return (
-      <button type="button" key={ correctAnswer } data-testid="correct-answer">
-        { correctAnswer }
+      <button type="button" key={ correctAnswer } data-testid="correct-answer" id="correct-awnser" onClick={this.changeButtonColor}>
+        {correctAnswer}
       </button>
     );
   }
 
   renderIncorrectAnswers(incorrectAnswers) {
     return incorrectAnswers.map((answer, index) => (
-      <button type="button" key={ answer } data-testid={ `wrong-answer-${index}` }>
+      <button type="button" key={ answer } data-testid={ `wrong-answer-${index}` } id="wrong-answer" onClick={this.changeButtonColor}>
         { answer }
       </button>
     ));
@@ -87,7 +97,7 @@ class Game extends Component {
 
   render() {
     const { error, triviaArray } = this.state;
-
+    if (!triviaArray) return <Redirect to="/" />;
     return (
       <div>
         <Header />
