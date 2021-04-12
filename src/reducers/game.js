@@ -21,7 +21,9 @@ const scoreToBeAdded = (assert, diff, timer) => assert
 const game = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case INCREASE_SCORE:
-    localStorage.setItem('state', JSON.stringify({ player: { score: state.score } }));
+    /* localStorage.setItem('state', JSON.stringify({
+      player: { score: state.score },
+    })); */
     return { ...state,
       assertions: state.assertions + action.payload.assert,
       score: state.score
