@@ -14,8 +14,9 @@ class Ranking extends Component {
         <h2>Ranking</h2>
         <ul className="ranking-list">
           {
-            ranking.sort((playOne, playTwo) => play1.score < play2.score ? play2 : play1)
-              .map((jogada, index) => (<li key={ jogada.name } className="ranking-item">
+            ranking.sort((play1, play2) => play1.score < play2.score ? play2 : play1)
+              .map((jogada, index) => (
+              <li key={ jogada.name } className="ranking-item">
                 <div>
                   <div data-testid={ `player-name-${index}` }>
                     <span className="ranking-text">Nome:</span>
@@ -27,8 +28,7 @@ class Ranking extends Component {
                   </div>
                 </div>
                 <img src={ jogada.picture } alt="foto do jogador" />
-              </li>)
-            )
+              </li>))
           }
         </ul>
       </div>
