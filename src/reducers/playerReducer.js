@@ -1,5 +1,5 @@
-import { GET_PLAYER_NAME,
-  GET_PLAYER_EMAIL, GET_TOKEN, UPDATE_INDEX } from '../actions/actionTypes';
+import { GET_PLAYER_NAME, GET_PLAYER_EMAIL,
+  GET_TOKEN, UPDATE_INDEX, UPDATE_SCORE_ASSERTIONS } from '../actions/actionTypes';
 
 const INITIAL_PLAYER_STATE = {
   name: '',
@@ -7,6 +7,8 @@ const INITIAL_PLAYER_STATE = {
   email: '',
   score: 0,
   index: 0,
+  assertions: 0,
+  isAnswered: false,
 };
 
 const player = (state = INITIAL_PLAYER_STATE, action) => {
@@ -30,6 +32,14 @@ const player = (state = INITIAL_PLAYER_STATE, action) => {
     return {
       ...state,
       index: action.index,
+      isAnswered: false,
+    };
+  case UPDATE_SCORE_ASSERTIONS:
+    return {
+      ...state,
+      score: state.score + action.score,
+      assertions: state.assertions + action.assertions,
+      isAnswered: true,
     };
   default:
     return state;

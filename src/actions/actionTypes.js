@@ -7,3 +7,5 @@ export const GET_TOKEN = 'GET_TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 
 export const UPDATE_INDEX = 'UPDATE_INDEX';
+
+export const UPDATE_SCORE_ASSERTIONS = 'UPDATE_SCORE_ASSERTIONS';
