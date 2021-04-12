@@ -1,0 +1,9 @@
+.feedback-header {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.feedback-header p:nth-child( 2 ) {
+  text-align: left;
+  width: 80vw;
+}
