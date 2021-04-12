@@ -32,9 +32,9 @@ class Game extends Component {
 
   changeButtonColor({ target }) {
     if (target.id === 'correct-awnser') {
-      target.style.border = "3px solid rgb(6, 240, 15)";
+      target.style.border = '3px solid rgb(6, 240, 15)';
     } else {
-      target.style.border = "3px solid rgb(255, 0, 0)";
+      target.style.border = '3px solid rgb(255, 0, 0)';
     }
   }
 
@@ -53,7 +53,13 @@ class Game extends Component {
 
   renderCorrectAnswer(correctAnswer) {
     return (
-      <button type="button" key={ correctAnswer } data-testid="correct-answer" id="correct-awnser" onClick={this.changeButtonColor}>
+      <button 
+        type="button"
+        key={ correctAnswer }
+        data-testid="correct-answer"
+        id="correct-awnser"
+        onClick={ this.changeButtonColor }
+      >
         {correctAnswer}
       </button>
     );
@@ -61,7 +67,13 @@ class Game extends Component {
 
   renderIncorrectAnswers(incorrectAnswers) {
     return incorrectAnswers.map((answer, index) => (
-      <button type="button" key={ answer } data-testid={ `wrong-answer-${index}` } id="wrong-answer" onClick={this.changeButtonColor}>
+      <button
+        type="button"
+        key={ answer }
+        data-testid={ `wrong-answer-${index}` }
+        id="wrong-answer"
+        onClick={ this.changeButtonColor }
+      >
         { answer }
       </button>
     ));
