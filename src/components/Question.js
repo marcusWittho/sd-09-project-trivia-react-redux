@@ -78,28 +78,33 @@ class Question extends React.Component {
         { timeLeft > 0 ? <p>{`Time Left: ${timeLeft}s`}</p> : <p>Time Over!</p> }
         <p data-testid="question-category">{ question.category }</p>
         <p data-testid="question-text">{ question.question }</p>
-        <button
-          data-testid="correct-answer"
-          name="correct-answer"
-          type="button"
-          disabled={ disabledOptions }
-          className={ addClass ? 'correct-answer' : 'answer' }
-          onClick={ this.handleAnswerClick }
-        >
-          { question.correct_answer }
-        </button>
-        {question.incorrect_answers.map((wrong, index) => (
-          <button
-            data-testid={ `wrong-answer-${index}` }
-            name="wrong-answer"
-            type="button"
-            key={ `wrong-answer-${index}` }
-            disabled={ disabledOptions }
-            className={ addClass ? 'wrong-answer' : 'answer' }
-            onClick={ this.handleAnswerClick }
-          >
-            { wrong }
-          </button>)) }
+        { question.randomAnswers.map((answer, index) => {
+          if (answer.correct) {
+            return (
+              <button
+                data-testid="correct-answer"
+                name="correct-answer"
+                type="button"
+                disabled={ disabledOptions }
+                className={ addClass ? 'correct-answer' : 'answer' }
+                onClick={ this.handleAnswerClick }
+              >
+                { answer.correct }
+              </button>);
+          }
+          return (
+            <button
+              data-testid={ `wrong-answer-${index}` }
+              name="wrong-answer"
+              type="button"
+              key={ `wrong-answer-${index}` }
+              disabled={ disabledOptions }
+              className={ addClass ? 'wrong-answer' : 'answer' }
+              onClick={ this.handleAnswerClick }
+            >
+              { answer.incorrect }
+            </button>);
+        })}
         <div>
           { nextButton || addClass ? (
             <button
