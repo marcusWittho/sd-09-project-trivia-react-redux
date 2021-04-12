@@ -35,7 +35,7 @@ class MainBody extends React.Component {
 
   setNewScore(target) {
     const { handleScore, name, email, questions, scoreRedux } = this.props;
-    const { timer, score, assertions, points } = this.state;
+    const { timer, assertions, points } = this.state;
     if (target.name === 'resposta-certa') {
       if (questions[0].difficulty === 'easy') {
         handleScore(points + (timer * 1));
