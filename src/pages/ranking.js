@@ -19,4 +19,5 @@ class Ranking extends React.Component {
   }
 }
 
+// falta implementar o ranking tambem
 export default Ranking;

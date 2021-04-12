@@ -8,6 +8,7 @@ class Timer extends React.Component {
     };
   }
 
+  // falta implementar o timer ainda
   render() {
     return (
       <p>a</p>
