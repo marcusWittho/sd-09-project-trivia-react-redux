@@ -3,16 +3,6 @@ import PropTypes from 'prop-types';
 import '../App.css';
 import { Link } from 'react-router-dom';
 
-function shuffleArray(array) {
-  let i = array.length - 1;
-  for (; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
-}
 // * Source https://stackoverflow.com/questions/38101522/how-to-render-random-objects-from-an-array-in-react /
 
 class EachQuestion extends Component {
@@ -20,6 +10,34 @@ class EachQuestion extends Component {
     super();
 
     this.nextButton = this.nextButton.bind(this);
+
+    this.state = {
+      shuffle: true,
+      container: [],
+    };
+  }
+
+  componentDidMount() {
+    const { questions,
+      questionIndex } = this.props;
+    this.shuffleArray(questions[questionIndex].incorrect_answers);
+  }
+
+  shuffleArray(array) {
+    const { shuffle } = this.state;
+    console.log(array);
+
+    if (shuffle) {
+      let i = array.length - 1;
+      for (; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      console.log(array);
+      this.setState({ shuffle: false, container: array });
+    }
   }
 
   nextButton() {
@@ -42,7 +60,7 @@ class EachQuestion extends Component {
   render() {
     const { questions,
       questionIndex, questionAnswered, answerQuestion, timer } = this.props;
-    const shuffledAlternatives = shuffleArray(questions[questionIndex].incorrect_answers);
+    const { container } = this.state;
     return (
       <main>
         <p
@@ -64,7 +82,7 @@ class EachQuestion extends Component {
         >
           {questions[questionIndex].correct_answer}
         </button>
-        {shuffledAlternatives.map((alternative, index) => (
+        {container.map((alternative, index) => (
           <button
             data-testid={ `wrong-answer-${index}` }
             type="button"

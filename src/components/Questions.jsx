@@ -88,13 +88,13 @@ class Questions extends Component {
   startTimer() {
     const { seconds } = this.state;
     const interval = 1000;
-    if (this.timer === 0 && seconds > 0) {
-      this.timer = setInterval(this.countDown, interval);
+    if (seconds > 0) {
+      setInterval(this.countDown, interval);
     }
   }
 
   countDown() {
-    const { seconds, questionAnswered } = this.state;
+    const { seconds } = this.state;
     if (seconds >= 1) {
       const sec = seconds - 1;
       this.setState({
@@ -102,8 +102,7 @@ class Questions extends Component {
         seconds: sec,
       });
     }
-    if (seconds === 0 && !questionAnswered) {
-      clearInterval(this.timer);
+    if (seconds === 0) {
       this.setState({
         hide: false,
       });
