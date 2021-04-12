@@ -48,17 +48,27 @@ class Game extends Component {
 
   renderCorrectAnswer(correctAnswer) {
     return (
-      <button type="button" key={ correctAnswer } data-testid="correct-answer">
-        { correctAnswer }
-      </button>
+      <div className="answerButton" key={ correctAnswer }>
+        <button
+          type="button"
+          data-testid="correct-answer"
+        >
+          { correctAnswer }
+        </button>
+      </div>
     );
   }
 
   renderIncorrectAnswers(incorrectAnswers) {
     return incorrectAnswers.map((answer, index) => (
-      <button type="button" key={ answer } data-testid={ `wrong-answer-${index}` }>
-        { answer }
-      </button>
+      <div className="answerButton" key={ answer }>
+        <button
+          type="button"
+          data-testid={ `wrong-answer-${index}` }
+        >
+          { answer }
+        </button>
+      </div>
     ));
   }
 
@@ -79,10 +89,10 @@ class Game extends Component {
     } = triviaArray[position];
     return (
       <div>
-        <span data-testid="question-category">
+        <span className="question-category" data-testid="question-category">
           {triviaArray[position].category}
         </span>
-        <span data-testid="question-text">
+        <span className="question" data-testid="question-text">
           {triviaArray[position].question}
         </span>
         {this.renderAnswer(incorrectAnswers, correctAnswer)}

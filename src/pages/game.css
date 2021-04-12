@@ -49,3 +49,38 @@
   position: absolute;
   transform: rotate(40deg);
 }
+
+.question-category {
+  display: block;
+  text-align: center;
+  font-size: 170%;
+  padding: 35px;
+}
+
+.question {
+  display: block;
+  text-align: center;
+  font-size: 125%;
+  margin-top: 15px;
+  padding: 35px;
+}
+
+.answerButton {
+  display: block;
+  text-align: center;
+  padding: 5px;
+}
+
+.answerButton button {
+  width: 100%;
+  height: 60px;
+  border-radius: 20px;
+  border: 1px solid rgb(192, 192, 192);
+  cursor: pointer;
+}
+
+.answerButton button:hover {
+  background-color: rgb(151, 50, 245);
+  color: white;
+  transition: 0.3s;
+}
