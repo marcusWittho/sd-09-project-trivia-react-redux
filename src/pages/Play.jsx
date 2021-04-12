@@ -96,6 +96,7 @@ class Play extends React.Component {
     const magicNumber = 10;
     const previousStorage = JSON.parse(localStorage.getItem('state'));
     const { player: { score, assertions } } = previousStorage;
+    console.log(previousStorage);
     switch (questionLevel) {
     case questionLevel === 'hard':
       previousStorage.player.score = score + (magicNumber + (counter * hard));
@@ -193,7 +194,7 @@ class Play extends React.Component {
   }
 
   render() {
-    const { isFetching } = this.props;
+    const { isFetching, questions } = this.props;
     const { nextQuestion } = this.state;
     const { redirectFeedBack } = this.state;
     if (redirectFeedBack) return <Redirect to="/feedback" />;
@@ -201,7 +202,7 @@ class Play extends React.Component {
     return (
       <main>
         <Header />
-        { this.questionGenerator() }
+        { !isFetching && questions.length > 0 && this.questionGenerator() }
         { nextQuestion && this.nextQuestionButtonGenerator() }
         <Timer />
       </main>

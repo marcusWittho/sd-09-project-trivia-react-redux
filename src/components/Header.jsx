@@ -20,6 +20,17 @@ class Header extends React.Component {
   }
 
   getLocalStorage() {
+    if (!localStorage.getItem('state')) {
+      const state = {
+        player: {
+          name: '',
+          assertions: 0,
+          score: 0,
+          gravatarEmail: '',
+        },
+      };
+      localStorage.setItem('state', JSON.stringify(state));
+    }
     const getStorageInfos = JSON.parse(localStorage.getItem('state'));
     const { player: { score } } = getStorageInfos;
     this.setState({ playerScore: score });
