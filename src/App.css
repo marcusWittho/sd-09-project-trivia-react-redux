@@ -24,7 +24,7 @@
 
 .App-header {
   align-items: center;
-  background-image: url("https://image.freepik.com/fotos-gratis/simbolos-de-interrogacao-cor_1205-337.jpg?1");
+  background-image: url('https://image.freepik.com/fotos-gratis/simbolos-de-interrogacao-cor_1205-337.jpg?1');
   color: white;
   display: flex;
   flex-direction: column;
@@ -36,8 +36,8 @@
 .Img-rodape {
   border-radius: 50%;
   height: auto;
-  max-width: 100px;
   max-height: 100px;
+  max-width: 100px;
   width: auto;
 }
 
