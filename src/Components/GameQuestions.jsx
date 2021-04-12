@@ -35,6 +35,19 @@ class GameQuestions extends Component {
 
   setAnswer(incorrects, correct) {
     const { answerClicked, time } = this.state;
+    // if (incorrects.length === 1) {
+    //   const numberOfQuestions = '50px';
+    // } else {
+    //   const numberOfQuestions = '50px';
+    // };
+    const buttonQuestionStyles = {
+      borderRadius: '5px',
+      backgroundColor: 'rgb(153, 209, 153)',
+      height: '50px',
+      margin: '1px',
+      padding: '2px',
+      fontSize: '1rem',
+    };
     const incorrectsElements = incorrects.map(
       (incorrect, index) => (
         <button
@@ -45,13 +58,7 @@ class GameQuestions extends Component {
           className={ answerClicked ? 'incorrect' : null }
           onClick={ this.handleClick }
           disabled={ time < 1 }
-          style={ {
-            width: '150px',
-            margin: '5px',
-            borderRadius: '5px',
-            padding: '3px',
-            backgroundColor: 'rgb(153, 209, 153)',
-          } }
+          style={ buttonQuestionStyles }
         >
           {incorrect}
         </button>
@@ -66,13 +73,7 @@ class GameQuestions extends Component {
         className={ answerClicked ? 'correct' : null }
         onClick={ this.handleClick }
         disabled={ time < 1 }
-        style={ {
-          width: '150px',
-          margin: '5px',
-          borderRadius: '5px',
-          padding: '3px',
-          backgroundColor: 'rgb(153, 209, 153)',
-        } }
+        style={ buttonQuestionStyles }
       >
         {correct}
       </button>
@@ -174,7 +175,7 @@ class GameQuestions extends Component {
     this.createStore();
     return (
       <div className="form-group">
-        <h2 className="question">Pergunta</h2>
+        {/* <h2 className="question">Pergunta</h2> */}
         <h3 className="timer">
           Tempo:
           { time }
@@ -183,16 +184,16 @@ class GameQuestions extends Component {
           data-testid="question-category"
           className="question-category"
         >
-          Categoria:
           {questions && questions[questionNumber].category}
         </p>
-        <p
-          data-testid="question-text"
-          className="question-text"
-        >
+        <p data-testid="question-text" className="question-text">
           {questions && questions[questionNumber].question}
         </p>
-        <div className="container-questions">
+        <div
+          className="container-questions"
+          style={ (questions[questionNumber].incorrect_answers).length !== 1
+            ? ({ height: '104px' }) : ({ height: '52px' }) }
+        >
           {questions && this.setAnswer(
             questions[questionNumber].incorrect_answers,
             questions[questionNumber].correct_answer,
