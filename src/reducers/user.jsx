@@ -1,27 +1,19 @@
-import { USER_EMAIL, USER_NAME, USER_AVATAR } from '../actions';
+import { USER_LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
   name: '',
-  avatar: '',
+  score: 0,
 };
 
-export default function loginReducer(state = INITIAL_STATE, action) {
+export default function user(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case USER_EMAIL:
+  case USER_LOGIN:
     return {
       ...state,
       email: action.email,
-    };
-  case USER_NAME:
-    return {
-      ...state,
       name: action.name,
-    };
-  case USER_AVATAR:
-    return {
-      ...state,
-      avatar: action.avatar,
+      score: action.score,
     };
   default:
     return state;

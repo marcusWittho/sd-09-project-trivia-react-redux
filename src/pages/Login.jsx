@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../actions/fetchToken';
-import { userEmail, userName, userAvatar } from '../actions/index';
+import { userLogin } from '../actions/index';
 // import '../App.css';
 import '../styles/Login.css';
 import logo from '../trivia.png';
@@ -15,14 +14,13 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
+      score: 0,
       validated: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.validateInputs = this.validateInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleClickUser = this.handleClickUser.bind(this);
-    this.fetchGravata = this.fetchGravata.bind(this);
   }
 
   handleChange({ target }) {
@@ -43,29 +41,17 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { token, history } = this.props;
+    const { token, history, login } = this.props;
+    const { email, name, score } = this.state;
     await token();
+    login(email, name, score);
     history.push('./game');
-  }
-
-  handleClickUser(email, name) {
-    const { userEmailDispatcher, userNameDispatcher } = this.props;
-    userEmailDispatcher(email);
-    userNameDispatcher(name);
-    this.fetchGravata();
-  }
-
-  fetchGravata() {
-    const { userAvatarDispatcher } = this.props;
-    const { email } = this.props;
-    const hashEmail = md5(email).toString();
-    const urlAvatar = `https://www.gravatar.com/avatar/${hashEmail}`;
-    userAvatarDispatcher(urlAvatar);
   }
 
   render() {
     const { history } = this.props;
-    const { validated, email, name } = this.state;
+    const { validated } = this.state;
+
     return (
       <div className="App-container">
         <img src={ logo } className="App-logo" alt="logo" />
@@ -99,12 +85,9 @@ class Login extends React.Component {
           <button
             className="play-button"
             disabled={ validated }
-            type="submit"
+            type="button"
             data-testid="btn-play"
-            onClick={ () => {
-              this.handleClick();
-              this.handleClickUser(email, name);
-            } }
+            onClick={ this.handleClick }
           >
             Jogar
           </button>
@@ -116,21 +99,15 @@ class Login extends React.Component {
 
 Login.propTypes = {
   token: PropTypes.func.isRequired,
-  userEmailDispatcher: PropTypes.func,
-  userNameDispatcher: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
+  login: PropTypes.func.isRequired,
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   token: (key) => dispatch(fetchToken(key)),
-  userEmailDispatcher: (email) => dispatch(userEmail(email)),
-  userNameDispatcher: (name) => dispatch(userName(name)),
-  userAvatarDispatcher: (avatar) => dispatch(userAvatar(avatar)),
-});
-const mapStatetoProps = (state) => ({
-  email: state.user.email,
+  login: (email, name, score) => dispatch(userLogin(email, name, score)),
 });
 
-export default connect(mapStatetoProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
