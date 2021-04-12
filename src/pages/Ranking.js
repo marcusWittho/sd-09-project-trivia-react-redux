@@ -2,33 +2,33 @@ import React, { Component } from 'react';
 import './ranking.css';
 
 class Ranking extends Component {
-  render () {
-
+  render() {
+    
     // recupera o objeto JSON do localStorage
     const jsonState = localStorage.getItem('state');
 
     // converte o objeto JSON pra um array
-    const ranking = JSON.parse(jsonState).ranking;
+    const { ranking } = JSON.parse(jsonState);
 
     return (
       <div className="card-container">
-        <h2>Ranking</h2>   
+        <h2>Ranking</h2>
         <ul className="ranking-list">
           {
-            ranking.sort((a, b) => a.score < b.score ? 1 : -1)
-            .map((jogada, index) =>
-              <li key={ jogada.name } className="ranking-item">
-                <div>
-                  <div data-testid={ `player-name-${index}` }>
-                    <span className="ranking-text">Nome:</span> { jogada.name }
+            ranking.sort((playOne, playTwo) => playOne.score < playTwo.score ? playTwo : playOne)
+              .map((jogada, index) => <li key={ jogada.name } className="ranking-item">
+                  <div>
+                    <div data-testid={ `player-name-${index}` }>
+                      <span className="ranking-text">Nome:</span>
+                      { jogada.name }
+                    </div>
+                    <div data-testid={ `player-score-${index}` }>
+                      <span className="ranking-text">Score:</span>
+                      { jogada.score }
+                    </div>
                   </div>
-                  <div data-testid={ `player-score-${index}` }>
-                    <span className="ranking-text">Score:</span> { jogada.score }
-                  </div>
-                </div>
-                <img src={ jogada.picture } alt="foto do jogador" />
-              </li>
-            )
+                  <img src={ jogada.picture } alt="foto do jogador" />
+                </li>)
           }
         </ul>
       </div>
