@@ -1,48 +1,95 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { string, objectOf } from 'prop-types';
-import { fetchQuestions } from '../actions';
+import { setScore } from '../actions';
 
 class MainBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      getQuestions: true,
-      category: '',
-      question: '',
-      correctAnswer: '',
-      incorrectAnswers: '',
       styleObj: {},
       timer: 30,
-      disableBtn: false,
+      score: 0,
+      assertions: 0,
+      points: 10,
+
     };
 
     this.showAnswers = this.showAnswers.bind(this);
     this.tictac = this.tictac.bind(this);
   }
 
+  componentDidMount() {
+    this.timeOut();
+  }
+
   componentDidUpdate() {
-    const { getQuestions } = this.state;
-    if (getQuestions) {
-      this.setQuestionsToEstate();
+    const { timer } = this.state;
+    if (timer < 1) {
+      clearInterval(this.temporizador);
     }
   }
 
-  setQuestionsToEstate() {
-    const { questions: { results } } = this.props;
-    this.setState({
-      getQuestions: false,
-      category: results[0].category,
-      question: results[0].question,
-      correctAnswer: results[0].correct_answer,
-      incorrectAnswers: results[0].incorrect_answers,
-    });
-    this.timeOut();
+  setNewScore(target) {
+    const { handleScore, name, email, questions } = this.props;
+    const { timer, score, assertions, points } = this.state;
+    if (target.name === 'resposta-certa') {
+      if (questions[0].difficulty === 'easy') {
+        this.setState((previousState) => ({
+          score: previousState.score + (points + (timer * 1)),
+          assertions: previousState.assertions + 1,
+        }));
+        handleScore(points + (timer * 1));
+        localStorage.setItem('state',
+          JSON.stringify({ player:
+          { name,
+            assertions: assertions + 1,
+            score: score + points + (timer * 1),
+            email,
+          } }));
+      }
+      if (questions[0].difficulty === 'medium') {
+        this.setState((previousState) => ({
+          score: previousState.score + (points + (timer * 2)),
+          assertions: previousState.assertions + 1,
+        }));
+        handleScore(points + (timer * 1));
+        localStorage.setItem('state',
+          JSON.stringify({ player:
+          { name,
+            assertions: assertions + 1,
+            score: score + points + (timer * 2),
+            email,
+          } }));
+      }
+      if (questions[0].difficulty === 'hard') {
+        this.setState((previousState) => ({
+          score: previousState.score + (points + (timer * Number('3'))),
+          assertions: previousState.assertions + 1,
+        }));
+        handleScore(points + (timer * 1));
+        localStorage.setItem('state',
+          JSON.stringify({ player:
+          { name,
+            assertions: assertions + 1,
+            score: score + points + (timer * Number('3')),
+            email,
+          } }));
+      }
+    }
   }
 
   timeOut() {
     const ONE_SECOND = 1000;
+    const { name, email } = this.props;
     this.temporizador = setInterval(this.tictac, ONE_SECOND);
+    localStorage.setItem('state',
+      JSON.stringify({ player:
+      { name,
+        assertions: 0,
+        score: 0,
+        email,
+      } }));
   }
 
   tictac() {
@@ -50,13 +97,9 @@ class MainBody extends React.Component {
     if (timer > 0) {
       this.setState({ timer: timer - 1 });
     }
-    if (timer === 0) {
-      clearInterval(this.temporizador);
-      this.setState({ disableBtn: true });
-    }
   }
 
-  showAnswers() {
+  showAnswers({ target }) {
     this.setState({
       styleObj: {
         correct: {
@@ -67,45 +110,41 @@ class MainBody extends React.Component {
           borderColor: 'rgb(255, 0, 0)' },
       },
     });
+    this.setNewScore(target);
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, questions } = this.props;
     const {
-      category,
-      question,
-      correctAnswer,
-      incorrectAnswers,
       styleObj,
       timer,
-      disableBtn,
     } = this.state;
     if (loading) {
       return <p>Loading...</p>;
     }
     return (
-      // <div></div>
       <div>
         <h3>{ timer }</h3>
-        <p data-testid="question-category">{ category }</p>
-        <p data-testid="question-text">{ question }</p>
+        <p data-testid="question-category">{ questions[0].category }</p>
+        <p data-testid="question-text">{ questions[0].question }</p>
         <button
           style={ styleObj.correct }
+          name="resposta-certa"
           onClick={ this.showAnswers }
           type="button"
           data-testid="correct-answer"
-          disabled={ disableBtn }
+          disabled={ timer < 1 }
         >
-          { correctAnswer }
+          { questions[0].correct_answer }
         </button>
-        {incorrectAnswers && incorrectAnswers.map((incorrectAnswer) => (
+        {questions[0].incorrect_answers.map((incorrectAnswer) => (
           <button
             style={ styleObj.incorrect }
             onClick={ this.showAnswers }
             type="button"
             key={ incorrectAnswer }
             data-testid="wrong-answer"
-            disabled={ disableBtn }
+            disabled={ timer < 1 }
           >
             { incorrectAnswer }
           </button>
@@ -116,13 +155,14 @@ class MainBody extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  token: state.loginReducer.token.token,
-  questions: state.loginReducer.questions,
+  questions: state.loginReducer.questions.results,
   loading: state.loginReducer.loading,
+  email: state.loginReducer.email,
+  name: state.loginReducer.name,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestQuestions: (token) => dispatch(fetchQuestions(token)),
+  handleScore: (score) => dispatch(setScore(score)),
 });
 
 MainBody.propTypes = {
