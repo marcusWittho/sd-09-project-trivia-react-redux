@@ -16,32 +16,33 @@
 
 .login {
   display: flex;
-  margin: 100px;
   justify-content: center;
+  margin: 100px;
 }
 
 label {
   display: flex;
   flex-direction: column;
-  margin-top: 75px;
   justify-content: center;
+  margin-top: 75px;
 }
+
 .logo {
-  height: 450px
+  height: 450px;
 }
 
 .btn {
-  margin-left: 60px;
-  padding: 8px;
-  margin-top: 20px;
   border: 1px solid black;
   border-radius: 10%;
   color: black;
+  margin-left: 60px;
+  margin-top: 20px;
+  padding: 8px;
 }
 
 .btn-link {
-  text-decoration: none;
   background-color: white;
+  text-decoration: none;
 }
 
 .App-header {
@@ -49,8 +50,8 @@ label {
   background-color: #54ad50;
   color: white;
   display: flex;
-  justify-content: space-between;
   font-size: calc(10px + 2vmin);
+  justify-content: space-between;
   min-height: 40px;
   padding: 20px;
 }
