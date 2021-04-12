@@ -46,16 +46,29 @@ class Answers extends Component {
     }
   }
 
-  saveScore(score) {
+  saveScore(score = 0) {
     const previousState = JSON.parse(localStorage.getItem('state'));
     const { player } = previousState;
     const playerScore = player.score;
-    const state = { ...previousState, player: { ...player, score: playerScore + score } };
+    const playerAssertions = player.assertions;
+    const state = { ...previousState,
+      player: {
+        ...player,
+        score: playerScore + score,
+        assertions: playerAssertions + 1,
+      } };
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  increaseScore() {
-
+  increaseScore(difficulty = 'easy', time) {
+    switch (difficulty) {
+    case 'medium':
+      return time * 2;
+    case 'hard':
+      return time * Number('3');
+    default:
+      return time * 1;
+    }
   }
 
   nextQuestion(event) {
@@ -98,7 +111,6 @@ class Answers extends Component {
   }
 
   changeColorAnswer() {
-    this.saveScore(Number('5'));
     this.setState({
       color: true,
     }, () => clearInterval(this.myInterval));
@@ -116,21 +128,27 @@ class Answers extends Component {
   }
 
   renderAnswers(answerIndex, questions, color, disabled) {
+    const { time } = this.state;
     const courrentQuestion = questions.results[answerIndex];
     const multipleAnswers = [
       ...courrentQuestion.incorrect_answers,
       courrentQuestion.correct_answer,
     ];
     const { type } = questions.results[answerIndex];
+    const { difficulty } = questions.results[answerIndex];
+    const { correct_answer: correctAnswer } = questions.results[answerIndex];
     const answer = type === 'multiple' ? multipleAnswers : ['True', 'False'];
-    // const beetween = 0.5;
-    // const sortanswerToF = answer.sort(() => Math.random() - beetween);
     return (
       <section>
         {answer.map((selected, index) => (
           <button
             disabled={ disabled }
-            onClick={ this.changeColorAnswer }
+            onClick={ (event) => {
+              if (event.target.innerText === correctAnswer) {
+                this.saveScore(this.increaseScore(difficulty, time));
+              }
+              this.changeColorAnswer();
+            } }
             id="tof-button"
             key={ index }
             type="button"
@@ -153,7 +171,7 @@ class Answers extends Component {
     return (
       <div>
         {this.renderQuestionsAndCategories(answerIndex, questions)}
-        {this.renderAnswers(answerIndex, questions, color, disabled)}
+        {this.renderAnswers(answerIndex, questions, color, disabled, time)}
         {this.nextButton(color, answerIndex, disabled)}
         { time < 1
           ? <h4>Acabou o Tempo</h4>
