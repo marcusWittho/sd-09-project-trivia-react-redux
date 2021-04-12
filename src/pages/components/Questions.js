@@ -129,7 +129,6 @@ class Questions extends React.Component {
     const { dispatchRestartTimer } = this.props;
     const { questionIndex } = this.state;
     if (questionIndex === QUESTIONS_LIMIT) {
-      console.log('test');
       this.setState({
         redirectToFeedback: true,
       });
