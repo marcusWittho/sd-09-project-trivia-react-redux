@@ -57,7 +57,7 @@ class Question extends Component {
     }
   }
   
-  answerQuestion({ target: { textContent: answerButton } })
+  answerQuestion({ target: { textContent: answerButton } }) {
     this.checkAnswer(answerButton);
     this.setState({ isAnswered: true });
   }
