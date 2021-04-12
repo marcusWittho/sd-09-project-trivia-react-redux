@@ -48,7 +48,7 @@ class Question extends Component {
     const isCorrectAnswer = answerButton === correctAnswer;
     if (isCorrectAnswer) scoreCorrectDispatch({ difficulty, THISANSWEREDTIMER });
   }
-    
+
   async timerCountdown() {
     const { timer } = this.state;
     const TIME_INTERVAL = 1000;
@@ -56,7 +56,7 @@ class Question extends Component {
       setTimeout(() => this.setState({ timer: timer - 1 }), TIME_INTERVAL);
     }
   }
-  
+
   answerQuestion({ target: { textContent: answerButton } }) {
     this.checkAnswer(answerButton);
     this.setState({ isAnswered: true });
