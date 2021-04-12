@@ -7,12 +7,18 @@ export default class Question extends Component {
     this.state = {
       isAnswered: false,
       answersOrder: [],
+      timer: 30,
     };
     this.answerQuestion = this.answerQuestion.bind(this);
   }
 
   componentDidMount() {
     this.setRandomAnswersOrder();
+    this.timerCountdown();
+  }
+
+  componentDidUpdate() {
+    this.timerCountdown();
   }
 
   setRandomAnswersOrder() {
@@ -26,12 +32,21 @@ export default class Question extends Component {
     this.setState({ answersOrder: randonOrderArray });
   }
 
+  async timerCountdown() {
+    const { timer } = this.state;
+    const TIME_INTERVAL = 1000;
+    if (timer > 0) {
+      setTimeout(() => this.setState({ timer: timer - 1 }), TIME_INTERVAL);
+    }
+  }
+
   answerQuestion() {
     this.setState({ isAnswered: true });
   }
 
   renderAnswers() {
-    const { isAnswered, answersOrder } = this.state;
+    const { isAnswered, answersOrder, timer } = this.state;
+    const timeout = timer === 0;
     const { question: {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
@@ -45,6 +60,7 @@ export default class Question extends Component {
         onClick={ isAnswered
           ? () => null
           : this.answerQuestion }
+        disabled={ timeout }
       >
         { correctAnswer }
       </button>
@@ -59,6 +75,7 @@ export default class Question extends Component {
           onClick={ isAnswered
             ? () => null
             : this.answerQuestion }
+          disabled={ timeout }
         >
           { incorrectAnswer }
         </button>
@@ -73,9 +90,11 @@ export default class Question extends Component {
       category,
       question,
     } } = this.props;
+    const { timer } = this.state;
 
     return (
       <div>
+        <h2>{ timer }</h2>
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
         { this.renderAnswers() }
