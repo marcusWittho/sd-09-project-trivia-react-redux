@@ -32,13 +32,19 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { storeName, storeEmail, storeToken } = this.props;
+    const { storeName, storeEmail, storeToken, player } = this.props;
     const { name, email } = this.state;
     const token = await triviaTokenRequest();
     storeToken(token);
     storeName(name);
     storeEmail(email);
+
     localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify({ player: { name: player.name,
+      assertions: player.assertions,
+      score: player.score,
+      gravatarEmail: player.email,
+    } }));
   }
 
   render() {
@@ -97,6 +103,7 @@ Login.propTypes = {
   storeToken: PropTypes.func.isRequired,
   storeName: PropTypes.func.isRequired,
   storeEmail: PropTypes.func.isRequired,
+  player: PropTypes.objectOf.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -107,6 +114,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   token: state.player.token,
+  player: state.player,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

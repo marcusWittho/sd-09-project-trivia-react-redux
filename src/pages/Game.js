@@ -6,30 +6,75 @@ import Header from '../Componentes/Header';
 import Question from '../Componentes/Question';
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      timeToAnswer: 30,
+      step: 1000,
+      disableBtn: false,
+    };
+
+    this.timer = this.timer.bind(this);
+  }
+
   componentDidMount() {
     const { storeQuestions, token } = this.props;
     storeQuestions(token);
+    this.timer();
+  }
+
+  timer() {
+    const { timeToAnswer, step } = this.state;
+    let timeLimit = timeToAnswer;
+    const timeLeft = setInterval(() => {
+      this.setState({
+        timeToAnswer: timeLimit - 1,
+      });
+      timeLimit -= 1;
+      if (timeLimit === 0) {
+        this.setState({
+          disableBtn: true,
+        });
+        clearInterval(timeLeft);
+      }
+    }, step);
+  }
+
+  nextQuestion() {
+    const { index, incremanteIndex } = this.props;
+    incremanteIndex(index + 1);
   }
 
   render() {
-    const { questions, index, incremanteIndex } = this.props;
+    const { questions, index, isAnswered } = this.props;
+    const { timeToAnswer, disableBtn } = this.state;
     return (
       <div>
         <Header />
         <div className="App">
+        <p>{`Timer: ${timeToAnswer}`}</p>
+        <div>
           <div>
             {questions.map((question, index1) => (
-              index === index1 ? <Question key={ index1 } question={ question } /> : null
+              index === index1 ? <Question
+                key={ index1 }
+                question={ question }
+                disableBtn={ disableBtn }
+                timer={ timeToAnswer }
+              /> : null
             ))}
           </div>
           <br />
           <button
             data-testid="btn-next"
+          {isAnswered
+          && <input
             type="button"
-            onClick={ () => incremanteIndex(index + 1) }
-          >
-            Próxima
-          </button>
+            data-testid="btn-next"
+            onClick={ () => this.nextQuestion() }
+            value="Próxima"
+          />}
         </div>
       </div>
     );
@@ -39,6 +84,7 @@ class Game extends React.Component {
 Game.propTypes = {
   token: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  isAnswered: PropTypes.bool.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   storeQuestions: PropTypes.func.isRequired,
   incremanteIndex: PropTypes.func.isRequired,
@@ -53,6 +99,7 @@ const mapStateToProps = (state) => ({
   token: state.player.token,
   index: state.player.index,
   questions: state.data.questions,
+  isAnswered: state.player.isAnswered,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

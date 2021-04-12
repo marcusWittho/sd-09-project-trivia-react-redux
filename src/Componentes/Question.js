@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateScoreAssertions as updateScoreAndAssertions } from '../actions';
 import './Question.css';
 
 function embaralhaAlternatives(alternatives) {
@@ -12,6 +14,11 @@ function embaralhaAlternatives(alternatives) {
 function defineAnswer(alternative, question) {
   return alternative === question.correct_answer
     ? 'correct-answer' : 'wrong-answer';
+}
+
+function getDifficultyValue(difficulty) {
+  const value = { hard: 3, medium: 2, easy: 1 };
+  return value[difficulty];
 }
 
 class Question extends React.Component {
@@ -28,8 +35,27 @@ class Question extends React.Component {
     };
   }
 
+  answerQuestion(alternative, question, timer) {
+    const baseValue = 10;
+    let points = 0;
+    const { incremanteScore, player } = this.props;
+
+    if (defineAnswer(alternative, question) === 'correct-answer') {
+      points = baseValue + (timer * getDifficultyValue(question.difficulty));
+      incremanteScore(points, 1);
+    }
+
+    incremanteScore(points, 0);
+    localStorage.setItem('state', JSON.stringify({ player: { name: player.name,
+      assertions: player.assertions,
+      score: player.score,
+      gravatarEmail: player.email,
+    } }));
+    this.setState({ showAwnser: true });
+  }
+
   render() {
-    const { question } = this.props;
+    const { question, disableBtn, timer } = this.props;
     const { showAwnser, alternatives } = this.state;
 
     return (
@@ -40,11 +66,11 @@ class Question extends React.Component {
         {alternatives.map((alternative, index) => (
           <div key={ index } className="question">
             <button
-              disabled={ showAwnser }
+              disabled={ showAwnser || disableBtn }
               className={ showAwnser ? defineAnswer(alternative, question) : null }
               type="button"
               data-testid={ defineAnswer(alternative, question) }
-              onClick={ () => (this.setState({ showAwnser: true })) }
+              onClick={ () => this.answerQuestion(alternative, question, timer) }
             >
               { alternative }
 
@@ -57,6 +83,19 @@ class Question extends React.Component {
 
 Question.propTypes = {
   question: PropTypes.objectOf.isRequired,
+  disableBtn: PropTypes.objectOf.isRequired,
+  player: PropTypes.objectOf.isRequired,
+  timer: PropTypes.number.isRequired,
+  incremanteScore: PropTypes.func.isRequired,
 };
 
-export default Question;
+const mapDispatchToProps = (dispatch) => ({
+  incremanteScore:
+    (score, assertions) => dispatch(updateScoreAndAssertions(score, assertions)),
+});
+
+const mapStateToProps = (state) => ({
+  player: state.player,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
