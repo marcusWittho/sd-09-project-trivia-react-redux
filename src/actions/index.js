@@ -1,6 +1,7 @@
 import { questionsRequest } from '../services/api';
 import { GET_PLAYER_NAME, GET_PLAYER_EMAIL, GET_TOKEN,
-  GET_QUESTIONS, UPDATE_INDEX, UPDATE_SCORE_ASSERTIONS } from './actionTypes';
+  GET_QUESTIONS, UPDATE_INDEX, UPDATE_SCORE_ASSERTIONS,
+  RESET_PLAYER, RESET_REQUEST } from './actionTypes';
 
 export const updateToken = (token) => ({
   type: GET_TOKEN,
@@ -39,3 +40,11 @@ export function fetchQuestions(token) {
       .then((data) => dispatch(updateQuestions(data)))
   );
 }
+
+export const resetPlayer = () => ({
+  type: RESET_PLAYER,
+});
+
+export const resetRequest = () => ({
+  type: RESET_REQUEST,
+});
