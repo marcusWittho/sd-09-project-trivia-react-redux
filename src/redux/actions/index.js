@@ -3,6 +3,8 @@ export const TIMES_UP = 'TIMES_UP';
 export const STOP_TIME = 'STOP_TIME';
 export const GET_SECONDS = 'GET_SECONDS';
 export const ADD_PLAYER = 'ADD_PLAYER';
+export const RESTART_TIMER = 'RESTART_TIMER';
+export const REMOVE_RESTART_TIMER = 'REMOVE_RESTART_TIMER';
 
 export const submitUser = (name, email, token) => ({
   type: SUBMIT_USER,
@@ -27,4 +29,12 @@ export const getSeconds = (seconds) => ({
 export const addPlayer = (objectPlayer) => ({
   type: ADD_PLAYER,
   objectPlayer,
+});
+
+export const restartTimer = () => ({
+  type: RESTART_TIMER,
+});
+
+export const removeRestartTimer = () => ({
+  type: REMOVE_RESTART_TIMER,
 });
