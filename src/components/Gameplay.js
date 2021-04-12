@@ -6,7 +6,7 @@ import { fetchQuestions } from '../services';
 import '../CSS/gameplay.css';
 import { nextQuestion, sendQuestionsAnswersInfo } from '../actions';
 
-const maxQuestions = 5;
+const maxQuestionsIndex = 5;
 
 class Gameplay extends Component {
   constructor() {
@@ -17,6 +17,7 @@ class Gameplay extends Component {
       incorrect: '',
       renderNextButton: false,
       timer: 30,
+      questionIndex: 0,
     };
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -87,45 +88,51 @@ class Gameplay extends Component {
     });
   }
 
-  prepareNextQuestion(nextQuestionDispatch, questionList) {
-    nextQuestionDispatch();
-    const { questionIndex } = this.props;
-    console.log('teste prepare', questionIndex);
-    this.randomAnswersOrder(questionList);
-    this.setState({ timer: 30 });
+  async prepareNextQuestion(nextQuestionDispatch, questionList) {
+    // nextQuestionDispatch();
+    const { questionIndex } = this.state;
+    await this.setState((state) => ({
+      timer: 30,
+      questionIndex: state.questionIndex + 1,
+    }));
+    if (questionIndex < maxQuestionsIndex - 1) {
+      this.randomAnswersOrder(questionList);
+    }
   }
 
   randomAnswersOrder(questionList) {
-    const { questionIndex, sendQuestionsAnswersInfoDispatch } = this.props;
-    const questions = { ...questionList };
-    const currentQuestionInfo = questions.results[questionIndex];
-    const answersList = currentQuestionInfo.incorrect_answers;
-    const correctAnswer = currentQuestionInfo.correct_answer;
-    const randomIndex = Math.floor(Math.random() * (answersList.length + 1));
-    const newAnswersList = [...answersList];
-    newAnswersList.splice(randomIndex, 0, correctAnswer);
+    const { questionIndex } = this.state;
+    const { sendQuestionsAnswersInfoDispatch } = this.props;
+    const currentQuestionInfo = questionList.results[questionIndex];
+    const newAnswersList = [...currentQuestionInfo.incorrect_answers];
+    const randomIndex = Math.floor(Math.random() * (newAnswersList.length + 1));
+    newAnswersList.splice(randomIndex, 0, currentQuestionInfo.correct_answer);
     const answersAndPosition = {
       newAnswersList,
       randomIndex,
     };
-    sendQuestionsAnswersInfoDispatch(answersAndPosition, questions);
+    sendQuestionsAnswersInfoDispatch(answersAndPosition, questionList);
     this.setState({
       loading: false,
       correct: '',
       incorrect: '',
     });
-    console.log(questionIndex);
   }
 
   renderQuestion() {
-    const { questionList, questionIndex } = this.props;
+    const { questionList } = this.props;
+    const { questionIndex } = this.state;
     const currentQuestionInfo = questionList.results[questionIndex];
     return (
       <section>
         <h1 data-testid="question-category">
           { currentQuestionInfo.category}
         </h1>
-        <p data-testid="question-text">{currentQuestionInfo.question}</p>
+        <p data-testid="question-text">
+          {questionIndex + 1}
+          {' ) '}
+          {currentQuestionInfo.question}
+        </p>
       </section>
     );
   }
@@ -183,14 +190,16 @@ class Gameplay extends Component {
   }
 
   render() {
-    const { loading, renderNextButton, timer } = this.state;
-    const { questionIndex } = this.props;
-    const shouldQuestionBeRender = !loading && (questionIndex < maxQuestions);
+    const { loading, renderNextButton, timer, questionIndex } = this.state;
+    if (questionIndex === maxQuestionsIndex) {
+      return (
+        <Redirect to="/feedback" />
+      );
+    }
     return (
       <main>
-        { questionIndex === maxQuestions && <Redirect to="/feedback" /> }
-        { shouldQuestionBeRender && this.renderQuestion()}
-        { shouldQuestionBeRender && this.renderAnswers()}
+        { !loading && this.renderQuestion()}
+        { !loading && this.renderAnswers()}
         {!loading && <h2>{ timer }</h2>}
         { renderNextButton && this.renderNextButton()}
       </main>
