@@ -2,6 +2,7 @@ import React from 'react';
 
 class PlayAgainBtn extends React.Component {
   render() {
+    // xablau
     return (
       <button
         type="button"
