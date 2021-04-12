@@ -35,7 +35,9 @@ class Game extends Component {
     const wrongAnswers = document.querySelectorAll('.wrong-answer');
 
     correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
-    wrongAnswers.forEach((answer) => (answer.style.border = '3px solid rgb(255, 0, 0)'));
+    for (let i = 0; i < wrongAnswers.length; i += 1) {
+      wrongAnswers[i].style.border = '3px solid rgb(255, 0, 0)';
+    }
   }
 
   validateResponseFromApi(responseCode, errorCode, results) {
