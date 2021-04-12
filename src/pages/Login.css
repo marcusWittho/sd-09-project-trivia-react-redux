@@ -116,8 +116,10 @@ a {
 }
 
 .login-btns:focus {
-  outline: none;
   border: 2px  solid  white;
+  outline: none;
+  transition: 0.5s;
+  width: 80%;
 }
 
 .config-btn {

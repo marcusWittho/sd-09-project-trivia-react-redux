@@ -64,9 +64,7 @@ class Login extends React.Component {
   render() {
     const { name, email, loginReady } = this.state;
     const { doFormLogin } = this.props;
-    if (loginReady) {
-      return <Redirect to="/trivia" />;
-    }
+    if (loginReady) return <Redirect to="/trivia" />;
     return (
       <>
         <Header />
