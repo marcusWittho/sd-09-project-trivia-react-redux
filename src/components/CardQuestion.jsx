@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './CardQuestion.css';
@@ -65,14 +65,6 @@ class CardQuestion extends React.Component {
   }
 
   questionCounter() {
-    const { qCounter } = this.state;
-    const four = 4;
-    if (qCounter === four) {
-      // const next = document.getElementById('next-btn');
-      return (
-        <Redirect to="/feedback" />
-      );
-    }
     this.setState((state) => ({
       qCounter: state.qCounter + 1,
       isSelected: false,
@@ -82,6 +74,20 @@ class CardQuestion extends React.Component {
   }
 
   nextBtn() {
+    const { qCounter } = this.state;
+    const four = 4;
+    if (qCounter === four) {
+      return (
+        <Link to="/feedback">
+          <button
+            type="button"
+            id="next-btn"
+            data-testid="btn-next"
+          >
+            Próxima
+          </button>
+        </Link>);
+    }
     return (
       <button
         type="button"
@@ -96,12 +102,8 @@ class CardQuestion extends React.Component {
   render() {
     const { getQuestions: { questions: { results } } } = this.props;
     const { isSelected, time, qCounter, showBtn } = this.state;
-    // Constantes criadas para avaliacao do requisito 6. Deleta-las posteriormente.
-    // const index = qCounter;
-    // const currentQuestion = results[index];
     const nothing = <div />;
     const questions = results.map((currentQuestion, index) => (
-    // Return de apenas 1 pergunta para avaliacao do requisito 6. Deletar este return quando houver o botao de proxima pergunta.
       <div key={ index }>
         <div>
           {time.s}
@@ -131,8 +133,8 @@ class CardQuestion extends React.Component {
         ))}
         {showBtn ? this.nextBtn() : nothing}
       </div>
-    )); // Deletar essa linha quando usar o map da linha 12.
-    // ));
+    ));
+    // Retornar uma questão por vez.
     return questions[qCounter];
   }
 }
