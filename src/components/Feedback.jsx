@@ -14,6 +14,16 @@ class Feedback extends React.Component {
     this.feedbackMessage = this.feedbackMessage.bind(this);
     this.playAgain = this.playAgain.bind(this);
     this.rankingPage = this.rankingPage.bind(this);
+    this.mockLocalStorage = this.mockLocalStorage.bind(this);
+  }
+
+  // Apagar depois de configurar a página ranking
+  mockLocalStorage() {
+    const ranking = [
+      { name: 'name1', score: 0, picture: 'email1' },
+    ];
+
+    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   feedbackMessage() {
@@ -38,6 +48,7 @@ class Feedback extends React.Component {
   }
 
   rankingPage() {
+    this.mockLocalStorage(); // Apagar depois de configurar a página ranking
     this.setState({
       rankingScreen: true,
     });
@@ -83,7 +94,7 @@ class Feedback extends React.Component {
           type="button"
           onClick={ this.rankingPage }
         >
-          Vere Ranking
+          Ver Ranking
         </button>
       </div>
     );

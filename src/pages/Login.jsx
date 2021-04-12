@@ -18,6 +18,7 @@ class Login extends Component {
       },
       // settings: false,
     };
+
     this.handleValidation = this.handleValidation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleLocalStorage = this.handleLocalStorage.bind(this);
