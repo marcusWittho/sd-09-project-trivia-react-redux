@@ -13,6 +13,7 @@ class Gaming extends React.Component {
     this.getAnswers = this.getAnswers.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.timer = this.timer.bind(this);
 
     this.state = {
       redirect: false,
@@ -20,19 +21,18 @@ class Gaming extends React.Component {
       correct: '',
       isDisabled: false,
       isFinished: false,
+      currentCount: 30,
     };
   }
 
   componentDidMount() {
+    const thousand = 1000;
+    const thirtyThousand = 30000;
     this.verifyAll();
     this.getAnswers();
+    setInterval(this.timer, thousand);
+    setTimeout(this.handleClick, thirtyThousand);
   }
-
-  // componentDidUpdate(prevState, prevProps) {
-  //   console.log('componentDidUpdate');
-  //   console.log(prevState);
-  //   console.log(prevProps);
-  // }
 
   getAnswers() {
     const { questionsState, questionNumber } = this.props;
@@ -88,11 +88,18 @@ class Gaming extends React.Component {
     return textArea.value;
   }
 
+  timer() {
+    const { currentCount } = this.state;
+    this.setState({ currentCount: currentCount - 1 });
+  }
+
   handleClick(event) {
     const { questionNumber } = this.props;
     const { correct } = this.state;
     const maxQuestionNumber = 4;
 
+    clearInterval(this.timer);
+    clearTimeout(this.timer);
     this.setState({ isDisabled: true });
 
     if (questionNumber === maxQuestionNumber) {
@@ -106,7 +113,7 @@ class Gaming extends React.Component {
 
   render() {
     const { questionsState, questionNumber } = this.props;
-    const { redirect, answers, isDisabled, isFinished } = this.state;
+    const { redirect, answers, isDisabled, isFinished, currentCount } = this.state;
     console.log(isDisabled);
 
     return redirect || isFinished ? (
@@ -118,6 +125,11 @@ class Gaming extends React.Component {
           <p>loading</p>
         ) : (
           <div>
+            <p>
+              {
+                currentCount
+              }
+            </p>
             <p data-testid="question-category">
               {questionsState[questionNumber].category}
             </p>
