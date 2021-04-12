@@ -1,41 +1,30 @@
 import React from 'react';
 import '../CSS/feedbackPage.css';
-import md5 from 'crypto-js/md5';
+import Header from '../components/Header';
 
 class feedbackPage extends React.Component {
-  getPlayerData() {
-    const playerData = JSON.parse(localStorage.getItem('state'));
-    return playerData;
+  getStateLocalStorage() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    return state;
   }
 
-  getGravatarImgUrl(email) {
-    const hash = md5(email).toString();
-    const url = `https://www.gravatar.com/avatar/${hash}`;
-    return url;
+  feedBackMessage(assertions) {
+    const numberGoodQuestions = 3;
+    let message = 'Mandou bem!';
+    if (assertions < numberGoodQuestions) {
+      message = 'Podia ser melhor...';
+    }
+    return (
+      <p data-testid="feedback-text">{ message }</p>
+    );
   }
 
   render() {
-    const { player: { name, score, gravatarEmail } } = this.getPlayerData();
-    console.log(this.getGravatarImgUrl(gravatarEmail));
+    const { player: { assertions } } = this.getStateLocalStorage();
     return (
       <div>
-        <header className="feedback-header">
-          <p
-            className="feedback-player-name"
-            data-testid="header-player-name"
-          >
-            { name }
-          </p>
-          <p data-testid="header-score">
-            { score }
-          </p>
-          <img
-            src={ this.getGravatarImgUrl(gravatarEmail) }
-            alt="user"
-            data-testid="header-profile-picture"
-          />
-        </header>
-        <p data-testid="feedback-text">Boua!</p>
+        <Header />
+        { this.feedBackMessage(assertions) }
       </div>
     );
   }

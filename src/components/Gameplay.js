@@ -5,12 +5,13 @@ import { Redirect } from 'react-router';
 import { fetchQuestions } from '../services';
 import '../CSS/gameplay.css';
 import { nextQuestion, sendQuestionsAnswersInfo } from '../actions';
+import Header from './Header';
 
 const maxQuestionsIndex = 5;
 
 class Gameplay extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       loading: true,
       correct: '',
@@ -18,6 +19,7 @@ class Gameplay extends Component {
       renderNextButton: false,
       timer: 30,
       questionIndex: 0,
+      isButtonDisabled: false,
     };
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -25,6 +27,7 @@ class Gameplay extends Component {
     this.chooseAnswer = this.chooseAnswer.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
     this.countdownTimer = this.countdownTimer.bind(this);
+    this.disableButton = this.disableButton.bind(this);
   }
 
   async componentDidMount() {
@@ -40,6 +43,9 @@ class Gameplay extends Component {
       const { timer } = this.state;
       if (timer >= 1) {
         this.setState((state) => ({ timer: state.timer - 1 }));
+      } else {
+        this.disableButton();
+        this.setState({ renderNextButton: true });
       }
     },
     oneSecond);
@@ -70,6 +76,14 @@ class Gameplay extends Component {
     return standardNumber + (timer * difficultyFactor);
   }
 
+  addAssertionsOnStateLocalStorage(answer) {
+    if (answer === 'correct') {
+      const previousState = JSON.parse(localStorage.getItem('state'));
+      previousState.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(previousState));
+    }
+  }
+
   sumScorePoint(answer) {
     if (answer === 'correct') {
       const previousState = JSON.parse(localStorage.getItem('state'));
@@ -80,6 +94,8 @@ class Gameplay extends Component {
   }
 
   chooseAnswer({ target }) {
+    this.disableButton();
+    this.addAssertionsOnStateLocalStorage(target.name);
     this.sumScorePoint(target.name);
     this.setState({
       correct: 'correct',
@@ -88,9 +104,10 @@ class Gameplay extends Component {
     });
   }
 
+
   async prepareNextQuestion(nextQuestionDispatch, questionList) {
-    // nextQuestionDispatch();
     const { questionIndex } = this.state;
+    this.setState({ isButtonDisabled: false });
     await this.setState((state) => ({
       timer: 30,
       questionIndex: state.questionIndex + 1,
@@ -98,6 +115,7 @@ class Gameplay extends Component {
     if (questionIndex < maxQuestionsIndex - 1) {
       this.randomAnswersOrder(questionList);
     }
+
   }
 
   randomAnswersOrder(questionList) {
@@ -119,29 +137,25 @@ class Gameplay extends Component {
     });
   }
 
+  disableButton() {
+    this.setState({ isButtonDisabled: true });
+  }
+
   renderQuestion() {
     const { questionList } = this.props;
     const { questionIndex } = this.state;
     const currentQuestionInfo = questionList.results[questionIndex];
     return (
       <section>
-        <h1 data-testid="question-category">
-          { currentQuestionInfo.category}
-        </h1>
-        <p data-testid="question-text">
-          {questionIndex + 1}
-          {' ) '}
-          {currentQuestionInfo.question}
-        </p>
+        <h1 data-testid="question-category">{ currentQuestionInfo.category}</h1>
+        <p data-testid="question-text">{currentQuestionInfo.question}</p>
       </section>
     );
   }
 
   renderAnswers() {
-    const { answersAndPosition } = this.props;
-    const { timer } = this.state;
-    const { newAnswersList, randomIndex } = answersAndPosition;
-    const { correct, incorrect } = this.state;
+    const { answersAndPosition: { newAnswersList, randomIndex } } = this.props;
+    const { correct, incorrect, isButtonDisabled } = this.state;
     return (
       <section>
         { newAnswersList.map((answer, index) => {
@@ -151,7 +165,7 @@ class Gameplay extends Component {
                 data-testid="correct-answer"
                 onClick={ this.chooseAnswer }
                 name="correct"
-                disabled={ timer === 0 }
+                disabled={ isButtonDisabled }
                 className={ correct }
                 type="button"
               >
@@ -164,7 +178,7 @@ class Gameplay extends Component {
               onClick={ this.chooseAnswer }
               name="incorrect"
               className={ incorrect }
-              disabled={ timer === 0 }
+              disabled={ isButtonDisabled }
               key={ index }
               type="button"
             >
@@ -197,12 +211,15 @@ class Gameplay extends Component {
       );
     }
     return (
-      <main>
-        { !loading && this.renderQuestion()}
-        { !loading && this.renderAnswers()}
-        {!loading && <h2>{ timer }</h2>}
-        { renderNextButton && this.renderNextButton()}
-      </main>
+      <>
+        <Header />
+        <main>
+          { !loading && this.renderQuestion()}
+          { !loading && this.renderAnswers()}
+          {!loading && <h2>{ timer }</h2>}
+          { renderNextButton && this.renderNextButton()}
+        </main>
+      </>
     );
   }
 }
@@ -218,7 +235,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   sendQuestionsAnswersInfoDispatch: (answerAndPosition, questionList) => (
     dispatch(sendQuestionsAnswersInfo(answerAndPosition, questionList))),
-  nextQuestionDispatch: () => dispatch(nextQuestion()),
 });
 
 Gameplay.propTypes = {
@@ -232,7 +248,6 @@ Gameplay.propTypes = {
     randomIndex: PropTypes.shape().isRequired,
   }).isRequired,
   sendQuestionsAnswersInfoDispatch: PropTypes.func.isRequired,
-  nextQuestionDispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gameplay);
