@@ -2,7 +2,7 @@
   width: 90%;
 }
 
-input[ type = 'text' ] {
+input {
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
