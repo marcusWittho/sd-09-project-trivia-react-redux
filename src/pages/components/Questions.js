@@ -91,7 +91,7 @@ class Questions extends React.Component {
     let totalScore = score;
     let totalAssertions = assertions;
     const difficulty = this.getDifficulty();
-    totalScore = NUMBER_TEN + (seconds * difficulty);
+    totalScore += NUMBER_TEN + (seconds * difficulty);
     totalAssertions += 1;
     playerObj.score = totalScore;
     playerObj.assertions = totalAssertions;
