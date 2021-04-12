@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 import { getQuestions } from '../redux/action';
 
 class GameScreen extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       name: '',
       gravatarEmail: '',
@@ -16,7 +18,11 @@ class GameScreen extends Component {
       timer: 30,
       disabled: false,
       colorQuestion: false,
+      score: 0,
+      nextButton: 'none',
+      feedbackScreen: false,
     };
+
     this.nextQuestion = this.nextQuestion.bind(this);
     this.loadingQuestions = this.loadingQuestions.bind(this);
     this.decreaseTime = this.decreaseTime.bind(this);
@@ -31,13 +37,49 @@ class GameScreen extends Component {
     this.recoveringLocalStorage();
   }
 
+  setScoreInStorage(scoreNumber) {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+
+    if (!player.name) return;
+
+    const score = {
+      ...player,
+      score: player.score + scoreNumber,
+      assertions: player.assertions + 1,
+    };
+
+    localStorage.setItem('state', JSON.stringify({ player: score }));
+  }
+
   recoveringLocalStorage() {
     const storage = JSON.parse(localStorage.getItem('state'));
-    console.log(storage);
     this.setState({
       name: storage.player.name,
       gravatarEmail: storage.player.gravatarEmail,
     });
+  }
+
+  calcScore(difficulty) {
+    const { timer, score } = this.state;
+    const TEN_POINTS = 10;
+    const TREE_POINTS = 3;
+    const TWO_POINTS = 2;
+    const ONE_POINTS = 1;
+
+    if (difficulty === 'hard') {
+      const result = TEN_POINTS + timer * TREE_POINTS;
+      this.setState({ score: score + result });
+    }
+
+    if (difficulty === 'medium') {
+      const result = TEN_POINTS + timer * TWO_POINTS;
+      this.setState({ score: score + result });
+    }
+
+    if (difficulty === 'easy') {
+      const result = TEN_POINTS + timer * ONE_POINTS;
+      this.setState({ score: score + result });
+    }
   }
 
   decreaseTime() {
@@ -57,6 +99,7 @@ class GameScreen extends Component {
         this.setState({
           disabled: true,
           timer: 0,
+          nextButton: 'inline',
         });
       }
     }, counter);
@@ -71,10 +114,15 @@ class GameScreen extends Component {
         numberOFQuestion: count + 1,
         timer: 30,
         disabled: false,
+        colorQuestion: false,
+        nextButton: 'none',
       });
     } else {
       this.setState({
         numberOFQuestion: count + 0,
+        colorQuestion: false,
+        nextButton: 'none',
+        feedbackScreen: true,
       });
     }
   }
@@ -94,11 +142,14 @@ class GameScreen extends Component {
   }
 
   clickQuestion() {
-    this.setState({ colorQuestion: true });
+    this.setState({
+      colorQuestion: true,
+      nextButton: 'inline',
+    });
   }
 
   header() {
-    const { name, gravatarEmail } = this.state;
+    const { name, gravatarEmail, score } = this.state;
     return (
       <header>
         <img
@@ -108,19 +159,45 @@ class GameScreen extends Component {
         />
         <p data-testid="header-player-name">
           Jogador:
-          {name}
+          { name }
         </p>
-        <p data-testid="header-score">Placar: 0</p>
+        <section>
+          <p data-testid="header-score">{ score }</p>
+        </section>
       </header>
     );
   }
 
+  incorrectAlternatives() {
+    const { disabled, colorQuestion, questions, numberOFQuestion } = this.state;
+    const orderQuestions = questions[numberOFQuestion];
+    return (
+      <div>
+        {orderQuestions.incorrect_answers.map((answer, index) => (
+          <button
+            key={ index }
+            data-testid={ `wrong-answer-${index}` }
+            type="button"
+            disabled={ disabled }
+            style={ (colorQuestion) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+            onClick={ this.clickQuestion }
+          >
+            { answer}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
   render() {
-    const { questions,
-      numberOFQuestion, loading, timer, disabled, colorQuestion } = this.state;
+    const {
+      questions, numberOFQuestion, loading, timer, disabled,
+      colorQuestion, score, nextButton, feedbackScreen,
+    } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
     if (loading) return <h1>Loading...</h1>;
+    if (feedbackScreen) return <Redirect to="/feedback" />;
 
     return (
       <>
@@ -132,28 +209,23 @@ class GameScreen extends Component {
           type="button"
           disabled={ disabled }
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-          onClick={ this.clickQuestion }
+          onClick={ () => {
+            this.setScoreInStorage(score);
+            this.clickQuestion();
+            this.calcScore(orderQuestions.difficulty);
+          } }
         >
           {orderQuestions.correct_answer}
         </button>
-        <div>
-          {orderQuestions.incorrect_answers.map((answer, index) => (
-            <button
-              key={ index }
-              data-testid={ `wrong-answer-${index}` }
-              type="button"
-              disabled={ disabled }
-              style={ (colorQuestion) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
-              onClick={ this.clickQuestion }
-            >
-              { answer}
-            </button>
-          ))}
-        </div>
+
+        { this.incorrectAlternatives() }
+
         <p>{timer}</p>
+
         <button
           data-testid="btn-next"
           type="button"
+          style={ { display: `${nextButton}` } }
           onClick={ this.nextQuestion }
         >
           Próxima

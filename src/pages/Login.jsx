@@ -9,15 +9,16 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      submmit: false,
+      // submmit: false,
       player: {
         name: '',
-        assertions: '',
-        score: '',
+        assertions: 0,
+        score: 0,
         gravatarEmail: '',
       },
-      settings: false,
+      // settings: false,
     };
+
     this.handleValidation = this.handleValidation.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleLocalStorage = this.handleLocalStorage.bind(this);
