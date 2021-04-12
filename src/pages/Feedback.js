@@ -21,10 +21,18 @@ class Feedback extends Component {
   }
 
   render() {
+    const { score, assertions } = this.props;
+    console.log(typeof (score));
     return (
       <div>
         <Header />
         {this.menssageFeedBack()}
+        <p data-testid="feedback-total-score">{ `Pontuação Final: ${score}` }</p>
+        <p
+          data-testid="feedback-total-question"
+        >
+          { `Número de acertos: ${assertions}` }
+        </p>
       </div>
     );
   }
@@ -34,6 +42,7 @@ const mapStateToProps = (state) => ({
   name: state.loginUser.name,
   email: state.loginUser.email,
   assertions: state.player.assertions,
+  score: state.player.score,
 });
 
 Feedback.propTypes = {
