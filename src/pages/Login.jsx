@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 import { gravatarHash, fetchThunkToken } from '../redux/actions';
+import '../App.css';
+import logo from '../trivia.png';
 
 class Login extends Component {
   constructor(props) {
@@ -57,16 +59,19 @@ class Login extends Component {
   render() {
     const { name, email, buttonDisable } = this.state;
     return (
-      <div>
+      <div className="App App-header">
+        <img src={ logo } alt="Trivia logo" className="App-logo" width="50%" />
         <input
+          className="App input"
           type="text"
           data-testid="input-player-name"
           value={ name }
-          placeholder="Name"
+          placeholder="First Name"
           onChange={ this.handleChange }
           name="name"
         />
         <input
+          className="App input"
           type="email"
           data-testid="input-gravatar-email"
           value={ email }
@@ -74,17 +79,24 @@ class Login extends Component {
           onChange={ this.handleChange }
           name="email"
         />
-        <Link to="/game">
+        <Link to="/game" className="login">
           <button
+            className="App login-btn"
             type="button"
             data-testid="btn-play"
             disabled={ buttonDisable }
             onClick={ this.handleClick }
           >
-            Jogar
+            Play
           </button>
         </Link>
-        <Link to="/settings" data-testid="btn-settings">Configurações</Link>
+        <Link
+          to="/settings"
+          data-testid="btn-settings"
+          className="App-link"
+        >
+          Settings
+        </Link>
       </div>
     );
   }

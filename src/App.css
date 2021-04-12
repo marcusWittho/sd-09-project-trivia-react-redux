@@ -2,56 +2,146 @@
   text-align: center;
 }
 
+.App-header {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  justify-content: center;
+  padding: 1em 0;
+}
+
+.App-link {
+  background-color: #8da5c9;
+  color: black;
+  display: block;
+  font-weight: 900;
+  margin: 1em auto 0;
+  padding: 0.5em;
+  text-decoration: none;
+  width: 100px;
+}
+
+.App-link:hover {
+  background-color: #499bff;
+  color: white;
+  cursor: pointer;
+}
+
+.App-link:disabled, .App-link:hover:disabled {
+  background-color: #8da5c9;
+  color: lightgray;
+  cursor: not-allowed;
+}
+
 .App-logo {
-  height: 40vmin;
+  height: 30vmin;
+  margin: 0 0 3em;
   pointer-events: none;
 }
 
-.red-border {
-  border: 1px solid red;
+.flex {
+  display: flex;
+}
+
+.game {
+  border: 5px solid white;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em 10px;
+  padding: 0.5em 1em;
+}
+
+.game-body {
+  display: flex;
+  justify-content: space-between;
 }
 
 .green-border {
   border: 1px solid green;
 }
 
+.input {
+  display: block;
+  margin: 2em auto 0;
+  padding: 1em 0;
+  width: 250px;
+}
+
+.login {
+  height: 50px;
+  margin: 2em auto 0;
+  width: 100px;
+}
+
+.login-btn {
+  background-color: #499bff;
+  color: white;
+  cursor: pointer;
+  font-weight: 900;
+  height: inherit;
+  text-transform: uppercase;
+  width: inherit;
+}
+
+.login-btn:disabled {
+  background-color: #cfe1fc;
+  color: #73767c;
+  cursor: not-allowed;
+}
+
+.profile {
+  border-radius: 50%;
+}
+
+.ranking {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  width: 300px;
+}
+
+.red-border {
+  border: 1px solid red;
+}
+
+.settings {
+  border: 5px solid white;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em auto;
+  padding: 0.5em 2em;
+}
+
+.settings-input {
+  background-color: #0000001a;
+  border: 3px solid #499bff;
+  color: white;
+  font-weight: 900;
+  margin: 2em auto 0 50px;
+  padding: 1em 10px;
+  width: 150px;
+}
+
+.stats {
+  justify-content: space-between;
+  padding: 10px;
+  width: auto;
+}
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    animation: fadeInOut infinite 3s ease-in both;
   }
 }
 
-.App-header {
-  align-items: center;
-  background-color: #282c34;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: 100vh;
-}
+@keyframes fadeInOut {
 
-.App-link {
-  color: #61dafb;
-}
+  0% { opacity: 1;}
 
-@keyframes shake {
+  50% { opacity: 0;}
 
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
+  100% { opacity: 1;}
 }

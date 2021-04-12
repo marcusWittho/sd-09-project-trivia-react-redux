@@ -1,7 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -40,15 +39,10 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { gravatar } = this.props;
     const { player } = JSON.parse(localStorage.getItem('state'));
     return (
-      <main>
-        <header>
-          <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${gravatar}` } alt={ player.name } />
-          <span data-testid="header-player-name">{player.name}</span>
-          <span data-testid="header-score">{Number(player.score)}</span>
-        </header>
+      <main className="App App-header">
+        <Header />
         <section>
           <h3 data-testid="feedback-text">
             {this.getFeedback(Number(player.assertions))}
@@ -57,10 +51,10 @@ class Feedback extends React.Component {
           <h3 data-testid="feedback-total-question">{Number(player.assertions)}</h3>
         </section>
         <section>
-          <button type="button" data-testid="btn-ranking">
-            <Link to="/Ranking">Ranking de jogadores</Link>
+          <button type="button" data-testid="btn-ranking" className="App-link">
+            <Link to="/ranking">Ranking de jogadores</Link>
           </button>
-          <button type="button" data-testid="btn-play-again">
+          <button type="button" data-testid="btn-play-again" className="App-link">
             <Link to="/">Jogar novamente</Link>
           </button>
         </section>
@@ -69,12 +63,4 @@ class Feedback extends React.Component {
   }
 }
 
-Feedback.propTypes = {
-  gravatar: PropTypes.string.isRequired,
-};
-
-const stateToProps = (state) => ({
-  gravatar: state.trivia.gravatar,
-});
-
-export default connect(stateToProps)(Feedback);
+export default (Feedback);
