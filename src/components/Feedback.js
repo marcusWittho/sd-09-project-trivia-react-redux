@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { rankingAction } from '../actions/rankingAction';
 
 class Feedback extends React.Component {
   render() {
-    const { score, assertions } = this.props;
+    const { score, assertions, setPlayer, player } = this.props;
     const magicNumber = 3;
 
     return (
@@ -26,7 +27,11 @@ class Feedback extends React.Component {
             </button>
           </Link>
           <Link to="/ranking">
-            <button type="button" data-testid="btn-ranking">
+            <button
+              type="button"
+              data-testid="btn-ranking"
+              onClick={ () => setPlayer(player) }
+            >
               Ver Ranking
             </button>
           </Link>
@@ -41,6 +46,11 @@ const mapStateToProps = (state) => ({
   gravatar: state.gameReducer.player.gravatar,
   score: state.gameReducer.player.score,
   assertions: state.gameReducer.player.assertions,
+  player: state.gameReducer.player,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setPlayer: (player) => dispatch(rankingAction(player)),
 });
 
 Feedback.propTypes = {
@@ -48,6 +58,7 @@ Feedback.propTypes = {
   name: PropTypes.string,
   score: PropTypes.number,
   assertions: PropTypes.number,
+  setPlayer: PropTypes.func,
 }.isRequired;
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
