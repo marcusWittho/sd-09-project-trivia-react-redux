@@ -1,7 +1,8 @@
-import { getToken } from '../services/triviaAPI';
-import getQuestions from '../services/triviaAPI_questions';
+import { getToken, getQuestions } from '../services/triviaAPI';
 
+export const HANDLE_ASSERTION = 'HANDLE_ASSERTION';
 export const SAVE_USER_DATA = 'SAVE_USER_DATA';
+export const SAVE_QUESTIONS_DATA = 'SAVE_QUESTIONS_DATA';
 export const SAVE_GAME_DATA = 'SAVE_GAME_DATA';
 export const RECEIVE_ERROR_TOKEN_API = 'RECEIVE_ERROR_TOKEN_API';
 export const RECEIVE_ERROR_GAME_API = 'RECEIVE_ERROR_GAME_API';
@@ -13,8 +14,8 @@ const saveUserData = (name, email, token) => ({
   token,
 });
 
-const saveGameData = (questions) => ({
-  type: SAVE_GAME_DATA,
+const saveQuestionsData = (questions) => ({
+  type: SAVE_QUESTIONS_DATA,
   questions,
 });
 
@@ -38,8 +39,14 @@ export const handleLogin = (name, email) => async (dispatch) => {
 export const fetchGameData = (token) => async (dispatch) => {
   try {
     const questions = await getQuestions(token);
-    return dispatch(saveGameData(questions));
+    return dispatch(saveQuestionsData(questions));
   } catch (error) {
     return dispatch(receiveErrorGameAPI(error));
   }
+};
+
+export const handleAssertion = (timer, difficultyWeight) => {
+  const FACTOR_SUM = 10;
+  const score = FACTOR_SUM + (timer * difficultyWeight);
+  return { type: HANDLE_ASSERTION, score };
 };

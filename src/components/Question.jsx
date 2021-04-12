@@ -1,19 +1,40 @@
 import React, { Component } from 'react';
-import { shape, string, arrayOf } from 'prop-types';
+import { shape, string, arrayOf, func } from 'prop-types';
+import { connect } from 'react-redux';
 import Answer from './Answer';
+import { handleAssertion } from '../actions';
 
-export default class Question extends Component {
+class Question extends Component {
   constructor(props) {
     super(props);
+
+    const {
+      data: {
+        incorrect_answers: incorrectAnswers,
+        correct_answer: correctAnswer,
+      },
+    } = this.props;
+
     this.state = {
       clicked: false,
+      answers: [...incorrectAnswers, correctAnswer],
+      shuffledAnswers: this.shuffleAnswers([...incorrectAnswers, correctAnswer]),
     };
-    this.renderAnswers = this.renderAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
-    this.setState({ clicked: true });
+  handleClick(e) {
+    const { innerText } = e.target;
+    const { sumScore, data: { difficulty } } = this.props;
+    const { answers, timer } = this.state;
+    this.setState(
+      { clicked: true },
+      () => {
+        if (answers.indexOf(innerText) === answers.length - 1) {
+          sumScore(0, 0);
+        }
+      },
+    );
   }
 
   shuffleAnswers(array) {
@@ -27,15 +48,7 @@ export default class Question extends Component {
   }
 
   renderAnswers() {
-    const {
-      data: {
-        incorrect_answers: incorrectAnswers,
-        correct_answer: correctAnswer,
-      },
-    } = this.props;
-    const { clicked } = this.state;
-    const answers = [...incorrectAnswers, correctAnswer];
-    const shuffledAnswers = this.shuffleAnswers(answers);
+    const { clicked, answers, shuffledAnswers } = this.state;
     return shuffledAnswers.map((answer) => (
       answers.indexOf(answer) === answers.length - 1
         ? (
@@ -72,6 +85,10 @@ export default class Question extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  sumScore: (timer, difficulty) => dispatch(handleAssertion(timer, difficulty)),
+});
+
 Question.propTypes = {
   data: shape({
     category: string,
@@ -79,4 +96,7 @@ Question.propTypes = {
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   }),
+  sumScore: func,
 }.isRequired;
+
+export default connect(null, mapDispatchToProps)(Question);

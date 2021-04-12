@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, number } from 'prop-types';
 import createGravatar from '../services/gravatar';
 
 class Header extends React.Component {
   render() {
-    const { userName, userEmail } = this.props;
+    const { userName, userEmail, score } = this.props;
 
     return (
       <header>
@@ -15,7 +15,7 @@ class Header extends React.Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{ userName }</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{ score }</p>
       </header>
     );
   }
@@ -24,11 +24,13 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   userName: state.loginReducer.name,
   userEmail: state.loginReducer.email,
+  score: state.scoreReducer.score,
 });
 
 Header.propTypes = {
-  userName: string.isRequired,
-  userEmail: string.isRequired,
-};
+  userName: string,
+  userEmail: string,
+  score: number,
+}.isRequired;
 
 export default connect(mapStateToProps)(Header);
