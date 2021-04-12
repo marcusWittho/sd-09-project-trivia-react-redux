@@ -26,5 +26,5 @@ class Ranking extends React.Component {
     );
   }
 }
-
+// VQV
 export default Ranking;
