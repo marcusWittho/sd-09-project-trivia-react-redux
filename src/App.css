@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  align-items: center;;
+  align-items: center;
   color: white;
   display: flex;
   flex-direction: column;
@@ -12,32 +12,32 @@
   padding: 1em 0;
 }
 
-.App-link:disabled, .App-link:hover:disabled {
-  background-color: #8DA5C9;
-  color: lightgray;
-  cursor: not-allowed;
-}
-
 .App-link {
-  display: block;
-  background-color: #8DA5C9;
+  background-color: #8da5c9;
   color: #000;
+  display: block;
   font-weight: 900;
-  text-decoration: none;
-  padding: 0.5em;
   margin: 1em auto 0;
+  padding: 0.5em;
+  text-decoration: none;
   width: 100px;
 }
 
 .App-link:hover {
-  background-color: #499BFF;
-  color: #FFF;
+  background-color: #499bff;
+  color: #fff;
   cursor: pointer;
+}
+
+.App-link:disabled, .App-link:hover:disabled {
+  background-color: #8da5c9;
+  color: lightgray;
+  cursor: not-allowed;
 }
 
 .App-logo {
   height: 30vmin;
-  margin: 0 0 3em 0;
+  margin: 0 0 3em;
   pointer-events: none;
 }
 
@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   margin: 0.5em 10px;
-  padding: 0.5em 1em ;
+  padding: 0.5em 1em;
 }
 
 .game-body {
@@ -65,8 +65,8 @@
 .input {
   display: block;
   margin: 2em auto 0;
-  width: 250px;
   padding: 1em 0;
+  width: 250px;
 }
 
 .login {
@@ -76,8 +76,8 @@
 }
 
 .login-btn {
-  background-color: #499BFF;
-  color: #FFF;
+  background-color: #499bff;
+  color: #fff;
   cursor: pointer;
   font-weight: 900;
   height: inherit;
@@ -86,8 +86,8 @@
 }
 
 .login-btn:disabled {
-  background-color: #CFE1FC;
-  color: #73767C;
+  background-color: #cfe1fc;
+  color: #73767c;
   cursor: not-allowed;
 }
 
@@ -96,9 +96,9 @@
 }
 
 .ranking {
+  align-items: center;
   display: flex;
   justify-content: space-around;
-  align-items: center;
   width: 300px;
 }
 
@@ -111,17 +111,17 @@
   display: flex;
   flex-direction: column;
   margin: 0.5em auto;
-  padding: 0.5em 2em ;
+  padding: 0.5em 2em;
 }
 
 .settings-input {
-  border: 3px solid #499BFF;
   background-color: #00000000;
+  border: 3px solid #499bff;
   color: #fff;
   font-weight: 900;
   margin: 2em auto 0 50px;
-  width: 150px;
   padding: 1em 10px;
+  width: 150px;
 }
 
 .stats {
@@ -140,6 +140,8 @@
 @keyframes fadeInOut {
 
   0% { opacity: 1;}
+
   50% { opacity: 0;}
+
   100% { opacity: 1;}
 }
