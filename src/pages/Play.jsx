@@ -96,6 +96,7 @@ class Play extends React.Component {
     const magicNumber = 10;
     const previousStorage = JSON.parse(localStorage.getItem('state'));
     const { player: { score, assertions } } = previousStorage;
+    console.log(previousStorage);
     switch (questionLevel) {
     case questionLevel === 'hard':
       previousStorage.player.score = score + (magicNumber + (counter * hard));
@@ -116,14 +117,20 @@ class Play extends React.Component {
   }
 
   questionGenerator() {
-    const { addClass, randomized, isButtonsRandomized } = this.state;
-    const { isDisabled } = this.props;
+    const { addClass, randomized, isButtonsRandomized, questionIndex } = this.state;
+    const { isDisabled, questions } = this.props;
+    const currentQuestion = questions[questionIndex];
+    const { category, question } = currentQuestion;
     if (!isButtonsRandomized) {
       const randomizedAnswers = this.handleAnswers();
       this.setState({ randomized: randomizedAnswers });
     }
     return (
       <section>
+        <div>
+          <p data-testid="question-category">{ category }</p>
+          <p data-testid="question-text">{ question }</p>
+        </div>
         {
           randomized.map(({ isTrue, answer }, index) => {
             if (!isTrue) {
@@ -187,21 +194,15 @@ class Play extends React.Component {
   }
 
   render() {
-    const { questions, isFetching } = this.props;
-    const { questionIndex, nextQuestion } = this.state;
+    const { isFetching, questions } = this.props;
+    const { nextQuestion } = this.state;
     const { redirectFeedBack } = this.state;
     if (redirectFeedBack) return <Redirect to="/feedback" />;
     if (isFetching) return <div>Loading...</div>;
-    const currentQuestion = questions[questionIndex];
-    const { category, question } = currentQuestion;
     return (
       <main>
         <Header />
-        <section>
-          <p data-testid="question-category">{ category }</p>
-          <p data-testid="question-text">{ question }</p>
-        </section>
-        { this.questionGenerator() }
+        { !isFetching && questions.length > 0 && this.questionGenerator() }
         { nextQuestion && this.nextQuestionButtonGenerator() }
         <Timer />
       </main>
