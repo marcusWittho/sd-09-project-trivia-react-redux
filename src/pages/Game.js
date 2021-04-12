@@ -53,7 +53,7 @@ class Game extends Component {
 
   renderCorrectAnswer(correctAnswer) {
     return (
-      <button 
+      <button
         type="button"
         key={ correctAnswer }
         data-testid="correct-answer"
