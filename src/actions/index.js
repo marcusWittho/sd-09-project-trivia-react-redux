@@ -26,3 +26,8 @@ export const requestUserInfo = (email, name, hash) => ({
   name,
   hash,
 });
+
+export const setScore = (score) => ({
+  type: 'SET_SCORE',
+  score,
+});

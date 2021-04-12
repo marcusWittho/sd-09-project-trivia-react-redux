@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 class Header extends React.Component {
   render() {
-    const { hash, name, score = 0 } = this.props; /* essas props virão do pai desse componente ou do estado global */
+    const { hash, name, score } = this.props; /* essas props virão do pai desse componente ou do estado global */
     return (
       <header>
         <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt="gravatar" />
@@ -18,6 +18,7 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   hash: state.loginReducer.hash,
   name: state.loginReducer.name,
+  score: state.mainReducer.score,
 });
 
 Header.propTypes = {
