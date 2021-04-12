@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { getToken } from '../services/triviaApi';
-import { handleToken, handleUserName, handleUserEmail } from '../redux/actions';
+import { dataGame, handleUserEmail, fetchQuestions, handleUserName }
+  from '../redux/actions';
 import './css/login.css';
 
 class Login extends React.Component {
@@ -14,30 +15,23 @@ class Login extends React.Component {
       user: '',
       email: '',
       disableButton: true,
-      // redirect: false,
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.updateGlobalStates = this.updateGlobalStates.bind(this);
-    // this.redirect = this.redirect.bind(this);
   }
 
   async updateGlobalStates() {
-    const { propHandleToken, propHandleUser, propHandleEmail } = this.props;
     const { user, email } = this.state;
+    const { propHandleUser, propHandleEmail, propFetchQuestions } = this.props;
     const token = await getToken();
-    propHandleToken(token.token);
     localStorage.setItem('token', token.token);
+    const localToken = localStorage.getItem('token');
+    const numQuestion = 5;
     propHandleUser(user);
     propHandleEmail(md5(email).toString());
-    // redirect();
+    propFetchQuestions(numQuestion, localToken);
   }
-
-  // redirect() {
-  //   const { emailDispatcher } = this.props;
-  //   const { email } = this.state;
-  //   this.setState({ redirect: true });
-  //   emailDispatcher(email);
-  // }
 
   handleChange({ target: { value, name } }) {
     this.setState({ [name]: value }, () => {
@@ -52,7 +46,6 @@ class Login extends React.Component {
 
   render() {
     const { disableButton } = this.state;
-    // if (redirect) return (<Redirect to="/question" />);
     return (
       <div className="form-login">
         <form className="fieldset-login">
@@ -60,6 +53,7 @@ class Login extends React.Component {
             Nome:
             <input
               id="enter-name"
+              className="enter-name"
               data-testid="input-player-name"
               type="text"
               name="user"
@@ -70,6 +64,7 @@ class Login extends React.Component {
             E-mail:
             <input
               id="enter-email"
+              className="enter-email"
               data-testid="input-gravatar-email"
               type="email"
               name="email"
@@ -78,6 +73,7 @@ class Login extends React.Component {
           </label>
           <Link to="/question">
             <button
+              className="btn-play"
               type="button"
               data-testid="btn-play"
               disabled={ disableButton }
@@ -87,10 +83,7 @@ class Login extends React.Component {
             </button>
           </Link>
           <Link to="/settings">
-            <button
-              type="button"
-              data-testid="btn-settings"
-            >
+            <button className="btn-settings" type="button" data-testid="btn-settings">
               Configurações
             </button>
           </Link>
@@ -101,12 +94,14 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  propHandleToken: (data) => dispatch(handleToken(data)),
+  propDataGame: (data) => dispatch(dataGame(data)),
   propHandleUser: (user) => dispatch(handleUserName(user)),
   propHandleEmail: (email) => dispatch(handleUserEmail(email)),
+  propFetchQuestions: (num, token) => dispatch(fetchQuestions(num, token)),
 });
 
 Login.propTypes = {
+  propDataGame: func,
   propHandlePlayerData: func,
 }.isRequired;
 
