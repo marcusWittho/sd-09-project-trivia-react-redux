@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
 import { timeStarter } from '../redux/actions';
@@ -68,14 +68,15 @@ class GamePage extends React.Component {
       incorrect_answers: incorrectAnswers,
     } = questions[questionNumber];
 
-    const arrayOfElements = incorrectAnswers.map((answer, index) => (
+    const arrayOfElements = incorrectAnswers.map((answer) => (
       <button
         id="answer"
         type="button"
         key={ answer }
-        data-testid={ `wrong-answer-${index}` }
+        data-testid="wrong-answer"
         onClick={ (event) => this.handleClick(event) }
         disabled={ timeOver || disabledAnswers }
+        className="App-link"
       >
         {answer}
       </button>
@@ -88,6 +89,7 @@ class GamePage extends React.Component {
         data-testid="correct-answer"
         onClick={ (event) => this.handleClick(event) }
         disabled={ timeOver || disabledAnswers }
+        className="App-link"
       >
         {correctAnswer}
       </button>,
@@ -121,39 +123,41 @@ class GamePage extends React.Component {
     const { questionNumber, allowNextButton, time } = this.state;
     const { questions, isFetching } = this.props;
     const totalIndex = 5;
-    if (isFetching) return <div>Loading</div>;
+    if (isFetching) return <div className="App App-header">Loading</div>;
 
     return (
-      <div>
+      <div className="App App-header">
         { questionNumber === totalIndex ? <Redirect to="/feedback" /> : (
-          <div>
-            <Header />
-            <Timer
-              noClick={ this.handleClick }
-              time={ time }
-              countDown={ this.countDown }
-            />
-            <h2 data-testid="question-category">
-              Category:
-              {questions[questionNumber].category}
-            </h2>
-            <h3 data-testid="question-text">
-              Question:
-              {questions[questionNumber].question}
-            </h3>
-            <p>
-              answer:
-              {this.createAnswers()}
-            </p>
-            <button
-              type="button"
-              data-testid="btn-next"
-              onClick={ () => this.handleNext(questionNumber) }
-              style={ { display: allowNextButton } }
-            >
-              Próxima
-            </button>
-            <Link to="/feedback" />
+          <div className="game-body">
+            <div className="stats">
+              <Header />
+              <Timer
+                noClick={ this.handleClick }
+                time={ time }
+                countDown={ this.countDown }
+              />
+            </div>
+            <div className="game">
+              <h2 data-testid="question-category">
+                {questions[questionNumber].category}
+              </h2>
+              <h3 data-testid="question-text">
+                {`${questionNumber + 1}. `}
+                {questions[questionNumber].question}
+              </h3>
+              <p>
+                {this.createAnswers()}
+              </p>
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ () => this.handleNext(questionNumber) }
+                style={ { display: allowNextButton } }
+                className="App-link"
+              >
+                Next
+              </button>
+            </div>
           </div>
         ) }
       </div>

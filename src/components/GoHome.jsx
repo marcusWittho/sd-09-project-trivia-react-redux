@@ -8,6 +8,7 @@ class GoHome extends React.Component {
         <button
           data-testid="btn-go-home"
           type="button"
+          className="App-link"
         >
           Página inicial
         </button>

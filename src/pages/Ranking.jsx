@@ -12,16 +12,19 @@ class Ranking extends React.Component {
 
   layoutPlayer(player, index) {
     return (
-      <section key={ player.name + index }>
+      <section key={ player.name + index } className="settings">
         <h3>{`${index + 1}º lugar`}</h3>
-        <span>
+        <div className="App flex ranking">
           <img
             src={ player.picture }
             alt="imagem do jogador"
+            className="profile"
           />
           <span data-testid={ `player-name-${index}` }>{player.name}</span>
-          <span data-testid={ `player-score-${index}` }>{player.score}</span>
-        </span>
+          <span data-testid={ `player-score-${index}` }>
+            {player.score}
+          </span>
+        </div>
       </section>
     );
   }
@@ -34,7 +37,7 @@ class Ranking extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="App App-header">
         <h1 data-testid="ranking-title">Ranking</h1>
         <div>
           {this.mapRankingPlayers()}

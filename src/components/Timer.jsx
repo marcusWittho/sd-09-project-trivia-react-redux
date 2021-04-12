@@ -42,7 +42,7 @@ class Timer extends Component {
     return (
       <div>
         Tempo:
-        <p>{ time }</p>
+        <span>{ ` ${time}` }</span>
       </div>
     );
   }

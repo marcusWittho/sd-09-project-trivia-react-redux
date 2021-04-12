@@ -64,6 +64,7 @@ class Config extends React.Component {
           id="category"
           value={ category }
           onChange={ this.handleChange }
+          className="settings-input"
         >
           {categories.map((categ) => (
             <option
@@ -89,6 +90,7 @@ class Config extends React.Component {
           id="difficulty"
           value={ difficulty }
           onChange={ this.handleChange }
+          className="settings-input"
         >
           {difficulties.map((dif) => (
             <option
@@ -106,12 +108,14 @@ class Config extends React.Component {
     const { quantity } = this.state;
     return (
       <label htmlFor="quantity">
+        Questions:
         <input
           type="number"
           name="quantity"
           value={ quantity }
           id="quantity"
           onChange={ this.handleChange }
+          className="settings-input"
         />
       </label>
     );
@@ -133,6 +137,7 @@ class Config extends React.Component {
           id="type"
           value={ type }
           onChange={ this.handleChange }
+          className="settings-input"
         >
           {types.map((typ) => (
             <option
@@ -148,13 +153,15 @@ class Config extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1 data-testid="settings-title">Configurações</h1>
-        <Link to="/">Home</Link>
-        { this.renderQuantity() }
-        { this.renderCategories() }
-        { this.renderDificulties() }
-        { this.renderTypes() }
+      <div className="App App-header">
+        <h1 data-testid="settings-title">Settings</h1>
+        <section className="settings">
+          { this.renderQuantity() }
+          { this.renderCategories() }
+          { this.renderDificulties() }
+          { this.renderTypes() }
+          <Link to="/" className="App-link">Home</Link>
+        </section>
       </div>
     );
   }

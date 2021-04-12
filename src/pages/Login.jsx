@@ -66,7 +66,7 @@ class Login extends Component {
           type="text"
           data-testid="input-player-name"
           value={ name }
-          placeholder="Name"
+          placeholder="First Name"
           onChange={ this.handleChange }
           name="name"
         />
@@ -87,15 +87,15 @@ class Login extends Component {
             disabled={ buttonDisable }
             onClick={ this.handleClick }
           >
-            Jogar
+            Play
           </button>
         </Link>
         <Link
           to="/settings"
           data-testid="btn-settings"
-          className="input App-link"
+          className="App-link"
         >
-          Configurações
+          Settings
         </Link>
       </div>
     );
