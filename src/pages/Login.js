@@ -56,15 +56,24 @@ class Login extends React.Component {
     }
   }
 
-  login() {
+  async login() {
     const { name, email } = this.state;
-    const { sendUser, fetchUserToken, token } = this.props;
+    const { sendUser, fetchUserToken } = this.props;
     sendUser(name, email);
-    fetchUserToken();
+    const getToken = await fetchUserToken();
     this.setState({
       login: true,
     });
-    window.localStorage.setItem('token', token);
+    localStorage.setItem('token', getToken.token);
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   redirectToSettings() {
@@ -151,7 +160,6 @@ const mapDispatchToProps = (dispatch) => ({
 Login.propTypes = {
   sendUser: PropTypes.func.isRequired,
   fetchUserToken: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

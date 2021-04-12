@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchingQuestionsToApi } from '../redux/actions/questActions';
 import CardQuestion from '../compenents/cardQuestion';
-import Header from '../compenents/Header';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -12,11 +11,9 @@ class Game extends React.Component {
   }
 
   render() {
-    const { loading, email, user } = this.props;
+    const { loading } = this.props;
     return (
       <div>
-        <p>As configurações do jogo vão ficar aqui</p>
-        { loading ? '' : <Header email={ email } name={ user } /> }
         { loading ? '' : <CardQuestion /> }
       </div>
     );
@@ -38,8 +35,6 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  user: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
