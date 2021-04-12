@@ -17,13 +17,10 @@ class LoginForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.createUserStateLocalStorage = this.createUserStateLocalStorage.bind(this);
-    this.createUserRankingOnLocalStorage = this.createUserRankingOnLocalStorage
-      .bind(this);
   }
 
   async handleClick() {
     this.createUserStateLocalStorage();
-    this.createUserRankingOnLocalStorage();
     const { addLoginInfoDispatch, addTokenDispatch } = this.props;
     const { name, email } = this.state;
     addLoginInfoDispatch({ email, name });

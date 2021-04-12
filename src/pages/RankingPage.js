@@ -1,29 +1,20 @@
 import React from 'react';
 import '../styles/RankingPage.css';
 
-const rankingTest = [
-  { name: 'nome-da-pessoa 1', score: 30, picture: 'https://www.gravatar.com/avatar/9e34f9c6d60b08c3049a260331c827f9' },
-  { name: 'nome-da-pessoa 2', score: 40, picture: 'https://www.gravatar.com/avatar/9e34f9c6d60b08c3049a260331c827f9' },
-];
+//  Dados para fazer teste
+// const rankingTest = [
+//   { name: 'nome-da-pessoa 1', score: 50, picture: 'https://www.gravatar.com/avatar/9e34f9c6d60b08c3049a260331c827f9' },
+//   { name: 'nome-da-pessoa 2', score: 40, picture: 'https://www.gravatar.com/avatar/9e34f9c6d60b08c3049a260331c827f9' },
+// ];
 
 class RankingPage extends React.Component {
   getRankingOrderedByScore() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
-    ranking.sort((a, b) => {
-      if (a.score < b.score) {
-        const minus1 = -1;
-        return minus1;
-      }
-      if (a.score > b.score) {
-        return 1;
-      }
-      return 0;
-    });
+    ranking.sort((a, b) => a.score - b.score);
     return ranking;
   }
 
   createParticipantList(participant, index) {
-    this.getRankingOrderedByScore();
     const { name, score, picture } = participant;
     return (
       <tr className="ranking-list">
@@ -41,7 +32,6 @@ class RankingPage extends React.Component {
   }
 
   render() {
-    localStorage.setItem('ranking', JSON.stringify(rankingTest));
     return (
       <div>
         <table>
