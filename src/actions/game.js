@@ -4,6 +4,7 @@ export const IS_ANSWERED = 'IS_ANSWERED';
 export const DECREASE_TIME = 'DECREASE_TIME';
 export const INCREASE_SCORE = 'INCREASE_SCORE';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
+export const CLICK_ANSWER = 'CLICK_ANSWER';
 
 export const increaseScore = (assert, difficulty, score) => ({
   type: INCREASE_SCORE,
@@ -39,6 +40,10 @@ export const fetchQuestions = () => async (dispatch) => {
 
 export const decreaseTime = () => ({
   type: DECREASE_TIME,
+});
+
+export const clickAnswer = () => ({
+  type: CLICK_ANSWER,
 });
 
 export const nextQuestion = () => ({

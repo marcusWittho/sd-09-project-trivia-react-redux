@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NextButton from './NextButton';
-import { fetchQuestions, increaseScore, isAnswered } from '../actions/game';
+import { fetchQuestions, increaseScore, clickAnswer } from '../actions/game';
 
 import './Questions.css';
 
@@ -11,10 +11,8 @@ class Questions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      correctAnswer: '',
-      wrongAnswer: '',
-      questionIndex: 0,
       redirect: false,
+      questionIndex: 0,
     };
     this.checkAnswer = this.checkAnswer.bind(this);
     this.getIndex = this.getIndex.bind(this);
@@ -40,17 +38,13 @@ class Questions extends React.Component {
   }
 
   checkAnswer({ target }) {
-    const { addScore, questions, questionPos, dispatchAnswered } = this.props;
+    const { addScore, questions, questionPos, clickAnswered } = this.props;
     const { value, key } = target;
     const { difficulty, correct_answer: correctAnswer } = questions[questionPos];
     const isCorrect = value === correctAnswer ? 1 : 0;
     const correctQuestions = 0;
     addScore(isCorrect, difficulty);
-    this.setState({
-      correctAnswer: 'correct',
-      wrongAnswer: 'wrong',
-    });
-    dispatchAnswered();
+    clickAnswered();
     if (key === 0) {
       localStorage.setItem('state', JSON.stringify({
         player: { correctQuestions: correctQuestions + 1 },
@@ -59,8 +53,9 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { questions, isLoading, timer, questionPos, answered } = this.props;
-    const { correctAnswer, wrongAnswer, redirect } = this.state;
+    const { questions, isLoading, timer, questionPos,
+      answered, correctAnswer, wrongAnswer } = this.props;
+    const { redirect } = this.state;
     if (isLoading) return <h1>Loading...</h1>;
     if (redirect) return <Redirect to="/feedback" />;
     const allAnswer = [
@@ -102,7 +97,9 @@ Questions.propTypes = {
   timer: PropTypes.number.isRequired,
   addScore: PropTypes.func.isRequired,
   questionPos: PropTypes.number.isRequired,
-  dispatchAnswered: PropTypes.func.isRequired,
+  clickAnswered: PropTypes.func.isRequired,
+  correctAnswer: PropTypes.string.isRequired,
+  wrongAnswer: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -111,13 +108,14 @@ const mapStateToProps = (state) => ({
   timer: state.game.timer,
   isLoading: state.game.isLoading,
   answered: state.game.answered,
-  score: state.game.score,
+  correctAnswer: state.game.correctAnswer,
+  wrongAnswer: state.game.wrongAnswer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: () => dispatch(fetchQuestions()),
   addScore: (score, diff) => dispatch(increaseScore(score, diff)),
-  dispatchAnswered: (answered) => dispatch(isAnswered(answered)),
+  clickAnswered: () => dispatch(clickAnswer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);

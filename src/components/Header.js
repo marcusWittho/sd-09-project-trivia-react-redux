@@ -5,8 +5,11 @@ import { connect } from 'react-redux';
 
 class Header extends React.Component {
   render() {
-    const { nickname, email, userScore } = this.props;
+    const { nickname, email, score, assertions } = this.props;
     const hashEmail = md5(email).toString();
+    const state = JSON
+      .stringify({ player: { nickname, assertions, score, hashEmail } });
+    localStorage.setItem('state', state);
     return (
       <header>
         <img
@@ -20,7 +23,7 @@ class Header extends React.Component {
         </span>
         <span data-testid="header-score">
           Score:
-          { userScore }
+          { score }
         </span>
       </header>
     );
@@ -30,13 +33,15 @@ class Header extends React.Component {
 Header.propTypes = {
   nickname: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  userScore: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
   nickname: state.user.nickname,
-  userScore: state.score.currentScore,
+  score: state.game.score,
+  assertions: state.game.assertions,
 });
 
 export default connect(mapStateToProps)(Header);

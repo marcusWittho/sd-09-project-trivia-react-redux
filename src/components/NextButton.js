@@ -14,7 +14,6 @@ class NextButton extends React.Component {
     const { next } = this.props;
     next();
     getIndex();
-    console.log(getIndex());
   }
 
   render() {
