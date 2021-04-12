@@ -101,9 +101,8 @@ class CardQuestion extends React.Component {
 
   updateScore() {
     const { timer, score, difficulty, answer, assertions } = this.state;
-    const easy = 1;
-    const medium = 2;
-    const hard = 3;
+    const difficulties = [1, 2, '3'];
+
     let newScore = score;
     const magicNumber = 10;
 
@@ -111,11 +110,11 @@ class CardQuestion extends React.Component {
 
     if (answer === true) {
       if (difficulty === 'easy') {
-        newScore += (magicNumber + (timer * easy));
+        newScore += (magicNumber + (timer * difficulties[0]));
       } else if (difficulty === 'medium') {
-        newScore += (magicNumber + (timer * medium));
+        newScore += (magicNumber + (timer * difficulties[1]));
       } else {
-        newScore += (magicNumber + (timer * hard));
+        newScore += (magicNumber + (timer * Number(difficulties[2])));
       }
     }
 
@@ -125,6 +124,7 @@ class CardQuestion extends React.Component {
     });
 
     storage.player.score = newScore;
+    storage.player.assertions = assertions;
     localStorage.setItem('state', JSON.stringify(storage));
   }
 
