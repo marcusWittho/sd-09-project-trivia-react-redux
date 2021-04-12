@@ -17,6 +17,19 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.playerInitialState = this.playerInitialState.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.playerInitialState();
+  }
+
+  playerInitialState() {
+    localStorage.setItem('state', JSON.stringify({ player: { name: '',
+      assertions: '',
+      score: 0,
+      gravatarEmail: '',
+    } }));
   }
 
   handleChange(event) {
@@ -31,7 +44,7 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { storeName, storeEmail, storeToken, player } = this.props;
+    const { storeName, storeEmail, storeToken } = this.props;
     const { name, email } = this.state;
     const token = await triviaTokenRequest();
     storeToken(token);
@@ -39,11 +52,6 @@ class Login extends React.Component {
     storeEmail(email);
 
     localStorage.setItem('token', token);
-    localStorage.setItem('state', JSON.stringify({ player: { name: player.name,
-      assertions: player.assertions,
-      score: player.score,
-      gravatarEmail: player.email,
-    } }));
   }
 
   render() {
@@ -98,7 +106,6 @@ Login.propTypes = {
   storeToken: PropTypes.func.isRequired,
   storeName: PropTypes.func.isRequired,
   storeEmail: PropTypes.func.isRequired,
-  player: PropTypes.objectOf.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
