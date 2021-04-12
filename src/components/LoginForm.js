@@ -9,6 +9,7 @@ class LoginForm extends Component {
   constructor() {
     super();
     this.state = {
+      redirectparaSettings: false,
       name: '',
       email: '',
       redirect: false,
@@ -16,6 +17,13 @@ class LoginForm extends Component {
     this.statusCheck = this.statusCheck.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
+  }
+
+  handleSettings() {
+    this.setState({
+      redirectparaSettings: true,
+    });
   }
 
   async handleClick() {
@@ -45,7 +53,7 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { email, name, redirect } = this.state;
+    const { email, name, redirect, redirectparaSettings } = this.state;
     return (
       <form>
         <label htmlFor="name-input">
@@ -80,10 +88,11 @@ class LoginForm extends Component {
         <button
           type="button"
           data-testid="btn-settings"
-          onClick={ () => handleSettings() }
+          onClick={ this.handleSettings }
         >
           Configuração
         </button>
+        {redirectparaSettings && <Redirect to="/settings" />}
       </form>
     );
   }

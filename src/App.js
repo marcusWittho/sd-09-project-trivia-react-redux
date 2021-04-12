@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 // import logo from './trivia.png';
 import './App.css';
-import { Login, GamePage } from './pages';
+import { Login, GamePage, Settings } from './pages';
 
 export default function App() {
   return (
@@ -12,6 +12,7 @@ export default function App() {
       </header> */}
       <Switch>
         <Route path="/game-page" component={ GamePage } />
+        <Route path="/settings" component={ Settings } />
         <Route exact path="/" component={ Login } />
       </Switch>
     </div>
