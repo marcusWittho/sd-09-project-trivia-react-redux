@@ -14,7 +14,7 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { user, image } = this.props;
+    const { user, image, assertions } = this.props;
     const { goHome, goRanking } = this.state;
     const totalScore = JSON.parse(localStorage.getItem('state'));
     const bad = 'Podia ser melhor...';
@@ -26,7 +26,7 @@ class Feedback extends React.Component {
         <p data-testid="header-player-name">{ user }</p>
         <p data-testid="header-score">{ totalScore.player.score }</p>
         <p data-testid="feedback-total-score">{totalScore.player.score}</p>
-        <p data-testid="feedback-total-question">{totalScore.player.assertions}</p>
+        <p data-testid="feedback-total-question">{assertions}</p>
 
         <button
           type="button"
@@ -45,7 +45,7 @@ class Feedback extends React.Component {
 
         <p data-testid="feedback-text">
           {
-            (totalScore.player.assertions >= 2) ? good : bad
+            (assertions >= 2) ? good : bad
           }
         </p>
 
@@ -66,6 +66,7 @@ const mapStateToProps = (state) => ({
 Feedback.propTypes = {
   user: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
