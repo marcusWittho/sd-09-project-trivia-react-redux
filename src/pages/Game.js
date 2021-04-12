@@ -3,6 +3,10 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import './game.css';
+import WaveTop from '../img/wave-top.svg';
+import WaveBottom from '../img/wave-bottom.svg';
+import QuestionMark from '../img/questao.png';
 
 class Game extends Component {
   constructor(props) {
@@ -62,7 +66,7 @@ class Game extends Component {
         id="correct-awnser"
         onClick={ this.changeButtonColor }
       >
-        {correctAnswer}
+        { correctAnswer }
       </button>
     );
   }
@@ -98,13 +102,15 @@ class Game extends Component {
     } = triviaArray[position];
     return (
       <div>
-        <span data-testid="question-category">
+        <span className="question-category" data-testid="question-category">
           {triviaArray[position].category}
         </span>
-        <span data-testid="question-text">
+        <span className="question" data-testid="question-text">
           {triviaArray[position].question}
         </span>
-        {this.renderAnswer(incorrectAnswers, correctAnswer)}
+        <div className="answerButton">
+          {this.renderAnswer(incorrectAnswers, correctAnswer)}
+        </div>
       </div>
     );
   }
@@ -113,12 +119,20 @@ class Game extends Component {
     const { error, triviaArray } = this.state;
     if (!triviaArray) return <Redirect to="/" />;
     return (
-      <div>
+      <section className="game-section">
         <Header />
-        { error || triviaArray.length === 0
-          ? <span>Carregando... </span>
-          : this.renderQuestion() }
-      </div>
+        <img className="question-Mark-left" src={ QuestionMark } alt="wave" />
+        <section className="card-container">
+          <img className="wave-top" src={ WaveTop } alt="wave" />
+          <div className="game-card">
+            { error || triviaArray.length === 0
+              ? <span>Carregando... </span>
+              : this.renderQuestion() }
+          </div>
+          <img className="wave-bottom" src={ WaveBottom } alt="wave" />
+        </section>
+        <img className="question-Mark-right" src={ QuestionMark } alt="wave" />
+      </section>
     );
   }
 }
