@@ -5,15 +5,15 @@ import './Answer.css';
 
 class Answer extends Component {
   render() {
-    const { item, index } = this.props;
+    const { text, dataTestId } = this.props;
 
     return (
       <button
         type="button"
         className="answer-btn"
-        data-testid={ `wrong-answer-${index}` }
+        data-testid={ dataTestId }
       >
-        { item }
+        { text }
       </button>
     );
   }
