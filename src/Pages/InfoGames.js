@@ -49,13 +49,13 @@ class InfoGames extends Component {
       dispatchIncrementScore(player.score);
     }
     this.setState({ isAnswered: true });
-    dispatchChangeStatus('stop')
+    dispatchChangeStatus('stop');
   }
 
   nextQuestion() {
     const { dispatchChangeStatus } = this.props;
     this.setState((prevState) => ({ indice: prevState.indice + 1, isAnswered: false }));
-    dispatchChangeStatus('reset')
+    dispatchChangeStatus('reset');
   }
 
   requestAPI() {
@@ -91,6 +91,12 @@ class InfoGames extends Component {
   renderQuestions() {
     const { questions, isAnswered, alternativeRandom, indice } = this.state;
     const crrQuestion = questions[indice];
+    const { status } = this.props;
+
+    if (status === 'timeout') {
+      this.setState({ isAnswered: true });
+    }
+
     return (
       <div>
         <Header />
@@ -140,9 +146,13 @@ InfoGames.propTypes = {
   dispatchIncrementScore: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  status: state.timer.status,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   dispatchIncrementScore: (localScore) => dispatch(incrementScore(localScore)),
   dispatchChangeStatus: (status) => dispatch(changeStatus(status)),
 });
 
-export default connect(null, mapDispatchToProps)(InfoGames);
+export default connect(mapStateToProps, mapDispatchToProps)(InfoGames);
