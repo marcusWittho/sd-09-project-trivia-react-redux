@@ -2,6 +2,7 @@ import {
   USER_REGISTER,
   USER_AVATAR,
   USER_SCORE,
+  USER_ASSERTIONS,
   FETCH_TOKEN,
   RETURN_TOKEN,
   ERROR_TOKEN,
@@ -22,6 +23,11 @@ export const userAvatar = (image) => ({
 export const userScore = (score) => ({
   type: USER_SCORE,
   score,
+});
+
+export const userAssertion = (assertion) => ({
+  type: USER_ASSERTIONS,
+  assertion,
 });
 
 export const fetchingToken = () => ({

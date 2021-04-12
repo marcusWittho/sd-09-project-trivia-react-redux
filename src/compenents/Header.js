@@ -13,9 +13,9 @@ class Header extends React.Component {
   }
 
   render() {
-    const { name } = this.props;
+    const { name, score } = this.props;
     const hash = this.gravatarHash();
-    const score = 0;
+
     return (
       <>
         <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt="imagen gravatar" />
@@ -30,6 +30,7 @@ Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   sendImage: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

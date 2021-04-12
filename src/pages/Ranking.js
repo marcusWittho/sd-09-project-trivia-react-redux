@@ -17,7 +17,7 @@ class Ranking extends React.Component {
         <button
           type="button"
           onClick={ () => this.setState({ goHome: true }) }
-          data-testid="btn-play-again"
+          data-testid="btn-go-home"
         >
           Jogar novamente
         </button>
