@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { incrementScore } from '../redux/actions/index';
+import { incrementScore, changeStatus } from '../redux/actions/index';
 import Header from '../components/Header';
 import * as api from '../services/fetchApi';
+import Timer from '../components/Timer';
 
 class InfoGames extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class InfoGames extends Component {
   checkAnswer(correctAnswer, event) {
     event.preventDefault();
     const { isAnswered } = this.state;
-    const { dispatchIncrementScore } = this.props;
+    const { dispatchIncrementScore, dispatchChangeStatus } = this.props;
     const { target } = event;
     const { innerText: answer } = target;
     if (answer === correctAnswer && !isAnswered) {
@@ -48,10 +49,13 @@ class InfoGames extends Component {
       dispatchIncrementScore(player.score);
     }
     this.setState({ isAnswered: true });
+    dispatchChangeStatus('stop')
   }
 
   nextQuestion() {
+    const { dispatchChangeStatus } = this.props;
     this.setState((prevState) => ({ indice: prevState.indice + 1, isAnswered: false }));
+    dispatchChangeStatus('reset')
   }
 
   requestAPI() {
@@ -118,6 +122,7 @@ class InfoGames extends Component {
         >
           Próxima
         </button>
+        <Timer />
       </div>
     );
   }
@@ -136,6 +141,8 @@ InfoGames.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchIncrementScore: (localScore) => dispatch(incrementScore(localScore)) });
+  dispatchIncrementScore: (localScore) => dispatch(incrementScore(localScore)),
+  dispatchChangeStatus: (status) => dispatch(changeStatus(status)),
+});
 
 export default connect(null, mapDispatchToProps)(InfoGames);
