@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { addQuestions } from '../Redux/actions';
 import { getQuestions } from '../services/Api';
 import EachQuestion from './EachQuestion';
-import NextQuestionButton from './NextQuestionButton';
+// import NextQuestionButton from './NextQuestionButton';
 
 class Questions extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class Questions extends Component {
       selectedAnswer: '',
       time: {},
       seconds: 30,
+      hide: true,
     };
     this.dispatchQuestions = this.dispatchQuestions.bind(this);
     this.answerQuestion = this.answerQuestion.bind(this);
@@ -25,6 +26,7 @@ class Questions extends Component {
     this.createScore = this.createScore.bind(this);
     this.createScore = this.createScore.bind(this);
     this.saveScoreAtStorage = this.saveScoreAtStorage.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +53,7 @@ class Questions extends Component {
     this.setState({
       questionAnswered: true,
       selectedAnswer: value,
+      hide: false,
     }, () => this.createScore());
   }
 
@@ -103,6 +106,9 @@ class Questions extends Component {
     }
     if (seconds === 0 && !questionAnswered) {
       clearInterval(this.timer);
+      this.setState({
+        hide: false,
+      });
       const e = {
         target: {
           value: 'not-answered',
@@ -114,9 +120,23 @@ class Questions extends Component {
 
   // * Source of the Timer`s Algorithm https://stackoverflow.com/questions/40885923/countdown-timer-in-react
 
+  changeQuestion() {
+    const { currentQuestionIndex } = this.state;
+    const limit = 4;
+    if (currentQuestionIndex < limit) {
+      this.setState((prevState) => ({
+        currentQuestionIndex: prevState.currentQuestionIndex + 1,
+        seconds: 30,
+        hide: true,
+        questionAnswered: false,
+        selectedAnswer: '',
+      }));
+    }
+  }
+
   render() {
     const { questions } = this.props;
-    const { currentQuestionIndex, questionAnswered, time } = this.state;
+    const { currentQuestionIndex, questionAnswered, time, hide } = this.state;
     if (!questions) {
       return (
         <div>
@@ -132,11 +152,13 @@ class Questions extends Component {
           questionAnswered={ questionAnswered }
           answerQuestion={ this.answerQuestion }
           timer={ time.s }
+          hide={ hide }
+          changeQuestion={ this.changeQuestion }
         />
         <span>
           {time.s}
         </span>
-        { time.s === 0 || questionAnswered ? <NextQuestionButton /> : '' }
+        {/* { time.s === 0 || questionAnswered ? <NextQuestionButton /> : '' } */}
       </div>
     );
   }

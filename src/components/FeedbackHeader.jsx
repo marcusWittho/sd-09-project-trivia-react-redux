@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 class FeedbackHeader extends Component {
   render() {
-    const { currentScoreState } = this.props;
+    // const { currentScoreState } = this.props;
     const userToken = localStorage.getItem('token');
-    const { player: { name } } = JSON.parse(localStorage.getItem('state'));
+    const { player: { name, score } } = JSON.parse(localStorage.getItem('state'));
     return (
       <header className="feedback-header">
         <div className="header-left">
@@ -27,7 +27,7 @@ class FeedbackHeader extends Component {
           data-testid="header-score"
           className="header-score"
         >
-          { currentScoreState }
+          { score }
         </span>
       </header>
     );

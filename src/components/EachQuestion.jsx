@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import '../App.css';
+import { Link } from 'react-router-dom';
 
 function shuffleArray(array) {
   let i = array.length - 1;
@@ -14,6 +16,29 @@ function shuffleArray(array) {
 // * Source https://stackoverflow.com/questions/38101522/how-to-render-random-objects-from-an-array-in-react /
 
 class EachQuestion extends Component {
+  constructor() {
+    super();
+
+    this.nextButton = this.nextButton.bind(this);
+  }
+
+  nextButton() {
+    const { changeQuestion, hide, questionIndex } = this.props;
+    const limit = 4;
+    return (
+      <Link to={ questionIndex === limit ? '/feedback' : '/game' }>
+        <button
+          onClick={ changeQuestion }
+          type="button"
+          data-testid="btn-next"
+          className={ `${hide ? 'null' : 'hidden'} ` }
+        >
+          Próximo
+        </button>
+      </Link>
+    );
+  }
+
   render() {
     const {
       questions,
@@ -56,6 +81,7 @@ class EachQuestion extends Component {
             {alternative}
           </button>
         ))}
+        {this.nextButton()}
       </main>
     );
   }
