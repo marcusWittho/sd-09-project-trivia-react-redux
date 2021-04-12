@@ -1,7 +1,6 @@
 import React from 'react';
 
 class MainFeedBack extends React.Component {
-
   render() {
     const assertions = JSON.parse(localStorage.getItem('state'));
     const minAssertions = 3;
