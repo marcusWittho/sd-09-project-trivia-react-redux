@@ -21,6 +21,7 @@ class Question extends Component {
       shuffledAnswers: this.shuffleAnswers([...incorrectAnswers, correctAnswer]),
     };
     this.handleClick = this.handleClick.bind(this);
+    this.showNextQuestionButton = this.showNextQuestionButton.bind(this);
   }
 
   handleClick(e) {
@@ -31,9 +32,17 @@ class Question extends Component {
       { clicked: true },
       () => {
         if (answers.indexOf(innerText) === answers.length - 1) {
-          sumScore(0, 0);
+          sumScore(timer * difficulty);
         }
       },
+    );
+  }
+
+  showNextQuestionButton() {
+    return (
+      <button type="button" data-testid="btn-next">
+        Próxima
+      </button>
     );
   }
 
@@ -74,13 +83,16 @@ class Question extends Component {
 
   render() {
     const { data: { category, question } } = this.props;
-
+    const { clicked } = this.state;
     return (
-      <section className="question-game">
-        <h2 data-testid="question-category">{ category }</h2>
-        <p data-testid="question-text">{ question }</p>
-        { this.renderAnswers() }
-      </section>
+      <>
+        <section className="question-game">
+          <h2 data-testid="question-category">{ category }</h2>
+          <p data-testid="question-text">{ question }</p>
+          { this.renderAnswers() }
+        </section>
+        { clicked && this.showNextQuestionButton() }
+      </>
     );
   }
 }
