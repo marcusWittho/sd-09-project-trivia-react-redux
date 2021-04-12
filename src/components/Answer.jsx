@@ -5,13 +5,14 @@ import './Answer.css';
 
 class Answer extends Component {
   render() {
-    const { text, dataTestId } = this.props;
+    const { text, dataTestId, isClicked, onHandleClick } = this.props;
 
     return (
       <button
         type="button"
-        className="answer-btn"
+        className={ isClicked }
         data-testid={ dataTestId }
+        onClick={ onHandleClick }
       >
         { text }
       </button>
