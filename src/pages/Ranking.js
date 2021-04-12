@@ -3,7 +3,6 @@ import './ranking.css';
 
 class Ranking extends Component {
   render() {
-    
     // recupera o objeto JSON do localStorage
     const jsonState = localStorage.getItem('state');
 
@@ -15,24 +14,25 @@ class Ranking extends Component {
         <h2>Ranking</h2>
         <ul className="ranking-list">
           {
-            ranking.sort((playOne, playTwo) => playOne.score < playTwo.score ? playTwo : playOne)
-              .map((jogada, index) => <li key={ jogada.name } className="ranking-item">
-                  <div>
-                    <div data-testid={ `player-name-${index}` }>
-                      <span className="ranking-text">Nome:</span>
-                      { jogada.name }
-                    </div>
-                    <div data-testid={ `player-score-${index}` }>
-                      <span className="ranking-text">Score:</span>
-                      { jogada.score }
-                    </div>
+            ranking.sort((playOne, playTwo) => play1.score < play2.score ? play2 : play1)
+              .map((jogada, index) => (<li key={ jogada.name } className="ranking-item">
+                <div>
+                  <div data-testid={ `player-name-${index}` }>
+                    <span className="ranking-text">Nome:</span>
+                    { jogada.name }
                   </div>
-                  <img src={ jogada.picture } alt="foto do jogador" />
-                </li>)
+                  <div data-testid={ `player-score-${index}` }>
+                    <span className="ranking-text">Score:</span>
+                    { jogada.score }
+                  </div>
+                </div>
+                <img src={ jogada.picture } alt="foto do jogador" />
+              </li>)
+            )
           }
         </ul>
       </div>
-    )
+    );
   }
 }
 
