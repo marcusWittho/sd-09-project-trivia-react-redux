@@ -4,6 +4,9 @@ class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
+    this.recoveringLocalStorage = this.recoveringLocalStorage.bind(this);
+    this.finalFeedback = this.finalFeedback.bind(this);
+
     this.state = {
       name: '',
       gravatarEmail: '',
@@ -12,6 +15,13 @@ class Feedback extends React.Component {
   }
 
   recoveringLocalStorage() {
+  }
+
+  finalFeedback() {
+    return (
+      <p data-testid="feedback-total-score">Placar final</p>
+      <p data-testid="feedback-total-question">Total de acertos</p>
+    );
   }
 
   render() {
