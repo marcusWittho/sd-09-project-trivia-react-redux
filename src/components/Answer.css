@@ -1,5 +1,5 @@
 .answer-btn {
-  background-color: grey;
+  background-color: rgb(51, 204, 51);
   border: none;
   border-radius: 5px;
   box-shadow: 0 0 5px rgb(204, 204, 204);
@@ -10,14 +10,5 @@
 }
 
 .answer-btn:hover {
-  background-color: black;
-  color: white;
-}
-
-.yes {
-  border: 3px solid rgb(6, 240, 15);
-}
-
-.no {
-  border: 3px solid red;
+  background-color: rgb(46, 184, 46);
 }

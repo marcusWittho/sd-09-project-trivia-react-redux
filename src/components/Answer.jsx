@@ -5,16 +5,15 @@ import './Answer.css';
 
 class Answer extends Component {
   render() {
-    const { text, dataTestId, isClicked, onHandleClick } = this.props;
+    const { item, index } = this.props;
 
     return (
       <button
         type="button"
-        className={ isClicked }
-        data-testid={ dataTestId }
-        onClick={ onHandleClick }
+        className="answer-btn"
+        data-testid={ `wrong-answer-${index}` }
       >
-        { text }
+        { item }
       </button>
     );
   }
