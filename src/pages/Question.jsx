@@ -64,26 +64,11 @@ class Question extends React.Component {
       </div>
     );
   }
-  // wrong-answer-${index}
-  // {
-  //   "category": "Entertainment: Video Games",
-  //   "type": "multiple",
-  //   "difficulty": "easy",
-  //   "question": "What does Solid Snake use to hide himself with?",
-  //   "correct_answer": "Cardboard Box",
-  //   "incorrect_answers": [
-  //   "Cloaking Device",
-  //   "Metal Crate",
-  //   "Cardboard cut-out"
-  //   ]
-  //   },
 
   inQuestion() {
     const { dataAnswer } = this.props;
     const { multiQuestion } = this;
     return dataAnswer.map((element, index) => {
-      console.log(element);
-      console.log(index);
       if (element.type === 'boolean') {
         return (
           <div key={ index } className="boll-answer">
@@ -114,31 +99,6 @@ class Question extends React.Component {
       return multiQuestion(element, index);
     });
   }
-
-  /* const { dataAnswer } = this.props;
-  // console.log(dataAnswer);
-  const { type } = dataAnswer[id];
-  // if (dataAnswer === 'Seu login expirou!') return data;
-  if (type === 'boolean') {
-    return (
-      <div>
-        <p>
-          Questão 0
-          { 1 }
-        </p>
-        <p>Boolean</p>
-      </div>
-    );
-  }
-  return (
-    <div>
-      <p>
-        Questão 0
-        { 1 }
-      </p>
-      <p>Multipla Escolha</p>
-    </div>
-  ); */
 
   render() {
     const { dataAnswer } = this.props;
