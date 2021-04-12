@@ -17,6 +17,7 @@ class LoginForm extends Component {
     this.statusCheck = this.statusCheck.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.createUserStateLocalStorage = this.createUserStateLocalStorage.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
   }
 
@@ -27,6 +28,7 @@ class LoginForm extends Component {
   }
 
   async handleClick() {
+    this.createUserStateLocalStorage();
     const { addLoginInfoDispatch, addTokenDispatch } = this.props;
     const { name, email } = this.state;
     addLoginInfoDispatch({ email, name });
@@ -36,6 +38,18 @@ class LoginForm extends Component {
     this.setState({
       redirect: true,
     });
+  }
+
+  createUserStateLocalStorage() {
+    const { name, email } = this.state;
+    const playerState = {
+      player: { name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email },
+    };
+    localStorage.setItem('state', JSON.stringify(playerState));
+    console.log(playerState);
   }
 
   handleChange({ target }) {

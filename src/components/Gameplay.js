@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import { fetchQuestions } from '../services';
 import '../CSS/gameplay.css';
 import Timer from './Timer';
 import { nextQuestion, sendQuestionsAnswersInfo } from '../actions';
+
+const maxQuestions = 5;
 
 class Gameplay extends Component {
   constructor() {
@@ -28,7 +31,41 @@ class Gameplay extends Component {
     this.randomAnswersOrder(questionList);
   }
 
-  chooseAnswer() {
+  difficultyNumber(difficulty) {
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    switch (difficulty) {
+    case 'easy':
+      return easy;
+    case 'medium':
+      return medium;
+    case 'hard':
+      return hard;
+    default:
+      return 0;
+    }
+  }
+
+  calculateAnswerPoint() {
+    const standardNumber = 10;
+    const { timer, questionList, questionIndex } = this.props;
+    const { difficulty } = questionList.results[questionIndex];
+    const difficultyFactor = this.difficultyNumber(difficulty);
+    return standardNumber + (timer * difficultyFactor);
+  }
+
+  sumScorePoint(answer) {
+    if (answer === 'correct') {
+      const previousState = JSON.parse(localStorage.getItem('state'));
+      const pointsEarned = this.calculateAnswerPoint();
+      previousState.player.score += pointsEarned;
+      localStorage.setItem('state', JSON.stringify(previousState));
+    }
+  }
+
+  chooseAnswer({ target }) {
+    this.sumScorePoint(target.name);
     this.setState({
       correct: 'correct',
       incorrect: 'incorrect',
@@ -111,16 +148,25 @@ class Gameplay extends Component {
   renderNextButton() {
     const { nextQuestionDispatch } = this.props;
     return (
-      <button type="button" onClick={ nextQuestionDispatch }>Próxima</button>
+      <button
+        type="button"
+        onClick={ nextQuestionDispatch }
+        data-testid="btn-next"
+      >
+        Próxima
+      </button>
     );
   }
 
   render() {
     const { loading, renderNextButton } = this.state;
+    const { questionIndex } = this.props;
+    const shouldQuestionBeRender = !loading && (questionIndex < maxQuestions);
     return (
       <main>
-        { !loading && this.renderQuestion()}
-        { !loading && this.renderAnswers()}
+        { questionIndex === maxQuestions && <Redirect to="/feedback" /> }
+        { shouldQuestionBeRender && this.renderQuestion()}
+        { shouldQuestionBeRender && this.renderAnswers()}
         { !loading && <Timer />}
         { renderNextButton && this.renderNextButton()}
       </main>
