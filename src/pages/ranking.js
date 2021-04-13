@@ -8,7 +8,6 @@ class Ranking extends Component {
   render() {
     const { ranking } = this.props;
     // const ranking = JSON.parse(localStorage.getItem('ranking'));
-    console.log(ranking);
     return (
       <div>
         <div className="App-header">
