@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import { scoreAction } from '../actions/playerAction';
 import './game.css';
 import WaveTop from '../img/wave-top.svg';
 import WaveBottom from '../img/wave-bottom.svg';
@@ -26,19 +27,22 @@ class Game extends Component {
     this.changeButtonColor = this.changeButtonColor.bind(this);
     this.timerUpdate = this.timerUpdate.bind(this);
     this.timerTimeout = this.timerTimeout.bind(this);
+    this.addScore = this.addScore.bind(this);
   }
 
   componentDidMount() {
     const { triviaObject } = this.props;
     const errorCode = 3;
-
     if (triviaObject) {
       const { response_code: responseCode, results } = triviaObject;
-
       this.validateResponseFromApi(responseCode, errorCode, results);
+      this.saveStateOnStorage();
     }
-
     this.timerUpdate();
+  }
+
+  componentDidUpdate() {
+    this.saveStateOnStorage();
   }
 
   timerUpdate() {
@@ -59,7 +63,6 @@ class Game extends Component {
   changeButtonColor() {
     const correctAnswerButton = document.getElementById('correct-awnser');
     const wrongAnswersButtons = document.querySelectorAll('.wrong-answer');
-
     correctAnswerButton.style.border = '3px solid rgb(6, 240, 15)';
     wrongAnswersButtons.forEach((button) => {
       button.style.border = '3px solid rgb(255, 0, 0)';
@@ -87,11 +90,30 @@ class Game extends Component {
         error: true,
       });
     }
-
     this.setState({
       triviaArray: results,
       error: false,
     });
+  }
+
+  addScore() {
+    const { triviaArray, position, currentTime } = this.state;
+    const { scoreDispatch } = this.props;
+    const { difficulty } = triviaArray[position];
+    const baseScore = 10;
+    const maxScore = 3;
+    let difficultyValue;
+    if (difficulty === 'easy') difficultyValue = 1;
+    else if (difficulty === 'medium') difficultyValue = 2;
+    else difficultyValue = maxScore;
+    const score = baseScore + (currentTime * difficultyValue);
+
+    scoreDispatch(score);
+  }
+
+  saveStateOnStorage() {
+    const { state } = this.props;
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   renderCorrectAnswer(correctAnswer) {
@@ -106,6 +128,7 @@ class Game extends Component {
         onClick={ () => {
           this.changeButtonColor();
           this.timerTimeout();
+          this.addScore();
         } }
       >
         { correctAnswer }
@@ -213,6 +236,11 @@ Game.propTypes = {
 
 const mapStateToProps = (state) => ({
   triviaObject: state.trivia.triviaObject,
+  state,
 });
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  scoreDispatch: (score) => dispatch(scoreAction(score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

@@ -5,17 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      score: 0,
-    };
-  }
-
   render() {
-    const { score } = this.state;
-    const { email, name } = this.props;
+    const { email, name, score } = this.props;
     const emailHash = md5(email).toString();
 
     return (
@@ -47,6 +38,7 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   email: state.player.gravatarEmail,
   name: state.player.name,
+  score: state.player.score,
 });
 
 export default connect(mapStateToProps)(Header);
