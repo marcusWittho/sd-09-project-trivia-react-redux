@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
+import { decode } from 'he';
 import { fetchQuestions,
   localStorageState, savePerformanceData, fetchQuestionsWithSettings } from '../services';
 import '../CSS/gameplay.css';
@@ -118,16 +119,9 @@ class Gameplay extends Component {
     const newAnswersList = [...currentQuestionInfo.incorrect_answers];
     const randomIndex = Math.floor(Math.random() * (newAnswersList.length + 1));
     newAnswersList.splice(randomIndex, 0, currentQuestionInfo.correct_answer);
-    const answersAndPosition = {
-      newAnswersList,
-      randomIndex,
-    };
+    const answersAndPosition = { newAnswersList, randomIndex };
     sendQuestionsAnswersInfoDispatch(answersAndPosition, questionList);
-    this.setState({
-      loading: false,
-      correct: '',
-      incorrect: '',
-    });
+    this.setState({ loading: false, correct: '', incorrect: '' });
   }
 
   disableButton() {
@@ -146,7 +140,7 @@ class Gameplay extends Component {
     return (
       <section>
         <h1 data-testid="question-category">{ currentQuestionInfo.category}</h1>
-        <p data-testid="question-text">{currentQuestionInfo.question}</p>
+        <p data-testid="question-text">{decode(currentQuestionInfo.question)}</p>
       </section>
     );
   }
@@ -167,7 +161,7 @@ class Gameplay extends Component {
                 className={ correct }
                 type="button"
               >
-                {answer}
+                {decode(answer)}
               </button>);
           }
           return (
@@ -180,7 +174,7 @@ class Gameplay extends Component {
               key={ index }
               type="button"
             >
-              {answer}
+              {decode(answer)}
             </button>
           );
         })}
