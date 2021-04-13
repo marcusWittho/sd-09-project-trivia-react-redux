@@ -10,12 +10,14 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
 
+    this.btnStyle = this.btnStyle.bind(this);
+    this.clearStyle = this.clearStyle.bind(this);
     this.createHeader = this.createHeader.bind(this);
-    this.inQuestion = this.inQuestion.bind(this);
-    this.testId = this.testId.bind(this);
-    this.multiQuestion = this.multiQuestion.bind(this);
-    this.verifyAnswers = this.verifyAnswers.bind(this);
     this.handleIndex = this.handleIndex.bind(this);
+    this.inQuestion = this.inQuestion.bind(this);
+    this.multiQuestion = this.multiQuestion.bind(this);
+    this.boolQuestion = this.boolQuestion.bind(this);
+    this.verifyAnswers = this.verifyAnswers.bind(this);
     this.stopWatch = this.stopWatch.bind(this);
 
     this.state = {
@@ -24,11 +26,6 @@ class Question extends React.Component {
       TIMER_RESET_CHECK: 30,
     };
   }
-
-  // componentDidMount() {
-  //   const { propStartTimer } = this.props;
-  //   propStartTimer();
-  // }
 
   createHeader() {
     const { playerState: { name, score, gravatarEmail } } = this.props;
@@ -61,12 +58,14 @@ class Question extends React.Component {
   verifyAnswers(value, correct) {
     const { propHandleAssertions } = this.props;
     this.stopWatch();
+    this.btnStyle();
     if (value === correct) {
       propHandleAssertions(1);
     }
   }
 
   handleIndex() {
+    this.clearStyle();
     const { indexQuestion, numQuestion } = this.state;
     const { propResetTimer } = this.props;
     propResetTimer();
@@ -76,9 +75,10 @@ class Question extends React.Component {
   }
 
   multiQuestion({ correct_answer: correctAnswer, sortedOptions,
-    incorrect_answers: incorrectAnswers, category, question }) {
+    incorrect_answers: incorrectAnswers, category, question }, id) {
     const options = [...incorrectAnswers, correctAnswer];
     const { wasAnswered } = this.props;
+    const { verifyAnswers } = this;
     return (
       <div className="mult-answer">
         <div className="mult-container">
@@ -91,11 +91,11 @@ class Question extends React.Component {
             { [...sortedOptions].map((btn, index) => (
               <button
                 type="button"
+                className={ btn === correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
                 key={ index }
                 disabled={ wasAnswered }
-                onClick={ () => this.verifyAnswers(btn, correctAnswer) }
-                data-testid={ btn === correctAnswer
-                  ? 'correct-answer'
+                onClick={ () => verifyAnswers(btn, correctAnswer) }
+                data-testid={ btn === correctAnswer ? id
                   : `wrong-answer-${options.indexOf(btn)}` }
               >
                 { btn }
@@ -103,63 +103,100 @@ class Question extends React.Component {
             )) }
           </aside>
         </div>
-        { wasAnswered
-          ? <button type="button" datatest-id="btn-next" onClick={ this.handleIndex }>PRÓXIMO</button>
-          : <div /> }
+      </div>
+    );
+  }
+
+  boolQuestion({ category, question, correct_answer: correctAnswer }, id) {
+    const { wasAnswered } = this.props;
+    // const { handleIndex } = this;
+    return (
+      <div className="boll-answer">
+        <CountdownTimer />
+        <section className="bool-question">
+          <h3 data-testid="question-category">{ category }</h3>
+          <p data-testid="question-text">{ question }</p>
+        </section>
+        <aside className="bool-aside">
+          <button
+            type="button"
+            data-testid={ correctAnswer ? id : 'wrong-answer-0' }
+            className={ correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
+            onClick={ () => this.verifyAnswers('True', correctAnswer) }
+            disabled={ wasAnswered }
+          >
+            Verdadeiro
+          </button>
+          <button
+            type="button"
+            data-testid={ !correctAnswer ? id : 'wrong-answer-0' }
+            className={ !correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
+            onClick={ () => this.verifyAnswers('False', correctAnswer) }
+            disabled={ wasAnswered }
+          >
+            Falso
+          </button>
+        </aside>
       </div>
     );
   }
 
   inQuestion() {
     const { dataAnswer, propStartTimer, timer, wasAnswered } = this.props;
-    const { multiQuestion, stopWatch } = this;
+    const { multiQuestion, boolQuestion, stopWatch } = this;
     const { indexQuestion, TIMER_RESET_CHECK } = this.state;
+    const idTestCorrect = 'correct-answer';
     console.log(dataAnswer[indexQuestion]);
     if (timer === TIMER_RESET_CHECK && wasAnswered === true) { propStartTimer(); }
     if (timer === 0 && wasAnswered === false) { stopWatch(); }
     if (dataAnswer[indexQuestion].type === 'boolean') {
-      const {
-        category, question, correct_answer: correctAnswer,
-      } = dataAnswer[indexQuestion];
-      return (
-        <div className="boll-answer">
-          <CountdownTimer />
-          <section className="bool-question">
-            <h3 data-testid="question-category">{ category }</h3>
-            <p data-testid="question-text">{ question }</p>
-          </section>
-          <aside className="bool-aside">
-            <button
-              type="button"
-              onClick={ () => this.verifyAnswers('True', correctAnswer) }
-              disabled={ wasAnswered }
-            >
-              Verdadeiro
-            </button>
-            <button
-              type="button"
-              onClick={ () => this.verifyAnswers('False', correctAnswer) }
-              disabled={ wasAnswered }
-            >
-              Falso
-            </button>
-          </aside>
-          { wasAnswered
-            ? <button type="button" datatest-id="btn-next" onClick={ this.handleIndex }>PRÓXIMO</button>
-            : <div /> }
-        </div>
-      );
+      return boolQuestion(dataAnswer[indexQuestion], idTestCorrect);
     }
-    return multiQuestion(dataAnswer[indexQuestion]);
+    return multiQuestion(dataAnswer[indexQuestion], idTestCorrect);
+  }
+
+  clearStyle() {
+    const correctBtn = document.querySelectorAll('.btnCorrect');
+    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
+    correctBtn.forEach((btn) => {
+      btn.style.border = '';
+    });
+    incorrectBtn.forEach((btn) => {
+      btn.style.border = '';
+    });
+  }
+
+  btnStyle() {
+    const correctBtn = document.querySelectorAll('.btnCorrect');
+    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
+    const nextBtn = document.querySelector('.btn-next');
+    correctBtn.forEach((btn) => {
+      btn.style.border = '3px solid rgb(6, 240, 15)';
+      btn.style.outline = 'none';
+    });
+    incorrectBtn.forEach((btn) => {
+      btn.style.border = '3px solid red';
+      btn.style.outline = 'none';
+    });
+    nextBtn.style.visibility = 'visible';
   }
 
   render() {
     const { dataAnswer } = this.props;
+    const { handleIndex } = this;
     return (
       <div className="question">
         { this.createHeader() }
-        <h1>Game</h1>
+        <h1>Trivia Game</h1>
         { dataAnswer ? this.inQuestion() : 'Carregando' }
+        <button
+          type="button"
+          data-testid="btn-next"
+          className="btn-next"
+          onClick={ () => handleIndex() }
+        >
+          PRÓXIMO
+        </button>
       </div>
     );
   }
