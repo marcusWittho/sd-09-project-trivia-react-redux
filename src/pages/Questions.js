@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getQuestionsToStore } from '../actions/index';
 import Timer from '../components/Timer';
@@ -7,6 +8,8 @@ import { getQuestions } from '../services/api';
 import localStorageService from '../services/localStorage';
 
 import './Questions.css';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 class Questions extends Component {
   constructor(props) {
@@ -15,6 +18,7 @@ class Questions extends Component {
       questionNum: 0,
       randomizedAnswers: [],
       showAnswers: false,
+
     };
     this.timer = React.createRef();
     this.renderQuestion = this.renderQuestion.bind(this);
@@ -26,10 +30,10 @@ class Questions extends Component {
 
   async componentDidMount() {
     const { saveQuestions } = this.props;
+    const { questionNum } = this.state;
     const token = localStorageService.getToken();
     const API_RESULT = await getQuestions(token);
     saveQuestions(API_RESULT);
-    const { questionNum } = this.state;
     this.randomizeAnswers(API_RESULT[questionNum]);
     this.timer.current.start();
   }
@@ -61,17 +65,22 @@ class Questions extends Component {
   nextQuestion() {
     const { questionNum } = this.state;
     const { questions } = this.props;
+    const currentIndex = questionNum + 1;
+    const currentQuestion = questions[currentIndex];
 
-    const currentQuestion = questions[questionNum + 1];
-    this.randomizeAnswers(currentQuestion);
-
-    this.setState((state) => ({
-      questionNum: state.questionNum + 1,
-      showAnswers: false,
-    }));
-
-    this.timer.current.reset();
-    this.timer.current.start();
+    if (currentQuestion) {
+      this.randomizeAnswers(currentQuestion);
+      this.setState(() => ({
+        questionNum: currentIndex,
+        showAnswers: false,
+      }));
+      this.timer.current.reset();
+      this.timer.current.start();
+    } else {
+      this.setState(() => ({
+        questionNum: currentIndex,
+      }));
+    }
   }
 
   renderAnswers() {
@@ -116,12 +125,18 @@ class Questions extends Component {
     const { questionNum } = this.state;
     const { questions } = this.props;
     const currentQuestion = questions[questionNum];
+    const endArray = questionNum >= questions.length;
+    if (questionNum !== 0 && endArray) return <Redirect to="/feedback" />;
     return (
-      <div>
-        <p data-testid="header-score">Score: 0</p>
-        <Timer ref={ this.timer } timeUp={ this.handleTimeUp } />
-        { currentQuestion && this.renderQuestion(currentQuestion) }
-      </div>
+      <>
+        <Header />
+        <section className="questions-container">
+          <p data-testid="header-score">Score: 0</p>
+          <Timer ref={ this.timer } timeUp={ this.handleTimeUp } />
+          { currentQuestion && this.renderQuestion(currentQuestion) }
+        </section>
+        <Footer />
+      </>
     );
   }
 }
