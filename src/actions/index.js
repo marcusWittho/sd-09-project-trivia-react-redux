@@ -7,3 +7,6 @@ export const sendQuestionsAnswersInfo = (answersAndPosition, questionList) => (
   { type: 'QUESTIONS_ANSWERS_INFO', questionList, answersAndPosition });
 
 export const nextQuestion = () => ({ type: 'NEXT_QUESTION' });
+
+export const configureQuestions = (urlSuffix) => (
+  { type: 'CONFIGURE_QUESTIONS', payload: urlSuffix });

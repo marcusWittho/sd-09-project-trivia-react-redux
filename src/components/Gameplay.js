@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-import { fetchQuestions, localStorageState, savePerformanceData } from '../services';
+import { fetchQuestions,
+  localStorageState, savePerformanceData, fetchQuestionsWithSettings } from '../services';
 import '../CSS/gameplay.css';
 import { sendQuestionsAnswersInfo } from '../actions';
 import Header from './Header';
@@ -31,8 +32,14 @@ class Gameplay extends Component {
   }
 
   async componentDidMount() {
-    const { tokenState } = this.props;
-    const questionList = await fetchQuestions(tokenState);
+    const { tokenState, settingsActive } = this.props;
+    let questionList = {};
+    if (settingsActive) {
+      questionList = await fetchQuestionsWithSettings(settingsActive);
+    } else {
+      questionList = await fetchQuestions(tokenState);
+    }
+    console.log(questionList);
     this.randomAnswersOrder(questionList);
     this.countdownTimer();
   }
@@ -89,11 +96,7 @@ class Gameplay extends Component {
     this.disableButton();
     localStorageState.addAssertionPoint(target.name);
     this.sumScorePoint(target.name);
-    this.setState({
-      correct: 'correct',
-      incorrect: 'incorrect',
-      renderNextButton: true,
-    });
+    this.setState({ correct: 'correct', incorrect: 'incorrect', renderNextButton: true });
   }
 
   async prepareNextQuestion(questionList) {
@@ -222,6 +225,7 @@ const mapStateToProps = (state) => ({
   questionList: state.gameplay.questionList,
   answersAndPosition: state.gameplay.answersAndPosition,
   timer: state.gameplay.timer,
+  settingsActive: state.user.settingsActive,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -239,6 +243,7 @@ Gameplay.propTypes = {
     randomIndex: PropTypes.shape().isRequired,
   }).isRequired,
   sendQuestionsAnswersInfoDispatch: PropTypes.func.isRequired,
+  settingsActive: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gameplay);
