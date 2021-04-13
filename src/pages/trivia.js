@@ -23,10 +23,10 @@ class trivia extends React.Component {
     this.countDown = this.countDown.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { propSetToken } = this.props;
     const { loading } = this.state;
-    propSetToken();
+    await propSetToken();
     if (loading) this.getQuestions();
   }
 
