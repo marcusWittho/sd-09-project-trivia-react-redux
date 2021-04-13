@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { rightAnswers, updateIndex, wrongAnswers, playerScore } from '../redux/actions';
 import Timer from './timer';
 import CORRECT from './correct';
+import './triviaCard.css';
 
 class BooleanAnswers extends Component {
   constructor(props) {
@@ -110,6 +111,7 @@ class BooleanAnswers extends Component {
   createNextBtn(click, state) {
     return (
       <button
+        className="next"
         data-testid="btn-next"
         type="button"
         onClick={ click }
@@ -139,28 +141,30 @@ class BooleanAnswers extends Component {
     const index = 0;
     return (
       <>
-        <div>
+        <div className="triviaCard">
           <div>
-            <h3 data-testid="question-category">
+            <h3 className="category" data-testid="question-category">
               { question.category }
             </h3>
-            <p data-testid="question-text">{ question.question }</p>
+            <p className="text" data-testid="question-text">{ question.question }</p>
           </div>
-          { answers.map((option) => {
-            const dataTestId = this.validateAnswers(option, index);
-            return (
-              <button
-                className={ dataTestId === correctAnswer ? rightAnswerClass
-                  : wrongAnswerClass }
-                type="button"
-                key={ option }
-                disabled={ btnDisabled }
-                data-testid={ dataTestId }
-                onClick={ this.answerCheck }
-              >
-                { option }
-              </button>);
-          })}
+          <div className="answers">
+            { answers.map((option) => {
+              const dataTestId = this.validateAnswers(option, index);
+              return (
+                <button
+                  className={ dataTestId === correctAnswer ? rightAnswerClass
+                    : wrongAnswerClass }
+                  type="button"
+                  key={ option }
+                  disabled={ btnDisabled }
+                  data-testid={ dataTestId }
+                  onClick={ this.answerCheck }
+                >
+                  { option }
+                </button>);
+            })}
+          </div>
           { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
             : null}
         </div>

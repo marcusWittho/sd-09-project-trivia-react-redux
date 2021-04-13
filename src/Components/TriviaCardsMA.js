@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { rightAnswers, updateIndex, wrongAnswers, playerScore } from '../redux/actions';
 import Timer from './timer';
 import CORRECT from './correct';
+import './triviaCard.css';
 
 class MultipleAnswers extends Component {
   constructor(props) {
@@ -14,7 +15,6 @@ class MultipleAnswers extends Component {
       nextButton: true,
       correctAnswer: CORRECT,
       btnDisplayed: false,
-      // tratamento pros botoes apos timer
       btnDisabled: false,
       show: true,
     };
@@ -108,6 +108,7 @@ class MultipleAnswers extends Component {
   createNextBtn(click, state) {
     return (
       <button
+        className="next"
         data-testid="btn-next"
         type="button"
         onClick={ click }
@@ -138,27 +139,29 @@ class MultipleAnswers extends Component {
     let index = 0;
     return (
       <>
-        <div>
-          <h3 data-testid="question-category">
+        <div className="triviaCard">
+          <h3 className="category" data-testid="question-category">
             { question.category }
           </h3>
-          <p data-testid="question-text">{ question.question }</p>
-          {choice.map((answer) => {
-            const dataTestId = this.validateAnswers(answer, index);
-            if (dataTestId !== correctAnswer) index += 1;
-            return (
-              <button
-                className={ dataTestId === correctAnswer ? rightAnswerClass
-                  : wrongAnswerClass }
-                type="button"
-                key={ answer }
-                disabled={ btnDisabled }
-                data-testid={ dataTestId }
-                onClick={ this.answerCheck }
-              >
-                { answer }
-              </button>);
-          })}
+          <p className="text" data-testid="question-text">{ question.question }</p>
+          <div className="answers">
+            {choice.map((answer) => {
+              const dataTestId = this.validateAnswers(answer, index);
+              if (dataTestId !== correctAnswer) index += 1;
+              return (
+                <button
+                  className={ dataTestId === correctAnswer ? rightAnswerClass
+                    : wrongAnswerClass }
+                  type="button"
+                  key={ answer }
+                  disabled={ btnDisabled }
+                  data-testid={ dataTestId }
+                  onClick={ this.answerCheck }
+                >
+                  { answer }
+                </button>);
+            })}
+          </div>
           { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
             : null}
         </div>
