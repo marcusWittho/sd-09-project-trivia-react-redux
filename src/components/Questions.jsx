@@ -5,28 +5,8 @@ import Logotipo from './Logotipo';
 import Question from './Question';
 
 class Questions extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { timer: 30 };
-  }
-
-  tick() {
-    this.setState(state => ({
-      timer: state.timer - 1
-    }));
-  }
-
-  componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
   render() {
     const { questions } = this.props;
-    const { timer } = this.state;
 
     return (
       <div>
@@ -47,7 +27,6 @@ class Questions extends Component {
                     <Question data={ question } key={ index } />
                   ))
                 }
-                {timer > 0 ? <p>{ timer }</p> : <p>0</p>}
               </main>
             )
         }
