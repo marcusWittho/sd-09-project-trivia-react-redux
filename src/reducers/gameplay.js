@@ -10,7 +10,6 @@ const NEXT_QUESTION = 'NEXT_QUESTION';
 function gameplay(state = INITIAL_STATE, action) {
   switch (action.type) {
   case QUESTIONS_ANSWERS_INFO:
-    console.log('enviou infos');
     return { ...state,
       questionList: action.questionList,
       answersAndPosition: action.answersAndPosition };
