@@ -37,8 +37,8 @@ button {
 } */
 
 .btn-next {
-  width: 50%;
   visibility: hidden;
+  width: 50%;
 }
 
 .header {
