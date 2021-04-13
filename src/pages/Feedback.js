@@ -9,8 +9,6 @@ class Feedback extends Component {
     super(props);
 
     this.performanceMessage = this.performanceMessage.bind(this);
-    this.assertionsMessage = this.assertionsMessage.bind(this);
-    this.scoreMessage = this.scoreMessage.bind(this);
   }
 
   performanceMessage(assertions) {
@@ -23,42 +21,30 @@ class Feedback extends Component {
     return 'Mandou bem!';
   }
 
-  assertionsMessage(assertions) {
-    if (assertions === 0) {
-      return 'Você não acertou em nenhuma questão!';
-    }
-    if (assertions === 1) {
-      return 'Você não acertou 1 questão!';
-    }
-    return `Você acertou ${assertions} questões!`;
-  }
-
-  scoreMessage(score) {
-    if (score <= 1) {
-      return `Um total de ${score} ponto`;
-    }
-    return `Um total de ${score} pontos`;
-  }
-
   render() {
-    const { player } = this.props;
-    console.log(player);
+    const { player } = JSON.parse(localStorage.getItem('state'));
     const { assertions, score } = player;
-    // localStorage.setItem('state', JSON.stringify(player));
     const messagePerformance = this.performanceMessage(assertions);
-    const messageAssertions = this.assertionsMessage(assertions);
-    const messageScore = this.scoreMessage(score);
+
     return (
       <div>
         <Header />
         <h3 data-testid="feedback-text">{ messagePerformance }</h3>
         <section>
-          <p data-testid="feedback-total-question">{ messageAssertions }</p>
-          <p data-testid="feedback-total-score">{ messageScore }</p>
-        </section>
-        <section>
           <div>
-            <Link to="/jogo">
+            <span>Acertou&nbsp;</span>
+            <span data-testid="feedback-total-question">{ assertions }</span>
+            <span>&nbsp;perguntas</span>
+          </div>
+          <div>
+            <span>Um total de&nbsp;</span>
+            <span data-testid="feedback-total-score">{ score }</span>
+            <span>&nbsp;pontos</span>
+          </div>
+        </section>
+        <nav>
+          <div>
+            <Link to="/">
               <button
                 type="button"
                 data-testid="btn-play-again"
@@ -68,7 +54,7 @@ class Feedback extends Component {
             </Link>
           </div>
           <div>
-            <Link to="/game">
+            <Link to="/ranking">
               <button
                 type="button"
                 data-testid="btn-ranking"
@@ -77,7 +63,7 @@ class Feedback extends Component {
               </button>
             </Link>
           </div>
-        </section>
+        </nav>
       </div>
     );
   }

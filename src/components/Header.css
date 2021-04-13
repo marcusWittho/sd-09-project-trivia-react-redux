@@ -7,6 +7,13 @@
 }
 
 .score {
+  padding-right: 5px;
+}
+
+.score-value {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
   padding-right: 60px;
 }
 

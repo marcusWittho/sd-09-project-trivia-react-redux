@@ -13,8 +13,6 @@ const player = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       name: action.name,
-      assertions: action.assertions,
-      score: action.score,
       gravatarEmail: action.gravatarEmail,
     };
   case SAVE_SCORE:
