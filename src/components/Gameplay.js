@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-import { fetchQuestions } from '../services';
+import { fetchQuestions, localStorageState, savePerformanceData } from '../services';
 import '../CSS/gameplay.css';
 import { sendQuestionsAnswersInfo } from '../actions';
 import Header from './Header';
@@ -76,14 +76,6 @@ class Gameplay extends Component {
     return standardNumber + (timer * difficultyFactor);
   }
 
-  addAssertionsOnStateLocalStorage(answer) {
-    if (answer === 'correct') {
-      const previousState = JSON.parse(localStorage.getItem('state'));
-      previousState.player.assertions += 1;
-      localStorage.setItem('state', JSON.stringify(previousState));
-    }
-  }
-
   sumScorePoint(answer) {
     if (answer === 'correct') {
       const previousState = JSON.parse(localStorage.getItem('state'));
@@ -95,7 +87,7 @@ class Gameplay extends Component {
 
   chooseAnswer({ target }) {
     this.disableButton();
-    this.addAssertionsOnStateLocalStorage(target.name);
+    localStorageState.addAssertionPoint(target.name);
     this.sumScorePoint(target.name);
     this.setState({
       correct: 'correct',
@@ -137,6 +129,11 @@ class Gameplay extends Component {
 
   disableButton() {
     this.setState({ isButtonDisabled: true });
+  }
+
+  redirectToFeedbackPage() {
+    savePerformanceData();
+    return <Redirect to="/feedback" />;
   }
 
   renderQuestion() {
@@ -204,7 +201,7 @@ class Gameplay extends Component {
   render() {
     const { loading, renderNextButton, timer, questionIndex } = this.state;
     if (questionIndex === maxQuestionsIndex) {
-      return <Redirect to="/feedback" />;
+      return this.redirectToFeedbackPage();
     }
     return (
       <>

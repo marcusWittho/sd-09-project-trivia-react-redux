@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 // import logo from './trivia.png';
 import './App.css';
-import { Login, GamePage, feedbackPage, Settings } from './pages';
+import { Login, GamePage, RankingPage, feedbackPage, Settings } from './pages';
 
 export default function App() {
   return (
@@ -15,6 +15,7 @@ export default function App() {
         <Route path="/settings" component={ Settings } />
         <Route path="/feedback" component={ feedbackPage } />
         <Route exact path="/" component={ Login } />
+        <Route path="/ranking" component={ RankingPage } />
       </Switch>
     </div>
   );

@@ -1,0 +1,34 @@
+/*
+https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l
+*/
+
+table {
+  border-collapse: collapse;
+  font-family: arial , sans-serif;
+  width: 80vw;
+}
+
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-of-type( even ) {
+  background-color: #f3f3f3;
+}
+
+tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+th {
+  background-color: #009879;
+  color: white;
+  padding: 5px;
+  text-align: center;
+}
+
+.ranking-list img {
+  border: 3px solid #009879;
+  border-radius: 50%;
+  margin: 3%;
+}
