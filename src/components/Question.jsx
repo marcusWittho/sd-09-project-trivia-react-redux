@@ -5,7 +5,24 @@ import Answer from './Answer';
 export default class Question extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      clicked: false,
+    };
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.showNextQuestionButton = this.showNextQuestionButton.bind(this);
+  }
+
+  handleClick() {
+    this.setState({ clicked: true });
+  }
+
+  showNextQuestionButton() {
+    return (
+      <button type="button" data-testid="btn-next">
+        Próxima
+      </button>
+    );
   }
 
   shuffleAnswers(array) {
@@ -25,16 +42,27 @@ export default class Question extends Component {
         correct_answer: correctAnswer,
       },
     } = this.props;
+    const { clicked } = this.state;
     const answers = [...incorrectAnswers, correctAnswer];
     const shuffledAnswers = this.shuffleAnswers(answers);
     return shuffledAnswers.map((answer) => (
       answers.indexOf(answer) === answers.length - 1
-        ? <Answer key={ answer } text={ answer } dataTestId="correct-answer" />
+        ? (
+          <Answer
+            key={ answer }
+            text={ answer }
+            dataTestId="correct-answer"
+            isClicked={ clicked ? 'yes' : '' }
+            onHandleClick={ this.handleClick }
+          />
+        )
         : (
           <Answer
             key={ answer }
             text={ answer }
             dataTestId={ `wrong-answer-${answers.indexOf(answer)}` }
+            isClicked={ clicked ? 'no' : '' }
+            onHandleClick={ this.handleClick }
           />
         )
     ));
@@ -42,13 +70,16 @@ export default class Question extends Component {
 
   render() {
     const { data: { category, question } } = this.props;
-
+    const { clicked } = this.state;
     return (
-      <section className="question-game">
-        <h2 data-testid="question-category">{ category }</h2>
-        <p data-testid="question-text">{ question }</p>
-        { this.renderAnswers() }
-      </section>
+      <>
+        <section className="question-game">
+          <h2 data-testid="question-category">{ category }</h2>
+          <p data-testid="question-text">{ question }</p>
+          { this.renderAnswers() }
+        </section>
+        { clicked && this.showNextQuestionButton() }
+      </>
     );
   }
 }
@@ -61,3 +92,5 @@ Question.propTypes = {
     incorrect_answers: arrayOf(string),
   }),
 }.isRequired;
+
+// botao feito por let
