@@ -12,3 +12,9 @@ export async function fetchQuestions(token) {
   const questionList = await responseApi.json();
   return questionList;
 }
+
+export async function fetchQuestionsWithSettings(settingsList) {
+  const responseApi = await fetch(`https://opentdb.com/api.php?amount=5${settingsList}`);
+  const questionList = await responseApi.json();
+  return questionList;
+}

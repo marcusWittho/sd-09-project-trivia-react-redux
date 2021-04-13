@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-import { fetchQuestions, localStorageState, savePerformanceData } from '../services';
+import { decode } from 'he';
+import { fetchQuestions,
+  localStorageState, savePerformanceData, fetchQuestionsWithSettings } from '../services';
 import '../CSS/gameplay.css';
 import { sendQuestionsAnswersInfo } from '../actions';
 import Header from './Header';
@@ -31,8 +33,14 @@ class Gameplay extends Component {
   }
 
   async componentDidMount() {
-    const { tokenState } = this.props;
-    const questionList = await fetchQuestions(tokenState);
+    const { tokenState, settingsActive } = this.props;
+    let questionList = {};
+    if (settingsActive) {
+      questionList = await fetchQuestionsWithSettings(settingsActive);
+    } else {
+      questionList = await fetchQuestions(tokenState);
+    }
+    console.log(questionList);
     this.randomAnswersOrder(questionList);
     this.countdownTimer();
   }
@@ -89,11 +97,7 @@ class Gameplay extends Component {
     this.disableButton();
     localStorageState.addAssertionPoint(target.name);
     this.sumScorePoint(target.name);
-    this.setState({
-      correct: 'correct',
-      incorrect: 'incorrect',
-      renderNextButton: true,
-    });
+    this.setState({ correct: 'correct', incorrect: 'incorrect', renderNextButton: true });
   }
 
   async prepareNextQuestion(questionList) {
@@ -115,16 +119,9 @@ class Gameplay extends Component {
     const newAnswersList = [...currentQuestionInfo.incorrect_answers];
     const randomIndex = Math.floor(Math.random() * (newAnswersList.length + 1));
     newAnswersList.splice(randomIndex, 0, currentQuestionInfo.correct_answer);
-    const answersAndPosition = {
-      newAnswersList,
-      randomIndex,
-    };
+    const answersAndPosition = { newAnswersList, randomIndex };
     sendQuestionsAnswersInfoDispatch(answersAndPosition, questionList);
-    this.setState({
-      loading: false,
-      correct: '',
-      incorrect: '',
-    });
+    this.setState({ loading: false, correct: '', incorrect: '' });
   }
 
   disableButton() {
@@ -143,7 +140,7 @@ class Gameplay extends Component {
     return (
       <section>
         <h1 data-testid="question-category">{ currentQuestionInfo.category}</h1>
-        <p data-testid="question-text">{currentQuestionInfo.question}</p>
+        <p data-testid="question-text">{decode(currentQuestionInfo.question)}</p>
       </section>
     );
   }
@@ -164,7 +161,7 @@ class Gameplay extends Component {
                 className={ correct }
                 type="button"
               >
-                {answer}
+                {decode(answer)}
               </button>);
           }
           return (
@@ -177,7 +174,7 @@ class Gameplay extends Component {
               key={ index }
               type="button"
             >
-              {answer}
+              {decode(answer)}
             </button>
           );
         })}
@@ -222,6 +219,7 @@ const mapStateToProps = (state) => ({
   questionList: state.gameplay.questionList,
   answersAndPosition: state.gameplay.answersAndPosition,
   timer: state.gameplay.timer,
+  settingsActive: state.user.settingsActive,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -239,6 +237,7 @@ Gameplay.propTypes = {
     randomIndex: PropTypes.shape().isRequired,
   }).isRequired,
   sendQuestionsAnswersInfoDispatch: PropTypes.func.isRequired,
+  settingsActive: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gameplay);
