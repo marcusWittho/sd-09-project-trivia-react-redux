@@ -17,43 +17,43 @@ class Game extends Component {
       triviaArray: [],
       shuffledArray: [],
       buttonStatus: false,
-      error: false,
+      responseCode: 3,
       position: 0,
       currentTime: 30,
     };
 
     this.renderAnswer = this.renderAnswer.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
-    this.changeButtonColor = this.changeButtonColor.bind(this);
     this.timerUpdate = this.timerUpdate.bind(this);
     this.timerTimeout = this.timerTimeout.bind(this);
-    this.addScore = this.addScore.bind(this);
+    this.nextQuention = this.nextQuention.bind(this);
   }
 
   componentDidMount() {
     const { triviaObject } = this.props;
-    const errorCode = 3;
     if (triviaObject) {
-      const { response_code: responseCode, results } = triviaObject;
-      this.validateResponseFromApi(responseCode, errorCode, results);
+      this.saveTriviaOnState(triviaObject);
       this.saveStateOnStorage();
     }
     this.timerUpdate();
   }
 
-  componentDidUpdate() {
-    this.saveStateOnStorage();
+  componentDidUpdate() { this.saveStateOnStorage(); }
+
+  saveTriviaOnState(triviaObject) {
+    const { response_code: responseCode, results } = triviaObject;
+    this.setState({
+      triviaArray: results,
+      responseCode,
+    });
   }
 
   timerUpdate() {
     const intervalTime = 1000;
     const timer = setInterval(() => {
       const { currentTime } = this.state;
-      if (currentTime > 0) {
-        this.setState({
-          currentTime: currentTime - 1,
-        });
-      } else {
+      if (currentTime > 0) this.setState({ currentTime: currentTime - 1 });
+      else {
         clearInterval(timer);
         this.timerTimeout();
       }
@@ -76,24 +76,11 @@ class Game extends Component {
       buttonStatus: true,
       shuffledArray: [],
     });
-
     if (currentTime !== 0) {
       this.setState({
         currentTime: 0,
       });
     }
-  }
-
-  validateResponseFromApi(responseCode, errorCode, results) {
-    if (responseCode === errorCode) {
-      this.setState({
-        error: true,
-      });
-    }
-    this.setState({
-      triviaArray: results,
-      error: false,
-    });
   }
 
   addScore() {
@@ -107,13 +94,26 @@ class Game extends Component {
     else if (difficulty === 'medium') difficultyValue = 2;
     else difficultyValue = maxScore;
     const score = baseScore + (currentTime * difficultyValue);
-
     scoreDispatch(score);
   }
 
   saveStateOnStorage() {
     const { state } = this.props;
     localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  nextQuention() {
+    const { position } = this.state;
+    const maxPosition = 4;
+    if (position !== maxPosition) {
+      this.setState({
+        shuffledArray: [],
+        position: position + 1,
+        currentTime: 30,
+        buttonStatus: false,
+      });
+      this.timerUpdate();
+    }
   }
 
   renderCorrectAnswer(correctAnswer) {
@@ -163,14 +163,8 @@ class Game extends Component {
     const randomModifier = 0.5;
 
     if (shuffledArray.length === 0) {
-      answerArray.sort(
-        () => Math.random() - randomModifier,
-      );
-
-      this.setState({
-        shuffledArray: answerArray,
-      });
-
+      answerArray.sort(() => Math.random() - randomModifier);
+      this.setState({ shuffledArray: answerArray });
       return answerArray;
     }
     return shuffledArray;
@@ -198,8 +192,9 @@ class Game extends Component {
   }
 
   render() {
-    const { error, triviaArray, currentTime } = this.state;
+    const { triviaArray, currentTime, responseCode, buttonStatus } = this.state;
     if (!triviaArray) return <Redirect to="/" />;
+    const errorCode = 3;
     return (
       <section className="game-section">
         <Header />
@@ -207,7 +202,7 @@ class Game extends Component {
         <section className="card-container">
           <img className="wave-top" src={ WaveTop } alt="wave" />
           <div className="game-card">
-            { error || triviaArray.length === 0 ? (
+            { responseCode === errorCode || triviaArray.length === 0 ? (
               <span>Carregando... </span>
             ) : (
               <div>
@@ -216,6 +211,14 @@ class Game extends Component {
                   Time:
                   {currentTime}
                 </span>
+                <button
+                  type="button"
+                  data-testid="btn-next"
+                  onClick={ this.nextQuention }
+                  hidden={ !buttonStatus }
+                >
+                  Next
+                </button>
               </div>
             ) }
           </div>
