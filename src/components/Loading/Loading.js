@@ -6,7 +6,7 @@ class Loading extends Component {
     return (
       <div className="loading-container">
         <div className="spinner" />
-        <h2>carregando...</h2>
+        <h2>Loading...</h2>
       </div>
     );
   }

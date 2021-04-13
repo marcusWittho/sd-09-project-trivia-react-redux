@@ -47,6 +47,7 @@
   align-items: center;
   background-color: #0e1a29;
   border-color: #0e1a29;
+  border-radius: 7px;
   display: flex;
   flex-direction: column;
   height: 17rem;

@@ -4,7 +4,7 @@ import {
   QUESTION_REQUEST,
 } from './actionTypes';
 
-const questionsRequest = () => ({
+export const questionsRequest = () => ({
   type: QUESTION_REQUEST,
 });
 

@@ -3,7 +3,8 @@ import {
   ADD_ASSERTIONS,
   ADD_GRAVATAR,
   ADD_SCORE,
-  NEW_GAME } from '../actions/actionTypes';
+  NEW_GAME,
+  RESET_PLAYER } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   player: {
@@ -18,13 +19,7 @@ const INITIAL_STATE = {
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ACTIVE_LOGIN:
-    return {
-      ...state,
-      player: {
-        ...state.player,
-        validLogin: true,
-      },
-    };
+    return { ...state, player: { ...state.player, validLogin: true } };
   case ADD_GRAVATAR:
     return {
       ...state,
@@ -60,6 +55,8 @@ const playerReducer = (state = INITIAL_STATE, action) => {
         assertions: 0,
       },
     };
+  case RESET_PLAYER:
+    return INITIAL_STATE;
   default:
     return state;
   }
