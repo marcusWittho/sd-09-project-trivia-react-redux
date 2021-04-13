@@ -11,7 +11,6 @@ class Feedback extends React.Component {
 
   setStorageRanking() {
     const dataObj = JSON.parse(localStorage.getItem('state'));
-    console.log(dataObj);
     if (!localStorage.getItem('ranking')) {
       localStorage.setItem('ranking', JSON.stringify([dataObj]));
     } else {
