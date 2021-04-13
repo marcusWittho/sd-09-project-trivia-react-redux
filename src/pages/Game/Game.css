@@ -61,9 +61,23 @@
 }
 
 .correct-answer {
-  border: 3px solid rgb(6, 240, 15);
+  background-color: #46ae27;
+  border: 3px solid #46ae27;
 }
 
 .wrong-answer {
-  border: 3px solid red;
+  background-color: #c91818;
+  border: 3px solid #c91818;
+}
+
+.next-question-buttton {
+  align-self: center;
+  background-color: #46ae27;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin-top: 0.3rem;
+  padding: 10px 20px;
 }

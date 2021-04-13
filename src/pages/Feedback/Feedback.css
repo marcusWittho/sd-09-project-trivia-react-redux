@@ -8,13 +8,14 @@
 .feedback-container {
   align-items: center;
   background-color: #0e1a29;
+  border-radius: 7px;
   box-sizing: border-box;
   color: white;
   display: flex;
   flex-direction: column;
   height: 70%;
+  min-width: 40%;
   padding: 2em;
-  width: 40%;
 }
 
 .feedback-text {

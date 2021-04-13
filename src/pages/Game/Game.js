@@ -12,6 +12,7 @@ import ShowButton from '../../redux/actions/actionShowButton';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
 import Header from '../../components/Header/Header';
 import './Game.css';
+import { actionClearClassReducer } from '../../redux/actions/actionClassReducer';
 
 class Game extends React.Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class Game extends React.Component {
       DisableButton,
       StateShowButton,
       cleanOptionAnswers,
+      clearClassReducer,
     } = this.props;
     const { counter } = this.state;
     ResetCounter();
@@ -57,6 +59,7 @@ class Game extends React.Component {
     if (counter >= '4') {
       this.setState({ redirectFeedback: true });
     }
+    clearClassReducer();
   }
 
   counterTimer() {
@@ -128,6 +131,7 @@ const mapDispatchToProps = (dispatch) => ({
   stateDisableButton: (value) => dispatch(actionDisableButton(value)),
   stateShowButton: (value) => dispatch(ShowButton(value)),
   cleanOptionAnswers: () => dispatch(actionCleanOptionAnswers()),
+  clearClassReducer: () => dispatch(actionClearClassReducer()),
 });
 
 Game.propTypes = {
@@ -148,6 +152,7 @@ Game.propTypes = {
   stateDisableButton: func.isRequired,
   stateShowButton: func.isRequired,
   cleanOptionAnswers: func.isRequired,
+  clearClassReducer: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
