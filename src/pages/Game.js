@@ -18,6 +18,7 @@ class Game extends Component {
       shuffledArray: [],
       buttonStatus: false,
       responseCode: 3,
+      redirect: false,
       position: 0,
       currentTime: 30,
     };
@@ -63,10 +64,12 @@ class Game extends Component {
   changeButtonColor() {
     const correctAnswerButton = document.getElementById('correct-awnser');
     const wrongAnswersButtons = document.querySelectorAll('.wrong-answer');
-    correctAnswerButton.style.border = '3px solid rgb(6, 240, 15)';
-    wrongAnswersButtons.forEach((button) => {
-      button.style.border = '3px solid rgb(255, 0, 0)';
-    });
+    if (correctAnswerButton && wrongAnswersButtons) {
+      correctAnswerButton.style.border = '3px solid rgb(6, 240, 15)';
+      wrongAnswersButtons.forEach((button) => {
+        button.style.border = '3px solid rgb(255, 0, 0)';
+      });
+    }
   }
 
   timerTimeout() {
@@ -76,11 +79,7 @@ class Game extends Component {
       buttonStatus: true,
       shuffledArray: [],
     });
-    if (currentTime !== 0) {
-      this.setState({
-        currentTime: 0,
-      });
-    }
+    if (currentTime !== 0) { this.setState({ currentTime: 0 }); }
   }
 
   addScore() {
@@ -113,7 +112,7 @@ class Game extends Component {
         buttonStatus: false,
       });
       this.timerUpdate();
-    }
+    } else this.setState({ redirect: true });
   }
 
   renderCorrectAnswer(correctAnswer) {
@@ -192,8 +191,9 @@ class Game extends Component {
   }
 
   render() {
-    const { triviaArray, currentTime, responseCode, buttonStatus } = this.state;
+    const { triviaArray, currentTime, responseCode, buttonStatus, redirect } = this.state;
     if (!triviaArray) return <Redirect to="/" />;
+    if (redirect) return <Redirect to="/feedback" />;
     const errorCode = 3;
     return (
       <section className="game-section">
