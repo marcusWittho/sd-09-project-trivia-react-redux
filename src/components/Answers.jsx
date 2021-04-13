@@ -87,6 +87,9 @@ class Answers extends Component {
   }
 
   nextButton(color, answerIndex, disabled) {
+    const user = JSON.parse(localStorage.getItem('state'));
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+
     const nextButton = (
       <button
         data-testid="btn-next"
@@ -106,7 +109,15 @@ class Answers extends Component {
         </button>
       </Link>
     );
-    if (answerIndex === Number('4') && color) return finishButton;
+    if (answerIndex === Number('4') && color) {
+      if (!ranking) {
+        localStorage.setItem('ranking', JSON.stringify([user]));
+        return finishButton;
+      }
+      ranking.push(user);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+      return finishButton;
+    }
     if (color || disabled) return nextButton;
   }
 
