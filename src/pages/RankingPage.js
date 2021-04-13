@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/RankingPage.css';
 
 //  Dados para fazer teste
@@ -34,6 +35,7 @@ class RankingPage extends React.Component {
   render() {
     return (
       <div>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <table>
           <tr>
             <th>Imagem</th>
@@ -44,6 +46,15 @@ class RankingPage extends React.Component {
             (participant, index) => this.createParticipantList(participant, index),
           )}
         </table>
+        <Link to="/">
+          <button
+            onClick={ this.redirect }
+            type="button"
+            data-testid="btn-go-home"
+          >
+            Volta para a tela inicial
+          </button>
+        </Link>
       </div>
     );
   }

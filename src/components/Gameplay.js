@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-import { fetchQuestions } from '../services';
+import { fetchQuestions, localStorageState, savePerformanceData } from '../services';
 import '../CSS/gameplay.css';
 import { nextQuestion, sendQuestionsAnswersInfo } from '../actions';
 import Header from './Header';
@@ -75,14 +75,6 @@ class Gameplay extends Component {
     return standardNumber + (timer * difficultyFactor);
   }
 
-  addAssertionsOnStateLocalStorage(answer) {
-    if (answer === 'correct') {
-      const previousState = JSON.parse(localStorage.getItem('state'));
-      previousState.player.assertions += 1;
-      localStorage.setItem('state', JSON.stringify(previousState));
-    }
-  }
-
   sumScorePoint(answer) {
     if (answer === 'correct') {
       const previousState = JSON.parse(localStorage.getItem('state'));
@@ -94,7 +86,7 @@ class Gameplay extends Component {
 
   chooseAnswer({ target }) {
     this.disableButton();
-    this.addAssertionsOnStateLocalStorage(target.name);
+    localStorageState.addAssertionPoint(target.name);
     this.sumScorePoint(target.name);
     this.setState({
       correct: 'correct',
@@ -139,15 +131,9 @@ class Gameplay extends Component {
     this.setState({ isButtonDisabled: true });
   }
 
-  renderQuestion() {
-    const { questionList, questionIndex } = this.props;
-    const currentQuestionInfo = questionList.results[questionIndex];
-    return (
-      <section>
-        <h1 data-testid="question-category">{ currentQuestionInfo.category}</h1>
-        <p data-testid="question-text">{currentQuestionInfo.question}</p>
-      </section>
-    );
+  redirectToFeedbackPage() {
+    savePerformanceData();
+    return <Redirect to="/feedback" />;
   }
 
   renderAnswers() {
@@ -200,6 +186,17 @@ class Gameplay extends Component {
     );
   }
 
+  renderQuestion() {
+    const { questionList, questionIndex } = this.props;
+    const currentQuestionInfo = questionList.results[questionIndex];
+    return (
+      <section>
+        <h1 data-testid="question-category">{ currentQuestionInfo.category}</h1>
+        <p data-testid="question-text">{currentQuestionInfo.question}</p>
+      </section>
+    );
+  }
+
   render() {
     const { loading, renderNextButton, timer } = this.state;
     const { questionIndex } = this.props;
@@ -208,7 +205,7 @@ class Gameplay extends Component {
       <>
         <Header />
         <main>
-          { questionIndex === maxQuestions && <Redirect to="/feedback" /> }
+          { questionIndex === maxQuestions && this.redirectToFeedbackPage() }
           { shouldQuestionBeRender && this.renderQuestion()}
           { shouldQuestionBeRender && this.renderAnswers()}
           {!loading && <h2>{ timer }</h2>}

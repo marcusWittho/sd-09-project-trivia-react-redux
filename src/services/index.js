@@ -1,3 +1,6 @@
+export { default as savePerformanceData } from './localStorageRanking';
+export { default as localStorageState } from './localStorageState';
+
 export async function fetchAndSaveToken() {
   const responseApi = await fetch('https://opentdb.com/api_token.php?command=request');
   const token = await responseApi.json();

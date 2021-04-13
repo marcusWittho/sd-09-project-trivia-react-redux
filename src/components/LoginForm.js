@@ -29,6 +29,7 @@ class LoginForm extends Component {
 
   async handleClick() {
     this.createUserStateLocalStorage();
+    this.createRankingOnLocalStorage();
     const { addLoginInfoDispatch, addTokenDispatch } = this.props;
     const { name, email } = this.state;
     addLoginInfoDispatch({ email, name });
@@ -50,6 +51,12 @@ class LoginForm extends Component {
     };
     localStorage.setItem('state', JSON.stringify(playerState));
     console.log(playerState);
+  }
+
+  createRankingOnLocalStorage() {
+    if (!localStorage.getItem('ranking')) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
   }
 
   handleChange({ target }) {

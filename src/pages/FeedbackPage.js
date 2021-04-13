@@ -1,5 +1,6 @@
 import React from 'react';
 import '../CSS/feedbackPage.css';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class feedbackPage extends React.Component {
@@ -25,6 +26,15 @@ class feedbackPage extends React.Component {
       <div>
         <Header />
         { this.feedBackMessage(assertions) }
+        <Link to="/ranking">
+          <button
+            onClick={ this.redirect }
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
       </div>
     );
   }
