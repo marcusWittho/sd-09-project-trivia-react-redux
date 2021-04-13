@@ -144,6 +144,8 @@ class InfoGames extends Component {
 
 InfoGames.propTypes = {
   dispatchIncrementScore: PropTypes.func.isRequired,
+  dispatchChangeStatus: PropTypes.func.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({

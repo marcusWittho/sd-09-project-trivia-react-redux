@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { decrementTimer, changeStatus } from '../redux/actions';
 
 class Timer extends React.Component {
@@ -9,13 +10,16 @@ class Timer extends React.Component {
   }
 
   contTime() {
-    let { timer, status, dispatchDecrementTime, dispatchChangeStatus } = this.props;
+    const { status, dispatchDecrementTime, dispatchChangeStatus } = this.props;
+    let { timer } = this.props;
+    const startTimer = 30;
+    const second = 1000;
     switch (status) {
     case 'start':
       this.interval = setInterval(() => {
         timer -= 1;
         dispatchDecrementTime(timer);
-      }, 1000);
+      }, second);
       dispatchChangeStatus('running');
       break;
 
@@ -24,7 +28,7 @@ class Timer extends React.Component {
       break;
 
     case 'reset':
-      dispatchDecrementTime(30);
+      dispatchDecrementTime(startTimer);
       dispatchChangeStatus('start');
       break;
 
@@ -53,6 +57,13 @@ class Timer extends React.Component {
     );
   }
 }
+
+Timer.propTypes = {
+  timer: PropTypes.number.isRequired,
+  status: PropTypes.string.isRequired,
+  dispatchDecrementTime: PropTypes.func.isRequired,
+  dispatchChangeStatus: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   timer: state.timer.timer,
