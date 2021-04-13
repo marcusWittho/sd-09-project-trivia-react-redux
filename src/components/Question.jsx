@@ -14,20 +14,20 @@ export default class Question extends Component {
     this.showNextQuestionButton = this.showNextQuestionButton.bind(this);
   }
 
-  tick() {
-    this.setState(state => ({
-      timer: state.timer - 1
-    }));
-  }
-
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1000);
+    const milliseconds = 1000;
+    this.interval = setInterval(() => this.tick(), milliseconds);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
+  tick() {
+    this.setState((state) => ({
+      timer: state.timer - 1,
+    }));
+  }
 
   handleClick() {
     this.setState({ clicked: true });
@@ -69,6 +69,7 @@ export default class Question extends Component {
             text={ answer }
             dataTestId="correct-answer"
             isClicked={ clicked ? 'yes' : '' }
+            timer={ timer }
             onHandleClick={ this.handleClick }
           />
         )
@@ -78,6 +79,7 @@ export default class Question extends Component {
             text={ answer }
             dataTestId={ `wrong-answer-${answers.indexOf(answer)}` }
             isClicked={ clicked ? 'no' : '' }
+            timer={ timer }
             onHandleClick={ this.handleClick }
           />
         )
