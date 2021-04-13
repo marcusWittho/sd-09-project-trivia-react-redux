@@ -20,6 +20,7 @@ class Header extends Component {
       score: 0,
       gravatarEmail: email,
     };
+    // possivelmente o teste limpe o localSto..., talvez tenha que ser salvo no redux
     if (!localStorage.getItem('state')) {
       localStorage.setItem('state', JSON.stringify(player));
     }

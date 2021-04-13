@@ -5,10 +5,11 @@ import Header from '../components/Header';
 class Feedback extends React.Component {
   feedbackMessege() {
     const toCompare = 3;
-    if (localStorage.getItem('score') < toCompare) {
+    const { assertions } = JSON.parse(localStorage.getItem('state'));
+    if (assertions < toCompare) {
       return <p data-testid="feedback-text">Podia ser melhor...</p>;
     }
-    if (localStorage.getItem('score') >= toCompare) {
+    if (assertions >= toCompare) {
       return <p data-testid="feedback-text">Mandou bem!</p>;
     }
   }
@@ -16,15 +17,14 @@ class Feedback extends React.Component {
   render() {
     return (
       <div>
+        <p>Feedback</p>
         <Header />
+        <Link to="/">
+          <button data-testid="btn-play-again" type="button">
+            Jogar novamente
+          </button>
+        </Link>
         {this.feedbackMessege()}
-          <p>Feedback</p>
-          <Link to="/">
-            <button data-testid="btn-play-again" type="button">
-              Jogar novamente
-            </button>
-          </Link>
-        </div>
       </div>
     );
   }
