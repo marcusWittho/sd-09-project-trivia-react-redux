@@ -34,6 +34,26 @@ class InfoGames extends Component {
     }
   }
 
+  getScore() {
+    const { questions, indice } = this.state;
+    const { timer } = this.props;
+    const { difficulty } = questions[indice];
+    const questionValue = 10;
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    switch (difficulty) {
+    case 'hard':
+      return (hard * timer) + questionValue;
+    case 'medium':
+      return (medium * timer) + questionValue;
+    case 'easy':
+      return (easy * timer) + questionValue;
+    default:
+      return 0;
+    }
+  }
+
   checkAnswer(correctAnswer, event) {
     event.preventDefault();
     const { isAnswered } = this.state;
@@ -41,12 +61,12 @@ class InfoGames extends Component {
     const { target } = event;
     const { innerText: answer } = target;
     if (answer === correctAnswer && !isAnswered) {
-      const player = JSON.parse(localStorage.getItem('state'));
-      const { assertions, score } = player;
-      player.score = score + 1;
-      player.assertions = assertions + 1;
-      localStorage.setItem('state', JSON.stringify(player));
-      dispatchIncrementScore(player.score);
+      const state = JSON.parse(localStorage.getItem('state'));
+      const { assertions, score } = state.player;
+      state.player.score = score + this.getScore();
+      state.player.assertions = assertions + 1;
+      localStorage.setItem('state', JSON.stringify(state));
+      dispatchIncrementScore(state.player.score);
     }
     this.setState({ isAnswered: true });
     dispatchChangeStatus('stop');
@@ -154,10 +174,12 @@ InfoGames.propTypes = {
   dispatchIncrementScore: PropTypes.func.isRequired,
   dispatchChangeStatus: PropTypes.func.isRequired,
   status: PropTypes.string.isRequired,
+  timer: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   status: state.timer.status,
+  timer: state.timer.timer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
