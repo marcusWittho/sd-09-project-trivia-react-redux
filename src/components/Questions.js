@@ -10,31 +10,12 @@ import './Questions.css';
 class Questions extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      redirect: false,
-      questionIndex: 0,
-    };
     this.checkAnswer = this.checkAnswer.bind(this);
-    this.getIndex = this.getIndex.bind(this);
   }
 
   componentDidMount() {
     const { getQuestions } = this.props;
     getQuestions();
-  }
-
-  getIndex() {
-    const { questionIndex } = this.state;
-    const lastIndex = 4;
-    if (questionIndex < lastIndex) {
-      this.setState({
-        questionIndex: questionIndex + 1,
-      });
-    } else {
-      this.setState({
-        redirect: true,
-      });
-    }
   }
 
   checkAnswer({ target }) {
@@ -55,12 +36,9 @@ class Questions extends React.Component {
   render() {
     const { questions, isLoading, timer, questionPos,
       answered, correctAnswer, wrongAnswer } = this.props;
-    const { redirect } = this.state;
-    /* const storageState = JSON.parse(localStorage.getItem('state'));
-    const rightQuestions = storageState.player.assertions;
-    console.log(`Assertions: ${rightQuestions}`); */
+    const lastPos = 4;
     if (isLoading) return <h1>Loading...</h1>;
-    if (redirect) return <Redirect to="/feedback" />;
+    if (questionPos > lastPos) return <Redirect to="/feedback" />;
     const allAnswer = [
       questions[questionPos].correct_answer,
       ...questions[questionPos].incorrect_answers];
@@ -86,7 +64,7 @@ class Questions extends React.Component {
             { answer }
           </button>
         ))}
-        { (answered || timer === 0) && <NextButton getIndex={ this.getIndex } /> }
+        { (answered || timer === 0) && <NextButton /> }
       </main>
     );
   }
