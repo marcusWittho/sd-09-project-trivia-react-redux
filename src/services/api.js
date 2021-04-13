@@ -1,10 +1,12 @@
 const TRIVIA_TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
-const TRIVIA_QUESTIONS_AMOUNT = 5;
 const TRIVIA_EXPIRED_TOKEN_CODE = 3;
 
-const getTriviaQuestionsUrl = (questionsAmount, token) => (
-  `https://opentdb.com/api.php?amount=${questionsAmount}&token=${token}`
-);
+const getTriviaQuestionsUrl = (options) => {
+  const optionsJoinedWithValues = Object.entries(options)
+    .map((option) => option.join('='));
+  const urlOptions = optionsJoinedWithValues.join('&');
+  return `https://opentdb.com/api.php?${urlOptions}`;
+};
 
 const fetchGenericAPI = async (url) => {
   const request = await fetch(url);
@@ -27,18 +29,21 @@ const retrieveTokenFromStorage = () => {
   return null;
 };
 
-const fetchTriviaQuestions = async (token) => {
-  const apiUrl = getTriviaQuestionsUrl(TRIVIA_QUESTIONS_AMOUNT, token);
+const fetchTriviaQuestionsWithOptions = async (options) => {
+  const apiUrl = getTriviaQuestionsUrl(options);
   return fetchGenericAPI(apiUrl);
 };
 
-const getTriviaQuestions = async () => {
+const getTriviaQuestionsWithOptions = async (options) => {
   const tokenIsInStorage = retrieveTokenFromStorage();
   const token = !tokenIsInStorage ? await fetchTriviaToken() : tokenIsInStorage;
-  const response = await fetchTriviaQuestions(token);
+  const response = await fetchTriviaQuestionsWithOptions({ ...options, token });
   const tokenIsExpired = response.response_code === TRIVIA_EXPIRED_TOKEN_CODE;
-  if (tokenIsExpired) return fetchTriviaQuestions(await fetchTriviaToken());
+  if (tokenIsExpired) {
+    const newToken = await fetchTriviaToken();
+    return fetchTriviaQuestionsWithOptions({ ...options, token: newToken });
+  }
   return response;
 };
 
-export default getTriviaQuestions;
+export default getTriviaQuestionsWithOptions;

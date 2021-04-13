@@ -21,10 +21,10 @@ class Game extends React.Component {
   }
 
   render() {
-    const { isFetching, questions } = this.props;
+    const { isFetching, questions, questionsAmount } = this.props;
     const questionCanBeRendered = !isFetching && questions.length > 0;
     const { questionIndex } = this.state;
-    const goToFeedback = questionIndex > ('4' - 0);
+    const goToFeedback = questionIndex >= questionsAmount;
     const question = questions[questionIndex];
 
     if (goToFeedback) {
@@ -46,8 +46,8 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (
-  { trivia: { questions, isFetching } },
-) => ({ questions, isFetching });
+  { trivia: { questions, isFetching }, settings: { amount: questionsAmount } },
+) => ({ questions, isFetching, questionsAmount });
 
 export default connect(mapStateToProps)(Game);
 
@@ -63,4 +63,5 @@ Game.propTypes = {
     }),
   ).isRequired,
   isFetching: PropTypes.bool.isRequired,
+  questionsAmount: PropTypes.number.isRequired,
 };
