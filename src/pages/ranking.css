@@ -31,3 +31,8 @@ body {
 .ranking-text {
   font-weight: 700;
 }
+
+.profile-picture {
+  height: 100px;
+  width: 100px;
+}
