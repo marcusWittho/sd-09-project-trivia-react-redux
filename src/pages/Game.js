@@ -66,19 +66,18 @@ class Game extends Component {
     const wrongAnswersButtons = document.querySelectorAll('.wrong-answer');
     if (correctAnswerButton && wrongAnswersButtons) {
       correctAnswerButton.style.border = '3px solid rgb(6, 240, 15)';
+      correctAnswerButton.disabled = true;
       wrongAnswersButtons.forEach((button) => {
         button.style.border = '3px solid rgb(255, 0, 0)';
+        button.disabled = true;
       });
     }
   }
 
   timerTimeout() {
     const { currentTime } = this.state;
+    this.setState({ buttonStatus: true });
     this.changeButtonColor();
-    this.setState({
-      buttonStatus: true,
-      shuffledArray: [],
-    });
     if (currentTime !== 0) { this.setState({ currentTime: 0 }); }
   }
 
@@ -102,6 +101,8 @@ class Game extends Component {
   }
 
   nextQuention() {
+    const correctAnswerButton = document.getElementById('correct-awnser');
+    const wrongAnswersButtons = document.querySelectorAll('.wrong-answer');
     const { position } = this.state;
     const maxPosition = 4;
     if (position !== maxPosition) {
@@ -111,19 +112,21 @@ class Game extends Component {
         currentTime: 30,
         buttonStatus: false,
       });
+      correctAnswerButton.disabled = false;
+      wrongAnswersButtons.forEach((button) => {
+        button.disabled = false;
+      });
       this.timerUpdate();
     } else this.setState({ redirect: true });
   }
 
   renderCorrectAnswer(correctAnswer) {
-    const { buttonStatus } = this.state;
     return (
       <button
         type="button"
         key={ correctAnswer }
         data-testid="correct-answer"
         id="correct-awnser"
-        disabled={ buttonStatus }
         onClick={ () => {
           this.changeButtonColor();
           this.timerTimeout();
@@ -136,13 +139,11 @@ class Game extends Component {
   }
 
   renderIncorrectAnswers(incorrectAnswers) {
-    const { buttonStatus } = this.state;
     return incorrectAnswers.map((answer, index) => (
       <button
         type="button"
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
-        disabled={ buttonStatus }
         className="wrong-answer"
         onClick={ () => {
           this.changeButtonColor();
@@ -160,7 +161,6 @@ class Game extends Component {
     const answerArray = [...incorrectButtons, correctButton];
     const { shuffledArray } = this.state;
     const randomModifier = 0.5;
-
     if (shuffledArray.length === 0) {
       answerArray.sort(() => Math.random() - randomModifier);
       this.setState({ shuffledArray: answerArray });
