@@ -76,9 +76,7 @@ class Game extends Component {
 
   timerTimeout() {
     const { currentTime } = this.state;
-    this.setState({
-      buttonStatus: true,
-    });
+    this.setState({ buttonStatus: true });
     this.changeButtonColor();
     if (currentTime !== 0) { this.setState({ currentTime: 0 }); }
   }
@@ -103,6 +101,8 @@ class Game extends Component {
   }
 
   nextQuention() {
+    const correctAnswerButton = document.getElementById('correct-awnser');
+    const wrongAnswersButtons = document.querySelectorAll('.wrong-answer');
     const { position } = this.state;
     const maxPosition = 4;
     if (position !== maxPosition) {
@@ -111,6 +111,10 @@ class Game extends Component {
         position: position + 1,
         currentTime: 30,
         buttonStatus: false,
+      });
+      correctAnswerButton.disabled = false;
+      wrongAnswersButtons.forEach((button) => {
+        button.disabled = false;
       });
       this.timerUpdate();
     } else this.setState({ redirect: true });
@@ -157,7 +161,6 @@ class Game extends Component {
     const answerArray = [...incorrectButtons, correctButton];
     const { shuffledArray } = this.state;
     const randomModifier = 0.5;
-
     if (shuffledArray.length === 0) {
       answerArray.sort(() => Math.random() - randomModifier);
       this.setState({ shuffledArray: answerArray });
