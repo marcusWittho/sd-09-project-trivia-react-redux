@@ -9,6 +9,12 @@ export const getAnswer = async (number, token) => {
   const endPoint = `https://opentdb.com/api.php?amount=${number}&token=${token}`;
   const response = await fetch(endPoint);
   const result = await response.json();
+  result.results.forEach((question) => {
+    const { correct_answer: correct, incorrect_answers: incorrect } = question;
+    const RANDOM = 0.5;
+    const sortedOptions = [...incorrect, correct].sort(() => RANDOM - Math.random());
+    question.sortedOptions = sortedOptions;
+  });
   return result;
 };
 
