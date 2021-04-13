@@ -68,7 +68,7 @@ class trivia extends React.Component {
     this.setState({ answered: true });
   }
 
-  handleClick() {
+  async handleClick() {
     const maxIndex = 4;
     const { index } = this.state;
     const { propSetNext, propSelectedAnswer } = this.props;
@@ -88,8 +88,8 @@ class trivia extends React.Component {
         disabled: false,
       }));
     }
-    propSelectedAnswer(null);
-    propSetNext();
+    await propSelectedAnswer(null);
+    await propSetNext();
   }
 
   render() {
