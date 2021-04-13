@@ -5,7 +5,7 @@ import Header from '../components/Header';
 class Feedback extends React.Component {
   feedbackMessege() {
     const toCompare = 3;
-    const { assertions } = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions } } = JSON.parse(localStorage.getItem('state'));
     if (assertions < toCompare) {
       return <p data-testid="feedback-text">Podia ser melhor...</p>;
     }

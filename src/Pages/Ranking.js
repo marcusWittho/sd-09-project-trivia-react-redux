@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
   render() {
-    const { name, gravatarEmail } = JSON.parse(localStorage.getItem('state'));
+    const { player: { name, gravatarEmail } } = JSON.parse(localStorage.getItem('state'));
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>

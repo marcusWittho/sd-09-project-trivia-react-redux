@@ -76,7 +76,6 @@ class InfoGames extends Component {
 
   nextQuestion() {
     const { dispatchChangeStatus } = this.props;
-    // this.setState((prevState) => ({ indice: prevState.indice + 1, isAnswered: false }));
     this.setState((prevState) => ({ indice: prevState.indice + 1, isAnswered: false }),
       () => {
         const { indice } = this.state;

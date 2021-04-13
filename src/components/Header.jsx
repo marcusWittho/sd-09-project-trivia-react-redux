@@ -19,7 +19,6 @@ class Header extends Component {
       assertions: 0,
       score: 0,
       gravatarEmail: email,
-    };
     } };
     if (!localStorage.getItem('state')) {
       localStorage.setItem('state', JSON.stringify(state));
