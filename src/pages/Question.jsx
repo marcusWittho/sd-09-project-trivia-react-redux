@@ -11,6 +11,7 @@ class Question extends React.Component {
     this.inQuestion = this.inQuestion.bind(this);
     this.testId = this.testId.bind(this);
     this.multiQuestion = this.multiQuestion.bind(this);
+    this.btnStyle = this.btnStyle.bind(this);
   }
 
   createHeader() {
@@ -39,6 +40,7 @@ class Question extends React.Component {
     incorrect_answers: incorrectAnswers, category, question }, index) {
     const options = [...incorrectAnswers, correctAnswer];
     const random = 0.5;
+    console.log(correctAnswer);
     return (
       <div key={ index } className="mult-answer">
         <div className="mult-container">
@@ -50,6 +52,8 @@ class Question extends React.Component {
             { [...options].sort(() => random - Math.random()).map((btn) => (
               <button
                 type="button"
+                onClick={ () => this.btnStyle() }
+                className={ btn === correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
                 key={ index }
                 data-testId={ btn === correctAnswer
                   ? 'correct-answer'
@@ -78,25 +82,45 @@ class Question extends React.Component {
             </section>
             <aside className="bool-aside">
               <button
+                className={ element.correct_answer ? 'btnCorrect' : 'btnIncorrect' }
                 type="button"
+                onClick={ () => this.btnStyle() }
                 data-testid=""
                 value={ element.correct_answer }
               >
                 Verdadeiro
               </button>
               <button
+                className={ element.incorrect_answer ? 'btnCorrect' : 'btnIncorrect' }
                 type="button"
+                onClick={ () => this.btnStyle() }
                 data-testid=""
                 value={ element.incorrect_answers }
               >
                 Falso
               </button>
             </aside>
-            <button type="button">PRÓXIMO</button>
+            <button
+              type="button"
+              className="btn-next"
+            >
+              PRÓXIMO
+            </button>
           </div>
         );
       }
       return multiQuestion(element, index);
+    });
+  }
+
+  btnStyle() {
+    const correctBtn = document.querySelectorAll('.btnCorrect');
+    correctBtn.forEach((btn) => {
+      btn.style.border = '3px solid rgb(6, 240, 15)';
+    });
+    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
+    incorrectBtn.forEach((btn) => {
+      btn.style.border = '3px solid rgb(255, 0, 0)';
     });
   }
 
