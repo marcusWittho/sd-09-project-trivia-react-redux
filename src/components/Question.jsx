@@ -7,10 +7,26 @@ export default class Question extends Component {
     super(props);
     this.state = {
       clicked: false,
+      timer: 30,
     };
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.showNextQuestionButton = this.showNextQuestionButton.bind(this);
+  }
+
+  componentDidMount() {
+    const milliseconds = 1000;
+    this.interval = setInterval(() => this.tick(), milliseconds);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  tick() {
+    this.setState((state) => ({
+      timer: state.timer - 1,
+    }));
   }
 
   handleClick() {
@@ -42,7 +58,7 @@ export default class Question extends Component {
         correct_answer: correctAnswer,
       },
     } = this.props;
-    const { clicked } = this.state;
+    const { clicked, timer } = this.state;
     const answers = [...incorrectAnswers, correctAnswer];
     const shuffledAnswers = this.shuffleAnswers(answers);
     return shuffledAnswers.map((answer) => (
@@ -53,6 +69,7 @@ export default class Question extends Component {
             text={ answer }
             dataTestId="correct-answer"
             isClicked={ clicked ? 'yes' : '' }
+            timer={ timer }
             onHandleClick={ this.handleClick }
           />
         )
@@ -62,6 +79,7 @@ export default class Question extends Component {
             text={ answer }
             dataTestId={ `wrong-answer-${answers.indexOf(answer)}` }
             isClicked={ clicked ? 'no' : '' }
+            timer={ timer }
             onHandleClick={ this.handleClick }
           />
         )
@@ -70,7 +88,7 @@ export default class Question extends Component {
 
   render() {
     const { data: { category, question } } = this.props;
-    const { clicked } = this.state;
+    const { clicked, timer } = this.state;
     return (
       <>
         <section className="question-game">
@@ -79,6 +97,9 @@ export default class Question extends Component {
           { this.renderAnswers() }
         </section>
         { clicked && this.showNextQuestionButton() }
+        <div>
+          {timer > 0 ? <p>{ timer }</p> : <p>0</p>}
+        </div>
       </>
     );
   }
