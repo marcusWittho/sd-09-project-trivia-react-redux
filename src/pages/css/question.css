@@ -1,3 +1,13 @@
+button {
+  background-color: rgba(255, 255, 255, 0.6);
+  margin: 10px;
+  width: 100%;
+}
+
+/* button:focus {
+  border: none;
+} */
+
 .boll-answer {
   align-items: center;
   display: flex;
@@ -10,15 +20,24 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-bottom: 20px;
   width: 100%;
 }
 
 .bool-question {
   background-color: rgba(255, 255, 255, 0.6);
-  border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 15px;
+  margin-bottom: 10px;
   padding: 20px;
   width: 60%;
+}
+
+/* .btnCorrect .btnIncorrect {
+  outline: none;
+} */
+
+.btn-next {
+  width: 50%;
 }
 
 .header {
@@ -42,6 +61,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-bottom: 20px;
   width: 40%;
 }
 
@@ -55,8 +75,8 @@
 .mult-question {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.6);
-  border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 15px;
+  margin-bottom: 10px;
   padding: 20px;
   width: 40%;
 }

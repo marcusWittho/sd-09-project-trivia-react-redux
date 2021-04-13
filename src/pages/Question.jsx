@@ -8,12 +8,13 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
 
+    this.btnStyle = this.btnStyle.bind(this);
+    this.clearStyle = this.clearStyle.bind(this);
     this.createHeader = this.createHeader.bind(this);
+    this.handleIndex = this.handleIndex.bind(this);
     this.inQuestion = this.inQuestion.bind(this);
-    this.testId = this.testId.bind(this);
     this.multiQuestion = this.multiQuestion.bind(this);
     this.verifyAnswers = this.verifyAnswers.bind(this);
-    this.handleIndex = this.handleIndex.bind(this);
 
     this.state = {
       indexQuestion: 0,
@@ -36,21 +37,16 @@ class Question extends React.Component {
     );
   }
 
-  testId(element, index) {
-    return ((element)
-      ? 'data-testid="correct_answer"'
-      : `data-testid=wrong-answer-${index}`
-    );
-  }
-
   verifyAnswers(value, correct) {
     const { propHandleAssertions } = this.props;
+    this.btnStyle();
     if (value === correct) {
       propHandleAssertions(1);
     }
   }
 
   handleIndex() {
+    this.clearStyle();
     const { indexQuestion, numQuestion } = this.state;
     if (indexQuestion < numQuestion) {
       this.setState((prev) => ({ indexQuestion: prev.indexQuestion + 1 }));
@@ -58,9 +54,10 @@ class Question extends React.Component {
   }
 
   multiQuestion({ correct_answer: correctAnswer,
-    incorrect_answers: incorrectAnswers, category, question }) {
+    incorrect_answers: incorrectAnswers, category, question }, id) {
     const options = [...incorrectAnswers, correctAnswer];
     const random = 0.5;
+    const { handleIndex, verifyAnswers } = this;
     return (
       <div className="mult-answer">
         <div className="mult-container">
@@ -72,10 +69,10 @@ class Question extends React.Component {
             { [...options].sort(() => random - Math.random()).map((btn, index) => (
               <button
                 type="button"
+                className={ btn === correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
                 key={ index }
-                onClick={ () => this.verifyAnswers(btn, correctAnswer) }
-                data-testid={ btn === correctAnswer
-                  ? 'correct-answer'
+                onClick={ () => verifyAnswers(btn, correctAnswer) }
+                data-testid={ btn === correctAnswer ? id
                   : `wrong-answer-${options.indexOf(btn)}` }
               >
                 { btn }
@@ -83,7 +80,7 @@ class Question extends React.Component {
             )) }
           </aside>
         </div>
-        <button type="button" onClick={ this.handleIndex }>PRÓXIMO</button>
+        <button type="button" onClick={ handleIndex }>PRÓXIMO</button>
       </div>
     );
   }
@@ -92,6 +89,7 @@ class Question extends React.Component {
     const { dataAnswer } = this.props;
     const { multiQuestion } = this;
     const { indexQuestion } = this.state;
+    const idTestCorrect = 'correct-answer';
     console.log(dataAnswer[indexQuestion]);
     if (dataAnswer[indexQuestion].type === 'boolean') {
       const {
@@ -106,12 +104,16 @@ class Question extends React.Component {
           <aside className="bool-aside">
             <button
               type="button"
+              data-testid={ correctAnswer ? idTestCorrect : 'wrong-answer-0' }
+              className={ correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
               onClick={ () => this.verifyAnswers('True', correctAnswer) }
             >
               Verdadeiro
             </button>
             <button
               type="button"
+              data-testid={ !correctAnswer ? idTestCorrect : 'wrong-answer-0' }
+              className={ !correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
               onClick={ () => this.verifyAnswers('False', correctAnswer) }
             >
               Falso
@@ -121,7 +123,33 @@ class Question extends React.Component {
         </div>
       );
     }
-    return multiQuestion(dataAnswer[indexQuestion]);
+    return multiQuestion(dataAnswer[indexQuestion], idTestCorrect);
+  }
+
+  clearStyle() {
+    const correctBtn = document.querySelectorAll('.btnCorrect');
+    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
+    correctBtn.forEach((btn) => {
+      btn.style.border = '';
+    });
+    incorrectBtn.forEach((btn) => {
+      btn.style.border = '';
+    });
+  }
+
+  btnStyle() {
+    const correctBtn = document.querySelectorAll('.btnCorrect');
+    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
+    correctBtn.forEach((btn) => {
+      btn.onClick = '';
+      btn.style.border = '3px solid rgb(6, 240, 15)';
+      btn.style.outline = 'none';
+    });
+    incorrectBtn.forEach((btn) => {
+      btn.onClick = '';
+      btn.style.border = '3px solid red';
+      btn.style.outline = 'none';
+    });
   }
 
   render() {
@@ -129,7 +157,7 @@ class Question extends React.Component {
     return (
       <div className="question">
         { this.createHeader() }
-        <h1>Game</h1>
+        <h1>Trivia Game</h1>
         { dataAnswer ? this.inQuestion() : 'Carregando' }
       </div>
     );
