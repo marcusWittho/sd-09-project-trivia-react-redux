@@ -3,28 +3,28 @@ import './ranking.css';
 
 class Ranking extends Component {
   constructor() {
-    super()
+    super();
 
     this.saveRankingOnStorage = this.saveRankingOnStorage.bind(this);
   }
-  
+
   componentDidMount() {
     this.saveRankingOnStorage();
   }
-    
+
   saveRankingOnStorage() {
     const firstPlayers = [
       {
         name: 'João das Couves',
         score: 7,
-        picture: 'https://pbs.twimg.com/profile_images/2832206884/ddc249b8571c57baba13c5847a0cdd4c_400x400.jpeg'
+        picture: 'https://pbs.twimg.com/profile_images/2832206884/ddc249b8571c57baba13c5847a0cdd4c_400x400.jpeg',
       },
       {
         name: 'Stephen Hawking',
         score: 10,
         picture: 'https://i.pinimg.com/564x/3b/d8/8d/3bd88d1e67ba8e55c4a8a57b019983b6.jpg',
-      }
-    ]
+      },
+    ];
     localStorage.setItem('ranking', JSON.stringify(firstPlayers));
   }
 
