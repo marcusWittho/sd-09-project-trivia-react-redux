@@ -15,14 +15,56 @@ class CardQuestion extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
+    this.recordScore = this.recordScore.bind(this);
   }
 
   componentDidMount() {
     this.startTimer();
   }
 
-  selectAnswer() {
+  selectAnswer(event) {
+    const { seconds } = this.state;
     this.setState({ isSelected: true });
+    this.recordScore(event.target.innerText, seconds);
+  }
+
+  calculateScore(sec, difficulty) {
+    let sum = 0;
+    const easy = 1;
+    const medium = 2;
+    const hard = 3;
+    const base = 10;
+    if (difficulty === 'easy') {
+      sum = base + (sec * easy);
+      return sum;
+    }
+    if (difficulty === 'medium') {
+      sum = base + (sec * medium);
+      return sum;
+    }
+    if (difficulty === 'hard') {
+      sum = base + (sec * hard);
+      return sum;
+    }
+  }
+
+  recordScore(answer, sec) {
+    const { getQuestions: { questions: { results } } } = this.props;
+    const { name: nome, email } = this.props;
+    const { isSelected } = this.state;
+    //  Trocar essa const index pelo contador que a Mayara fez
+    const index = 0;
+    const currentQuestion = results[index];
+    if (isSelected === true && answer === currentQuestion.correct_answer) {
+      const playerData = {
+        name: nome,
+        assertions: 1,
+        score: this.calculateScore(sec, currentQuestion.difficulty),
+        gravatarEmail: email,
+      };
+      return console.log(playerData);
+    }
   }
 
   secondsToTime(secs) {
@@ -102,6 +144,8 @@ CardQuestion.propTypes = {
       results: PropTypes.arrayOf(Object),
     }),
   }),
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 CardQuestion.defaultProps = {
   getQuestions: PropTypes.shape({
@@ -114,5 +158,7 @@ CardQuestion.defaultProps = {
 };
 const mapStateToProps = (state) => ({
   getQuestions: state.questions,
+  name: state.player.name,
+  email: state.player.email,
 });
 export default connect(mapStateToProps)(CardQuestion);
