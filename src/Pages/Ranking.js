@@ -2,13 +2,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
+  personRankingList() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    return (
+      <ul>
+        { ranking.sort((a, b) => b.score - a.score).map((person, index) => (
+          <li key={ person.name }>
+            <img src={ person.picture } alt="Player" />
+            <span data-testid={ `player-name-${index}` }>{ person.name }</span>
+            <span data-testid={ `player-score-${index}` }>{ person.score }</span>
+          </li>
+        )) }
+      </ul>
+    );
+  }
+
   render() {
-    const { player: { name, gravatarEmail } } = JSON.parse(localStorage.getItem('state'));
     return (
       <div>
-        <h1 data-testid="ranking-title">Ranking</h1>
-        <p data-testid="input-player-name">{name}</p>
-        <p data-testid="input-gravatar-email">{gravatarEmail}</p>
+        {this.personRankingList()}
         <Link to="/">
           <button
             type="button"

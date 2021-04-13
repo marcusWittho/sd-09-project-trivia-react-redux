@@ -1,4 +1,5 @@
 import React from 'react';
+import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
@@ -14,11 +15,34 @@ class Feedback extends React.Component {
     }
   }
 
+  rankingSave(player) {
+    const { name, score, gravatarEmail } = player;
+    const rankingStore = {
+      name,
+      score,
+      picture: `https://www.gravatar.com/avatar/${md5(gravatarEmail).toString()}`,
+    };
+    if (localStorage.getItem('ranking')) {
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      ranking.push(...[rankingStore]);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    } else {
+      const arrRanking = [rankingStore];
+      const strRanking = JSON.stringify(arrRanking);
+      localStorage.setItem('ranking', strRanking);
+    }
+  }
+
   render() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    this.rankingSave(player);
     return (
       <div>
         <p>Feedback</p>
         <Header />
+        <p data-testid="feedback-total-score">{player.score}</p>
+        <p data-testid="feedback-total-question">{player.assertions}</p>
+
         <Link to="/">
           <button data-testid="btn-play-again" type="button">
             Jogar novamente
