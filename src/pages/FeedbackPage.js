@@ -9,7 +9,7 @@ class feedbackPage extends React.Component {
     return state;
   }
 
-  feedBackMessage(assertions) {
+  feedbackMessage(assertions) {
     const numberGoodQuestions = 3;
     let message = 'Mandou bem!';
     if (assertions < numberGoodQuestions) {
@@ -20,12 +20,28 @@ class feedbackPage extends React.Component {
     );
   }
 
+  feedbackScore(assertions, score) {
+    // let message = `Acertou ${assertions} perguntas`;
+    if (assertions < 1) {
+      message = 'Não acertou nenhuma pergunta';
+    } else if (assertions === 1) {
+      message = 'Acertou 1 pergunta';
+    }
+    return (
+      <>
+        <p data-testid="feedback-total-question">{ assertions }</p>
+        <p data-testid="feedback-total-score">{score}</p>
+      </>
+    );
+  }
+
   render() {
-    const { player: { assertions } } = this.getStateLocalStorage();
+    const { player: { assertions, score } } = this.getStateLocalStorage();
     return (
       <div>
         <Header />
-        { this.feedBackMessage(assertions) }
+        { this.feedbackMessage(assertions) }
+        { this.feedbackScore(assertions, score) }
         <Link to="/ranking">
           <button
             type="button"
