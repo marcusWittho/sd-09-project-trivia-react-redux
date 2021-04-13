@@ -19,5 +19,6 @@ input::placeholder {
 .play-button {
   border-radius: 5px;
   cursor: pointer;
+  outline: none;
   padding: 12px 20px;
 }
