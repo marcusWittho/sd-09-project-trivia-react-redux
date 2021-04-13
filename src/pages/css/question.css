@@ -4,9 +4,9 @@ button {
   width: 100%;
 }
 
-button:focus {
+/* button:focus {
   border: none;
-}
+} */
 
 .boll-answer {
   align-items: center;
@@ -31,6 +31,10 @@ button:focus {
   padding: 20px;
   width: 60%;
 }
+
+/* .btnCorrect .btnIncorrect {
+  outline: none;
+} */
 
 .btn-next {
   width: 50%;

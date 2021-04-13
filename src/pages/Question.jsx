@@ -138,21 +138,17 @@ class Question extends React.Component {
   }
 
   btnStyle() {
-    // const { indexQuestion } = this.state;
-    // const btnQuestion = document.querySelectorAll('button');
-    // btnQuestion.forEach((btn) => {
-    //   btn.dataset.testid === 'correct-answer'
-    //     ? btn.style.border = '3px solid rgb(6, 240, 15)'
-    //     : btn.style.border = '3px solid rgb(255, 0, 0)';
-    // });
-    // btnQuestion[indexQuestion].dataset.testid === 'correct-answer' ?
     const correctBtn = document.querySelectorAll('.btnCorrect');
     const incorrectBtn = document.querySelectorAll('.btnIncorrect');
     correctBtn.forEach((btn) => {
+      btn.onClick = '';
       btn.style.border = '3px solid rgb(6, 240, 15)';
+      btn.style.outline = 'none';
     });
     incorrectBtn.forEach((btn) => {
+      btn.onClick = '';
       btn.style.border = '3px solid red';
+      btn.style.outline = 'none';
     });
   }
 
