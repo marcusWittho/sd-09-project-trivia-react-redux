@@ -11,7 +11,7 @@ import '../styles/RankingPage.css';
 class RankingPage extends React.Component {
   getRankingOrderedByScore() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
-    ranking.sort((a, b) => a.score - b.score);
+    ranking.sort((a, b) => b.score - a.score);
     return ranking;
   }
 
@@ -48,7 +48,6 @@ class RankingPage extends React.Component {
         </table>
         <Link to="/">
           <button
-            onClick={ this.redirect }
             type="button"
             data-testid="btn-go-home"
           >

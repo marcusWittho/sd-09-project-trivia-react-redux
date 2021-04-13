@@ -200,11 +200,13 @@ class Gameplay extends Component {
 
   render() {
     const { loading, renderNextButton, timer, questionIndex } = this.state;
+    if (questionIndex === maxQuestionsIndex) {
+      return this.redirectToFeedbackPage();
+    }
     return (
       <>
         <Header />
         <main>
-          { questionIndex === maxQuestions && this.redirectToFeedbackPage() }
           { !loading && this.renderQuestion()}
           { !loading && this.renderAnswers()}
           {!loading && <h2>{ timer }</h2>}

@@ -2,7 +2,6 @@ import React from 'react';
 import '../CSS/feedbackPage.css';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-import PlayAgainButton from '../components/PlayAgainButton';
 
 class feedbackPage extends React.Component {
   getStateLocalStorage() {
@@ -29,11 +28,18 @@ class feedbackPage extends React.Component {
         { this.feedBackMessage(assertions) }
         <Link to="/ranking">
           <button
-            onClick={ this.redirect }
             type="button"
             data-testid="btn-ranking"
           >
             Ver Ranking
+          </button>
+        </Link>
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Volta para a tela inicial
           </button>
         </Link>
       </div>
