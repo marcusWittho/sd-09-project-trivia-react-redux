@@ -1,7 +1,8 @@
-import './css/question.css';
 import React from 'react';
-import { connect } from 'react-redux';
 import { string, objectOf } from 'prop-types';
+import { connect } from 'react-redux';
+import { handleAssertions } from '../redux/actions';
+import './css/question.css';
 
 class Question extends React.Component {
   constructor(props) {
@@ -11,6 +12,13 @@ class Question extends React.Component {
     this.inQuestion = this.inQuestion.bind(this);
     this.testId = this.testId.bind(this);
     this.multiQuestion = this.multiQuestion.bind(this);
+    this.verifyAnswers = this.verifyAnswers.bind(this);
+    this.handleIndex = this.handleIndex.bind(this);
+
+    this.state = {
+      indexQuestion: 0,
+      numQuestion: 4,
+    };
   }
 
   createHeader() {
@@ -35,23 +43,38 @@ class Question extends React.Component {
     );
   }
 
+  verifyAnswers(value, correct) {
+    const { propHandleAssertions } = this.props;
+    if (value === correct) {
+      propHandleAssertions(1);
+    }
+  }
+
+  handleIndex() {
+    const { indexQuestion, numQuestion } = this.state;
+    if (indexQuestion < numQuestion) {
+      this.setState((prev) => ({ indexQuestion: prev.indexQuestion + 1 }));
+    }
+  }
+
   multiQuestion({ correct_answer: correctAnswer,
-    incorrect_answers: incorrectAnswers, category, question }, index) {
+    incorrect_answers: incorrectAnswers, category, question }) {
     const options = [...incorrectAnswers, correctAnswer];
     const random = 0.5;
     return (
-      <div key={ index } className="mult-answer">
+      <div className="mult-answer">
         <div className="mult-container">
           <section className="mult-question">
             <h3 data-testid="question-category">{ category }</h3>
             <p data-testid="question-text">{ question }</p>
           </section>
           <aside className="mult-aside">
-            { [...options].sort(() => random - Math.random()).map((btn) => (
+            { [...options].sort(() => random - Math.random()).map((btn, index) => (
               <button
                 type="button"
                 key={ index }
-                data-testId={ btn === correctAnswer
+                onClick={ () => this.verifyAnswers(btn, correctAnswer) }
+                data-testid={ btn === correctAnswer
                   ? 'correct-answer'
                   : `wrong-answer-${options.indexOf(btn)}` }
               >
@@ -60,7 +83,7 @@ class Question extends React.Component {
             )) }
           </aside>
         </div>
-        <button type="button">PRÓXIMO</button>
+        <button type="button" onClick={ this.handleIndex }>PRÓXIMO</button>
       </div>
     );
   }
@@ -68,36 +91,37 @@ class Question extends React.Component {
   inQuestion() {
     const { dataAnswer } = this.props;
     const { multiQuestion } = this;
-    return dataAnswer.map((element, index) => {
-      if (element.type === 'boolean') {
-        return (
-          <div key={ index } className="boll-answer">
-            <section className="bool-question">
-              <h3 data-testid="question-category">{ element.category }</h3>
-              <p data-testid="question-text">{ element.question }</p>
-            </section>
-            <aside className="bool-aside">
-              <button
-                type="button"
-                data-testid=""
-                value={ element.correct_answer }
-              >
-                Verdadeiro
-              </button>
-              <button
-                type="button"
-                data-testid=""
-                value={ element.incorrect_answers }
-              >
-                Falso
-              </button>
-            </aside>
-            <button type="button">PRÓXIMO</button>
-          </div>
-        );
-      }
-      return multiQuestion(element, index);
-    });
+    const { indexQuestion } = this.state;
+    console.log(dataAnswer[indexQuestion]);
+    if (dataAnswer[indexQuestion].type === 'boolean') {
+      const {
+        category, question, correct_answer: correctAnswer,
+      } = dataAnswer[indexQuestion];
+      return (
+        <div className="boll-answer">
+          <section className="bool-question">
+            <h3 data-testid="question-category">{ category }</h3>
+            <p data-testid="question-text">{ question }</p>
+          </section>
+          <aside className="bool-aside">
+            <button
+              type="button"
+              onClick={ () => this.verifyAnswers('True', correctAnswer) }
+            >
+              Verdadeiro
+            </button>
+            <button
+              type="button"
+              onClick={ () => this.verifyAnswers('False', correctAnswer) }
+            >
+              Falso
+            </button>
+          </aside>
+          <button type="button" onClick={ this.handleIndex }>PRÓXIMO</button>
+        </div>
+      );
+    }
+    return multiQuestion(dataAnswer[indexQuestion]);
   }
 
   render() {
@@ -117,6 +141,10 @@ const mapStateToProps = ((state) => ({
   playerState: state.player,
 }));
 
+const mapDispatchToProps = (dispatch) => ({
+  propHandleAssertions: (assertions) => dispatch(handleAssertions(assertions)),
+});
+
 Question.propTypes = {
   dataAnswer: string,
   playerState: objectOf({
@@ -125,4 +153,4 @@ Question.propTypes = {
   }),
 }.isRequired;
 
-export default connect(mapStateToProps)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
