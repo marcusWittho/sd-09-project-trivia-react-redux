@@ -56,20 +56,20 @@
 }
 
 .next-button {
-  background-color: #2f80ed;
+  background-color: #27ae60;
   border: none;
   margin-top: 0.5rem;
   width: 50%;
 }
 
 .correct-answer {
-  background-color: #46ae27;
-  border: 3px solid #46ae27;
+  background-color: rgb(6, 240, 15);
+  border: 3px solid rgb(6, 240, 15);
 }
 
 .wrong-answer {
-  background-color: #c91818;
-  border: 3px solid #c91818;
+  background-color: red;
+  border: 3px solid red;
 }
 
 .next-question-buttton {
