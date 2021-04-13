@@ -76,10 +76,10 @@ class Game extends Component {
 
   timerTimeout() {
     const { currentTime } = this.state;
-    this.changeButtonColor();
     this.setState({
       buttonStatus: true,
     });
+    this.changeButtonColor();
     if (currentTime !== 0) { this.setState({ currentTime: 0 }); }
   }
 
@@ -123,7 +123,6 @@ class Game extends Component {
         key={ correctAnswer }
         data-testid="correct-answer"
         id="correct-awnser"
-        disabled={ false }
         onClick={ () => {
           this.changeButtonColor();
           this.timerTimeout();
@@ -141,7 +140,6 @@ class Game extends Component {
         type="button"
         key={ answer }
         data-testid={ `wrong-answer-${index}` }
-        disabled={ false }
         className="wrong-answer"
         onClick={ () => {
           this.changeButtonColor();
