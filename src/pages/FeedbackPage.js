@@ -21,16 +21,16 @@ class feedbackPage extends React.Component {
   }
 
   feedbackScore(assertions, score) {
-    // let message = `Acertou ${assertions} perguntas`;
-    // if (assertions < 1) {
-    //   message = 'Não acertou nenhuma pergunta';
-    // } else if (assertions === 1) {
-    //   message = 'Acertou 1 pergunta';
-    // }
+    let message = `Acertou ${assertions} perguntas`;
+    if (assertions < 1) {
+      message = 'Não acertou nenhuma pergunta';
+    } else if (assertions === 1) {
+      message = 'Acertou 1 pergunta';
+    }
     return (
       <>
-        <p data-testid="feedback-total-question">{ assertions }</p>
-        <p data-testid="feedback-total-score">{score}</p>
+        <p data-testid="feedback-total-question">{ message }</p>
+        <p data-testid="feedback-total-score">{`A sua pontuação foi de: ${score}`}</p>
       </>
     );
   }

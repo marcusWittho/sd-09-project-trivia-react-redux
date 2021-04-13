@@ -36,7 +36,10 @@ class Settings extends Component {
     } if (category) {
       suffixList.push(`&category=${category}`);
     }
-    suffixList.forEach((suffix) => suffixUrl += suffix);
+    for (let index = 0; index < suffixList.length;) {
+      suffixUrl += suffixList[index];
+      index += 1;
+    }
     configureQuestionsDispatch(suffixUrl);
   }
 
