@@ -29,7 +29,7 @@ class InfoGames extends Component {
     if (localStorage.getItem('state')) {
       const { dispatchIncrementScore } = this.props;
       const player = JSON.parse(localStorage.getItem('state'));
-      const { score } = player;
+      const { score } = player.player;
       dispatchIncrementScore(score);
     }
   }
@@ -61,12 +61,12 @@ class InfoGames extends Component {
     const { target } = event;
     const { innerText: answer } = target;
     if (answer === correctAnswer && !isAnswered) {
-      const player = JSON.parse(localStorage.getItem('state'));
-      const { assertions, score } = player;
-      player.score = score + this.getScore();
-      player.assertions = assertions + 1;
-      localStorage.setItem('state', JSON.stringify(player));
-      dispatchIncrementScore(player.score);
+      const state = JSON.parse(localStorage.getItem('state'));
+      const { assertions, score } = state.player;
+      state.player.score = score + this.getScore();
+      state.player.assertions = assertions + 1;
+      localStorage.setItem('state', JSON.stringify(state.player));
+      dispatchIncrementScore(state.player.score);
     }
     this.setState({ isAnswered: true });
     dispatchChangeStatus('stop');
