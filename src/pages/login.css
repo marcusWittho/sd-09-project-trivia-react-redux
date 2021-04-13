@@ -20,4 +20,5 @@ input::placeholder {
   border-radius: 5px;
   cursor: pointer;
   padding: 12px 20px;
+  outline: none;
 }
