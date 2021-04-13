@@ -46,8 +46,8 @@ class Question extends React.Component {
   }
 
   handleIndex() {
-    const { indexQuestion, numQuestion } = this.state;
     this.clearStyle();
+    const { indexQuestion, numQuestion } = this.state;
     if (indexQuestion < numQuestion) {
       this.setState((prev) => ({ indexQuestion: prev.indexQuestion + 1 }));
     }
@@ -56,6 +56,7 @@ class Question extends React.Component {
   multiQuestion({ correct_answer: correctAnswer,
     incorrect_answers: incorrectAnswers, category, question }) {
     const options = [...incorrectAnswers, correctAnswer];
+    const testId = 'correct-answer';
     const random = 0.5;
     const { handleIndex, verifyAnswers } = this;
     return (
@@ -73,7 +74,7 @@ class Question extends React.Component {
                 key={ index }
                 onClick={ () => verifyAnswers(btn, correctAnswer) }
                 data-testid={ btn === correctAnswer
-                  ? 'correct-answer'
+                  ? testId
                   : `wrong-answer-${options.indexOf(btn)}` }
               >
                 { btn }
@@ -90,6 +91,7 @@ class Question extends React.Component {
     const { dataAnswer } = this.props;
     const { multiQuestion } = this;
     const { indexQuestion } = this.state;
+    const idTestCorrect = 'correct-answer';
     console.log(dataAnswer[indexQuestion]);
     if (dataAnswer[indexQuestion].type === 'boolean') {
       const {
@@ -104,7 +106,7 @@ class Question extends React.Component {
           <aside className="bool-aside">
             <button
               type="button"
-              data-testid={ correctAnswer ? 'correct-answer' : 'wrong-answer-0' }
+              data-testid={ correctAnswer ? idTestCorrect : 'wrong-answer-0' }
               className={ correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
               onClick={ () => this.verifyAnswers('True', correctAnswer) }
             >
@@ -112,7 +114,7 @@ class Question extends React.Component {
             </button>
             <button
               type="button"
-              data-testid={ !correctAnswer ? 'correct-answer' : 'wrong-answer-0' }
+              data-testid={ !correctAnswer ? idTestCorrect : 'wrong-answer-0' }
               className={ !correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
               onClick={ () => this.verifyAnswers('False', correctAnswer) }
             >
@@ -138,14 +140,11 @@ class Question extends React.Component {
   }
 
   btnStyle() {
-    // const { indexQuestion } = this.state;
     const correctBtn = document.querySelectorAll('.btnCorrect');
-    // correctBtn.style.border = '3px solid rgb(6, 240, 15)';
+    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
     correctBtn.forEach((btn) => {
       btn.style.border = '3px solid rgb(6, 240, 15)';
     });
-    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
-    // incorrectBtn.style.border = '3px solid rgb(255, 0, 0)';
     incorrectBtn.forEach((btn) => {
       btn.style.border = '3px solid rgb(255, 0, 0)';
     });
