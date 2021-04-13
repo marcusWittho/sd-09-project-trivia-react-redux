@@ -17,10 +17,34 @@ class CardQuestion extends React.Component {
     this.selectAnswer = this.selectAnswer.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
     this.recordScore = this.recordScore.bind(this);
+    this.setLocalStorage = this.setLocalStorage.bind(this);
+    this.getLocalStorage = this.getLocalStorage.bind(this);
   }
 
   componentDidMount() {
     this.startTimer();
+    this.setLocalStorage();
+  }
+
+  setLocalStorage() {
+    const { name, email } = this.props;
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        email,
+      },
+    };
+    return localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  getLocalStorage() {
+    const valid = localStorage.getItem('state');
+    if (valid !== null) {
+      console.log(valid);
+      return JSON.parse(valid);
+    }
   }
 
   selectAnswer(event) {
@@ -51,19 +75,15 @@ class CardQuestion extends React.Component {
 
   recordScore(answer, sec) {
     const { getQuestions: { questions: { results } } } = this.props;
-    const { name: nome, email } = this.props;
-    const { isSelected } = this.state;
     //  Trocar essa const index pelo contador que a Mayara fez
     const index = 0;
     const currentQuestion = results[index];
-    if (isSelected === true && answer === currentQuestion.correct_answer) {
-      const playerData = {
-        name: nome,
-        assertions: 1,
-        score: this.calculateScore(sec, currentQuestion.difficulty),
-        gravatarEmail: email,
-      };
-      return console.log(playerData);
+    const state = this.getLocalStorage();
+    if (answer === currentQuestion.correct_answer) {
+      state.player.assertions += 1;
+      state.player.score += this.calculateScore(sec, currentQuestion.difficulty);
+      console.log('teste');
+      return localStorage.setItem('state', JSON.stringify(state));
     }
   }
 
