@@ -41,7 +41,6 @@
 }
 
 .answers button {
-  background-color: #2f80ed;
   border-radius: 5px;
   color: white;
   cursor: pointer;
@@ -51,10 +50,13 @@
 }
 
 .button-answer {
+  background-color: #2f80ed;
+  border: none;
   width: 100%;
 }
 
 .next-button {
+  background-color: #2f80ed;
   border: none;
   margin-top: 0.5rem;
   width: 50%;

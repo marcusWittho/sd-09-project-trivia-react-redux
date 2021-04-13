@@ -4,6 +4,7 @@ import { string, shape, arrayOf, bool, number, func } from 'prop-types';
 import { Redirect } from 'react-router';
 import actionDecreaseTime from '../../redux/actions/actionDecreaseTime';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
+import { actionClearClassReducer } from '../../redux/actions/actionClassReducer';
 import MultipleAnswers from '../../components/MultipleAnswers';
 import BooleanAnswers from '../../components/BooleanAnswers';
 import Loading from '../../components/Loading/Loading';
@@ -12,7 +13,6 @@ import ShowButton from '../../redux/actions/actionShowButton';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
 import Header from '../../components/Header/Header';
 import './Game.css';
-import { actionClearClassReducer } from '../../redux/actions/actionClassReducer';
 
 class Game extends React.Component {
   constructor(props) {
