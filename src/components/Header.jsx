@@ -14,15 +14,15 @@ class Header extends Component {
 
   componentDidMount() {
     const { email, username } = this.props;
-    const player = {
+    const state = { player: {
       name: username,
       assertions: 0,
       score: 0,
       gravatarEmail: email,
     };
-    // possivelmente o teste limpe o localSto..., talvez tenha que ser salvo no redux
+    } };
     if (!localStorage.getItem('state')) {
-      localStorage.setItem('state', JSON.stringify(player));
+      localStorage.setItem('state', JSON.stringify(state));
     }
     api.fetchGravatar(email).then((imgUrl) => this.setState({ imgUrl }));
   }
