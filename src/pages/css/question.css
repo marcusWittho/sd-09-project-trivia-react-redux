@@ -4,6 +4,10 @@ button {
   width: 100%;
 }
 
+button:focus {
+  border: none;
+}
+
 .boll-answer {
   align-items: center;
   display: flex;

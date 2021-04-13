@@ -54,9 +54,8 @@ class Question extends React.Component {
   }
 
   multiQuestion({ correct_answer: correctAnswer,
-    incorrect_answers: incorrectAnswers, category, question }) {
+    incorrect_answers: incorrectAnswers, category, question }, id) {
     const options = [...incorrectAnswers, correctAnswer];
-    const testId = 'correct-answer';
     const random = 0.5;
     const { handleIndex, verifyAnswers } = this;
     return (
@@ -73,8 +72,7 @@ class Question extends React.Component {
                 className={ btn === correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
                 key={ index }
                 onClick={ () => verifyAnswers(btn, correctAnswer) }
-                data-testid={ btn === correctAnswer
-                  ? testId
+                data-testid={ btn === correctAnswer ? id
                   : `wrong-answer-${options.indexOf(btn)}` }
               >
                 { btn }
@@ -125,7 +123,7 @@ class Question extends React.Component {
         </div>
       );
     }
-    return multiQuestion(dataAnswer[indexQuestion], indexQuestion);
+    return multiQuestion(dataAnswer[indexQuestion], idTestCorrect);
   }
 
   clearStyle() {
@@ -140,13 +138,21 @@ class Question extends React.Component {
   }
 
   btnStyle() {
+    // const { indexQuestion } = this.state;
+    // const btnQuestion = document.querySelectorAll('button');
+    // btnQuestion.forEach((btn) => {
+    //   btn.dataset.testid === 'correct-answer'
+    //     ? btn.style.border = '3px solid rgb(6, 240, 15)'
+    //     : btn.style.border = '3px solid rgb(255, 0, 0)';
+    // });
+    // btnQuestion[indexQuestion].dataset.testid === 'correct-answer' ?
     const correctBtn = document.querySelectorAll('.btnCorrect');
     const incorrectBtn = document.querySelectorAll('.btnIncorrect');
     correctBtn.forEach((btn) => {
       btn.style.border = '3px solid rgb(6, 240, 15)';
     });
     incorrectBtn.forEach((btn) => {
-      btn.style.border = '3px solid rgb(255, 0, 0)';
+      btn.style.border = '3px solid red';
     });
   }
 
