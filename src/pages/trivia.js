@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Header from '../components/header';
-import { getQuestions, setNext, setSelectedAnswer } from '../redux/actions';
+import { setQuestions, setNext, setSelectedAnswer, setToken } from '../redux/actions';
 import Question from '../components/question';
 
 class trivia extends React.Component {
@@ -19,13 +19,25 @@ class trivia extends React.Component {
     };
     this.timer = 30;
     this.handleClick = this.handleClick.bind(this);
-    this.handleGetToken = this.handleGetToken.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
     this.countDown = this.countDown.bind(this);
   }
 
+  componentDidMount() {
+    const { propSetToken } = this.props;
+    const { loading } = this.state;
+    propSetToken();
+    if (loading) this.getQuestions();
+  }
+
   componentDidUpdate() {
     this.startTimer();
+  }
+
+  getQuestions() {
+    const { propSetQuestions } = this.props;
+    propSetQuestions()
+      .then(() => this.setState({ loading: false }));
   }
 
   countDown() {
@@ -56,13 +68,7 @@ class trivia extends React.Component {
     this.setState({ answered: true });
   }
 
-  handleGetToken() {
-    const { propQuestions } = this.props;
-    propQuestions()
-      .then(() => this.setState({ loading: false }));
-  }
-
-  async handleClick() {
+  handleClick() {
     const maxIndex = 4;
     const { index } = this.state;
     const { propSetNext, propSelectedAnswer } = this.props;
@@ -82,15 +88,14 @@ class trivia extends React.Component {
         disabled: false,
       }));
     }
-    await propSelectedAnswer(null);
-    await propSetNext();
+    propSelectedAnswer(null);
+    propSetNext();
   }
 
   render() {
     const { results } = this.props;
     const { index, loading, answered, time, disabled, redirect } = this.state;
     const question = results.find((_question, i) => i === index);
-    if (loading) this.handleGetToken();
     if (redirect) return <Redirect to="/feedback" />;
     return (
       <div className="App">
@@ -121,11 +126,12 @@ class trivia extends React.Component {
 }
 
 trivia.propTypes = {
-  propQuestions: PropTypes.func,
+  propSetQuestions: PropTypes.func,
 }.isRequired;
 
 const mapStateToProps = ({
-  actionsReducer: { token, results, next, selectedAnswer },
+  actionsReducer: { results, next, selectedAnswer },
+  rankingReducer: { token },
 }) => ({
   token,
   results,
@@ -134,7 +140,8 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  propQuestions: () => dispatch(getQuestions()),
+  propSetToken: () => dispatch(setToken()),
+  propSetQuestions: () => dispatch(setQuestions()),
   propSetNext: () => dispatch(setNext()),
   propSelectedAnswer:
     (selectedAnswer) => dispatch(setSelectedAnswer(selectedAnswer)),

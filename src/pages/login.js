@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import logo from '../trivia.png';
-import { getToken, setNameAndEmail } from '../redux/actions';
+import { setToken, setInit, setNameAndEmail } from '../redux/actions';
 
 class loginScreen extends React.Component {
   constructor(props) {
@@ -18,6 +18,11 @@ class loginScreen extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleValidateEmail = this.handleValidateEmail.bind(this);
+  }
+
+  componentDidMount() {
+    const { propSetInit } = this.props;
+    propSetInit();
   }
 
   setupButton() {
@@ -38,16 +43,17 @@ class loginScreen extends React.Component {
   }
 
   async handleClick() {
-    const { propGetToken, propSetNameAndEmail } = this.props;
+    const { propSetToken, propSetNameAndEmail } = this.props;
     const { name, email } = this.state;
-    await propGetToken();
-    await propSetNameAndEmail(name, email);
+    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
+    await propSetToken();
+    await propSetNameAndEmail(name, email, gravatar);
     localStorage.setItem('state', JSON.stringify({
       player: {
         name,
         assertions: 0,
         score: 0,
-        gravatarEmail: `https://www.gravatar.com/avatar/${md5(email).toString()}`,
+        gravatar,
       },
     }));
     this.setState({
@@ -105,17 +111,15 @@ class loginScreen extends React.Component {
 }
 
 loginScreen.propTypes = {
-  propGetToken: PropTypes.func,
+  propSetToken: PropTypes.func,
   propSetNameAndImail: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer }) => ({
-  actionsReducer,
-});
-
 const mapDispatchToProps = (dispatch) => ({
-  propGetToken: () => dispatch(getToken()),
-  propSetNameAndEmail: (name, email) => dispatch(setNameAndEmail(name, email)),
+  propSetToken: () => dispatch(setToken()),
+  propSetNameAndEmail:
+    (name, email, gravatar) => dispatch(setNameAndEmail(name, email, gravatar)),
+  propSetInit: () => dispatch(setInit()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(loginScreen);
+export default connect(null, mapDispatchToProps)(loginScreen);

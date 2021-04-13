@@ -6,8 +6,7 @@ import '../css/header.css';
 
 class Header extends Component {
   render() {
-    const { name, email } = this.props;
-    const { player } = JSON.parse(localStorage.getItem('state'));
+    const { name, email, score } = this.props;
     return (
       <div className="header">
         <div>
@@ -15,13 +14,14 @@ class Header extends Component {
             src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
             alt={ `${name} profile` }
             data-testid="header-profile-picture"
+            className="header-image"
           />
         </div>
         <div>
           <h1 data-testid="header-player-name">{ name }</h1>
         </div>
         <div>
-          <p data-testid="header-score">{ player.score }</p>
+          <p data-testid="header-score">{ score }</p>
         </div>
       </div>
     );
@@ -29,13 +29,13 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  profile: PropTypes.string,
-  player: PropTypes.string,
+  name: PropTypes.string,
+  email: PropTypes.string,
   score: PropTypes.number,
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer: { name, email } }) => ({
-  name, email,
+const mapStateToProps = ({ actionsReducer: { name, email, score } }) => ({
+  name, email, score,
 });
 
 export default connect(mapStateToProps)(Header);
