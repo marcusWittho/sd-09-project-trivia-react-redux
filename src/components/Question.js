@@ -70,6 +70,12 @@ class Question extends React.Component {
     updateTimer(initialTimer);
   }
 
+  decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   render() {
     const { question, timeLeft } = this.props;
     const { disabledOptions, addClass, nextButton } = this.state;
@@ -77,7 +83,7 @@ class Question extends React.Component {
       <section className="question-container">
         { timeLeft > 0 ? <p>{`Time Left: ${timeLeft}s`}</p> : <p>Time Over!</p> }
         <p data-testid="question-category">{ question.category }</p>
-        <p data-testid="question-text">{ question.question }</p>
+        <p data-testid="question-text">{ this.decodeHtml(question.question) }</p>
         { question.randomAnswers.map((answer, index) => {
           if (answer.correct) {
             return (
@@ -89,7 +95,7 @@ class Question extends React.Component {
                 className={ addClass ? 'correct-answer' : 'answer' }
                 onClick={ this.handleAnswerClick }
               >
-                { answer.correct }
+                { this.decodeHtml(answer.correct) }
               </button>);
           }
           return (
@@ -102,7 +108,7 @@ class Question extends React.Component {
               className={ addClass ? 'wrong-answer' : 'answer' }
               onClick={ this.handleAnswerClick }
             >
-              { answer.incorrect }
+              { this.decodeHtml(answer.incorrect) }
             </button>);
         })}
         <div>
