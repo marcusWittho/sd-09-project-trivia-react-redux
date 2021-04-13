@@ -11,15 +11,13 @@ class Ranking extends Component {
         <h2>Ranking</h2>
         <ul className="ranking-list">
           <li>
-            <div>
-              <div data-testid={ `player-name-0` }>
-                <span className="ranking-text">Nome: </span>
-                Stephen Hawking
-              </div>
-              <div data-testid={ `player-score-0` }>
-                <span className="ranking-text">Score: </span>
-                3
-              </div>
+            <div data-testid="player-name-0">
+              <span className="ranking-text">Nome: </span>
+              Stephen Hawking
+            </div>
+            <div data-testid="player-score-0">
+              <span className="ranking-text">Score: </span>
+              3
             </div>
           </li>
           {
