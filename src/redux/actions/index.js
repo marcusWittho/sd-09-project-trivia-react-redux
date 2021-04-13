@@ -3,6 +3,7 @@ import { getAnswer } from '../../services/triviaApi';
 export const SET_DATA_GAME = 'SET_DATA_GAME';
 export const SET_USER_NAME = 'SET_USER_NAME';
 export const SET_USER_EMAIL = 'SET_USER_EMAIL';
+export const SET_ASSERTIONS = 'SET_ASSERTIONS';
 
 export const dataGame = (data) => ({
   type: SET_DATA_GAME,
@@ -16,6 +17,11 @@ export const handleUserName = (nameInput) => ({
 export const handleUserEmail = (email) => ({
   type: SET_USER_EMAIL,
   email,
+});
+
+export const handleAssertions = (assertions) => ({
+  type: SET_ASSERTIONS,
+  assertions,
 });
 
 export const fetchQuestions = (num, token) => (dispatch) => (

@@ -1,6 +1,5 @@
 button {
   background-color: rgba(255, 255, 255, 0.6);
-  border: 2px solid rgba(255, 255, 255, 0.6);
   margin: 10px;
   width: 100%;
 }
@@ -23,20 +22,11 @@ button {
 
 .bool-question {
   background-color: rgba(255, 255, 255, 0.6);
-  border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 15px;
   margin-bottom: 10px;
   padding: 20px;
   width: 60%;
 }
-
-/* .btn-correct {
-  border: 3px solid rgb(6, 240, 15)
-}
-
-.btn-incorrect {
-  border: 3px solid rgb(255, 0, 0)
-} */
 
 .btn-next {
   width: 50%;
@@ -77,7 +67,6 @@ button {
 .mult-question {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.6);
-  border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 15px;
   margin-bottom: 10px;
   padding: 20px;
