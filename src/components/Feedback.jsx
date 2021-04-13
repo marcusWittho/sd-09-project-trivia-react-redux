@@ -6,28 +6,51 @@ class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      loginScreen: false,
-      rankingScreen: false,
-    };
-
+    this.finalFeedback = this.finalFeedback.bind(this);
     this.feedbackMessage = this.feedbackMessage.bind(this);
     this.playAgain = this.playAgain.bind(this);
     this.rankingPage = this.rankingPage.bind(this);
     this.getFromLocalStorage = this.getFromLocalStorage.bind(this);
     this.updateRanking = this.updateRanking.bind(this);
     this.madeButtons = this.madeButtons.bind(this);
+    this.hitMessage = this.hitMessage.bind(this);
+
+    this.state = {
+      loginScreen: false,
+      rankingScreen: false,
+    };
   }
 
   getFromLocalStorage() {
     const responseLocalStorage = JSON.parse(localStorage.getItem('state'));
-    const { player: { name, assertions, gravatarEmail } } = responseLocalStorage;
+    const { player: { name, assertions, gravatarEmail, score } } = responseLocalStorage;
 
     const ranking = [
-      { name, score: assertions, picture: gravatarEmail },
+      { name, score, assertions, picture: gravatarEmail },
     ];
 
     return ranking;
+  }
+
+  hitMessage(assertions) {
+    if (assertions === 0) {
+      return 'Não acertou nenhuma pergunta';
+    }
+    return `Acertou ${assertions} perguntas`;
+  }
+
+  finalFeedback() {
+    const responseLocalStorage = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions, score } } = responseLocalStorage;
+    return (
+      <div>
+        <span>Placar final</span>
+        <span data-testid="feedback-total-score">{score}</span>
+        <br />
+        <span>Acertou </span>
+        <span data-testid="feedback-total-question">{`${assertions} perguntas` }</span>
+      </div>
+    );
   }
 
   updateRanking() {
@@ -69,7 +92,7 @@ class Feedback extends React.Component {
   }
 
   rankingPage() {
-    this.updateRanking(); // Apagar depois de configurar a página ranking
+    this.updateRanking(); // Apagar depois de configurar a página ranking - test
     this.setState({
       rankingScreen: true,
     });
@@ -113,14 +136,13 @@ class Feedback extends React.Component {
             src={ `https://www.gravatar.com/avatar/${md5(gravatarEmail).toString()}` }
             alt="Gravatar"
           />
-
           <p data-testid="header-player-name">
             Jogador:
             {name}
           </p>
 
           <p data-testid="header-score">{ score }</p>
-
+          { this.finalFeedback() }
           { this.feedbackMessage() }
         </header>
 

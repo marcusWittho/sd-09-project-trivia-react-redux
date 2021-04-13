@@ -5,6 +5,12 @@ import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 import { getQuestions } from '../redux/action';
 
+const TEN_POINTS = 10;
+const TREE_POINTS = 3;
+const TWO_POINTS = 2;
+const ONE_POINTS = 1;
+let result = 0;
+
 class GameScreen extends Component {
   constructor(props) {
     super(props);
@@ -61,25 +67,20 @@ class GameScreen extends Component {
 
   calcScore(difficulty) {
     const { timer, score } = this.state;
-    const TEN_POINTS = 10;
-    const TREE_POINTS = 3;
-    const TWO_POINTS = 2;
-    const ONE_POINTS = 1;
 
     if (difficulty === 'hard') {
-      const result = TEN_POINTS + timer * TREE_POINTS;
+      result = TEN_POINTS + timer * TREE_POINTS;
       this.setState({ score: score + result });
     }
-
     if (difficulty === 'medium') {
-      const result = TEN_POINTS + timer * TWO_POINTS;
+      result = TEN_POINTS + timer * TWO_POINTS;
       this.setState({ score: score + result });
     }
-
     if (difficulty === 'easy') {
-      const result = TEN_POINTS + timer * ONE_POINTS;
+      result = TEN_POINTS + timer * ONE_POINTS;
       this.setState({ score: score + result });
     }
+    return result;
   }
 
   decreaseTime() {
@@ -192,7 +193,7 @@ class GameScreen extends Component {
   render() {
     const {
       questions, numberOFQuestion, loading, timer, disabled,
-      colorQuestion, score, nextButton, feedbackScreen,
+      colorQuestion, nextButton, feedbackScreen,
     } = this.state;
     const orderQuestions = questions[numberOFQuestion];
 
@@ -210,9 +211,9 @@ class GameScreen extends Component {
           disabled={ disabled }
           style={ (colorQuestion) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
           onClick={ () => {
-            this.setScoreInStorage(score);
+            this.setScoreInStorage(this.calcScore(orderQuestions.difficulty));
             this.clickQuestion();
-            this.calcScore(orderQuestions.difficulty);
+            // this.calcScore(orderQuestions.difficulty);
           } }
         >
           {orderQuestions.correct_answer}
