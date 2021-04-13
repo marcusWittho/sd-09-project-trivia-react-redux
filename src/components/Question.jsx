@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { shape, string, arrayOf, func } from 'prop-types';
 import { connect } from 'react-redux';
+import he from 'he';
 import Answer from './Answer';
 import { handleAssertion } from '../actions';
 
@@ -63,7 +64,7 @@ class Question extends Component {
         ? (
           <Answer
             key={ answer }
-            text={ answer }
+            text={ he.decode(answer) }
             dataTestId="correct-answer"
             isClicked={ clicked ? 'yes' : '' }
             onHandleClick={ this.handleClick }
@@ -72,7 +73,7 @@ class Question extends Component {
         : (
           <Answer
             key={ answer }
-            text={ answer }
+            text={ he.decode(answer) }
             dataTestId={ `wrong-answer-${answers.indexOf(answer)}` }
             isClicked={ clicked ? 'no' : '' }
             onHandleClick={ this.handleClick }
@@ -88,7 +89,7 @@ class Question extends Component {
       <>
         <section className="question-game">
           <h2 data-testid="question-category">{ category }</h2>
-          <p data-testid="question-text">{ question }</p>
+          <p data-testid="question-text">{ he.decode(question) }</p>
           { this.renderAnswers() }
         </section>
         { clicked && this.showNextQuestionButton() }
