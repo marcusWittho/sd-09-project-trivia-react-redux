@@ -2,8 +2,8 @@ import { MD5 } from 'crypto-js';
 import React from 'react';
 
 class Ranking extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.renderUserList = this.renderUserList.bind(this);
   }
