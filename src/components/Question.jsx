@@ -20,9 +20,19 @@ class Question extends Component {
       clicked: false,
       answers: [...incorrectAnswers, correctAnswer],
       shuffledAnswers: this.shuffleAnswers([...incorrectAnswers, correctAnswer]),
+      timer: 30,
     };
     this.handleClick = this.handleClick.bind(this);
     this.showNextQuestionButton = this.showNextQuestionButton.bind(this);
+  }
+
+  componentDidMount() {
+    const milliseconds = 1000;
+    this.interval = setInterval(() => this.tick(), milliseconds);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   handleClick(e) {
@@ -37,6 +47,12 @@ class Question extends Component {
         }
       },
     );
+  }
+
+  tick() {
+    this.setState((state) => ({
+      timer: state.timer - 1,
+    }));
   }
 
   showNextQuestionButton() {
@@ -67,6 +83,7 @@ class Question extends Component {
             text={ he.decode(answer) }
             dataTestId="correct-answer"
             isClicked={ clicked ? 'yes' : '' }
+            timer={ timer }
             onHandleClick={ this.handleClick }
           />
         )
@@ -76,6 +93,7 @@ class Question extends Component {
             text={ he.decode(answer) }
             dataTestId={ `wrong-answer-${answers.indexOf(answer)}` }
             isClicked={ clicked ? 'no' : '' }
+            timer={ timer }
             onHandleClick={ this.handleClick }
           />
         )
@@ -84,7 +102,7 @@ class Question extends Component {
 
   render() {
     const { data: { category, question } } = this.props;
-    const { clicked } = this.state;
+    const { clicked, timer } = this.state;
     return (
       <>
         <section className="question-game">
@@ -93,6 +111,9 @@ class Question extends Component {
           { this.renderAnswers() }
         </section>
         { clicked && this.showNextQuestionButton() }
+        <div>
+          {timer > 0 ? <p>{ timer }</p> : <p>0</p>}
+        </div>
       </>
     );
   }
