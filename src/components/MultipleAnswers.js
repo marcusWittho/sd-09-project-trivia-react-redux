@@ -20,8 +20,8 @@ class MultipleAnswers extends React.Component {
     this.handleClcik = this.handleClcik.bind(this);
     this.setScoreInGlobalState = this.setScoreInGlobalState.bind(this);
     this.state = {
-      correctClass: '',
-      wrongClass: '',
+      correctClass: 'button-answer',
+      wrongClass: 'button-answer',
     };
   }
 
@@ -54,8 +54,8 @@ class MultipleAnswers extends React.Component {
       addAssertions(totalAsserts);
     }
     this.setState({
-      correctClass: 'correct-answer',
-      wrongClass: 'wrong-answer',
+      correctClass: 'correct-answer button-answer',
+      wrongClass: 'wrong-answer button-answer',
     });
     stateDisableButton(true);
     stateShowButton(true);
@@ -88,8 +88,8 @@ class MultipleAnswers extends React.Component {
     }
     let index = 0;
     return (
-      <div>
-        <div className="question-container">
+      <div className="question-container">
+        <div>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>

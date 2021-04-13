@@ -18,8 +18,8 @@ class BooleanAnswers extends React.Component {
     this.setScoreInGloblaState = this.setScoreInGloblaState.bind(this);
 
     this.state = {
-      correctClass: '',
-      wrongClass: '',
+      correctClass: 'button-answer',
+      wrongClass: 'button-answer',
     };
   }
 
@@ -48,8 +48,8 @@ class BooleanAnswers extends React.Component {
       addAssertions(totalAsserts);
     }
     this.setState({
-      correctClass: 'correct-answer',
-      wrongClass: 'wrong-answer',
+      correctClass: 'correct-answer button-answer',
+      wrongClass: 'wrong-answer button-answer',
     });
     stateDisableButton(true);
     stateShowButton(true);
@@ -69,8 +69,8 @@ class BooleanAnswers extends React.Component {
     const answers = ['True', 'False'];
     const index = 0;
     return (
-      <div>
-        <div className="question-container">
+      <div className="question-container">
+        <div>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>

@@ -84,26 +84,29 @@ class Game extends React.Component {
     }
     if (redirectFeedback) return <Redirect exact to="/feedback" />;
     return (
-      <section className="game-container">
+      <section>
         <Header />
         <main className="main-container">
-          <div className="answers">
-            <p>{ `Tempo: ${time}` }</p>
-            { (questions) && questions.map((question) => (
-              (question.type === 'multiple')
-                ? <MultipleAnswers question={ question } />
-                : <BooleanAnswers question={ question } />
-            ))[counter] }
-            {(showButton) && (
-              <button
-                type="button"
-                data-testid="btn-next"
-                onClick={ () => this.handleNextQuestion() }
-              >
-                Próxima
-              </button>
-            )}
-          </div>
+          <section className="questions-container">
+            <p className="time">{ `Tempo: ${time}` }</p>
+            <div className="answers">
+              { (questions) && questions.map((question) => (
+                (question.type === 'multiple')
+                  ? <MultipleAnswers question={ question } />
+                  : <BooleanAnswers question={ question } />
+              ))[counter] }
+              {(showButton) && (
+                <button
+                  type="button"
+                  className="next-button"
+                  data-testid="btn-next"
+                  onClick={ () => this.handleNextQuestion() }
+                >
+                  Próxima
+                </button>
+              )}
+            </div>
+          </section>
         </main>
       </section>
     );
