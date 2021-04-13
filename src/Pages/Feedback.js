@@ -15,6 +15,10 @@ class Feedback extends React.Component {
     }
   }
 
+  order(a, b) {
+    return b.score - a.score;
+  }
+
   rankingSave(player) {
     const { name, score, gravatarEmail } = player;
     const rankingStore = {
@@ -25,6 +29,7 @@ class Feedback extends React.Component {
     if (localStorage.getItem('ranking')) {
       const ranking = JSON.parse(localStorage.getItem('ranking'));
       ranking.push(...[rankingStore]);
+      ranking.sort(this.order);
       localStorage.setItem('ranking', JSON.stringify(ranking));
     } else {
       const arrRanking = [rankingStore];
@@ -46,6 +51,11 @@ class Feedback extends React.Component {
         <Link to="/">
           <button data-testid="btn-play-again" type="button">
             Jogar novamente
+          </button>
+        </Link>
+        <Link to="/Ranking">
+          <button data-testid="btn-play-again" type="button">
+            Ver Ranking
           </button>
         </Link>
         {this.feedbackMessege()}
