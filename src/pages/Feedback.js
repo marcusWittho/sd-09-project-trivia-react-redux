@@ -6,6 +6,19 @@ class Feedback extends React.Component {
     super(props);
 
     this.renderResultsInfo = this.renderResultsInfo.bind(this);
+    this.setStorageRanking = this.setStorageRanking.bind(this);
+  }
+
+  setStorageRanking() {
+    const dataObj = JSON.parse(localStorage.getItem('state'));
+    console.log(dataObj);
+    if (!localStorage.getItem('ranking')) {
+      localStorage.setItem('ranking', JSON.stringify([dataObj]));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify(
+        [...JSON.parse(localStorage.getItem('ranking')), dataObj],
+      ));
+    }
   }
 
   renderResultsInfo() {
@@ -29,6 +42,7 @@ class Feedback extends React.Component {
             {assertions}
           </p>
         </div>
+        {this.setStorageRanking()}
       </section>
     );
   }
