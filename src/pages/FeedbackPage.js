@@ -1,6 +1,7 @@
 import React from 'react';
 import '../CSS/feedbackPage.css';
 import Header from '../components/Header';
+import PlayAgainButton from '../components/PlayAgainButton';
 
 class feedbackPage extends React.Component {
   getStateLocalStorage() {
@@ -25,6 +26,7 @@ class feedbackPage extends React.Component {
       <div>
         <Header />
         { this.feedBackMessage(assertions) }
+        <PlayAgainButton />
       </div>
     );
   }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { fetchQuestions } from '../services';
 import '../CSS/gameplay.css';
-import { nextQuestion, sendQuestionsAnswersInfo } from '../actions';
+import { sendQuestionsAnswersInfo } from '../actions';
 import Header from './Header';
 
 const maxQuestionsIndex = 5;
@@ -69,8 +69,8 @@ class Gameplay extends Component {
 
   calculateAnswerPoint() {
     const standardNumber = 10;
-    const { timer } = this.state;
-    const { questionList, questionIndex } = this.props;
+    const { timer, questionIndex } = this.state;
+    const { questionList } = this.props;
     const { difficulty } = questionList.results[questionIndex];
     const difficultyFactor = this.difficultyNumber(difficulty);
     return standardNumber + (timer * difficultyFactor);
@@ -104,8 +104,7 @@ class Gameplay extends Component {
     });
   }
 
-
-  async prepareNextQuestion(nextQuestionDispatch, questionList) {
+  async prepareNextQuestion(questionList) {
     const { questionIndex } = this.state;
     this.setState({ isButtonDisabled: false });
     await this.setState((state) => ({
@@ -115,7 +114,6 @@ class Gameplay extends Component {
     if (questionIndex < maxQuestionsIndex - 1) {
       this.randomAnswersOrder(questionList);
     }
-
   }
 
   randomAnswersOrder(questionList) {
@@ -191,11 +189,11 @@ class Gameplay extends Component {
   }
 
   renderNextButton() {
-    const { nextQuestionDispatch, questionList } = this.props;
+    const { questionList } = this.props;
     return (
       <button
         type="button"
-        onClick={ () => this.prepareNextQuestion(nextQuestionDispatch, questionList) }
+        onClick={ () => this.prepareNextQuestion(questionList) }
         data-testid="btn-next"
       >
         Próxima
@@ -206,9 +204,7 @@ class Gameplay extends Component {
   render() {
     const { loading, renderNextButton, timer, questionIndex } = this.state;
     if (questionIndex === maxQuestionsIndex) {
-      return (
-        <Redirect to="/feedback" />
-      );
+      return <Redirect to="/feedback" />;
     }
     return (
       <>
@@ -227,7 +223,6 @@ class Gameplay extends Component {
 const mapStateToProps = (state) => ({
   tokenState: state.user.token,
   questionList: state.gameplay.questionList,
-  questionIndex: state.gameplay.questionIndex,
   answersAndPosition: state.gameplay.answersAndPosition,
   timer: state.gameplay.timer,
 });
@@ -242,7 +237,6 @@ Gameplay.propTypes = {
   questionList: PropTypes.shape({
     results: PropTypes.shape([]).isRequired,
   }).isRequired,
-  questionIndex: PropTypes.number.isRequired,
   answersAndPosition: PropTypes.shape({
     newAnswersList: PropTypes.shape().isRequired,
     randomIndex: PropTypes.shape().isRequired,
