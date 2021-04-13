@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import player from './loginReducer';
+import player from './playerReducer';
 import trivia from './triviaReducer';
 
 const rootReducer = combineReducers({
