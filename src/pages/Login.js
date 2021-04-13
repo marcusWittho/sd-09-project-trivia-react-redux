@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import loginAction from '../actions/loginAction';
+import { loginAction } from '../actions/playerAction';
 import getTrivia from '../actions/triviaAction';
 import logo from '../trivia.png';
 import requestToken from '../services/tokenAPI';
