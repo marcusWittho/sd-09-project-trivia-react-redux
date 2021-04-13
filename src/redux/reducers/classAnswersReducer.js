@@ -1,6 +1,6 @@
 import { CLEAR_CLASS_REDUCER, SET_CLASS_REDUCER } from '../actions/actionTypes';
 
-const initClass = 'option-answer';
+const initClass = 'button-answer';
 
 const INITIAL_STATE = {
   correctClass: initClass,
@@ -11,8 +11,8 @@ const classAnswersReducers = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SET_CLASS_REDUCER:
     return {
-      correctClass: 'correct-answer',
-      wrongClass: 'wrong-answer',
+      correctClass: 'correct-answer button-answer',
+      wrongClass: 'wrong-answer button-answer',
     };
   case CLEAR_CLASS_REDUCER:
     return {

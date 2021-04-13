@@ -18,7 +18,6 @@ class MultipleAnswers extends React.Component {
 
     this.randomAnswer = this.randomAnswer.bind(this);
     this.selectDataTest = this.selectDataTest.bind(this);
-    // this.initialState = this.initialState.bind(this);
 
     this.handleClcik = this.handleClcik.bind(this);
     this.setScoreInGlobalState = this.setScoreInGlobalState.bind(this);
@@ -59,7 +58,6 @@ class MultipleAnswers extends React.Component {
   }
 
   selectDataTest(question, option, index) {
-    // const { question } = this.props;
     if (question.correct_answer !== option) {
       return `wrong-answer-${index}`;
     }
@@ -85,8 +83,8 @@ class MultipleAnswers extends React.Component {
     }
     let index = 0;
     return (
-      <div className="trivia-container">
-        <div className="question-container">
+      <div className="question-container">
+        <div>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>

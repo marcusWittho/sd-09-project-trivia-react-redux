@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { string, shape, arrayOf, bool, number, func } from 'prop-types';
 import { Redirect } from 'react-router';
-// import { Link } from 'react-router-dom';
 import actionDecreaseTime from '../../redux/actions/actionDecreaseTime';
 import actionResetCounter from '../../redux/actions/actionResetCounter';
+import { actionClearClassReducer } from '../../redux/actions/actionClassReducer';
 import MultipleAnswers from '../../components/MultipleAnswers';
 import BooleanAnswers from '../../components/BooleanAnswers';
 import Loading from '../../components/Loading/Loading';
@@ -13,7 +13,6 @@ import ShowButton from '../../redux/actions/actionShowButton';
 import actionCleanOptionAnswers from '../../redux/actions/actionCleanOptionAnswers';
 import Header from '../../components/Header/Header';
 import './Game.css';
-import { actionClearClassReducer } from '../../redux/actions/actionClassReducer';
 
 class Game extends React.Component {
   constructor(props) {
@@ -87,12 +86,12 @@ class Game extends React.Component {
     }
     if (redirectFeedback) return <Redirect exact to="/feedback" />;
     return (
-      <section className="game-container">
+      <section>
         <Header />
-        <main className="game-main-container">
-          <p>{ `Tempo: ${time}` }</p>
-          <div className="answers">
-            <div className="game-container">
+        <main className="main-container">
+          <section className="questions-container">
+            <p className="time">{ `Tempo: ${time}` }</p>
+            <div className="answers">
               { (questions) && questions.map((question) => (
                 (question.type === 'multiple')
                   ? <MultipleAnswers question={ question } />
@@ -100,8 +99,8 @@ class Game extends React.Component {
               ))[counter] }
               {(showButton) && (
                 <button
-                  className="next-question-buttton"
                   type="button"
+                  className="next-button"
                   data-testid="btn-next"
                   onClick={ () => this.handleNextQuestion() }
                 >
@@ -109,7 +108,7 @@ class Game extends React.Component {
                 </button>
               )}
             </div>
-          </div>
+          </section>
         </main>
       </section>
     );

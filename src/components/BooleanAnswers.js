@@ -49,6 +49,10 @@ class BooleanAnswers extends React.Component {
       const totalAsserts = player.assertions + 1;
       addAssertions(totalAsserts);
     }
+    // this.setState({
+    //   correctClass: 'correct-answer button-answer',
+    //   wrongClass: 'wrong-answer button-answer',
+    // });
     setClassReducer();
     stateDisableButton(true);
     stateShowButton(true);
@@ -68,8 +72,8 @@ class BooleanAnswers extends React.Component {
     const answers = ['True', 'False'];
     const index = 0;
     return (
-      <div className="trivia-container">
-        <div className="question-container">
+      <div className="question-container">
+        <div>
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>
