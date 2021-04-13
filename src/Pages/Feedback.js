@@ -75,7 +75,11 @@ class Feedback extends Component {
         { this.message() }
         { this.score() }
         <Link to="/">
-          <button type="button" data-testid="btn-play-again" onClick={ this.setGlobalState }>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ this.setGlobalState }
+          >
             Jogar novamente
           </button>
         </Link>
