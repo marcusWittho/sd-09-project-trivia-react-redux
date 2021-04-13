@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import he from 'he';
 import Answer from './Answer';
 import { handleAssertion } from '../actions';
+import scoreTable from '../helpers/scoreTable';
 
 class Question extends Component {
   constructor(props) {
@@ -39,11 +40,12 @@ class Question extends Component {
     const { innerText } = e.target;
     const { sumScore, data: { difficulty } } = this.props;
     const { answers, timer } = this.state;
+    clearInterval(this.interval);
     this.setState(
       { clicked: true },
       () => {
         if (answers.indexOf(innerText) === answers.length - 1) {
-          sumScore(timer * difficulty);
+          sumScore(timer, scoreTable[difficulty]);
         }
       },
     );
@@ -74,7 +76,7 @@ class Question extends Component {
   }
 
   renderAnswers() {
-    const { clicked, answers, shuffledAnswers } = this.state;
+    const { clicked, answers, shuffledAnswers, timer } = this.state;
     return shuffledAnswers.map((answer) => (
       answers.indexOf(answer) === answers.length - 1
         ? (
@@ -85,6 +87,7 @@ class Question extends Component {
             isClicked={ clicked ? 'yes' : '' }
             timer={ timer }
             onHandleClick={ this.handleClick }
+            disabled={ clicked }
           />
         )
         : (
@@ -95,6 +98,7 @@ class Question extends Component {
             isClicked={ clicked ? 'no' : '' }
             timer={ timer }
             onHandleClick={ this.handleClick }
+            disabled={ clicked }
           />
         )
     ));
