@@ -5,7 +5,10 @@ import { Link, Redirect } from 'react-router-dom';
 import { doLogin } from '../actions/index';
 import { getToken } from '../services/api';
 import localStorageService from '../services/localStorage';
+
 import './Login.css';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 class Login extends React.Component {
   constructor(props) {
@@ -61,44 +64,46 @@ class Login extends React.Component {
   render() {
     const { name, email, loginReady } = this.state;
     const { doFormLogin } = this.props;
-    if (loginReady) {
-      return <Redirect to="/trivia" />;
-    }
+    if (loginReady) return <Redirect to="/trivia" />;
     return (
-      <main>
-        <input
-          data-testid="input-player-name"
-          id="input-name"
-          type="text"
-          value={ name }
-          placeholder="Nome"
-          name="name"
-          onChange={ (e) => { this.changeHandler(e); } }
-        />
-        <input
-          data-testid="input-gravatar-email"
-          id="input-email"
-          type="email"
-          value={ email }
-          placeholder="Email"
-          name="email"
-          onChange={ (e) => { this.changeHandler(e); } }
-        />
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ this.enableButton() }
-          onClick={ () => {
-            doFormLogin({ name, email });
-            this.getAndSaveToken();
-          } }
-        >
-          Jogar
-        </button>
-        <Link to="/settings" data-testid="btn-settings">
-          <button type="button">Configurações do jogo</button>
-        </Link>
-      </main>
+      <>
+        <Header />
+        <main>
+          <section className="login-form-container">
+            <input
+              data-testid="input-player-name"
+              id="input-name"
+              type="text"
+              value={ name }
+              placeholder="Nome"
+              name="name"
+              onChange={ (e) => { this.changeHandler(e); } }
+            />
+            <input
+              data-testid="input-gravatar-email"
+              id="input-email"
+              type="email"
+              value={ email }
+              placeholder="Email"
+              name="email"
+              onChange={ (e) => { this.changeHandler(e); } }
+            />
+            <button
+              type="button"
+              className="login-btns"
+              data-testid="btn-play"
+              disabled={ this.enableButton() }
+              onClick={ () => { doFormLogin({ name, email }); this.getAndSaveToken(); } }
+            >
+              Jogar
+            </button>
+            <Link className="config-btn" to="/settings" data-testid="btn-settings">
+              <button className="login-btns" type="button">Configurações do jogo</button>
+            </Link>
+          </section>
+        </main>
+        <Footer />
+      </>
     );
   }
 }

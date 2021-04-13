@@ -2,22 +2,31 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import './Header.css';
+
+import logo from '../assets/trivia.png';
 
 class Header extends Component {
   render() {
     const { email, name } = this.props;
     return (
-      <header className="in-game-header">
+      <header className={ !name && !email ? 'header-login' : 'in-game-header' }>
+        <div className="img-container">
+          <img
+            className="avatar-img"
+            data-testid="header-profile-picture"
+            src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
+            alt="gravatar"
+          />
+        </div>
         <img
-          className="avatar-img"
-          data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
-          alt="gravatar"
+          className="trivia-logo-ingame"
+          src={ logo }
+          alt="Trivia Logo"
         />
         <div className="header-text-container">
           <p data-testid="header-player-name">
             Jogador:
+            <br />
             { name }
           </p>
         </div>

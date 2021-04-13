@@ -1,43 +1,127 @@
-.incorrect-answers {
-  border: 3px solid red;
-  height: 30px;
-  margin: 10px;
-  text-align: center;
-  width: 200px;
+.questions-container {
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: #0000004d 0 19px 38px , #00000038 0 15px 12px;
+  display: flex;
+  flex-flow: column wrap;
+  height: 60%;
+  justify-content: center;
+  margin-top: 200px;
+  padding: 10px;
+  width: 50%;
 }
 
-.correct-answers {
-  border: 3px solid rgb(6, 240, 15);
-  height: 30px;
-  margin: 10px;
-  text-align: center;
-  width: 200px;
-}
-
-.answer-button {
-  height: 30px;
-  margin: 10px;
-  text-align: center;
-  width: 200px;
-}
-
-.answer-options {
+.questions-container section {
+  align-items: center;
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
 }
 
-button:active {
-  border: none;
+.answer-button {
+  background-color: black;
+  border: 2px  solid black;
+  border-radius: 10px;
+  color: white;
+  font-weight: 900;
+  height: 30px;
+  margin: 5px;
+  text-align: center;
+  width: 70%;
 }
 
-.next-enabled {
+.answer-button:hover {
+  transition: 0.3s;
+  width: 80%;
+}
+
+.incorrect-answers {
+  background-color: red;
+  border: 3px solid red;
+  border-radius: 10px;
+  font-weight: 900;
+  height: 30px;
+  margin: 5px;
+  text-align: center;
+  width: 70%;
+}
+
+.correct-answers {
+  background-color: rgb(6, 240, 15);
+  border: 3px solid rgb(6, 240, 15);
+  border-radius: 10px;
+  font-weight: 900;
   height: 30px;
   margin: 10px;
   text-align: center;
-  width: 200px;
+  width: 70%;
+}
+
+.answer-options {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+button:active {
+  border: none;
+  outline: none;
+}
+
+.next-enabled {
+  background-color: black;
+  border: 2px  solid black;
+  border-radius: 10px;
+  color: white;
+  font-weight: 900;
+  height: 30px;
+  margin: 10px;
+  text-align: center;
+  width: 70%;
+}
+
+.next-enabled:hover {
+  transition: 0.5s;
+  width: 80%;
 }
 
 .next-hidden {
   visibility: hidden;
+}
+
+.header-text-container {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  height: 70%;
+  justify-content: space-between;
+  width: 200px;
+}
+
+
+.img-container {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  width: 200px;
+}
+
+.in-game-header .img-container {
+  visibility: visible;
+}
+
+.avatar-img {
+  border: 10px solid white;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+}
+
+footer {
+  bottom: 0;
+  position: fixed;
 }

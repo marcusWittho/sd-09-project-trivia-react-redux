@@ -6,3 +6,129 @@ main {
   justify-content: center;
   width: 100%;
 }
+
+.login-form-container {
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: #0000004d 0 19px 38px , #00000038 0 15px 12px;
+  display: flex;
+  flex-flow: column wrap;
+  height: 40%;
+  justify-content: center;
+  margin-top: 100px;
+  padding: 25px;
+  width: 30%;
+}
+
+header {
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  display: flex;
+  flex-flow: row wrap;
+  height: 150px;
+  justify-content: space-between;
+  padding: 20px 80px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.header-login {
+  box-shadow: none;
+}
+
+.trivia-logo-ingame {
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: logo-tilt;
+  animation-timing-function: ease-out;
+  max-width: 300px;
+}
+
+@keyframes logo-tilt {
+
+  25% { transform: rotate(2deg); }
+
+  50% { transform: rotate(0deg); }
+
+  75% { transform: rotate(-2deg); }
+
+  100% { transform: rotate(0deg); }
+}
+
+.header-login .trivia-logo-ingame {
+  animation: none;
+  max-width: 500px;
+  transition: 0.5s;
+  visibility: visible;
+}
+
+.header-login .trivia-logo-ingame:hover {
+  max-width: 600px;
+}
+
+.header-login .header-text-container, .img-container {
+  visibility: hidden;
+}
+
+input {
+  border: 2px  solid black;
+  border-radius: 10px;
+  height: 30px;
+  margin: 10px;
+  padding: 10px;
+  width: 70%;
+}
+
+input:focus {
+  outline: none;
+  transition: 0.5s;
+  width: 80%;
+}
+
+a {
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.login-btns {
+  background-color: black;
+  border: 2px  solid black;
+  border-radius: 10px;
+  color: white;
+  font-weight: 900;
+  height: 30px;
+  margin: 10px;
+  width: 70%;
+}
+
+.login-btns:disabled {
+  background-color: #363333;
+  border: 2px  solid  #363333;
+  color: gray;
+}
+
+.login-btns:hover {
+  transition: 0.5s;
+  width: 80%;
+}
+
+.login-btns:focus {
+  border: 2px  solid  white;
+  outline: none;
+  transition: 0.5s;
+  width: 80%;
+}
+
+.config-btn {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
+footer {
+  bottom: 0;
+  position: fixed;
+}
