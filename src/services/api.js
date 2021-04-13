@@ -4,9 +4,10 @@ export async function getToken() {
   return data.token;
 }
 
-export async function getQuestions() {
-  const token = await getToken();
-  const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+export async function getQuestions(cat, dif, typ) {
+  const tkn = await getToken();
+  const endpoint = `https://opentdb.com/api.php?amount=5&token=${tkn}${cat}${dif}${typ}`;
+  const response = await fetch(endpoint);
   const data = await response.json();
   return data.results;
 }
