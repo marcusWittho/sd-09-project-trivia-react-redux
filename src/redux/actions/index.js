@@ -27,3 +27,25 @@ export const handleAssertions = (assertions) => ({
 export const fetchQuestions = (num, token) => (dispatch) => (
   getAnswer(num, token).then((result) => dispatch(dataGame(result)))
 );
+
+export const WAS_ANSWERED = 'WAS_ANSWERED';
+export const START_TIMER = 'START_TIMER';
+export const RESET_TIMER = 'RESET_TIMER';
+export const TICK = 'TICK';
+
+export const startTimer = (timerId) => ({
+  type: START_TIMER,
+  timerId,
+});
+
+export const tick = () => ({
+  type: TICK,
+});
+
+export const resetTimer = () => ({
+  type: RESET_TIMER,
+});
+
+export const wasAnsweredAction = () => ({
+  type: WAS_ANSWERED,
+});
