@@ -42,8 +42,9 @@ class Feedback extends Component {
 
   render() {
     const { player } = this.props;
+    console.log(player);
     const { assertions, score } = player;
-    localStorage.setItem('state', JSON.stringify(player));
+    // localStorage.setItem('state', JSON.stringify(player));
     const messagePerformance = this.performanceMessage(assertions);
     const messageAssertions = this.assertionsMessage(assertions);
     const messageScore = this.scoreMessage(score);
@@ -67,7 +68,7 @@ class Feedback extends Component {
             </Link>
           </div>
           <div>
-            <Link to="/jogo">
+            <Link to="/game">
               <button
                 type="button"
                 data-testid="btn-ranking"
