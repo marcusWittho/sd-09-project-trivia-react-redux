@@ -29,7 +29,7 @@ class InfoGames extends Component {
     if (localStorage.getItem('state')) {
       const { dispatchIncrementScore } = this.props;
       const player = JSON.parse(localStorage.getItem('state'));
-      const { score } = player.player;
+      const { score } = player;
       dispatchIncrementScore(score);
     }
   }
@@ -65,7 +65,7 @@ class InfoGames extends Component {
       const { assertions, score } = state.player;
       state.player.score = score + this.getScore();
       state.player.assertions = assertions + 1;
-      localStorage.setItem('state', JSON.stringify(state.player));
+      localStorage.setItem('state', JSON.stringify(state));
       dispatchIncrementScore(state.player.score);
     }
     this.setState({ isAnswered: true });
