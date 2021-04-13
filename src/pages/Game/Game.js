@@ -153,6 +153,7 @@ Game.propTypes = {
   stateDisableButton: func.isRequired,
   stateShowButton: func.isRequired,
   cleanOptionAnswers: func.isRequired,
+  clearClassReducer: func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

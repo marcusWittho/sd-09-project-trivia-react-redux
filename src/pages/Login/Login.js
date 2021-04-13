@@ -153,6 +153,12 @@ Login.propTypes = {
   actionAddQuestions: func.isRequired,
   actionValidLogin: func.isRequired,
   actionResetCounter: func.isRequired,
+  actionClearQuestions: func.isRequired,
+  actionCleanOptionAnswers: func.isRequired,
+  actionResetPlayer: func.isRequired,
+  questionsRequest: func.isRequired,
+  actionResetFunction: func.isRequired,
+  actionClearClassReducer: func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

@@ -1,8 +1,10 @@
 import { CLEAR_CLASS_REDUCER, SET_CLASS_REDUCER } from '../actions/actionTypes';
 
+const initClass = 'option-answer';
+
 const INITIAL_STATE = {
-  correctClass: 'option-answer',
-  wrongClass: 'option-answer',
+  correctClass: initClass,
+  wrongClass: initClass,
 };
 
 const classAnswersReducers = (state = INITIAL_STATE, action) => {
@@ -14,8 +16,8 @@ const classAnswersReducers = (state = INITIAL_STATE, action) => {
     };
   case CLEAR_CLASS_REDUCER:
     return {
-      correctClass: 'option-answer',
-      wrongClass: 'option-answer',
+      correctClass: initClass,
+      wrongClass: initClass,
     };
   default:
     return state;

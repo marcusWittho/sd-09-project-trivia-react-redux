@@ -73,7 +73,9 @@ class BooleanAnswers extends React.Component {
           <h3 className="question-category" data-testid="question-category">
             { question.category }
           </h3>
-          <p data-testid="question-text">{ question.question.replace(/&quot;/g, '"').replace(/&#039;/g, '`') }</p>
+          <p data-testid="question-text">
+            { question.question.replace(/&quot;/g, '"').replace(/&#039;/g, '`') }
+          </p>
         </div>
         { answers.map((option) => {
           const dataTestId = this.selectDataTest(option, index);
@@ -122,6 +124,8 @@ BooleanAnswers.propTypes = {
   stateShowButton: bool.isRequired,
   disableButton: bool.isRequired,
   addAssertions: func.isRequired,
+  setClassReducer: func.isRequired,
+  classAnswers: string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BooleanAnswers);

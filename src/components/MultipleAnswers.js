@@ -153,6 +153,8 @@ MultipleAnswers.propTypes = {
   optionAnswers: arrayOf().isRequired,
   addOptionAnswers: func.isRequired,
   addAssertions: func.isRequired,
+  setClassReducer: func.isRequired,
+  classAnswers: string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MultipleAnswers);
