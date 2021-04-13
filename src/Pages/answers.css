@@ -1,7 +1,13 @@
 .rightAnswer {
   border: 3px solid rgb(6, 240, 15);
+  max-height: 10vh;
 }
 
 .wrongAnswer {
   border: 3px solid red;
+  max-height: 10vh;
+}
+
+button {
+  max-height: 10vh;
 }

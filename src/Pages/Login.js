@@ -19,6 +19,7 @@ class Login extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.play = this.play.bind(this);
     this.createLocalStorage = this.createLocalStorage.bind(this);
+    this.createBtnPlay = this.createBtnPlay.bind(this);
   }
 
   createLocalStorage() {
@@ -58,8 +59,24 @@ class Login extends Component {
     this.createLocalStorage();
   }
 
+  createBtnPlay() {
+    const { disableBtn } = this.state;
+    return (
+      <Link to="/trivia">
+        <button
+          data-testid="btn-play"
+          type="button"
+          disabled={ disableBtn }
+          onClick={ this.play }
+        >
+          Jogar
+        </button>
+      </Link>
+    );
+  }
+
   render() {
-    const { email, name, disableBtn } = this.state;
+    const { email, name } = this.state;
     return (
       <div className="grid">
         <div className="backgroundLogin">
@@ -88,16 +105,7 @@ class Login extends Component {
               />
             </div>
             <div className="buttonContainer">
-              <Link to="/trivia">
-                <button
-                  data-testid="btn-play"
-                  type="button"
-                  disabled={ disableBtn }
-                  onClick={ this.play }
-                >
-                  Jogar
-                </button>
-              </Link>
+              { this.createBtnPlay() }
               <SelectSettings />
             </div>
           </div>

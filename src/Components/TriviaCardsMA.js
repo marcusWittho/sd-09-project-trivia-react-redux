@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { AiOutlineDoubleRight } from 'react-icons/ai';
 import { rightAnswers, updateIndex, wrongAnswers, playerScore } from '../redux/actions';
 import Timer from './timer';
 import CORRECT from './correct';
@@ -34,6 +35,12 @@ class MultipleAnswers extends Component {
   updateLocalStorage() {
     const { player } = this.props;
     localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
+  decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
   }
 
   endTime() {
@@ -114,7 +121,7 @@ class MultipleAnswers extends Component {
         onClick={ click }
         disabled={ state }
       >
-        next
+        <AiOutlineDoubleRight />
       </button>
     );
   }
@@ -134,42 +141,43 @@ class MultipleAnswers extends Component {
       show,
     } = this.state;
     const { question } = this.props;
-    // precisa jogar esse choice pra dentro de uma função para deixar as questões com respostas randomicas
     const choice = [...question.incorrect_answers, question.correct_answer];
     let index = 0;
     return (
-      <>
-        <div className="triviaCard">
-          <h3 className="category" data-testid="question-category">
-            { question.category }
-          </h3>
-          <p className="text" data-testid="question-text">{ question.question }</p>
-          <div className="answers">
-            {choice.map((answer) => {
-              const dataTestId = this.validateAnswers(answer, index);
-              if (dataTestId !== correctAnswer) index += 1;
-              return (
-                <button
-                  className={ dataTestId === correctAnswer ? rightAnswerClass
-                    : wrongAnswerClass }
-                  type="button"
-                  key={ answer }
-                  disabled={ btnDisabled }
-                  data-testid={ dataTestId }
-                  onClick={ this.answerCheck }
-                >
-                  { answer }
-                </button>);
-            })}
-          </div>
-          { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
-            : null}
+      <div className="triviaCard">
+        <h3 className="category" data-testid="question-category">
+          { this.decodeHtml(question.category) }
+        </h3>
+        <p
+          className="text"
+          data-testid="question-text"
+        >
+          { this.decodeHtml(question.question) }
+        </p>
+        <div className="answers">
+          {choice.map((answer) => {
+            const dataTestId = this.validateAnswers(answer, index);
+            if (dataTestId !== correctAnswer) index += 1;
+            return (
+              <button
+                className={ dataTestId === correctAnswer ? rightAnswerClass
+                  : wrongAnswerClass }
+                type="button"
+                key={ answer }
+                disabled={ btnDisabled }
+                data-testid={ dataTestId }
+                onClick={ this.answerCheck }
+              >
+                { this.decodeHtml(answer) }
+              </button>);
+          })}
         </div>
-        <div>
-          Timer:
+        { btnDisplayed ? this.createNextBtn(this.nextQuestion, nextButton)
+          : null}
+        <div className="timer">
           { show ? this.renderTimer() : null }
         </div>
-      </>
+      </div>
     );
   }
 }
