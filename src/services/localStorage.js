@@ -1,3 +1,6 @@
+import store from '../store';
+import { getRigthAnswersToStore } from '../actions';
+
 const STATE_KEY = 'state';
 const TOKEN_KEY = 'token';
 
@@ -23,6 +26,7 @@ const addPointsToScore = (time, difficulty) => {
   player.score += punctuation;
   player.assertions += 1;
   localStorage.setItem(STATE_KEY, JSON.stringify({ player }));
+  store.dispatch(getRigthAnswersToStore(player));
 };
 
 const savePlayer = (name, email) => {

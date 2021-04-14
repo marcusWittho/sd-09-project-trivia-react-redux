@@ -58,7 +58,7 @@ class Questions extends Component {
     this.timer.current.pause();
     if (isCorrect) {
       const responseTime = this.timer.current.getTime();
-      localStorageService.addPointsToScore(responseTime, 1);
+      localStorageService.addPointsToScore(responseTime, 1); // 1 = igual a dificuldade da questão, sera trocado por valor do estate aposs pag de config.
     }
   }
 
@@ -131,7 +131,6 @@ class Questions extends Component {
       <>
         <Header />
         <section className="questions-container">
-          <p data-testid="header-score">Score: 0</p>
           <Timer ref={ this.timer } timeUp={ this.handleTimeUp } />
           { currentQuestion && this.renderQuestion(currentQuestion) }
         </section>
