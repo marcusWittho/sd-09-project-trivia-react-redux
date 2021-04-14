@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { IoPlayOutline } from 'react-icons/io5';
 import { playerLogin, requestApiToken, requestApiQuestions } from '../redux/actions';
 import SelectSettings from '../Components/SelectSettings';
 import Cube from './cube';
@@ -64,12 +65,13 @@ class Login extends Component {
     return (
       <Link to="/trivia">
         <button
+          className="btnLogin play"
           data-testid="btn-play"
           type="button"
           disabled={ disableBtn }
           onClick={ this.play }
         >
-          Jogar
+          <IoPlayOutline className="play" />
         </button>
       </Link>
     );
