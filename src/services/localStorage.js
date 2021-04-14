@@ -25,7 +25,7 @@ const addPointsToScore = (time, difficulty) => {
   const player = getPlayer();
   player.score += punctuation;
   player.assertions += 1;
-  localStorage.setItem(STATE_KEY, JSON.stringify({ player }, null, ' '));
+  localStorage.setItem(STATE_KEY, JSON.stringify({ player }));
   store.dispatch(getRigthAnswersToStore(player));
 };
 
