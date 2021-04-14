@@ -13,7 +13,8 @@ const failedTriviaRequest = (error) => ({ type: FAILED_TRIVIA_REQUEST, payload: 
 
 const fetchTrivia = () => ((dispatch, getState) => {
   dispatch(requestTrivia());
-  return getTriviaQuestionsWithOptions(getState().settings)
+  const { settings } = getState();
+  return getTriviaQuestionsWithOptions(settings)
     .then(
       (json) => dispatch(getTrivia(json)),
       (error) => dispatch(failedTriviaRequest(error)),
