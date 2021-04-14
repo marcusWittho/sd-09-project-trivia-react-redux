@@ -26,6 +26,7 @@ class Rank extends React.Component {
 
     return (
       <main>
+		<h3 data-testid="ranking-title">Ranking</h3>
         <ul>
           {ranking.map(({ name, score, picture }, key) => (
             <li key={ key }>
