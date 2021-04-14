@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import localStorageService from '../services/localStorage';
 
@@ -39,6 +40,14 @@ class Rank extends React.Component {
             </li>
           ))}
         </ul>
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-go-home"
+          >
+            Voltar ao início
+          </button>
+        </Link>
       </main>
     );
   }
