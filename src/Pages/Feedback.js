@@ -19,8 +19,8 @@ class Feedback extends React.Component {
     return b.score - a.score;
   }
 
-  rankingSave(data) {
-    const { name, score, gravatarEmail } = data;
+  rankingSave(player) {
+    const { name, score, gravatarEmail } = player;
     const rankingStore = {
       name,
       score,
