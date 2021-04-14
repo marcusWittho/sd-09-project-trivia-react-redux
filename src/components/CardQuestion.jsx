@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './CardQuestion.css';
@@ -7,6 +8,7 @@ class CardQuestion extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
+      qCounter: 0,
       isSelected: false,
       time: {},
       seconds: 30,
@@ -19,6 +21,8 @@ class CardQuestion extends React.Component {
     this.recordScore = this.recordScore.bind(this);
     this.setLocalStorage = this.setLocalStorage.bind(this);
     this.getLocalStorage = this.getLocalStorage.bind(this);
+    this.questionCounter = this.questionCounter.bind(this);
+    this.nextBtn = this.nextBtn.bind(this);
   }
 
   componentDidMount() {
@@ -50,6 +54,8 @@ class CardQuestion extends React.Component {
   selectAnswer(event) {
     const { seconds } = this.state;
     this.setState({ isSelected: true });
+    const button = document.getElementsByClassName('next-btn');
+    button[0].style.display = 'inline';
     this.recordScore(event.target.innerText, seconds);
   }
 
@@ -85,6 +91,7 @@ class CardQuestion extends React.Component {
       console.log('teste');
       return localStorage.setItem('state', JSON.stringify(state));
     }
+
   }
 
   secondsToTime(secs) {
@@ -116,14 +123,44 @@ class CardQuestion extends React.Component {
     }
   }
 
+  questionCounter() {
+    this.setState((state) => ({
+      qCounter: state.qCounter + 1,
+      isSelected: false,
+      seconds: 30,
+    }));
+  }
+
+  nextBtn() {
+    const { qCounter } = this.state;
+    const four = 4;
+    if (qCounter === four) {
+      return (
+        <Link to="/feedback">
+          <button
+            type="button"
+            className="next-btn"
+            data-testid="btn-next"
+          >
+            Próxima
+          </button>
+        </Link>);
+    }
+    return (
+      <button
+        type="button"
+        className="next-btn"
+        data-testid="btn-next"
+        onClick={ this.questionCounter }
+      >
+        Próxima
+      </button>);
+  }
+
   render() {
     const { getQuestions: { questions: { results } } } = this.props;
-    const { isSelected, time } = this.state;
-    // Constantes criadas para avaliacao do requisito 6. Deleta-las posteriormente.
-    const index = 0;
-    const currentQuestion = results[index];
-    // return results.map((currentQuestion, index) => (
-    return ( // Return de apenas 1 pergunta para avaliacao do requisito 6. Deletar este return quando houver o botao de proxima pergunta.
+    const { isSelected, time, qCounter } = this.state;
+    const questions = results.map((currentQuestion, index) => (
       <div key={ index }>
         <div>
           {time.s}
@@ -151,9 +188,11 @@ class CardQuestion extends React.Component {
             {incorrectAnswer}
           </button>
         ))}
+        {this.nextBtn()}
       </div>
-    ); // Deletar essa linha quando usar o map da linha 12.
-    // ));
+    ));
+    // Retornar uma questão por vez.
+    return questions[qCounter];
   }
 }
 CardQuestion.propTypes = {
