@@ -17,18 +17,80 @@ class CardQuestion extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
+    this.recordScore = this.recordScore.bind(this);
+    this.setLocalStorage = this.setLocalStorage.bind(this);
+    this.getLocalStorage = this.getLocalStorage.bind(this);
     this.questionCounter = this.questionCounter.bind(this);
     this.nextBtn = this.nextBtn.bind(this);
   }
 
   componentDidMount() {
     this.startTimer();
+    this.setLocalStorage();
   }
 
-  selectAnswer() {
+  setLocalStorage() {
+    const { name, email } = this.props;
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        email,
+      },
+    };
+    return localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  getLocalStorage() {
+    const valid = localStorage.getItem('state');
+    if (valid !== null) {
+      console.log(valid);
+      return JSON.parse(valid);
+    }
+  }
+
+  selectAnswer(event) {
+    const { seconds } = this.state;
     this.setState({ isSelected: true });
     const button = document.getElementsByClassName('next-btn');
     button[0].style.display = 'inline';
+    this.recordScore(event.target.innerText, seconds);
+  }
+
+  calculateScore(sec, difficulty) {
+    let sum = 0;
+    const easy = 1;
+    const medium = 2;
+    const hard = 3;
+    const base = 10;
+    if (difficulty === 'easy') {
+      sum = base + (sec * easy);
+      return sum;
+    }
+    if (difficulty === 'medium') {
+      sum = base + (sec * medium);
+      return sum;
+    }
+    if (difficulty === 'hard') {
+      sum = base + (sec * hard);
+      return sum;
+    }
+  }
+
+  recordScore(answer, sec) {
+    const { getQuestions: { questions: { results } } } = this.props;
+    //  Trocar essa const index pelo contador que a Mayara fez
+    const index = 0;
+    const currentQuestion = results[index];
+    const state = this.getLocalStorage();
+    if (answer === currentQuestion.correct_answer) {
+      state.player.assertions += 1;
+      state.player.score += this.calculateScore(sec, currentQuestion.difficulty);
+      console.log('teste');
+      return localStorage.setItem('state', JSON.stringify(state));
+    }
   }
 
   secondsToTime(secs) {
@@ -140,6 +202,8 @@ CardQuestion.propTypes = {
       results: PropTypes.arrayOf(Object),
     }),
   }),
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 CardQuestion.defaultProps = {
   getQuestions: PropTypes.shape({
@@ -152,5 +216,7 @@ CardQuestion.defaultProps = {
 };
 const mapStateToProps = (state) => ({
   getQuestions: state.questions,
+  name: state.player.name,
+  email: state.player.email,
 });
 export default connect(mapStateToProps)(CardQuestion);
