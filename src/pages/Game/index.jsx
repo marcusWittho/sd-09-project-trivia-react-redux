@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 import { getQuestions } from '../../redux/action';
 import * as S from './styled';
@@ -10,6 +11,10 @@ const NINE_SECONDS = 9;
 const TWENTY_SECONDS = 20;
 const ONE_SECOND = 1;
 
+const TEN_POINTS = 10;
+const THREE_POINTS = 3;
+const TWO_POINTS = 2;
+const ONE_POINTS = 1;
 class GameScreen extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +27,8 @@ class GameScreen extends Component {
       timer: 30,
       disabled: false,
       colorQuestion: false,
+      score: 0,
+      feedbackScreen: false,
     };
     this.nextQuestion = this.nextQuestion.bind(this);
     this.loadingQuestions = this.loadingQuestions.bind(this);
@@ -36,6 +43,39 @@ class GameScreen extends Component {
     this.loadingQuestions();
     this.decreaseTime();
     this.recoveringLocalStorage();
+  }
+
+  setScoreInStorage(scoreNumber) {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+
+    if (!player.name) return;
+
+    const score = {
+      ...player,
+      score: player.score + scoreNumber,
+      assertions: player.assertions + 1,
+    };
+
+    localStorage.setItem('state', JSON.stringify({ player: score }));
+  }
+
+  calcScore(difficulty) {
+    let result = 0;
+    const { timer, score } = this.state;
+
+    if (difficulty === 'hard') {
+      result = TEN_POINTS + timer * THREE_POINTS;
+      this.setState({ score: score + result });
+    }
+    if (difficulty === 'medium') {
+      result = TEN_POINTS + timer * TWO_POINTS;
+      this.setState({ score: score + result });
+    }
+    if (difficulty === 'easy') {
+      result = TEN_POINTS + timer * ONE_POINTS;
+      this.setState({ score: score + result });
+    }
+    return result;
   }
 
   recoveringLocalStorage() {
@@ -83,6 +123,7 @@ class GameScreen extends Component {
     } else {
       this.setState({
         numberOFQuestion: count + 0,
+        feedbackScreen: true,
       });
     }
   }
@@ -106,7 +147,7 @@ class GameScreen extends Component {
   }
 
   header() {
-    const { name, gravatarEmail } = this.state;
+    const { name, gravatarEmail, score } = this.state;
     return (
       <S.Header>
         <S.GravatarImage
@@ -119,7 +160,10 @@ class GameScreen extends Component {
             Jogador:
             {name}
           </p>
-          <p data-testid="header-score">Placar: 0</p>
+          <p data-testid="header-score">
+            Placar:
+            {score}
+          </p>
         </S.ScoreContainer>
       </S.Header>
     );
@@ -151,21 +195,27 @@ class GameScreen extends Component {
             type="button"
             disabled={ disabled }
             backgroundAnswer={ (colorQuestion) ? colorButtons(answer) : {} }
-            onClick={ this.clickQuestion }
+            onClick={ () => {
+              if (answer === orderQuestions.correct_answer) {
+                this.setScoreInStorage(this.calcScore(orderQuestions.difficulty));
+              }
+              this.clickQuestion();
+            } }
           >
             { answer}
           </S.ButtonAnswer>
         ))}
-
       </S.ButtonsAnswersContainer>
     );
   }
 
   render() {
     const { questions,
-      numberOFQuestion, loading, timer, disabled, colorQuestion } = this.state;
+      numberOFQuestion, loading, timer, disabled, colorQuestion, feedbackScreen,
+    } = this.state;
     const orderQuestions = questions[numberOFQuestion];
     if (loading) return <h1>Loading...</h1>;
+    if (feedbackScreen) return <Redirect to="/feedback" />;
     return (
       <>
         { this.header() }
@@ -173,6 +223,8 @@ class GameScreen extends Component {
           <S.NextButtonContainer
             zIndex={ (timer === 0 || disabled || colorQuestion)
               ? '' : '-1' }
+            background={ (timer === 0 || disabled || colorQuestion)
+              ? 'rgba(0,0,0,.4)' : '' }
           >
             {(timer === 0 || disabled || colorQuestion)
               ? (
@@ -181,7 +233,7 @@ class GameScreen extends Component {
                   type="button"
                   onClick={ this.nextQuestion }
                 >
-                  Próxima
+                  {(numberOFQuestion !== 4) ? 'Próxima' : 'Feedback'}
                 </button>
               )
               : '' }
@@ -211,7 +263,6 @@ class GameScreen extends Component {
             </S.TextQuestion>
             {this.buttonsAnswers() }
           </S.FlexConteiner>
-
         </S.QuestionConteiner>
       </>
     );

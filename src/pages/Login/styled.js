@@ -24,10 +24,6 @@ export const Form = styled.form`
   }
 `;
 
-export const Container = styled.section`
-
-  `;
-
 export const ButtonsContainer = styled.section`
   display: flex;
   justify-content: space-around;

@@ -15,8 +15,8 @@ class Login extends Component {
       submmit: false,
       player: {
         name: '',
-        assertions: '',
-        score: '',
+        assertions: 0,
+        score: 0,
         gravatarEmail: '',
       },
       settings: false,
@@ -139,11 +139,9 @@ class Login extends Component {
     }
 
     return (
-
       <S.AnimationContiner animation={ (animation) ? 'slide' : '' }>
         {this.formFunction()}
       </S.AnimationContiner>
-
     );
   }
 }

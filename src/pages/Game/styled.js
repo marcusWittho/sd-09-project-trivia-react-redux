@@ -112,9 +112,10 @@ export const TextQuestion = styled.p`
 `;
 
 export const NextButtonContainer = styled.section`
+  background: ${(props) => props.background};
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 117%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,7 +124,6 @@ export const NextButtonContainer = styled.section`
   button {
     margin-bottom: 1rem;
     padding: 1rem;
-    position: fixed;
     margin: 3rem;
     font-size: 1rem;
 
