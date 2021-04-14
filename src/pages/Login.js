@@ -6,9 +6,9 @@ import { doLogin } from '../actions/index';
 import { getToken } from '../services/api';
 import localStorageService from '../services/localStorage';
 
-import './Login.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
