@@ -19,11 +19,7 @@ class Question extends React.Component {
     this.verifyAnswers = this.verifyAnswers.bind(this);
     this.stopWatch = this.stopWatch.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
-    this.state = {
-      indexQuestion: 0,
-      numQuestion: 4,
-      TIMER_RESET_CHECK: 30,
-    };
+    this.state = { indexQuestion: 0, numQuestion: 4, TIMER_RESET_CHECK: 30 };
   }
 
   createHeader() {
@@ -55,6 +51,7 @@ class Question extends React.Component {
     const { propWasAnswered, timerId } = this.props;
     clearInterval(timerId);
     propWasAnswered();
+    this.btnStyle();
   }
 
   calculatePoints(remainingTime, difficulty) {
@@ -71,7 +68,6 @@ class Question extends React.Component {
   verifyAnswers(value, correct, difficulty) {
     const { propHandleAssertions, timer } = this.props;
     this.stopWatch();
-    this.btnStyle();
     if (value === correct) {
       propHandleAssertions(1);
       this.calculatePoints(timer, difficulty);
@@ -169,29 +165,17 @@ class Question extends React.Component {
   }
 
   clearStyle() {
-    const correctBtn = document.querySelectorAll('.btnCorrect');
-    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
-    correctBtn.forEach((btn) => {
-      btn.style.border = '';
-    });
-    incorrectBtn.forEach((btn) => {
-      btn.style.border = '';
-    });
+    document.querySelector('.btnCorrect').style.border = '';
+    document.querySelectorAll('.btnIncorrect').forEach((bt) => { bt.style.border = ''; });
+    document.querySelector('.btn-next').style.visibility = 'hidden';
   }
 
   btnStyle() {
-    const correctBtn = document.querySelectorAll('.btnCorrect');
-    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
-    const nextBtn = document.querySelector('.btn-next');
-    correctBtn.forEach((btn) => {
-      btn.style.border = '3px solid rgb(6, 240, 15)';
-      btn.style.outline = 'none';
-    });
-    incorrectBtn.forEach((btn) => {
+    document.querySelector('.btnCorrect').style.border = '3px solid rgb(6, 240, 15)';
+    document.querySelectorAll('.btnIncorrect').forEach((btn) => {
       btn.style.border = '3px solid red';
-      btn.style.outline = 'none';
     });
-    nextBtn.style.visibility = 'visible';
+    document.querySelector('.btn-next').style.visibility = 'visible';
   }
 
   render() {
