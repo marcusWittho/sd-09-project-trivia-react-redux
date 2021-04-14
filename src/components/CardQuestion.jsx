@@ -91,7 +91,6 @@ class CardQuestion extends React.Component {
       console.log('teste');
       return localStorage.setItem('state', JSON.stringify(state));
     }
-
   }
 
   secondsToTime(secs) {
