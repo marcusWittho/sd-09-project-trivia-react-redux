@@ -28,3 +28,10 @@ export const wrongAnswers = (number) => ({
   type: WRONG,
   number,
 });
+
+export const SET_ZERO = 'SET_ZERO';
+export const setZeroState = (score, right) => ({
+  type: SET_ZERO,
+  score,
+  right,
+});
