@@ -9,7 +9,6 @@ import CountdownTimer from './components/CountdownTimer';
 class Question extends React.Component {
   constructor(props) {
     super(props);
-
     this.btnStyle = this.btnStyle.bind(this);
     this.clearStyle = this.clearStyle.bind(this);
     this.createHeader = this.createHeader.bind(this);
@@ -19,7 +18,7 @@ class Question extends React.Component {
     this.boolQuestion = this.boolQuestion.bind(this);
     this.verifyAnswers = this.verifyAnswers.bind(this);
     this.stopWatch = this.stopWatch.bind(this);
-
+    this.calculatePoints = this.calculatePoints.bind(this);
     this.state = {
       indexQuestion: 0,
       numQuestion: 4,
@@ -28,18 +27,21 @@ class Question extends React.Component {
   }
 
   createHeader() {
-    const { playerState: { name, score, gravatarEmail } } = this.props;
-    return (
-      <header className="header">
-        <img
-          src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
-          alt="imagem do Gravatar"
-          data-testid="header-profile-picture"
-        />
-        <h4 data-testid="header-player-name">{ name }</h4>
-        <h4 data-testid="header-score">{ score }</h4>
-      </header>
-    );
+    const state = JSON.parse(localStorage.getItem('state'));
+    if (state) {
+      const { name, score, gravatarEmail } = state.player;
+      return (
+        <header className="header">
+          <img
+            src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
+            alt="imagem do Gravatar"
+            data-testid="header-profile-picture"
+          />
+          <h4 data-testid="header-player-name">{ name }</h4>
+          <h4 data-testid="header-score">{ score }</h4>
+        </header>
+      );
+    }
   }
 
   testId(element, index) {
@@ -55,12 +57,24 @@ class Question extends React.Component {
     propWasAnswered();
   }
 
-  verifyAnswers(value, correct) {
-    const { propHandleAssertions } = this.props;
+  calculatePoints(remainingTime, difficulty) {
+    if (remainingTime === 0) { return; }
+    const state = JSON.parse(localStorage.getItem('state'));
+    const difficultyMultipliers = { easy: 1, medium: 2, hard: 3 };
+    const basePoints = 10;
+    const points = basePoints + (remainingTime * difficultyMultipliers[difficulty]);
+    state.player.score += points;
+    state.player.assertions += 1;
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  verifyAnswers(value, correct, difficulty) {
+    const { propHandleAssertions, timer } = this.props;
     this.stopWatch();
     this.btnStyle();
     if (value === correct) {
       propHandleAssertions(1);
+      this.calculatePoints(timer, difficulty);
     }
   }
 
@@ -74,7 +88,7 @@ class Question extends React.Component {
     }
   }
 
-  multiQuestion({ correct_answer: correctAnswer, sortedOptions,
+  multiQuestion({ correct_answer: correctAnswer, sortedOptions, difficulty,
     incorrect_answers: incorrectAnswers, category, question }, id) {
     const options = [...incorrectAnswers, correctAnswer];
     const { wasAnswered } = this.props;
@@ -94,7 +108,7 @@ class Question extends React.Component {
                 className={ btn === correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
                 key={ index }
                 disabled={ wasAnswered }
-                onClick={ () => verifyAnswers(btn, correctAnswer) }
+                onClick={ () => verifyAnswers(btn, correctAnswer, difficulty) }
                 data-testid={ btn === correctAnswer ? id
                   : `wrong-answer-${options.indexOf(btn)}` }
               >
@@ -107,9 +121,8 @@ class Question extends React.Component {
     );
   }
 
-  boolQuestion({ category, question, correct_answer: correctAnswer }, id) {
+  boolQuestion({ category, question, difficulty, correct_answer: correctAnswer }, id) {
     const { wasAnswered } = this.props;
-    // const { handleIndex } = this;
     return (
       <div className="boll-answer">
         <CountdownTimer />
@@ -120,18 +133,18 @@ class Question extends React.Component {
         <aside className="bool-aside">
           <button
             type="button"
-            data-testid={ correctAnswer ? id : 'wrong-answer-0' }
-            className={ correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
-            onClick={ () => this.verifyAnswers('True', correctAnswer) }
+            data-testid={ correctAnswer === 'True' ? id : 'wrong-answer-0' }
+            className={ correctAnswer === 'True' ? 'btnCorrect' : 'btnIncorrect' }
+            onClick={ () => this.verifyAnswers('True', correctAnswer, difficulty) }
             disabled={ wasAnswered }
           >
             Verdadeiro
           </button>
           <button
             type="button"
-            data-testid={ !correctAnswer ? id : 'wrong-answer-0' }
-            className={ !correctAnswer ? 'btnCorrect' : 'btnIncorrect' }
-            onClick={ () => this.verifyAnswers('False', correctAnswer) }
+            data-testid={ correctAnswer === 'False' ? id : 'wrong-answer-0' }
+            className={ correctAnswer === 'False' ? 'btnCorrect' : 'btnIncorrect' }
+            onClick={ () => this.verifyAnswers('False', correctAnswer, difficulty) }
             disabled={ wasAnswered }
           >
             Falso
@@ -143,12 +156,12 @@ class Question extends React.Component {
 
   inQuestion() {
     const { dataAnswer, propStartTimer, timer, wasAnswered } = this.props;
-    const { multiQuestion, boolQuestion, stopWatch } = this;
+    const { multiQuestion, boolQuestion, stopWatch, calculatePoints } = this;
     const { indexQuestion, TIMER_RESET_CHECK } = this.state;
     const idTestCorrect = 'correct-answer';
     console.log(dataAnswer[indexQuestion]);
     if (timer === TIMER_RESET_CHECK && wasAnswered === true) { propStartTimer(); }
-    if (timer === 0 && wasAnswered === false) { stopWatch(); }
+    if (timer === 0 && wasAnswered === false) { stopWatch(); calculatePoints(0); }
     if (dataAnswer[indexQuestion].type === 'boolean') {
       return boolQuestion(dataAnswer[indexQuestion], idTestCorrect);
     }
