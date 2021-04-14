@@ -29,16 +29,18 @@ class Rank extends React.Component {
       <main>
         <h3 data-testid="ranking-title">Ranking</h3>
         <ul>
-          {ranking.map(({ name, score, picture }, key) => (
-            <li key={ key }>
-              <img width="20px" src={ picture } alt="Imagem do jogador" />
-              <span data-testid={ `player-name-${key}` }>{name}</span>
-              <span>
-                <strong data-testid={ `player-score-${key}` }>{score}</strong>
-                - pontos
-              </span>
-            </li>
-          ))}
+          {ranking
+            .sort((itemA, itemB) => (itemB.score - itemA.score))
+            .map(({ name, score, picture }, key) => (
+              <li key={ key }>
+                <img width="20px" src={ picture } alt="Imagem do jogador" />
+                <span data-testid={ `player-name-${key}` }>{name}</span>
+                <span>
+                  <strong data-testid={ `player-score-${key}` }>{score}</strong>
+                  - pontos
+                </span>
+              </li>
+            ))}
         </ul>
         <Link to="/">
           <button
