@@ -6,9 +6,9 @@ import { doLogin } from '../actions/index';
 import { getToken } from '../services/api';
 import localStorageService from '../services/localStorage';
 
-import './Login.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,8 +28,6 @@ class Login extends React.Component {
 
   async getAndSaveToken() {
     const token = await getToken();
-    const { email, name } = this.state;
-    localStorageService.savePlayer(name, email);
     localStorage.setItem('token', token);
     this.setState({ loginReady: true });
   }
@@ -93,7 +91,11 @@ class Login extends React.Component {
               className="login-btns"
               data-testid="btn-play"
               disabled={ this.enableButton() }
-              onClick={ () => { doFormLogin({ name, email }); this.getAndSaveToken(); } }
+              onClick={ () => {
+                doFormLogin({ name, email });
+                this.getAndSaveToken();
+                localStorageService.savePlayer(name, email);
+              } }
             >
               Jogar
             </button>

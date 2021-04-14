@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 class Feedback extends React.Component {
   render() {
@@ -10,15 +14,20 @@ class Feedback extends React.Component {
     const congratulations = 'Mandou bem!';
 
     return (
-      <div>
-        <h3 data-testid="feedback-text">
-          {assertions < averageAssertions ? disappointment : congratulations}
-        </h3>
-        <h4 data-testid="feedback-total-score">{`Placar final: ${score}`}</h4>
-        <h4 data-testid="feedback-total-question">
-          {`${assertions}`}
-        </h4>
-      </div>
+      <>
+        <Header />
+        <section>
+          <h3 data-testid="feedback-text">
+            {assertions < averageAssertions ? disappointment : congratulations}
+          </h3>
+          <h4 data-testid="feedback-total-score">
+            {score}
+          </h4>
+          <h4 data-testid="feedback-total-question">{ assertions }</h4>
+          <Link to="/ranking" data-testid="btn-ranking">Ver Ranking</Link>
+        </section>
+        <Footer />
+      </>
     );
   }
 }

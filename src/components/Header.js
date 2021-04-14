@@ -7,7 +7,7 @@ import logo from '../assets/trivia.png';
 
 class Header extends Component {
   render() {
-    const { email, name } = this.props;
+    const { email, name, score } = this.props;
     return (
       <header className={ !name && !email ? 'header-login' : 'in-game-header' }>
         <div className="img-container">
@@ -18,16 +18,15 @@ class Header extends Component {
             alt="gravatar"
           />
         </div>
-        <img
-          className="trivia-logo-ingame"
-          src={ logo }
-          alt="Trivia Logo"
-        />
+        <img className="trivia-logo-ingame" src={ logo } alt="Trivia Logo" />
         <div className="header-text-container">
-          <p data-testid="header-player-name">
+          <p className="player-name" data-testid="header-player-name">
             Jogador:
             <br />
-            { name }
+            {name}
+          </p>
+          <p className="player-score" data-testid="header-score">
+            { score }
           </p>
         </div>
       </header>
@@ -38,11 +37,13 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   email: state.login.email,
   name: state.login.name,
+  score: state.login.score,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
