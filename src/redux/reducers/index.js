@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import actionsReducer from './actionsReducer';
+import { actionsReducer, rankingReducer } from './actionsReducer';
 
 const rootReducer = combineReducers({
   actionsReducer,
+  rankingReducer,
 });
 
 export default rootReducer;

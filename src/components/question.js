@@ -2,58 +2,62 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import md5 from 'crypto-js/md5';
-import { setNext, setSelectedAnswer, setScore } from '../redux/actions';
+import { setNext, setSelectedAnswer, setScore, setAssertions } from '../redux/actions';
 import '../css/questions.css';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      assertions: 0,
-    };
-
     this.handleClick = this.handleClick.bind(this);
     this.savePlayerStatus = this.savePlayerStatus.bind(this);
   }
 
   componentDidMount() {
     const { name, email } = this.props;
+    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     localStorage.setItem('state', JSON.stringify({
       player: {
         name,
         assertions: 0,
         score: 0,
-        gravatarEmail: `https://www.gravatar.com/avatar/${md5(email).toString()}`,
+        gravatar,
       },
     }));
   }
 
-  calculateScore(level) {
-    const { player } = JSON.parse(localStorage.getItem('state'));
-    const { propSetScore, time } = this.props;
-    // const { assertions } = this.state;
-    const correct = 10;
+  pointsLevel(level) {
     const levelStatus = {
       easy: 1,
       medium: 2,
       hard: 3,
     };
-    let pointsLevel = 0;
-
-    if (level === 'easy') {
+    let pointsLevel;
+    switch (level) {
+    case 'easy': {
       pointsLevel = levelStatus.easy;
+      break;
     }
-
-    if (level === 'medium') {
+    case 'medium': {
       pointsLevel = levelStatus.medium;
+      break;
     }
-
-    if (level === 'hard') {
+    case 'hard': {
       pointsLevel = levelStatus.hard;
+      break;
     }
+    default: pointsLevel = 0;
+    }
+    return pointsLevel;
+  }
 
-    const points = (player.assertions * correct) + (time + pointsLevel);
+  calculateScore(level, target, previousScore) {
+    const { propSetScore, propSetAssertions, time, assertions } = this.props;
+    const correctAnswers = (target.value === 'correct') ? (assertions + 1) : assertions;
+    const correct = 10;
+    const pointsLevel = this.pointsLevel(level);
+    const points = previousScore + (correctAnswers * correct) + (time + pointsLevel);
     propSetScore(points);
+    propSetAssertions(correctAnswers);
     return points;
   }
 
@@ -66,19 +70,15 @@ class Question extends React.Component {
   }
 
   savePlayerStatus(target) {
-    const { name, token, question: { difficulty } } = this.props;
-    const { assertions } = this.state;
+    const { name, question: { difficulty } } = this.props;
     if (target.value === 'correct') {
-      this.setState({
-        assertions: assertions + 1,
-      });
       const { player } = JSON.parse(localStorage.getItem('state'));
       localStorage.setItem('state', JSON.stringify({
         player: {
           name,
           assertions: player.assertions + 1,
-          score: this.calculateScore(difficulty),
-          gravatarEmail: token,
+          score: this.calculateScore(difficulty, target, player.score),
+          gravatar: player.gravatar,
         },
       }));
     }
@@ -93,33 +93,37 @@ class Question extends React.Component {
         incorrect_answers: incorrectAnswers,
         question,
         category,
+        difficulty,
       } } = this.props;
-      // console.log(selectedAnswer)
     return (
-      <div>
+      <div className="App-header">
         <h2 data-testid="question-category">{ category }</h2>
         <h2 data-testid="question-text">{ question }</h2>
-        <button
-          data-testid="correct-answer"
-          type="button"
-          value="correct"
-          className={ selectedAnswer && 'correct' }
-          onClick={ this.handleClick }
-          disabled={ disabled }
-        >
-          { correctAnswer }
-        </button>
-        {incorrectAnswers.map((element, i) => (
+        <div className="answer-container">
           <button
-            data-testid={ `wrong-answer-${i}` }
+            data-testid="correct-answer"
             type="button"
-            key={ element }
-            className={ selectedAnswer && 'incorrect' }
+            value="correct"
+            className={ selectedAnswer && 'correct' }
             onClick={ this.handleClick }
+            disabled={ disabled }
+            style={ { order: this.pointsLevel(difficulty) } }
           >
-            {element }
+            { correctAnswer }
           </button>
-        )) }
+          {incorrectAnswers.map((element, i) => (
+            <button
+              data-testid={ `wrong-answer-${i}` }
+              type="button"
+              key={ element }
+              className={ selectedAnswer && 'incorrect' }
+              onClick={ this.handleClick }
+              style={ { order: i + 1 } }
+            >
+              { element }
+            </button>
+          )) }
+        </div>
       </div>
     );
   }
@@ -133,21 +137,27 @@ Question.propTypes = {
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     question: PropTypes.string,
     category: PropTypes.string,
+    difficulty: PropTypes.string,
   }),
 }.isRequired;
 
-const mapStateToProps = ({ actionsReducer }) => ({
-  selectedAnswer: actionsReducer.selectedAnswer,
-  name: actionsReducer.name,
-  token: actionsReducer.token,
-  score: actionsReducer.score,
-  email: actionsReducer.email,
+const mapStateToProps = ({
+  actionsReducer: { selectedAnswer, name, score, email, assertions },
+  rankingReducer: { token },
+}) => ({
+  selectedAnswer,
+  name,
+  token,
+  score,
+  email,
+  assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   propSetNext: () => dispatch(setNext()),
   propSelectedAnswer: (selectedAnswer) => dispatch(setSelectedAnswer(selectedAnswer)),
   propSetScore: (points) => dispatch(setScore(points)),
+  propSetAssertions: (assertions) => dispatch(setAssertions(assertions)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

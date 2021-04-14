@@ -5,28 +5,36 @@ import {
   SET_NEXT,
   SET_SELECTED_ANSWER,
   SET_SCORE,
+  SET_ASSERTIONS,
+  SET_RANKING,
+  SET_INIT,
 } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
-  token: '',
+  gravatar: '',
   score: 0,
+  assertions: 0,
   results: [],
   next: false,
   selectedAnswer: null,
 };
 
-function actionsReducer(state = INITIAL_STATE, action) {
-  console.log(action);
-  console.log(state);
+const INITIAL_RANKING = {
+  token: '',
+  ranking: [],
+};
+
+export function actionsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case SET_TOKEN:
-    return { ...state, token: action.token };
+  case SET_INIT:
+    return { ...state, ...INITIAL_STATE };
   case SET_NAME_EMAIL:
     return { ...state,
       name: action.name,
-      email: action.email };
+      email: action.email,
+      gravatar: action.gravatar };
   case SET_QUESTIONS:
     return { ...state, results: action.results };
   case SET_NEXT:
@@ -35,8 +43,18 @@ function actionsReducer(state = INITIAL_STATE, action) {
     return { ...state, selectedAnswer: action.selectedAnswer };
   case SET_SCORE:
     return { ...state, score: action.points };
+  case SET_ASSERTIONS:
+    return { ...state, assertions: action.assertions };
   default: return state;
   }
 }
 
-export default actionsReducer;
+export function rankingReducer(state = INITIAL_RANKING, action) {
+  switch (action.type) {
+  case SET_TOKEN:
+    return { ...state, token: action.token };
+  case SET_RANKING:
+    return { ...state, ranking: action.ranking };
+  default: return state;
+  }
+}
