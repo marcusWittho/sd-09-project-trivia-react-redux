@@ -5,6 +5,11 @@ import md5 from 'crypto-js/md5';
 import { getQuestions } from '../../redux/action';
 import * as S from './styled';
 
+const TEN_SECONDS = 10;
+const NINE_SECONDS = 9;
+const TWENTY_SECONDS = 20;
+const ONE_SECOND = 1;
+
 class GameScreen extends Component {
   constructor(props) {
     super(props);
@@ -130,22 +135,29 @@ class GameScreen extends Component {
     ];
     const answers = answersArray.sort();
 
+    const colorButtons = (answer) => {
+      if (answer === orderQuestions.correct_answer) {
+        return 'green';
+      }
+      return 'red';
+    };
+
     return (
-      <S.ButtonsAnswers>
+      <S.ButtonsAnswersContainer>
         {answers.map((answer, index) => (
-          <button
+          <S.ButtonAnswer
             key={ index }
             data-testid={ `wrong-answer-${index}` }
             type="button"
             disabled={ disabled }
-            style={ (answer === orderQuestions.correct_answer) ? { border: '3px solid green' } : { border: '3px solid red' } }
+            backgroundAnswer={ (colorQuestion) ? colorButtons(answer) : {} }
             onClick={ this.clickQuestion }
           >
             { answer}
-          </button>
+          </S.ButtonAnswer>
         ))}
 
-      </S.ButtonsAnswers>
+      </S.ButtonsAnswersContainer>
     );
   }
 
@@ -160,7 +172,20 @@ class GameScreen extends Component {
         <S.QuestionConteiner>
           <S.TopBar>
             <h3 data-testid="question-category">{orderQuestions.type}</h3>
-            <span>{ timer }</span>
+            <S.Timer
+              animation={ (timer <= TEN_SECONDS && timer > ONE_SECOND)
+                ? 'shake' : '' }
+              backgroundTimer={ () => {
+                if (timer <= TEN_SECONDS) {
+                  return 'red';
+                } if (timer <= TWENTY_SECONDS) {
+                  return 'yellow';
+                }
+                return 'white';
+              } }
+            >
+              { (timer > NINE_SECONDS) ? timer : ` 0${timer}` }
+            </S.Timer>
           </S.TopBar>
           <S.FlexConteiner>
             <S.NextButtonContainer>

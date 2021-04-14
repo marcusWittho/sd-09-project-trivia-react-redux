@@ -13,13 +13,14 @@ export const ScoreContainer = styled.section`
   p {
     margin-bottom: .5rem;
   }
+  
 `;
 
 export const GravatarImage = styled.img`
   border-radius: 15rem;
 `;
 
-export const ButtonsAnswers = styled.section`
+export const ButtonsAnswersContainer = styled.section`
   display: flex;
   min-width: 50%;
   max-width: 50%;
@@ -27,15 +28,23 @@ export const ButtonsAnswers = styled.section`
   justify-content: space-around;
   background-color: #555;
   padding: 1rem;
-  button {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    font-size: 1rem;
-  }
 
    @media screen and (max-width: 800px) {
     max-width: none;
   }
+`;
+
+export const ButtonAnswer = styled.button`
+    margin-bottom: 1rem;
+    padding: 1rem;
+    font-size: 1rem;
+    outline: none;
+    border-radius: 3rem;
+    border: none;
+    background: ${(props) => props.backgroundAnswer};
+    transition: background .6s;
+    cursor: pointer;
+
 `;
 
 export const FlexConteiner = styled.section`
@@ -59,13 +68,35 @@ export const TopBar = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
 
-  span {
-    background-color: white;
+export const Timer = styled.span`
+    background: ${(props) => props.backgroundTimer};
     padding: 1rem;
     border-radius: 5rem;
     color: black;
-  }
+    animation: ${(props) => props.animation} infinite 0.82s 
+    cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transition: background .6s;
+
+  @keyframes shake {
+
+10%, 90% {
+  transform: translate3d(-1px, 0, 0);
+}
+
+20%, 80% {
+  transform: translate3d(2px, 0, 0);
+}
+
+30%, 50%, 70% {
+  transform: translate3d(-4px, 0, 0);
+}
+
+40%, 60% {
+  transform: translate3d(4px, 0, 0);
+}
+}
 `;
 
 export const TextQuestion = styled.p`
