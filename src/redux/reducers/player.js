@@ -1,4 +1,4 @@
-import { TIME_COUNTER, LOGIN, SCORE, WRONG, CORRECT } from '../actions/player';
+import { TIME_COUNTER, LOGIN, SCORE, WRONG, CORRECT, SET_ZERO } from '../actions/player';
 
 const INITIAL_STATE = {
   counter: 0,
@@ -39,6 +39,12 @@ const player = (state = INITIAL_STATE, action) => {
   case WRONG:
     return ({ ...state,
       wrongAnswers: parseInt(state.wrongAnswers, 10) + 1,
+    });
+  case SET_ZERO:
+    return ({ ...state,
+      player: { ...state.player, assertions: action.right, score: action.score },
+      score: action.score,
+      rightAnswers: action.right,
     });
   default:
     return state;

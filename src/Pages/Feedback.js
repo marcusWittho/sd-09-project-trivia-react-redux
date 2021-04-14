@@ -11,7 +11,8 @@ import {
   requestApiQuestions,
   wrongAnswers,
   playerScore,
-  updateIndex } from '../redux/actions';
+  updateIndex,
+  setZeroState } from '../redux/actions';
 import './answers.css';
 
 class Feedback extends Component {
@@ -35,7 +36,7 @@ class Feedback extends Component {
 
   setGlobalState() {
     const { dispatchCorrect, dispatchWrong, dispatchNameEmail, dispatchIndex,
-      dispatchScore, getToken, getQuestions } = this.props;
+      dispatchScore, getToken, getQuestions, dispatchZero } = this.props;
     dispatchCorrect(0);
     dispatchWrong(0);
     dispatchNameEmail('', '');
@@ -43,6 +44,7 @@ class Feedback extends Component {
     getToken();
     getQuestions();
     dispatchIndex(0);
+    dispatchZero(0, 0);
   }
 
   message() {
@@ -75,7 +77,11 @@ class Feedback extends Component {
         { this.message() }
         { this.score() }
         <Link to="/">
-          <button type="button" data-testid="btn-play-again" onClick={ this.setGlobalState }>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ this.setGlobalState }
+          >
             Jogar novamente
           </button>
         </Link>
@@ -102,9 +108,11 @@ const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(requestApiToken()),
   getQuestions: () => dispatch(requestApiQuestions()),
   dispatchIndex: (index) => dispatch(updateIndex(index)),
+  dispatchZero: (score, right) => dispatch(setZeroState(score, right)),
 });
 
 Feedback.propTypes = {
+  dispatchZero: PropTypes.func.isRequired,
   correctAnswers: PropTypes.number.isRequired,
   dispatchIndex: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,

@@ -1,5 +1,5 @@
 import {
-  playerLogin, rightAnswers, wrongAnswers, timeCounter, playerScore,
+  playerLogin, rightAnswers, wrongAnswers, timeCounter, playerScore, setZeroState,
 } from './player';
 import { requestQuestions, requestToken, updateIndex } from './game';
 import fecthTrivia from '../../Services/fetchApi';
@@ -13,6 +13,7 @@ export {
   wrongAnswers,
   timeCounter,
   playerScore,
+  setZeroState,
 };
 
 export const requestApiToken = () => (
