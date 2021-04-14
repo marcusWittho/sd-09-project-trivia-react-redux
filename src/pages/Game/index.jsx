@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { getQuestions } from '../../redux/action';
-import QuestionsButtons from './components/QuestionsButtons';
 import * as S from './styled';
 
 class GameScreen extends Component {
@@ -73,6 +72,7 @@ class GameScreen extends Component {
       this.setState({
         numberOFQuestion: count + 1,
         timer: 30,
+        colorQuestion: false,
         disabled: false,
       });
     } else {
@@ -124,25 +124,21 @@ class GameScreen extends Component {
     const { questions,
       numberOFQuestion, disabled, colorQuestion } = this.state;
     const orderQuestions = questions[numberOFQuestion];
+    const answersArray = [
+      ...orderQuestions.incorrect_answers,
+      orderQuestions.correct_answer,
+    ];
+    const answers = answersArray.sort();
+
     return (
       <S.ButtonsAnswers>
-        <button
-          data-testid="correct-answer"
-          type="button"
-          disabled={ disabled }
-          style={ (colorQuestion)
-            ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-          onClick={ this.clickQuestion }
-        >
-          {orderQuestions.correct_answer}
-        </button>
-        {orderQuestions.incorrect_answers.map((answer, index) => (
+        {answers.map((answer, index) => (
           <button
             key={ index }
             data-testid={ `wrong-answer-${index}` }
             type="button"
             disabled={ disabled }
-            style={ (colorQuestion) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+            style={ (answer === orderQuestions.correct_answer) ? { border: '3px solid green' } : { border: '3px solid red' } }
             onClick={ this.clickQuestion }
           >
             { answer}
@@ -155,7 +151,7 @@ class GameScreen extends Component {
 
   render() {
     const { questions,
-      numberOFQuestion, loading, timer } = this.state;
+      numberOFQuestion, loading, timer, disabled, colorQuestion } = this.state;
     const orderQuestions = questions[numberOFQuestion];
     if (loading) return <h1>Loading...</h1>;
     return (
@@ -173,13 +169,17 @@ class GameScreen extends Component {
               >
                 {orderQuestions.question}
               </S.TextQuestion>
-              <button
-                data-testid="btn-next"
-                type="button"
-                onClick={ this.nextQuestion }
-              >
-                Próxima
-              </button>
+              {(timer === 0 || disabled || colorQuestion)
+                ? (
+                  <button
+                    data-testid="btn-next"
+                    type="button"
+                    onClick={ this.nextQuestion }
+                  >
+                    Próxima
+                  </button>
+                )
+                : '' }
             </S.NextButtonContainer>
             {this.buttonsAnswers() }
           </S.FlexConteiner>
