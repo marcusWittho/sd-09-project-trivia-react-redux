@@ -46,12 +46,14 @@ class Login extends React.Component {
           data-testid="input-player-name"
           type="text"
           onChange={ this.getValue }
+          placeholder="Nome"
         />
         <input
           name="email"
           data-testid="input-gravatar-email"
           type="email"
           onChange={ this.getValue }
+          placeholder="E-mail"
         />
         <button
           onClick={ this.proceedToGame }

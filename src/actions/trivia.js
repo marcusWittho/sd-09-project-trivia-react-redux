@@ -3,7 +3,7 @@ import {
   GET_TRIVIA,
   FAILED_TRIVIA_REQUEST,
 } from './types';
-import getTriviaQuestions from '../services/api';
+import getTriviaQuestionsWithOptions from '../services/api';
 
 const requestTrivia = () => ({ type: REQUEST_TRIVIA });
 
@@ -11,9 +11,10 @@ const getTrivia = ({ results }) => ({ type: GET_TRIVIA, payload: results });
 
 const failedTriviaRequest = (error) => ({ type: FAILED_TRIVIA_REQUEST, payload: error });
 
-const fetchTrivia = () => ((dispatch) => {
+const fetchTrivia = () => ((dispatch, getState) => {
   dispatch(requestTrivia());
-  return getTriviaQuestions()
+  const { settings } = getState();
+  return getTriviaQuestionsWithOptions(settings)
     .then(
       (json) => dispatch(getTrivia(json)),
       (error) => dispatch(failedTriviaRequest(error)),
