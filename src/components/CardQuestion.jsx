@@ -1,18 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { updateScore } from '../actions';
 import './CardQuestion.css';
 
 class CardQuestion extends React.Component {
   constructor(state) {
     super(state);
+
     this.state = {
       qCounter: 0,
       isSelected: false,
       time: {},
       seconds: 30,
     };
+
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
@@ -31,24 +34,13 @@ class CardQuestion extends React.Component {
   }
 
   setLocalStorage() {
-    const { name, email } = this.props;
-    const state = {
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        email,
-      },
-    };
-    return localStorage.setItem('state', JSON.stringify(state));
+    const { player } = this.props;
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   getLocalStorage() {
     const valid = localStorage.getItem('state');
-    if (valid !== null) {
-      console.log(valid);
-      return JSON.parse(valid);
-    }
+    if (valid !== null) return JSON.parse(valid);
   }
 
   selectAnswer(event) {
@@ -80,16 +72,19 @@ class CardQuestion extends React.Component {
   }
 
   recordScore(answer, sec) {
-    const { getQuestions: { questions: { results } } } = this.props;
-    //  Trocar essa const index pelo contador que a Mayara fez
-    const index = 0;
-    const currentQuestion = results[index];
-    const state = this.getLocalStorage();
+    const {
+      getQuestions: { questions: { results } },
+      dispatchUpdatedAssertions,
+    } = this.props;
+    const { qCounter } = this.state;
+    const currentQuestion = results[qCounter];
+    const { player } = this.getLocalStorage();
+
     if (answer === currentQuestion.correct_answer) {
-      state.player.assertions += 1;
-      state.player.score += this.calculateScore(sec, currentQuestion.difficulty);
-      console.log('teste');
-      return localStorage.setItem('state', JSON.stringify(state));
+      player.assertions += 1;
+      player.score += this.calculateScore(sec, currentQuestion.difficulty);
+      localStorage.setItem('state', JSON.stringify({ player }));
+      dispatchUpdatedAssertions(player.assertions, player.score);
     }
   }
 
@@ -194,6 +189,7 @@ class CardQuestion extends React.Component {
     return questions[qCounter];
   }
 }
+
 CardQuestion.propTypes = {
   getQuestions: PropTypes.shape({
     loading: PropTypes.bool,
@@ -202,9 +198,15 @@ CardQuestion.propTypes = {
       results: PropTypes.arrayOf(Object),
     }),
   }),
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    email: PropTypes.string,
+  }),
+  dispatchUpdatedAssertions: PropTypes.func,
 };
+
 CardQuestion.defaultProps = {
   getQuestions: PropTypes.shape({
     loading: PropTypes.bool,
@@ -213,10 +215,24 @@ CardQuestion.defaultProps = {
       results: PropTypes.arrayOf(Object),
     }),
   }),
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    email: PropTypes.string,
+  }),
+  dispatchUpdatedAssertions: PropTypes.func,
 };
+
 const mapStateToProps = (state) => ({
   getQuestions: state.questions,
-  name: state.player.name,
-  email: state.player.email,
+  player: state.player,
 });
-export default connect(mapStateToProps)(CardQuestion);
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchUpdatedAssertions: (assertions, score) => (
+    dispatch(updateScore(assertions, score))
+  ),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardQuestion);
