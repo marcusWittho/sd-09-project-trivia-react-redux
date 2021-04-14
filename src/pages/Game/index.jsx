@@ -170,6 +170,22 @@ class GameScreen extends Component {
       <>
         { this.header() }
         <S.QuestionConteiner>
+          <S.NextButtonContainer
+            zIndex={ (timer === 0 || disabled || colorQuestion)
+              ? '' : '-1' }
+          >
+            {(timer === 0 || disabled || colorQuestion)
+              ? (
+                <button
+                  data-testid="btn-next"
+                  type="button"
+                  onClick={ this.nextQuestion }
+                >
+                  Próxima
+                </button>
+              )
+              : '' }
+          </S.NextButtonContainer>
           <S.TopBar>
             <h3 data-testid="question-category">{orderQuestions.type}</h3>
             <S.Timer
@@ -188,24 +204,11 @@ class GameScreen extends Component {
             </S.Timer>
           </S.TopBar>
           <S.FlexConteiner>
-            <S.NextButtonContainer>
-              <S.TextQuestion
-                data-testid="question-text"
-              >
-                {orderQuestions.question}
-              </S.TextQuestion>
-              {(timer === 0 || disabled || colorQuestion)
-                ? (
-                  <button
-                    data-testid="btn-next"
-                    type="button"
-                    onClick={ this.nextQuestion }
-                  >
-                    Próxima
-                  </button>
-                )
-                : '' }
-            </S.NextButtonContainer>
+            <S.TextQuestion
+              data-testid="question-text"
+            >
+              {orderQuestions.question}
+            </S.TextQuestion>
             {this.buttonsAnswers() }
           </S.FlexConteiner>
 

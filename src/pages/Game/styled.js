@@ -58,7 +58,8 @@ export const FlexConteiner = styled.section`
 `;
 
 export const QuestionConteiner = styled.section`
-height: 70vh;
+  height: 70vh;
+  position: relative;
 `;
 
 export const TopBar = styled.section`
@@ -80,28 +81,29 @@ export const Timer = styled.span`
     transition: background .6s;
 
   @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
 
-10%, 90% {
-  transform: translate3d(-1px, 0, 0);
-}
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
 
-20%, 80% {
-  transform: translate3d(2px, 0, 0);
-}
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
 
-30%, 50%, 70% {
-  transform: translate3d(-4px, 0, 0);
-}
-
-40%, 60% {
-  transform: translate3d(4px, 0, 0);
-}
-}
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
 `;
 
 export const TextQuestion = styled.p`
+  display: flex;
   margin-top: 5rem;
   padding: 1rem;
+  justify-content: center;
   align-items: center;
   min-height: 60%;
   max-height: 60%;
@@ -110,15 +112,20 @@ export const TextQuestion = styled.p`
 `;
 
 export const NextButtonContainer = styled.section`
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
+  z-index: ${(props) => props.zIndex};
 
   button {
     margin-bottom: 1rem;
     padding: 1rem;
-    position: relative;
+    position: fixed;
     margin: 3rem;
     font-size: 1rem;
+
   }
 `;
