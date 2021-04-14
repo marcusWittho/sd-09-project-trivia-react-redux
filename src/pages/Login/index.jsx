@@ -6,6 +6,8 @@ import * as S from './styled';
 
 import { fetchAPI } from '../../redux/action';
 
+const TREE_SECONDS = 3000;
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +20,7 @@ class Login extends Component {
         gravatarEmail: '',
       },
       settings: false,
+      animation: false,
     };
     this.handleValidation = this.handleValidation.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -30,9 +33,13 @@ class Login extends Component {
     const { token } = this.props;
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify(this.state));
-    this.setState({
-      submmit: true,
-    });
+    this.setState({ animation: true });
+
+    setTimeout(() => {
+      this.setState({
+        submmit: true,
+      });
+    }, TREE_SECONDS);
   }
 
   handleSettings() {
@@ -85,39 +92,39 @@ class Login extends Component {
 
   formFunction() {
     return (
-      <S.Container>
-        <S.Form>
-          <h1>Login</h1>
-          <label htmlFor="name">
-            Nome
-            <input
-              id="name"
-              name="name"
-              type="text"
-              placeholder="Digite seu nome"
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="email">
-            Email
-            <input
-              id="email"
-              name="gravatarEmail"
-              type="text"
-              placeholder="email@email.com"
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-            />
-          </label>
-          { this.FormButtons() }
-        </S.Form>
-      </S.Container>
+
+      <S.Form>
+        <h1>Login</h1>
+        <label htmlFor="name">
+          Nome
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Digite seu nome"
+            data-testid="input-player-name"
+            onChange={ this.handleChange }
+          />
+        </label>
+        <label htmlFor="email">
+          Email
+          <input
+            id="email"
+            name="gravatarEmail"
+            type="text"
+            placeholder="email@email.com"
+            data-testid="input-gravatar-email"
+            onChange={ this.handleChange }
+          />
+        </label>
+        { this.FormButtons() }
+      </S.Form>
+
     );
   }
 
   render() {
-    const { submmit, settings } = this.state;
+    const { submmit, settings, animation } = this.state;
 
     if (settings) {
       return (
@@ -132,7 +139,11 @@ class Login extends Component {
     }
 
     return (
-      this.formFunction()
+
+      <S.AnimationContiner animation={ (animation) ? 'slide' : '' }>
+        {this.formFunction()}
+      </S.AnimationContiner>
+
     );
   }
 }
