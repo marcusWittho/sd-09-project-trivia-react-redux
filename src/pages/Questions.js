@@ -77,6 +77,8 @@ class Questions extends Component {
       this.timer.current.reset();
       this.timer.current.start();
     } else {
+      const { name, gravatarEmail, score } = localStorageService.getPlayer();
+      localStorageService.addToRanking(name, score, gravatarEmail);
       this.setState(() => ({
         questionNum: currentIndex,
       }));
