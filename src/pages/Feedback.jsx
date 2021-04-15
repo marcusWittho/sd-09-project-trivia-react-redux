@@ -1,4 +1,6 @@
+import './css/feedback.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { string, objectOf } from 'prop-types';
 
@@ -57,12 +59,15 @@ class Feedback extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="feedback">
         {/* { this.createHeader() } */}
         <p data-testid="feedback-text">FEEDBACK</p>
         { this.FeedbackMessage() }
         { this.gameResume() }
-      </>
+        <Link to="/">
+          <button data-testid="btn-play-again" type="button">Jogar novamente</button>
+        </Link>
+      </div>
     );
   }
 }

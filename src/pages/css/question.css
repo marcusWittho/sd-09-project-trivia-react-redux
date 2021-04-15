@@ -1,3 +1,7 @@
+.carregando {
+  color: white;
+}
+
 button {
   background-color: rgba(255, 255, 255, 0.6);
   margin: 10px;
@@ -28,6 +32,7 @@ button {
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 15px;
   margin-bottom: 10px;
+  margin-top: 30px;
   padding: 20px;
   width: 60%;
 }
@@ -39,6 +44,10 @@ button {
 .btn-next {
   visibility: hidden;
   width: 50%;
+}
+
+h1 {
+  color: white;
 }
 
 .header {
@@ -70,6 +79,7 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: 30px;
   width: 100%;
 }
 
