@@ -93,8 +93,8 @@ class Question extends React.Component {
     const { verifyAnswers } = this;
     return (
       <div className="mult-answer">
+        <CountdownTimer />
         <div className="mult-container">
-          <CountdownTimer />
           <section className="mult-question">
             <h3 data-testid="question-category">{ category }</h3>
             <p data-testid="question-text">{ question }</p>
@@ -188,7 +188,7 @@ class Question extends React.Component {
       if (indexQuestion < lastIndex) {
         return this.inQuestion();
       } return <Feedback />;
-    } return <div>Carregando</div>;
+    } return <div className="carregando">Carregando</div>;
   }
 
   render() {
