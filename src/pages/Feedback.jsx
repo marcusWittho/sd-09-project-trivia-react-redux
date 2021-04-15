@@ -30,8 +30,8 @@ class Feedback extends React.Component {
 
   FeedbackMessage() {
     const { assertions } = this.props;
-    const playerScore = 2;
-    if (assertions > playerScore) {
+    const playerScore = 3;
+    if (assertions < playerScore) {
       return <p data-testid="feedback-text">Podia ser melhor...</p>;
     } return <p data-testid="feedback-text">Mandou bem!</p>;
   }
@@ -58,7 +58,8 @@ class Feedback extends React.Component {
   render() {
     return (
       <>
-        { this.createHeader() }
+        {/* { this.createHeader() } */}
+        <p data-testid="feedback-text">FEEDBACK</p>
         { this.FeedbackMessage() }
         { this.gameResume() }
       </>
