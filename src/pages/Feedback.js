@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import Victory from '../img/trofeu.png';
+import GameOver from '../img/perder.png';
+import './feedback.css';
 
 class Feedback extends Component {
   constructor(props) {
@@ -15,34 +18,47 @@ class Feedback extends Component {
     const baseAssertions = 3;
 
     if (assertions < baseAssertions) {
-      return 'Podia ser melhor...';
+      return (
+        <div className="feedback-text">
+          Podia ser melhor...
+          <img className="feedback-image" alt="GameOver" src={ GameOver } />
+        </div>
+      );
     }
 
-    return 'Mandou bem!';
+    return (
+      <div className="feedback-text">
+        Mandou bem!
+        <img className="feedback-image" alt="Victory" src={ Victory } />
+      </div>);
   }
 
   render() {
     const { player } = JSON.parse(localStorage.getItem('state'));
     const { assertions, score } = player;
     const messagePerformance = this.performanceMessage(assertions);
-
     return (
-      <div>
+      <div className="feedback-screen">
         <Header />
         <h3 data-testid="feedback-text">{ messagePerformance }</h3>
-        <section>
+        <section className="feedback-component">
           <div>
-            <span>Acertou&nbsp;</span>
-            <span data-testid="feedback-total-question">{ assertions }</span>
-            <span>&nbsp;perguntas</span>
+            <span className="span">Acertou&nbsp;</span>
+            <span
+              className="span"
+              data-testid="feedback-total-question"
+            >
+              { assertions }
+            </span>
+            <span className="span">&nbsp;pergunta(s).</span>
           </div>
           <div>
-            <span>Um total de&nbsp;</span>
-            <span data-testid="feedback-total-score">{ score }</span>
-            <span>&nbsp;pontos</span>
+            <span className="span">Um total de&nbsp;</span>
+            <span className="span" data-testid="feedback-total-score">{ score }</span>
+            <span className="span">&nbsp;pontos</span>
           </div>
         </section>
-        <nav>
+        <nav className="nav">
           <div>
             <Link to="/">
               <button
