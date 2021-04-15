@@ -246,5 +246,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   scoreDispatch: (score) => dispatch(scoreAction(score)),
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

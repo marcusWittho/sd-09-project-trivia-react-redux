@@ -1,0 +1,54 @@
+.feedback-component {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.feedback-screen {
+  background-color: rgb(99, 13, 136);
+  height: 100vh;
+}
+
+.feedback-image {
+  display: block;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+.span {
+  color: white;
+  font-size: 25px;
+  margin: 2px;
+}
+
+.feedback-text {
+  color: white;
+  font-size: 90px;
+  text-align: center;
+}
+
+.nav {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+}
+
+.nav button {
+  border: 1px solid silver;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 15px;
+  height: 60px;
+  margin-left: 10px;
+  outline: none;
+  width: 200px;
+}
+
+.nav button:hover {
+  background-color: rgb(151, 50, 245);
+  color: white;
+  transition: 0.3s;
+}
