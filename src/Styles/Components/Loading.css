@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap') ;
 
 body {
   align-items: center;
@@ -12,12 +12,12 @@ body {
 
 h3 {
   color: white;
-  font-family: Luckiest Guy, cursive;
+  font-family: Luckiest Guy , cursive;
   left: 50%;
   letter-spacing: 2px;
   position: absolute;
-  transform: translate(-50%, -50%);
   top: 56% ;
+  transform:translate(-50%, -50%);
   z-index: 1;
 }
 
@@ -67,14 +67,14 @@ h3 {
 }
 
 .loading:after {
-  content: '';
-  position: absolute;
-  top: 0.468rem;
-  left: 0.468rem;
-  right: 0.468rem;
-  bottom: 0.468rem;
   background-color: #1c1c1c;
   border-radius: 50%;
+  bottom: 0.468rem;
+  content: '';
+  left: 0.468rem;
+  position: absolute;
+  right: 0.468rem;
+  top: 0.468rem;
 }
 
 @media screen and ( min-width : 1000px ) {

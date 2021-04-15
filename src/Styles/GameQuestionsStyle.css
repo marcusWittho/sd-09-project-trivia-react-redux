@@ -52,10 +52,10 @@
 }
 
 .timer {
-  top: 0;
   left: 50%;
   letter-spacing: 2px;
   position: relative;
+  top: 0;
   transform: translate(-12%, -50%);
   z-index: 1;
 }
