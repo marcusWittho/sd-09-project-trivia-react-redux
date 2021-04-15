@@ -155,14 +155,14 @@ class Gaming extends React.Component {
     const maxQuestionNumber = 4;
     NEW_ARRAY_ANSWERS = [];
 
-    if (questionNumber < maxQuestionNumber) {
-      const next = questionNumber + 1;
+    // if (questionNumber < maxQuestionNumber) {
+    //   const next = questionNumber + 1;
 
-      this.setState(INITIAL_STATE);
-      nextQuestionDispatch(next);
-    } else {
-      this.setState({ redirect: true });
-    }
+    //   this.setState(INITIAL_STATE);
+    //   nextQuestionDispatch(next);
+    // } else {
+    //   this.setState({ redirect: true });
+    // }
   }
 
   // Função timer
@@ -217,6 +217,14 @@ class Gaming extends React.Component {
               {this.decodeHTMLEntities(questionsState[questionNumber].question)}
             </p>
             {this.renderAnswers(answers, isDisabled)}
+            <button
+              type="button"
+              hidden={ !isDisabled }
+              data-testid="btn-next"
+              onClick={ this.nextQuestionFunction }
+            >
+              Próxima
+            </button>
           </div>
         )}
       </>
