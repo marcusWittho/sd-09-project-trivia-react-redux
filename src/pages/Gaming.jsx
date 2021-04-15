@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { nextQuestion, receiveDataPlayer } from '../actions';
+import { shuffleAnswers, decodeHTMLEntities } from '../services/functions';
 import '../App.css';
 
 const INITIAL_STATE = {
@@ -12,11 +13,9 @@ const INITIAL_STATE = {
   isDisabled: false,
 };
 
-// Questões
 let CORRECT_ANSWER = '';
 let NEW_ARRAY_ANSWERS = [];
 
-// Valores do Timer
 const THOUSAND = 1000;
 const THIRTY_THOUSAND = 30000;
 
@@ -26,7 +25,6 @@ class Gaming extends React.Component {
 
     this.verifyAll = this.verifyAll.bind(this);
     this.getAnswers = this.getAnswers.bind(this);
-    this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.selectedAnswer = this.selectedAnswer.bind(this);
     this.nextQuestionFunction = this.nextQuestionFunction.bind(this);
     this.resultsPointPlayer = this.resultsPointPlayer.bind(this);
@@ -58,35 +56,24 @@ class Gaming extends React.Component {
 
       if (correctAnswer !== CORRECT_ANSWER) {
         NEW_ARRAY_ANSWERS.push({
-          answer: this.decodeHTMLEntities(correctAnswer),
+          answer: decodeHTMLEntities(correctAnswer),
           testid: 'correct-answer',
           className: 'green-border',
         });
 
         incorrectAnswers.map((incorrect, index) => NEW_ARRAY_ANSWERS.push({
-          answer: this.decodeHTMLEntities(incorrect),
+          answer: decodeHTMLEntities(incorrect),
           testid: `wrong-answer-${index}`,
           className: 'red-border',
         }));
 
-        CORRECT_ANSWER = this.decodeHTMLEntities(correctAnswer);
+        CORRECT_ANSWER = decodeHTMLEntities(correctAnswer);
 
-        return this.shuffleAnswers(NEW_ARRAY_ANSWERS);
+        return shuffleAnswers(NEW_ARRAY_ANSWERS);
       }
 
       return NEW_ARRAY_ANSWERS;
     }
-  }
-
-  // Embaralahndo as perguntas
-  // https://stackoverflow.com/questions/49555273/how-to-shuffle-an-array-of-objects-in-javascript
-  shuffleAnswers(array) {
-    const sizeArray = array.length;
-    for (let i = 0; i < sizeArray; i += 1) {
-      const random = Math.floor(Math.random() * sizeArray);
-      [array[i], array[random]] = [array[random], array[i]];
-    }
-    return array;
   }
 
   verifyAll() {
@@ -100,14 +87,6 @@ class Gaming extends React.Component {
     ) {
       this.setState({ redirect: true });
     }
-  }
-
-  // Função que interpreta caracteres especiais
-  // https://tertiumnon.medium.com/js-how-to-decode-html-entities-8ea807a140e5
-  decodeHTMLEntities(text) {
-    const textArea = document.createElement('textarea');
-    textArea.innerHTML = text;
-    return textArea.value;
   }
 
   resultsPointPlayer() {
@@ -174,10 +153,7 @@ class Gaming extends React.Component {
       if (!ranking) {
         localStorage.setItem('ranking', JSON.stringify([rankingObject]));
       } else {
-        localStorage.setItem(
-          'ranking',
-          JSON.stringify([...ranking, rankingObject]),
-        );
+        localStorage.setItem('ranking', JSON.stringify([...ranking, rankingObject]));
       }
 
       setDataPlayer(playerState, picture);
