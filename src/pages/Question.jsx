@@ -1,10 +1,11 @@
 import React from 'react';
 import { string, objectOf } from 'prop-types';
 import { connect } from 'react-redux';
-import { handleAssertions, resetTimer, startTimer,
-  tick, wasAnsweredAction } from '../redux/actions';
-import './css/question.css';
+import { handleAssertions, resetTimer, startTimer, tick, wasAnsweredAction }
+  from '../redux/actions';
 import CountdownTimer from './components/CountdownTimer';
+import EndGame from './EndGame';
+import './css/question.css';
 
 class Question extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Question extends React.Component {
     this.verifyAnswers = this.verifyAnswers.bind(this);
     this.stopWatch = this.stopWatch.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
+    this.displayGame = this.displayGame.bind(this);
     this.state = { indexQuestion: 0, numQuestion: 4, TIMER_RESET_CHECK: 30 };
   }
 
@@ -79,7 +81,7 @@ class Question extends React.Component {
     const { indexQuestion, numQuestion } = this.state;
     const { propResetTimer } = this.props;
     propResetTimer();
-    if (indexQuestion < numQuestion) {
+    if (indexQuestion <= numQuestion) {
       this.setState((prev) => ({ indexQuestion: prev.indexQuestion + 1 }));
     }
   }
@@ -178,14 +180,24 @@ class Question extends React.Component {
     document.querySelector('.btn-next').style.visibility = 'visible';
   }
 
-  render() {
+  displayGame() {
     const { dataAnswer } = this.props;
+    const { indexQuestion } = this.state;
+    const lastIndex = 5;
+    if (dataAnswer) {
+      if (indexQuestion < lastIndex) {
+        return this.inQuestion();
+      } return <EndGame />;
+    } return <div>Carregando</div>;
+  }
+
+  render() {
     const { handleIndex } = this;
     return (
       <div className="question">
         { this.createHeader() }
         <h1>Trivia Game</h1>
-        { dataAnswer ? this.inQuestion() : 'Carregando' }
+        { this.displayGame() }
         <button
           type="button"
           data-testid="btn-next"
