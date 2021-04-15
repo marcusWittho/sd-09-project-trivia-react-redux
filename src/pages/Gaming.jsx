@@ -95,8 +95,8 @@ class Gaming extends React.Component {
 
     if (
       !localStorage.getItem('state')
-			|| responseCode.length === 0
-			|| responseCode === numberResponse
+    || responseCode.length === 0
+    || responseCode === numberResponse
     ) {
       this.setState({ redirect: true });
     }
