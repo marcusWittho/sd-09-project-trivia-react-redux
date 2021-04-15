@@ -210,7 +210,7 @@ class Gaming extends React.Component {
               {questionsState[questionNumber].category}
             </p>
             <p data-testid="question-text">
-              {this.decodeHTMLEntities(questionsState[questionNumber].question)}
+              {decodeHTMLEntities(questionsState[questionNumber].question)}
             </p>
             {this.renderAnswers(answers, isDisabled)}
             <button
