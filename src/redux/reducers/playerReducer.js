@@ -3,7 +3,6 @@ import { SET_USER_NAME, SET_USER_EMAIL, SET_ASSERTIONS } from '../actions';
 const INITIAL_STATE = {
   name: '',
   assertions: 0,
-  score: 0,
   gravatarEmail: '',
 };
 
