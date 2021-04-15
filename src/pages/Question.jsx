@@ -1,10 +1,11 @@
 import React from 'react';
 import { string, objectOf } from 'prop-types';
 import { connect } from 'react-redux';
-import { handleAssertions, resetTimer, startTimer,
-  tick, wasAnsweredAction } from '../redux/actions';
-import './css/question.css';
+import { handleAssertions, resetTimer, startTimer, tick, wasAnsweredAction }
+  from '../redux/actions';
 import CountdownTimer from './components/CountdownTimer';
+import EndGame from './EndGame';
+import './css/question.css';
 
 class Question extends React.Component {
   constructor(props) {
@@ -19,11 +20,8 @@ class Question extends React.Component {
     this.verifyAnswers = this.verifyAnswers.bind(this);
     this.stopWatch = this.stopWatch.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
-    this.state = {
-      indexQuestion: 0,
-      numQuestion: 4,
-      TIMER_RESET_CHECK: 30,
-    };
+    this.displayGame = this.displayGame.bind(this);
+    this.state = { indexQuestion: 0, numQuestion: 4, TIMER_RESET_CHECK: 30 };
   }
 
   createHeader() {
@@ -55,6 +53,7 @@ class Question extends React.Component {
     const { propWasAnswered, timerId } = this.props;
     clearInterval(timerId);
     propWasAnswered();
+    this.btnStyle();
   }
 
   calculatePoints(remainingTime, difficulty) {
@@ -71,7 +70,6 @@ class Question extends React.Component {
   verifyAnswers(value, correct, difficulty) {
     const { propHandleAssertions, timer } = this.props;
     this.stopWatch();
-    this.btnStyle();
     if (value === correct) {
       propHandleAssertions(1);
       this.calculatePoints(timer, difficulty);
@@ -83,7 +81,7 @@ class Question extends React.Component {
     const { indexQuestion, numQuestion } = this.state;
     const { propResetTimer } = this.props;
     propResetTimer();
-    if (indexQuestion < numQuestion) {
+    if (indexQuestion <= numQuestion) {
       this.setState((prev) => ({ indexQuestion: prev.indexQuestion + 1 }));
     }
   }
@@ -169,39 +167,37 @@ class Question extends React.Component {
   }
 
   clearStyle() {
-    const correctBtn = document.querySelectorAll('.btnCorrect');
-    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
-    correctBtn.forEach((btn) => {
-      btn.style.border = '';
-    });
-    incorrectBtn.forEach((btn) => {
-      btn.style.border = '';
-    });
+    document.querySelector('.btnCorrect').style.border = '';
+    document.querySelectorAll('.btnIncorrect').forEach((bt) => { bt.style.border = ''; });
+    document.querySelector('.btn-next').style.visibility = 'hidden';
   }
 
   btnStyle() {
-    const correctBtn = document.querySelectorAll('.btnCorrect');
-    const incorrectBtn = document.querySelectorAll('.btnIncorrect');
-    const nextBtn = document.querySelector('.btn-next');
-    correctBtn.forEach((btn) => {
-      btn.style.border = '3px solid rgb(6, 240, 15)';
-      btn.style.outline = 'none';
-    });
-    incorrectBtn.forEach((btn) => {
+    document.querySelector('.btnCorrect').style.border = '3px solid rgb(6, 240, 15)';
+    document.querySelectorAll('.btnIncorrect').forEach((btn) => {
       btn.style.border = '3px solid red';
-      btn.style.outline = 'none';
     });
-    nextBtn.style.visibility = 'visible';
+    document.querySelector('.btn-next').style.visibility = 'visible';
+  }
+
+  displayGame() {
+    const { dataAnswer } = this.props;
+    const { indexQuestion } = this.state;
+    const lastIndex = 5;
+    if (dataAnswer) {
+      if (indexQuestion < lastIndex) {
+        return this.inQuestion();
+      } return <EndGame />;
+    } return <div>Carregando</div>;
   }
 
   render() {
-    const { dataAnswer } = this.props;
     const { handleIndex } = this;
     return (
       <div className="question">
         { this.createHeader() }
         <h1>Trivia Game</h1>
-        { dataAnswer ? this.inQuestion() : 'Carregando' }
+        { this.displayGame() }
         <button
           type="button"
           data-testid="btn-next"
