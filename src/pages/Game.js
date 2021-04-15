@@ -214,6 +214,7 @@ class Game extends Component {
                 <button
                   type="button"
                   data-testid="btn-next"
+                  className="btn-next"
                   onClick={ this.nextQuention }
                   hidden={ !buttonStatus }
                 >
