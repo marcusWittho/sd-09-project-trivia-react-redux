@@ -16,8 +16,8 @@ h3 {
   left: 50%;
   letter-spacing: 2px;
   position: absolute;
-  top: 56% ;
-  transform:translate(-50%, -50%);
+  top: 56%;
+  transform: translate(-50%, -50%);
   z-index: 1;
 }
 
