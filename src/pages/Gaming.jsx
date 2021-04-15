@@ -29,6 +29,7 @@ class Gaming extends React.Component {
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.selectedAnswer = this.selectedAnswer.bind(this);
     this.nextQuestionFunction = this.nextQuestionFunction.bind(this);
+    this.resultsPointPlayer = this.resultsPointPlayer.bind(this);
 
     this.state = INITIAL_STATE;
   }
@@ -109,6 +110,30 @@ class Gaming extends React.Component {
     return textArea.value;
   }
 
+  resultsPointPlayer() {
+    const {
+      questionNumber,
+      questionsState,
+      playerState,
+      picture,
+      setDataPlayer,
+    } = this.props;
+    const { currentCount } = this.state;
+
+    const { difficulty } = questionsState[questionNumber];
+    const objDiff = { hard: 3, medium: 2, easy: 1 };
+    const TEN = 10;
+
+    const assertions = playerState.assertions + 1;
+    const total = (level) => TEN + currentCount * objDiff[level];
+    const score = playerState.score + total(difficulty);
+
+    const player = { ...playerState, assertions, score };
+
+    setDataPlayer(player, picture);
+    localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
   selectedAnswer(event) {
     const { currentCount } = this.state;
     const buttonText = event ? event.target.innerText : '';
@@ -118,7 +143,7 @@ class Gaming extends React.Component {
     this.setState({ isDisabled: true });
 
     if (currentCount > 0 && CORRECT_ANSWER === buttonText) {
-      // this.resultsPointPlayer();
+      this.resultsPointPlayer();
     }
   }
 
@@ -192,14 +217,6 @@ class Gaming extends React.Component {
               {this.decodeHTMLEntities(questionsState[questionNumber].question)}
             </p>
             {this.renderAnswers(answers, isDisabled)}
-            <button
-              type="button"
-              hidden={ !isDisabled }
-              data-testid="btn-next"
-              onClick={ this.nextQuestionFunction }
-            >
-              Próxima
-            </button>
           </div>
         )}
       </>
@@ -209,9 +226,12 @@ class Gaming extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   nextQuestionDispatch: (questionNumber) => dispatch(nextQuestion(questionNumber)),
+  setDataPlayer: (player, picture) => dispatch(receiveDataPlayer(player, picture)),
 });
 
 const mapStateToProps = (state) => ({
+  playerState: state.playerReducer.player,
+  picture: state.playerReducer.picture,
   questionsState: state.questionsReducer.questions,
   questionNumber: state.questionsReducer.questionNumber,
   responseCode: state.questionsReducer.responseCode,
