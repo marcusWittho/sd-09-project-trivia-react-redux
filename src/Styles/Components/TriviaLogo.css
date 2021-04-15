@@ -6,7 +6,7 @@
 }
 
 svg path:nth-child( 6 ) {
-  animation: logoMoviment 2.5s ease forwards, fillingLogo
+  animation: logoMoviment 2.5s ease forwards , fillingLogo
     0.5s ease-in-out forwards 2s;
   stroke-dasharray: 338px;
   stroke-dashoffset: 338px;
