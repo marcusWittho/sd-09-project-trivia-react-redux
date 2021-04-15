@@ -4,10 +4,10 @@ import Header from '../components/Header';
 
 export default class Feedback extends React.Component {
   render() {
-    const state = JSON.parse(localStorage.getItem('state'));
-    const { player: { score, assertions } } = state;
+    const userData = JSON.parse(localStorage.getItem('ranking'));
+    const { score } = userData;
     const numberScore = 3;
-
+    const totalScore = 10;
     return (
       <div>
         <Header />
@@ -19,7 +19,7 @@ export default class Feedback extends React.Component {
           Você acertou
           {' '}
           <span data-testid="feedback-total-score">
-            { assertions }
+            { score }
           </span>
           {' '}
           questões!
@@ -28,12 +28,12 @@ export default class Feedback extends React.Component {
           Um total de
           {' '}
           <span data-testid="feedback-total-question">
-            { score }
+            { score * totalScore }
           </span>
           {' '}
           pontos.
         </p>
-        <Link to="/gaming">
+        <Link to="/">
           <button type="button" data-testid="btn-play-again">Jogar novamente</button>
         </Link>
         <Link to="/ranking">

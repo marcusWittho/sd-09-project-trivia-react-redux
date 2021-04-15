@@ -151,18 +151,38 @@ class Gaming extends React.Component {
     const {
       questionNumber,
       nextQuestionDispatch,
+      playerState,
+      picture,
+      setDataPlayer,
     } = this.props;
     const maxQuestionNumber = 4;
     NEW_ARRAY_ANSWERS = [];
 
-    // if (questionNumber < maxQuestionNumber) {
-    //   const next = questionNumber + 1;
+    if (questionNumber < maxQuestionNumber) {
+      const next = questionNumber + 1;
 
-    //   this.setState(INITIAL_STATE);
-    //   nextQuestionDispatch(next);
-    // } else {
-    //   this.setState({ redirect: true });
-    // }
+      this.setState(INITIAL_STATE);
+      nextQuestionDispatch(next);
+    } else {
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      const rankingObject = {
+        name: playerState.name,
+        score: playerState.score,
+        picture,
+      };
+
+      if (!ranking) {
+        localStorage.setItem('ranking', JSON.stringify([rankingObject]));
+      } else {
+        localStorage.setItem(
+          'ranking',
+          JSON.stringify([...ranking, rankingObject]),
+        );
+      }
+
+      setDataPlayer(playerState, picture);
+      this.setState({ redirect: true });
+    }
   }
 
   // Função timer
