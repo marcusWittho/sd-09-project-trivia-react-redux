@@ -45,11 +45,15 @@ class Feedback extends React.Component {
     //   return <h5 data-testid="feedback-total-question">Não acertou nenhuma pergunta</h5>
     return (
       <div className="total-score">
-        <h5 data-testid="feedback-total-score">
-          {`Seu placar foi de ${state.player.score} pontos`}
+        <h5>
+          {'Seu placar foi de '}
+          <span data-testid="feedback-total-score">{state.player.score}</span>
+          {' pontos'}
         </h5>
-        <h5 data-testid="feedback-total-question">
-          {`Acertou ${assertions} perguntas`}
+        <h5>
+          {'Acertou '}
+          <span data-testid="feedback-total-question">{assertions}</span>
+          {' perguntas'}
         </h5>
       </div>
     );
