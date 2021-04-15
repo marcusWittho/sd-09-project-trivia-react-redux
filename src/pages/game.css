@@ -25,13 +25,13 @@
 .wave-top {
   margin-top: -207px;
   position: absolute;
-  width: 1276px;
+  width: 100%;
 }
 
 .wave-bottom {
   margin-top: 319px;
   position: absolute;
-  width: 1276px;
+  width: 100%;
 }
 
 .question-Mark-left {
