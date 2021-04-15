@@ -1,11 +1,12 @@
 import {
   REQUEST_QUESTIONS,
   REQUEST_QUESTIONS_SUCCESS,
+  NEXT_QUESTION,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   questions: [],
-  responseCode: -1,
+  responseCode: '',
   questionNumber: 0,
   isFetching: false,
 };
@@ -26,6 +27,11 @@ const questionsReducer = (state = INITIAL_STATE, action) => {
       isFetching: false,
     };
   }
+  case NEXT_QUESTION:
+    return {
+      ...state,
+      questionNumber: action.questionNumber,
+    };
   default:
     return state;
   }

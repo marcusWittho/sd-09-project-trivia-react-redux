@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchPlayerToken, fetchQuestions } from '../actions';
+import { fetchPlayerToken, fetchQuestions, receiveDataPlayer } from '../actions';
 import { getUserGravatar } from '../services/api';
 
 class Login extends React.Component {
@@ -20,20 +20,18 @@ class Login extends React.Component {
 
   async handleLogin() {
     const { name, email } = this.state;
-    const { getPlayerToken, getQuestionAndAnswers } = this.props;
-    const state = {
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        gravatarEmail: email,
-      },
+    const { getPlayerToken, getQuestionAndAnswers, setDataPlayer } = this.props;
+    const player = {
+      name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
     };
 
-    localStorage.setItem('state', JSON.stringify(state));
+    localStorage.setItem('state', JSON.stringify({ player }));
     await getPlayerToken();
     await getQuestionAndAnswers();
-    getUserGravatar();
+    setDataPlayer(player, getUserGravatar());
     this.setState({ redirect: true });
   }
 
@@ -94,8 +92,9 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getPlayerToken: (token) => dispatch(fetchPlayerToken(token)),
+  getPlayerToken: () => dispatch(fetchPlayerToken()),
   getQuestionAndAnswers: () => dispatch(fetchQuestions()),
+  setDataPlayer: (player, picture) => dispatch(receiveDataPlayer(player, picture)),
 });
 
 Login.propTypes = {
