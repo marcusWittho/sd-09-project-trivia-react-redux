@@ -35,11 +35,6 @@ class GameQuestions extends Component {
 
   setAnswer(incorrects, correct) {
     const { answerClicked, time } = this.state;
-    // if (incorrects.length === 1) {
-    //   const numberOfQuestions = '50px';
-    // } else {
-    //   const numberOfQuestions = '50px';
-    // };
     const buttonQuestionStyles = {
       borderRadius: '5px',
       backgroundColor: 'rgb(153, 209, 153)',
