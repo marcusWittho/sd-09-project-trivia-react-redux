@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { handleAssertions, resetTimer, startTimer, tick, wasAnsweredAction }
   from '../redux/actions';
 import CountdownTimer from './components/CountdownTimer';
-// import EndGame from './EndGame';
 import Feedback from './Feedback';
 import './css/question.css';
 
