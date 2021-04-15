@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { handleAssertions, resetTimer, startTimer, tick, wasAnsweredAction }
   from '../redux/actions';
 import CountdownTimer from './components/CountdownTimer';
-import EndGame from './EndGame';
+// import EndGame from './EndGame';
+import Feedback from './Feedback';
 import './css/question.css';
 
 class Question extends React.Component {
@@ -187,7 +188,7 @@ class Question extends React.Component {
     if (dataAnswer) {
       if (indexQuestion < lastIndex) {
         return this.inQuestion();
-      } return <EndGame />;
+      } return <Feedback />;
     } return <div>Carregando</div>;
   }
 
