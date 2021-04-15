@@ -45,7 +45,7 @@ class GameQuestions extends Component {
           onClick={ this.handleClick }
           disabled={ time < 1 }
         >
-          {incorrect}
+          {this.decode(incorrect)}
         </button>
       ),
     );
@@ -59,11 +59,17 @@ class GameQuestions extends Component {
         onClick={ this.handleClick }
         disabled={ time < 1 }
       >
-        {correct}
+        {this.decode(correct)}
       </button>
     );
     incorrectsElements.splice(2, 0, correctElement);
     return incorrectsElements;
+  }
+
+  decode(text) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = text;
+    return txt.value;
   }
 
   stopInterval(answered) {
@@ -166,12 +172,12 @@ class GameQuestions extends Component {
         </h3>
         <p data-testid="question-category">
           Categoria:
-          {questions && questions[questionNumber].category}
+          {questions && this.decode(questions[questionNumber].category)}
         </p>
         <p
           data-testid="question-text"
         >
-          {questions && questions[questionNumber].question}
+          {questions && this.decode(questions[questionNumber].question)}
         </p>
         <div>
           {questions && this.setAnswer(
