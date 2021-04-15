@@ -39,10 +39,6 @@ class Feedback extends React.Component {
   gameResume() {
     const { assertions } = this.props;
     const state = JSON.parse(localStorage.getItem('state'));
-    // if (state) {
-    //   const { name, score, gravatarEmail } = state.player;
-    // if (assertions === 0) {
-    //   return <h5 data-testid="feedback-total-question">Não acertou nenhuma pergunta</h5>
     return (
       <div className="total-score">
         <h5>
